@@ -58,6 +58,13 @@ body {
   align-items: center;
 }
 
+.logo-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-left: 4px;
+  color: var(--background-color);
+}
+
 .logo-text {
   line-height: 1;
 }
