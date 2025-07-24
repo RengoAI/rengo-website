@@ -62,6 +62,8 @@ export default defineConfig(({ mode }) => ({
   build: {
     sourcemap: true,
     chunkSizeWarningLimit: 10_000,
+    // GitHub Pages serves from 'docs' or root, but we'll use 'dist' and copy it
+    outDir: 'dist',
     rollupOptions: {
       // https://github.com/vitejs/vite/issues/2433#issuecomment-1422127051
       maxParallelFileOps: 2,

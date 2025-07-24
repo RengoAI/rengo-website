@@ -1,0 +1,37 @@
+---
+name: "Frontend PR Tests"
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - frontend/**
+      - "!frontend/docker/**"
+      - .github/workflows/frontend-*.yml
+      - openapi_schema.yml
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_OPTIONS: "--max-old-space-size=8192"
+  ACTOR: ${{ github.actor }}
+
+jobs:
+  test:
+    name: Test
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: ./.github/actions/node-setup
+
+      - name: Run tests
+        run: pnpm run test

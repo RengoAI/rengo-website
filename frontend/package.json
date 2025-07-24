@@ -14,6 +14,7 @@
     "gen:chakra": "pnpm chakra typegen src/theme/system.ts",
     "gen": "pnpm gen:routes && pnpm gen:chakra",
     "build": "./scripts/build-release.sh",
+    "build:production": "./scripts/build-release.sh production",
     "lint": "./scripts/lint.sh",
     "lint:fix": "./scripts/lint-fix.sh",
     "test": "vitest run"
