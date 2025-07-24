@@ -2,7 +2,7 @@ import { Center, Flex, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 
 export const HeroSection: React.FC = () => (
-  <Center minH="100vh" py={20} px={8}>
+  <Center py={32} px={8} minH="100vh">
     <VStack gap={12} maxW="4xl" textAlign="center">
       {/* Main headline */}
       <VStack gap={6}>
@@ -10,7 +10,7 @@ export const HeroSection: React.FC = () => (
           fontSize={{ base: "4xl", md: "6xl", lg: "7xl" }}
           fontWeight="bold"
           lineHeight={1.1}
-          color="gray.900"
+          color="primary.500"
           letterSpacing="-0.02em"
         >
           Coming Soon
@@ -24,6 +24,7 @@ export const HeroSection: React.FC = () => (
           Building next generation software for alternative investment managers.
         </Text>
       </VStack>
+
       {/* Trust indicators */}
       <VStack gap={4}>
         <Text fontSize="sm" color="gray.500" fontWeight="medium">
@@ -37,13 +38,13 @@ export const HeroSection: React.FC = () => (
           flexWrap="wrap"
           justify="center"
         >
-          <Text>Middle Market Private Equity</Text>
+          <Text>Private Equity</Text>
           <Text>•</Text>
-          <Text>Growth Equity</Text>
+          <Text>Venture Capital</Text>
           <Text>•</Text>
           <Text>Private Credit</Text>
           <Text>•</Text>
-          <Text>Venture Capital</Text>
+          <Text>Growth Equity</Text>
         </Flex>
       </VStack>
     </VStack>

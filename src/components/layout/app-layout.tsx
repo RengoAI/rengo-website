@@ -13,11 +13,9 @@ export const AppLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
       <AppTopNav />
       <Flex h="calc(100vh - 64px)">
         <Box flex="1" overflow="auto">
-          <Box bgColor="bg.subtle" h="calc(100vh - 64px)">
-            <ErrorBoundary fallback={AppError} resetKeys={[location.pathname]}>
-              {children}
-            </ErrorBoundary>
-          </Box>
+          <ErrorBoundary fallback={AppError} resetKeys={[location.pathname]}>
+            {children}
+          </ErrorBoundary>
         </Box>
       </Flex>
     </ErrorBoundary>
