@@ -1,0 +1,57 @@
+import { rootRoute } from "@/app/app-routes";
+import { ColorModeButton } from "@/components/ui/color-mode";
+import { Tooltip } from "@/components/ui/tooltip";
+import { Flex, IconButton, Text } from "@chakra-ui/react";
+import { noop } from "lodash-es";
+import { History } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
+export const AuthenticatedTopNav: React.FC = () => {
+  const navigate = useNavigate();
+
+
+  return (
+    <Flex
+      alignItems="center"
+      h="16"
+      borderBottomWidth="1px"
+      borderColor="bg.surface.50"
+      bg="transparent"
+    >
+      {/* Header */}
+      <Flex height="16" alignItems="center" px="4" justify="flex-start" gap="0">
+        <Flex
+          alignItems="center"
+          ml="2"
+          cursor="pointer"
+          onClick={() => navigate(rootRoute({}).authenticatedRoot({}).$)}
+        >
+          <Text fontSize="2xl" fontWeight="bold" color="primary.500">
+            rengo ai
+          </Text>
+          <ColorModeButton
+            size="sm"
+            variant="ghost"
+            color="primary.500"
+            pointerEvents="none"
+            tabIndex={-1}
+            onClick={noop}
+          />
+        </Flex>
+      </Flex>
+      <Flex flex="1" justifyContent="flex-end" mr={4}>
+        <Tooltip content="Events">
+          <IconButton
+            aria-label="Events"
+            size="sm"
+            variant="ghost"
+            display="flex"
+            onClick={() => navigate(rootRoute({}).events({}).$)}
+          >
+            <History size={12} />
+          </IconButton>
+        </Tooltip>
+      </Flex>
+    </Flex>
+  );
+};
