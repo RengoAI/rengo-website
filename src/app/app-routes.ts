@@ -10,7 +10,13 @@ export const rootRoute = route(
   "/",
   {},
   {
-    root: route("/", {}, {}),
+    landing: route(
+      "/landing",
+      {},
+      {
+        index: route("/", {}, {}),
+      },
+    ),
     notFound: route("/*", {}, {}),
   },
 );
