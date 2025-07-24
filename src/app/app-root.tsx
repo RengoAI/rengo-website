@@ -12,12 +12,13 @@ const AppRoot = () => (
     adapter={ReactRouter6Adapter}
     options={{ updateType: "replaceIn", removeDefaultsFromUrl: true }}
   >
-    <ErrorBoundary fallback={AppError}>
-      <AppLayout>
+    <AppLayout>
+      <ErrorBoundary fallback={AppError}>
         <Outlet />
-      </AppLayout>
-      <Toaster />
-    </ErrorBoundary>
+
+        <Toaster />
+      </ErrorBoundary>
+    </AppLayout>
   </QueryParamProvider>
 );
 

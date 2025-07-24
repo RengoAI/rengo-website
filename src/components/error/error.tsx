@@ -1,4 +1,3 @@
-import { rootRoute } from "@/app/app-routes";
 import { Box, Button, Center, HStack, Text, VStack } from "@chakra-ui/react";
 
 import { ErrorBoundaryFallbackProps } from "@suspensive/react";
@@ -50,9 +49,6 @@ export const ErrorComponent: React.FC<ErrorBoundaryFallbackProps> = ({
             onClick={() => navigate(-1)}
           >
             Go back
-          </Button>
-          <Button variant="ghost" size="sm" asChild>
-            <a href={rootRoute({}).auth({}).logout({}).$}>Sign out</a>
           </Button>
         </HStack>
       </VStack>

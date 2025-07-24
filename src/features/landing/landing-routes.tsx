@@ -3,7 +3,7 @@ import { RouteObject } from "react-router-dom";
 
 export const landingRoutes: RouteObject = {
   id: "landing",
-  path: "landing",
+  path: "",
   handle: {
     pageTitle: "Landing",
   },
