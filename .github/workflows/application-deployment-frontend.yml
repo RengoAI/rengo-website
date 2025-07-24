@@ -8,23 +8,27 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
     defaults:
       run:
         working-directory: ./frontend
     steps:
-      - name: Check out code
+      - name: Checkout source code
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref }}
           fetch-depth: 0
 
       - name: Setup node
         uses: ./.github/actions/node-setup
 
-      - name: Build
-        run: |
-          pnpm run gen
-          pnpm run build production
+      - name: Generate routes and types
+        run: pnpm gen
+
+      - name: Build for production
+        run: pnpm build production
 
       - name: Create 404.html for SPA routing
         run: cp build/index.html build/404.html
@@ -36,7 +40,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+          publish_dir: ./frontend/build
           publish_branch: production
           force_orphan: true
           commit_message: "Deploy build artifacts from ${{ github.sha }}"
