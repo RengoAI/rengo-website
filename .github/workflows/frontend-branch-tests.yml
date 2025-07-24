@@ -5,9 +5,7 @@ on:
     types: [opened, synchronize]
     paths:
       - frontend/**
-      - "!frontend/docker/**"
       - .github/workflows/frontend-*.yml
-      - openapi_schema.yml
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
