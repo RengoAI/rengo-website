@@ -18,16 +18,16 @@ const vitePwaPlugin = (mode: VitePWAOptions["mode"]) =>
   VitePWA({
     mode: mode,
     base: "/",
-    includeAssets: ["rengo.webp"],
+    includeAssets: ["logo.svg"],
     manifest: {
       name: "Rengo AI",
       short_name: "Rengo AI",
       theme_color: "#ffffff",
       icons: [
         {
-          src: "rengo.webp",
+          src: "logo.svg",
           sizes: "192x192",
-          type: "image/png",
+          type: "image/svg+xml",
         },
       ],
     },

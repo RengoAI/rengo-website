@@ -1,4 +1,5 @@
 import { AppError } from "@/components/error/app-error";
+import { AppFooter } from "@/components/nav/footer";
 import { AppTopNav } from "@/components/nav/top-nav";
 import { Box, Flex } from "@chakra-ui/react";
 import { ErrorBoundary } from "@suspensive/react";
@@ -18,6 +19,7 @@ export const AppLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
           </ErrorBoundary>
         </Box>
       </Flex>
+      <AppFooter />
     </ErrorBoundary>
   );
 };
