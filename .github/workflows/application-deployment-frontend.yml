@@ -5,17 +5,13 @@ on:
     branches: [erik/TestWebsiteDeployAction]
   workflow_dispatch:
 
-permissions:
-  contents: write
-  pages: write
-  id-token: write
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      issues: write
+      contents: write
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
     defaults:
       run:
         working-directory: ./frontend
@@ -46,5 +42,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build
           publish_branch: production
-          force_orphan: true
           commit_message: "Deploy build artifacts from ${{ github.sha }}"
