@@ -23,9 +23,6 @@ import { extractPathParams } from "../shared/utils/path-utils";
 globalThis.document = window.document;
 globalThis.localStorage = window.localStorage;
 
-// Stytch causes the process to hang.
-global.disableStytch = true;
-
 // This must be imported after the global window object is registered.
 const { appRouter } = await import("../app/app-router");
 
