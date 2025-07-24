@@ -16,10 +16,10 @@ export const AppLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
         <Box flex="1" overflow="auto">
           <ErrorBoundary fallback={AppError} resetKeys={[location.pathname]}>
             {children}
+            <AppFooter />
           </ErrorBoundary>
         </Box>
       </Flex>
-      <AppFooter />
     </ErrorBoundary>
   );
 };
