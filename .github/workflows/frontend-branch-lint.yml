@@ -5,7 +5,7 @@ on:
     types: [opened, synchronize]
     paths:
       - frontend/**
-      - .github/workflows/frontend-*.yml
+      - .github/**
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
