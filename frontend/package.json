@@ -49,7 +49,7 @@
     "axios-jwt": "^4.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "cmdk": "1.0.0",
+    "cmdk": "1.1.1",
     "color2k": "^2.0.3",
     "date-fns": "^4.1.0",
     "decimal.js": "^10.5.0",
