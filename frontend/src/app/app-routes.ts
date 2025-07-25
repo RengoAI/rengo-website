@@ -11,6 +11,13 @@ export const rootRoute = route(
   {},
   {
     landingIndex: route("/", {}, {}),
+    legal: route(
+      "/legal",
+      {},
+      {
+        termsOfService: route("/terms-of-service", {}, {}),
+      },
+    ),
     notFound: route("/*", {}, {}),
   },
 );
