@@ -1,0 +1,271 @@
+name: Create Production Deploy PR
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-create-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup node
+        uses: ./.github/actions/node-setup
+
+      - name: Generate routes and types
+        working-directory: ./frontend
+        run: pnpm gen
+
+      - name: Build for production
+        working-directory: ./frontend
+        run: pnpm build production
+
+      - name: Create 404.html for SPA routing
+        working-directory: ./frontend
+        run: cp build/index.html build/404.html
+
+      - name: Copy CNAME file to build directory
+        working-directory: ./frontend
+        run: cp CNAME build/CNAME
+
+      - name: Package deployment artifacts
+        run: |
+          # Create deployment package directory
+          mkdir -p deployment-package
+
+          # Copy build files from frontend/build
+          echo "Packaging build files..."
+          if [ -d "frontend/build" ]; then
+            cp -rv frontend/build deployment-package/
+            echo "Build files packaged: $(find deployment-package/build -type f | wc -l) files"
+          else
+            echo "Error: frontend/build directory does not exist"
+            exit 1
+          fi
+
+          # Copy entire .github directory but rename it to avoid GitHub Actions filtering
+          if [ -d ".github" ]; then
+            cp -rv .github deployment-package/github-config
+            echo ".github directory packaged as 'github-config' ($(find deployment-package/github-config -type f | wc -l) files)"
+          else
+            echo "Warning: No .github directory found"
+          fi
+
+          # Show what we're packaging
+          echo "Deployment package contents:"
+          find deployment-package -type f | head -20
+          echo "Total files in package: $(find deployment-package -type f | wc -l)"
+
+      - name: Upload deployment artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-package-${{ github.sha }}
+          path: deployment-package/
+          retention-days: 1
+
+      - name: Create deployment branch
+        run: |
+          # Configure git
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+          # Create a unique branch name for this deployment
+          BRANCH_NAME="deploy/production-$(date +%Y%m%d-%H%M%S)-${GITHUB_SHA:0:7}"
+          echo "DEPLOY_BRANCH=$BRANCH_NAME" >> $GITHUB_ENV
+          echo "Creating deployment branch: $BRANCH_NAME"
+
+          # Fetch production branch to ensure we have the latest
+          git fetch origin production:production 2>/dev/null || {
+            echo "Production branch doesn't exist, creating it..."
+            git checkout --orphan production
+            git rm -rf . 2>/dev/null || true
+            echo "# Production Branch" > README.md
+            echo "This branch contains the built artifacts for production deployment." >> README.md
+            git add README.md
+            git commit -m "Initialize production branch"
+            git push origin production
+            echo "Production branch created and pushed"
+          }
+
+          # Create deployment branch from production branch to maintain history
+          git checkout production
+          git checkout -b "$BRANCH_NAME"
+
+          # Remove all files except .git to start fresh
+          echo "Clearing deployment branch..."
+          find . -maxdepth 1 -not -name '.git' -not -name '.' -not -name '..' -exec rm -rf {} + 2>/dev/null || true
+
+      - name: Download deployment artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: deployment-package-${{ github.sha }}
+          path: deployment-artifacts/
+
+      - name: Copy deployment artifacts to deployment branch
+        run: |
+          # Verify deployment artifacts exist
+          if [ ! -d "deployment-artifacts" ] || [ -z "$(ls -A deployment-artifacts)" ]; then
+            echo "Error: deployment-artifacts directory is empty or doesn't exist"
+            echo "Current directory contents:"
+            ls -la
+            exit 1
+          fi
+
+          echo "Verified deployment artifacts: $(find deployment-artifacts -type f | wc -l) files"
+
+          # Copy build files from artifacts to root of deployment branch
+          echo "Applying deployment artifacts..."
+          if [ -d "deployment-artifacts/build" ]; then
+            cp -rv deployment-artifacts/build/* .
+            echo "Build files applied to deployment branch"
+          else
+            echo "Error: No build directory found in artifacts"
+            ls -la deployment-artifacts/
+            exit 1
+          fi
+
+          # Copy github-config directory and rename it back to .github
+          if [ -d "deployment-artifacts/github-config" ]; then
+            cp -rv deployment-artifacts/github-config .github
+            echo ".github directory applied to deployment branch"
+          else
+            echo "Warning: No github-config directory found in artifacts"
+            ls -la deployment-artifacts/
+          fi
+
+          # Clean up deployment-artifacts directory after copying
+          rm -rf deployment-artifacts
+          echo "Cleaned up deployment-artifacts directory"
+
+          # Add and commit all build files
+          git add -A
+
+          # Check if there are any changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes to deploy - build artifacts are identical"
+            echo "SKIP_DEPLOYMENT=true" >> $GITHUB_ENV
+            exit 0
+          fi
+
+          echo "Committing changes..."
+          git commit -m "Production build from commit ${GITHUB_SHA}
+
+          Built from: ${GITHUB_REF_NAME}@${GITHUB_SHA}
+          Workflow: ${{ github.workflow }}
+          Run: ${{ github.run_number }}
+
+          Files included:
+          $(git diff --staged --name-only | head -10)
+          $([ $(git diff --staged --name-only | wc -l) -gt 10 ] && echo "... and $(($(git diff --staged --name-only | wc -l) - 10)) more files")"
+
+          # Push the deployment branch
+          echo "Pushing deployment branch: $DEPLOY_BRANCH"
+          git push origin "$DEPLOY_BRANCH"
+
+          echo "Deployment branch created: $DEPLOY_BRANCH"
+
+      - name: Create Pull Request
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // Check if deployment was skipped
+            if (process.env.SKIP_DEPLOYMENT === 'true') {
+              console.log('Deployment skipped - no changes to deploy');
+              return;
+            }
+
+            // Check if we have a deployment branch
+            if (!process.env.DEPLOY_BRANCH) {
+              console.log('No deployment branch created');
+              return;
+            }
+
+            const { data: pr } = await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Production Deployment from ${context.ref.replace('refs/heads/', '')} 🚀`,
+              head: process.env.DEPLOY_BRANCH,
+              base: 'production',
+              body: `## Production Deployment Request
+
+            **Source:** \`${context.ref.replace('refs/heads/', '')}\`@\`${context.sha.substring(0, 7)}\`
+            **Workflow:** ${context.workflow}
+            **Run:** #${context.runNumber}
+
+            ### 📦 Build Details
+            - Built from commit: ${context.sha}
+            - Build artifacts ready for production deployment
+            - Includes optimized assets, 404.html for SPA routing, and CNAME file
+            - Complete .github directory included for proper governance
+
+            ### 🔍 Review Checklist
+            - [ ] Build artifacts look correct
+            - [ ] No sensitive information exposed
+            - [ ] CNAME file is present and correct
+            - [ ] 404.html exists for SPA routing
+            - [ ] All required assets are included
+
+            ### 🚀 Deployment
+            Once this PR is approved and merged, the production site will be updated.
+
+            ---
+            *This PR was automatically created by GitHub Actions using artifact-based deployment*`,
+              draft: false
+            });
+
+            console.log(`Created PR #${pr.number}: ${pr.html_url}`);
+
+      - name: Comment on source commit
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            if (process.env.SKIP_DEPLOYMENT === 'true') {
+              await github.rest.repos.createCommitComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                commit_sha: context.sha,
+                body: `ℹ️ **No deployment needed**
+
+                No changes detected in build artifacts - production is already up to date.
+
+                *Generated by workflow: ${context.workflow}*`
+              });
+              return;
+            }
+
+            if (!process.env.DEPLOY_BRANCH) {
+              console.log('No deployment branch to comment about');
+              return;
+            }
+
+            await github.rest.repos.createCommitComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              commit_sha: context.sha,
+              body: `🚀 **Production deployment PR created**
+
+            A pull request has been automatically created to deploy this commit to production.
+
+            **Deployment Branch:** \`${process.env.DEPLOY_BRANCH}\`
+
+            **Next steps:**
+            1. Review the generated build artifacts in the PR
+            2. Approve and merge the PR to deploy to production
+
+            *Generated by workflow: ${context.workflow} using artifact-based deployment*`
+            });
+
+            console.log('Added comment to source commit');

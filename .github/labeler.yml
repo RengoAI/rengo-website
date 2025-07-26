@@ -1,0 +1,8 @@
+frontend:
+  - changed-files:
+      - any-glob-to-any-file: "frontend/**"
+
+ci:
+  - changed-files:
+      - any-glob-to-any-file: ".github/**"
+      - any-glob-to-any-file: "frontend/scripts/**"
