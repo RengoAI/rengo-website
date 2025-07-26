@@ -31,6 +31,16 @@ export const AppFooter: React.FC = () => (
               Connect
             </Text>
             <VStack gap={2} align={{ base: "center", md: "flex-start" }}>
+              <Link to={rootRoute({}).careers({}).$}>
+                <Text
+                  fontSize="sm"
+                  color="white"
+                  cursor="pointer"
+                  _hover={{ color: "gray.100" }}
+                >
+                  Careers
+                </Text>
+              </Link>
               <Text
                 fontSize="sm"
                 color="white"

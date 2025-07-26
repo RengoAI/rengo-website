@@ -4,7 +4,7 @@ import React from "react";
 
 export const SecurityPage: React.FC = () => (
   <Page>
-    <Box w="full" overflow="auto">
+    <Box w="full">
       <Container maxW="4xl" py={16} px={8}>
         <VStack gap={8} align="stretch">
           {/* Header */}
