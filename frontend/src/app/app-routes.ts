@@ -20,6 +20,13 @@ export const rootRoute = route(
         security: route("/security", {}, {}),
       },
     ),
+    careers: route(
+      "/careers",
+      {},
+      {
+        index: route("/", {}, {}),
+      },
+    ),
     notFound: route("/*", {}, {}),
   },
 );
