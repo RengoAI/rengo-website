@@ -1,6 +1,7 @@
-import { ChangelogEntryData } from "@/features/blog/changelog/entries/types";
+import { ChangelogEntryData } from "@/features/blog/changelog/types";
 
 export const PortfolioMonitoringCustomMetrics: ChangelogEntryData = {
+  id: "portfolio-monitoring-custom-metrics",
   date: {
     day: "12",
     month: "January",
@@ -8,7 +9,7 @@ export const PortfolioMonitoringCustomMetrics: ChangelogEntryData = {
   },
   type: "Improvement",
   title: "Portfolio monitoring dashboard now supports custom metrics",
-  tags: ["portfolio monitoring", "dashboards"],
+  tags: ["Portfolio Monitoring", "Dashboards"],
   readTime: "3 minute read",
   sections: [
     {

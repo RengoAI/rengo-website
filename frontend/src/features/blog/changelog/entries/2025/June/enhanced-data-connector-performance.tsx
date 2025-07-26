@@ -1,6 +1,7 @@
-import { ChangelogEntryData } from "@/features/blog/changelog/entries/types";
+import { ChangelogEntryData } from "@/features/blog/changelog/types";
 
 export const EnhancedDataConnectorPerformance: ChangelogEntryData = {
+  id: "enhanced-data-connector-performance",
   date: {
     day: "15",
     month: "January",
@@ -8,7 +9,7 @@ export const EnhancedDataConnectorPerformance: ChangelogEntryData = {
   },
   type: "Release",
   title: "Enhanced data connector performance with real-time streaming",
-  tags: ["data connectors", "performance"],
+  tags: ["Data Connectors", "Performance"],
   readTime: "2 minute read",
   sections: [
     {

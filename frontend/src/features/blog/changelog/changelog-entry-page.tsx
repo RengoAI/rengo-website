@@ -105,8 +105,6 @@ export const ChangelogEntryPage: React.FC = () => {
               {entry.sections.map((section) => (
                 <Box key={section.id}>
                   <Text
-                    as="a"
-                    href={`#${section.id}`}
                     fontSize="sm"
                     color="primary.600"
                     _hover={{ color: "primary.800" }}
