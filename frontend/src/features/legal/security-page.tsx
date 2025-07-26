@@ -381,15 +381,6 @@ export const SecurityPage: React.FC = () => (
                   lineHeight="1.7"
                   color="gray.700"
                 >
-                  • SOC 2 Type II compliance for security, availability, and
-                  confidentiality controls.
-                </Text>
-                <Text
-                  textStyle="body"
-                  fontSize="md"
-                  lineHeight="1.7"
-                  color="gray.700"
-                >
                   • Regular third-party security audits and penetration testing
                   to validate our security posture.
                 </Text>
