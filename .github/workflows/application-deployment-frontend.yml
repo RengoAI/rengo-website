@@ -139,7 +139,14 @@ jobs:
           if [ -d "deployment-artifacts/.github" ]; then
             cp -rv deployment-artifacts/.github .
             echo ".github directory applied to deployment branch"
+          else
+            echo "Warning: No .github directory found in artifacts"
+            ls -la deployment-artifacts/
           fi
+
+          # Clean up deployment-artifacts directory after copying
+          rm -rf deployment-artifacts
+          echo "Cleaned up deployment-artifacts directory"
 
           # Show what's in the deployment branch
           echo "Files in deployment branch:"
