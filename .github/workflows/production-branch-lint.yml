@@ -3,8 +3,7 @@ name: "Production Branch Lint"
 on:
   pull_request:
     types: [opened, synchronize]
-    paths:
-      - .release-sha
+    branches: [production]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
