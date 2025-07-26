@@ -41,20 +41,26 @@ jobs:
 
       - name: Prepare deployment files
         run: |
-          # Create a temporary directory for deployment files
+          # Create a temporary directory for deployment files in the root
           mkdir -p temp-deploy
 
           # Copy all build files from frontend/build
           echo "Copying build files..."
-          cp -rv frontend/build/* temp-deploy/ || {
-            echo "Error: No build files found in frontend/build/"
+          if [ -d "frontend/build" ]; then
+            cp -rv frontend/build/* temp-deploy/ || {
+              echo "Error: No build files found in frontend/build/"
+              ls -la frontend/build/
+              exit 1
+            }
+            
+            # Copy any hidden files from build directory
+            if ls frontend/build/.* 1> /dev/null 2>&1; then
+              cp -v frontend/build/.* temp-deploy/ 2>/dev/null || true
+            fi
+          else
+            echo "Error: frontend/build directory does not exist"
             ls -la frontend/
             exit 1
-          }
-
-          # Copy any hidden files from build directory
-          if ls frontend/build/.* 1> /dev/null 2>&1; then
-            cp -v frontend/build/.* temp-deploy/ 2>/dev/null || true
           fi
 
           # Copy CODEOWNERS file if it exists
@@ -70,6 +76,12 @@ jobs:
           echo "Files prepared for deployment:"
           find temp-deploy -type f | head -20
           echo "Total files: $(find temp-deploy -type f | wc -l)"
+
+          # Verify we have content
+          if [ -z "$(ls -A temp-deploy)" ]; then
+            echo "Error: temp-deploy directory is empty after copying"
+            exit 1
+          fi
 
       - name: Create deployment branch and PR
         run: |
