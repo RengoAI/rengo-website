@@ -87,6 +87,15 @@ export const AppFooter: React.FC = () => (
                   Terms of Use
                 </Text>
               </Link>
+              <Link to={rootRoute({}).legal({}).security({}).$}>
+                <Text
+                  variant="helperLink"
+                  color="white"
+                  _hover={{ color: "gray.100" }}
+                >
+                  Security
+                </Text>
+              </Link>
             </HStack>
           </Flex>
         </Box>
