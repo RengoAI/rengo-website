@@ -1,4 +1,4 @@
-import { Page } from "@/components/layout/page";
+import { CareersLayout } from "@/features/careers/careers-layout";
 import { RouteObject } from "react-router-dom";
 
 export const careersRoutes: RouteObject = {
@@ -7,7 +7,7 @@ export const careersRoutes: RouteObject = {
   handle: {
     pageTitle: "Careers",
   },
-  element: <Page />,
+  element: <CareersLayout />,
   children: [
     {
       id: "careersIndex",

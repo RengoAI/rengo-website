@@ -3,8 +3,7 @@ name: "Frontend PR Tests"
 on:
   pull_request:
     types: [opened, synchronize]
-    branches:
-      - deploy/production*
+    branches: [production]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
