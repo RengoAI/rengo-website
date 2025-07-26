@@ -39,48 +39,46 @@ jobs:
         working-directory: ./frontend
         run: cp CNAME build/CNAME
 
-      - name: Prepare deployment files
+      - name: Package deployment artifacts
         run: |
-          # Create a temporary directory for deployment files in the root
-          mkdir -p temp-deploy
+          # Create deployment package directory
+          mkdir -p deployment-package
 
-          # Copy all build files from frontend/build
-          echo "Copying build files..."
+          # Copy build files from frontend/build
+          echo "Packaging build files..."
           if [ -d "frontend/build" ]; then
-            cp -rv frontend/build/* temp-deploy/ || {
-              echo "Error: No build files found in frontend/build/"
-              ls -la frontend/build/
-              exit 1
-            }
-            
-            # Copy any hidden files from build directory
-            if ls frontend/build/.* 1> /dev/null 2>&1; then
-              cp -v frontend/build/.* temp-deploy/ 2>/dev/null || true
-            fi
+            cp -rv frontend/build deployment-package/
+            echo "Build files packaged: $(find deployment-package/build -type f | wc -l) files"
           else
             echo "Error: frontend/build directory does not exist"
-            ls -la frontend/
             exit 1
           fi
 
-          # Copy entire .github directory if it exists
+          # Copy entire .github directory
           if [ -d ".github" ]; then
-            cp -rv .github temp-deploy/
-            echo ".github directory copied (includes CODEOWNERS, workflows, etc.)"
+            cp -rv .github deployment-package/
+            echo ".github directory packaged"
           else
-            echo "No .github directory found"
+            echo "Warning: No .github directory found"
           fi
 
-          # List what we're deploying
-          echo "Files prepared for deployment:"
-          find temp-deploy -type f | head -20
-          echo "Total files: $(find temp-deploy -type f | wc -l)"
+          # Show what we're packaging
+          echo "Deployment package contents:"
+          find deployment-package -type f | head -20
+          echo "Total files in package: $(find deployment-package -type f | wc -l)"
 
-          # Verify we have content
-          if [ -z "$(ls -A temp-deploy)" ]; then
-            echo "Error: temp-deploy directory is empty after copying"
-            exit 1
-          fi
+      - name: Upload deployment artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-package-${{ github.sha }}
+          path: deployment-package/
+          retention-days: 1
+
+      - name: Download deployment artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: deployment-package-${{ github.sha }}
+          path: deployment-artifacts/
 
       - name: Create deployment branch and PR
         run: |
@@ -91,21 +89,15 @@ jobs:
           # Create a unique branch name for this deployment
           BRANCH_NAME="deploy/production-$(date +%Y%m%d-%H%M%S)-${GITHUB_SHA:0:7}"
 
-          # Verify temp-deploy directory exists and has content before doing anything
-          if [ ! -d "temp-deploy" ] || [ -z "$(ls -A temp-deploy)" ]; then
-            echo "Error: temp-deploy directory is empty or doesn't exist"
+          # Verify deployment artifacts exist
+          if [ ! -d "deployment-artifacts" ] || [ -z "$(ls -A deployment-artifacts)" ]; then
+            echo "Error: deployment-artifacts directory is empty or doesn't exist"
             echo "Current directory contents:"
             ls -la
-            echo "Looking for temp-deploy:"
-            find . -name "temp-deploy" -type d 2>/dev/null || echo "temp-deploy directory not found"
             exit 1
           fi
 
-          echo "Verified temp-deploy directory exists with $(find temp-deploy -type f | wc -l) files"
-
-          # Store the current directory (where temp-deploy exists)
-          ORIGINAL_DIR=$(pwd)
-          echo "Working in directory: $ORIGINAL_DIR"
+          echo "Verified deployment artifacts: $(find deployment-artifacts -type f | wc -l) files"
 
           # Fetch production branch to ensure we have the latest
           git fetch origin production:production 2>/dev/null || {
@@ -118,8 +110,6 @@ jobs:
             git commit -m "Initialize production branch"
             git push origin production
             echo "Production branch created and pushed"
-            # Return to original directory and branch
-            git checkout -
           }
 
           # Create deployment branch from production branch to maintain history
@@ -131,30 +121,22 @@ jobs:
           echo "Clearing deployment branch..."
           find . -maxdepth 1 -not -name '.git' -not -name '.' -not -name '..' -exec rm -rf {} + 2>/dev/null || true
 
-          # Copy build files from the original location (which should still be accessible)
-          echo "Copying files to deployment branch..."
-          if [ -d "$ORIGINAL_DIR/temp-deploy" ]; then
-            cp -rv "$ORIGINAL_DIR/temp-deploy"/* . 2>/dev/null || true
-            
-            # Copy hidden files if they exist
-            if ls "$ORIGINAL_DIR/temp-deploy"/.* 1> /dev/null 2>&1; then
-              cp -v "$ORIGINAL_DIR/temp-deploy"/.* . 2>/dev/null || true
-            fi
-            
-            # Copy .github directory if it exists in temp-deploy
-            if [ -d "$ORIGINAL_DIR/temp-deploy/.github" ]; then
-              cp -rv "$ORIGINAL_DIR/temp-deploy/.github" .
-              echo ".github directory copied"
-            fi
+          # Copy build files from artifacts to root of deployment branch
+          echo "Applying deployment artifacts..."
+          if [ -d "deployment-artifacts/build" ]; then
+            cp -rv deployment-artifacts/build/* .
+            echo "Build files applied to deployment branch"
           else
-            echo "Error: Cannot find temp-deploy directory at $ORIGINAL_DIR/temp-deploy"
-            echo "Contents of $ORIGINAL_DIR:"
-            ls -la "$ORIGINAL_DIR/"
+            echo "Error: No build directory found in artifacts"
+            ls -la deployment-artifacts/
             exit 1
           fi
 
-          # Clean up temp directory
-          rm -rf "$ORIGINAL_DIR/temp-deploy"
+          # Copy .github directory if it exists in artifacts
+          if [ -d "deployment-artifacts/.github" ]; then
+            cp -rv deployment-artifacts/.github .
+            echo ".github directory applied to deployment branch"
+          fi
 
           # Show what's in the deployment branch
           echo "Files in deployment branch:"
@@ -215,7 +197,7 @@ jobs:
             - Built from commit: ${context.sha}
             - Build artifacts ready for production deployment
             - Includes optimized assets, 404.html for SPA routing, and CNAME file
-            - CODEOWNERS file included for proper review process
+            - Complete .github directory included for proper governance
 
             ### 🔍 Review Checklist
             - [ ] Build artifacts look correct
@@ -228,7 +210,7 @@ jobs:
             Once this PR is approved and merged, the production site will be updated.
 
             ---
-            *This PR was automatically created by GitHub Actions*`,
+            *This PR was automatically created by GitHub Actions using artifact-based deployment*`,
               draft: false
             });
 
@@ -267,7 +249,7 @@ jobs:
             1. Review the generated build artifacts in the PR
             2. Approve and merge the PR to deploy to production
 
-            *Generated by workflow: ${context.workflow}*`
+            *Generated by workflow: ${context.workflow} using artifact-based deployment*`
             });
 
             console.log('Added comment to source commit');
