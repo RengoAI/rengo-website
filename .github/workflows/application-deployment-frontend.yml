@@ -2,7 +2,7 @@ name: Create Production Deploy PR
 
 on:
   push:
-    branches: [erik/DeployPR]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -112,24 +112,6 @@ jobs:
           name: deployment-package-${{ github.sha }}
           path: deployment-artifacts/
 
-      - name: Debug deployment artifacts
-        run: |
-          echo "=== DEBUGGING DEPLOYMENT ARTIFACTS ==="
-          echo "Contents of deployment-artifacts directory:"
-          find deployment-artifacts -type f | sort
-          echo ""
-          echo "Detailed deployment-artifacts structure:"
-          ls -laR deployment-artifacts/
-          echo ""
-          echo "Checking for github-config (renamed .github) specifically:"
-          if [ -d "deployment-artifacts/github-config" ]; then
-            echo "github-config directory found in artifacts!"
-            find deployment-artifacts/github-config -type f
-          else
-            echo "github-config directory NOT found in artifacts"
-          fi
-          echo "=== END DEBUGGING ==="
-
       - name: Copy deployment artifacts to deployment branch
         run: |
           # Verify deployment artifacts exist
@@ -156,7 +138,7 @@ jobs:
           # Copy github-config directory and rename it back to .github
           if [ -d "deployment-artifacts/github-config" ]; then
             cp -rv deployment-artifacts/github-config .github
-            echo "github-config directory copied and renamed to .github"
+            echo ".github directory applied to deployment branch"
           else
             echo "Warning: No github-config directory found in artifacts"
             ls -la deployment-artifacts/
@@ -166,30 +148,8 @@ jobs:
           rm -rf deployment-artifacts
           echo "Cleaned up deployment-artifacts directory"
 
-          # Show what's in the deployment branch after copying
-          echo "Files in deployment branch after copying:"
-          ls -la
-          echo ""
-          echo "Checking for .github in deployment branch:"
-          if [ -d ".github" ]; then
-            echo ".github directory exists in deployment branch!"
-            find .github -type f | head -10
-          else
-            echo ".github directory NOT found in deployment branch"
-          fi
-
-          # Show git status before adding
-          echo ""
-          echo "Git status before adding files:"
-          git status --porcelain
-
           # Add and commit all build files
           git add -A
-
-          # Show what's being staged
-          echo ""
-          echo "Files being staged for commit:"
-          git diff --cached --name-only | head -20
 
           # Check if there are any changes to commit
           if git diff --staged --quiet; then
@@ -198,8 +158,7 @@ jobs:
             exit 0
           fi
 
-          echo ""
-          echo "Changes detected, committing..."
+          echo "Committing changes..."
           git commit -m "Production build from commit ${GITHUB_SHA}
 
           Built from: ${GITHUB_REF_NAME}@${GITHUB_SHA}
