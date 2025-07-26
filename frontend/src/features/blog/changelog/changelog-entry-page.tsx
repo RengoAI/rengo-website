@@ -1,16 +1,16 @@
+import { rootRoute } from "@/app/app-routes";
 import { getChangelogEntriesByYearAndMonthAndId } from "@/features/blog/changelog/utils";
 import { useRequiredStringParams } from "@/shared/hooks/use-required-string-params";
 import {
   Badge,
   Box,
-  Button,
   Container,
   HStack,
+  Link,
   Text,
   VStack,
 } from "@chakra-ui/react";
 import React from "react";
-import { Link as RouterLink } from "react-router-dom";
 
 export const ChangelogEntryPage: React.FC = () => {
   const { year, month, id } = useRequiredStringParams();
@@ -44,19 +44,23 @@ export const ChangelogEntryPage: React.FC = () => {
   return (
     <Box w="full" bg="white" minH="100vh">
       {/* Breadcrumb */}
-      <Box bg="gray.50" py={4} borderBottom="1px solid" borderColor="gray.200">
-        <Container maxW="4xl" px={8}>
-          <RouterLink to="/blog/changelog">
-            <Text
-              fontSize="sm"
-              color="primary.600"
-              _hover={{ color: "primary.800" }}
-              cursor="pointer"
-            >
-              ← Back to changelog
-            </Text>
-          </RouterLink>
-        </Container>
+      <Box
+        bg="gray.50"
+        py={4}
+        borderBottom="1px solid"
+        borderColor="gray.200"
+        px={4}
+      >
+        <Link href={rootRoute({}).blog({}).changelog({}).$}>
+          <Text
+            fontSize="sm"
+            color="primary.600"
+            _hover={{ color: "primary.800" }}
+            cursor="pointer"
+          >
+            ← Back to changelog
+          </Text>
+        </Link>
       </Box>
 
       <Container maxW="4xl" py={12} px={8}>
@@ -171,130 +175,7 @@ export const ChangelogEntryPage: React.FC = () => {
                   </Badge>
                 ))}
               </HStack>
-
-              <HStack gap={2}>
-                <Button size="sm" variant="outline" colorScheme="primary">
-                  Share
-                </Button>
-                <Button size="sm" variant="outline" colorScheme="secondary">
-                  Copy Link
-                </Button>
-              </HStack>
             </HStack>
-          </Box>
-
-          {/* Related Posts */}
-          <Box pt={8}>
-            <Text fontSize="lg" fontWeight="semibold" color="gray.900" mb={6}>
-              Related Posts
-            </Text>
-            <VStack gap={4} align="stretch">
-              <Box
-                p={4}
-                borderRadius="md"
-                border="1px solid"
-                borderColor="gray.200"
-                _hover={{ bg: "gray.50" }}
-              >
-                <HStack gap={3} mb={2}>
-                  <Text fontSize="sm" color="gray.600">
-                    Jan.12
-                  </Text>
-                  <Badge
-                    colorScheme="green"
-                    variant="outline"
-                    size="sm"
-                    textTransform="uppercase"
-                    fontWeight="semibold"
-                  >
-                    Improvement
-                  </Badge>
-                </HStack>
-                <RouterLink to="/blog/changelog/portfolio-monitoring-custom-metrics">
-                  <Text
-                    fontSize="md"
-                    fontWeight="medium"
-                    color="gray.900"
-                    _hover={{ color: "primary.600" }}
-                    cursor="pointer"
-                  >
-                    Portfolio monitoring dashboard now supports custom metrics
-                  </Text>
-                </RouterLink>
-                <HStack gap={2} mt={2}>
-                  <Badge
-                    variant="outline"
-                    colorScheme="gray"
-                    size="sm"
-                    textTransform="uppercase"
-                    fontSize="xs"
-                  >
-                    portfolio monitoring
-                  </Badge>
-                  <Badge
-                    variant="outline"
-                    colorScheme="gray"
-                    size="sm"
-                    textTransform="uppercase"
-                    fontSize="xs"
-                  >
-                    dashboards
-                  </Badge>
-                </HStack>
-              </Box>
-
-              <Box
-                p={4}
-                borderRadius="md"
-                border="1px solid"
-                borderColor="gray.200"
-                _hover={{ bg: "gray.50" }}
-              >
-                <HStack gap={3} mb={2}>
-                  <Text fontSize="sm" color="gray.600">
-                    Jan.10
-                  </Text>
-                  <Badge
-                    colorScheme="primary"
-                    variant="outline"
-                    size="sm"
-                    textTransform="uppercase"
-                    fontWeight="semibold"
-                  >
-                    Release
-                  </Badge>
-                </HStack>
-                <Text
-                  fontSize="md"
-                  fontWeight="medium"
-                  color="gray.900"
-                  _hover={{ color: "primary.600" }}
-                  cursor="pointer"
-                >
-                  New risk assessment engine for portfolio analysis
-                </Text>
-                <HStack gap={2} mt={2}>
-                  <Badge
-                    variant="outline"
-                    colorScheme="gray"
-                    size="sm"
-                    textTransform="uppercase"
-                    fontSize="xs"
-                  >
-                    risk management
-                  </Badge>
-                  <Badge
-                    variant="outline"
-                    colorScheme="gray"
-                    size="sm"
-                    textTransform="uppercase"
-                    fontSize="xs"
-                  >
-                    analytics
-                  </Badge>
-                </HStack>
-              </Box>
-            </VStack>
           </Box>
         </VStack>
       </Container>

@@ -3,16 +3,9 @@ import {
   ChangelogEntryData,
   ChangelogEntryType,
 } from "@/features/blog/changelog/types";
-import {
-  Accordion,
-  Badge,
-  Box,
-  HStack,
-  Link,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Accordion, Badge, Box, HStack, Text, VStack } from "@chakra-ui/react";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const ChangeMonthSection: React.FC<{
   isOpen: boolean;
@@ -20,6 +13,7 @@ const ChangeMonthSection: React.FC<{
   year: string;
   month: string;
 }> = ({ isOpen, filteredEntries, year, month }) => {
+  const navigate = useNavigate();
   const getTypeColor = (type: ChangelogEntryType) => {
     switch (type) {
       case "Release":
@@ -50,7 +44,24 @@ const ChangeMonthSection: React.FC<{
             {/* Changelog Entries */}
             <VStack gap={6} align="stretch">
               {Object.entries(filteredEntries).map(([id, entry]) => (
-                <Box key={id}>
+                <Box
+                  key={id}
+                  onClick={() => {
+                    navigate(
+                      rootRoute({})
+                        .blog({})
+                        .changelog({})
+                        .entry({ year, month, id: entry.id }).$,
+                    );
+                  }}
+                  _hover={{
+                    bg: "gray.50",
+                    cursor: "pointer",
+                  }}
+                  transition="background 0.2s"
+                  borderRadius="md"
+                  p={4}
+                >
                   <HStack gap={4} align="flex-start" mb={3}>
                     <Text
                       fontSize="sm"
@@ -74,30 +85,21 @@ const ChangeMonthSection: React.FC<{
                   </HStack>
 
                   <Box ml="66px">
-                    <Link
-                      to={
-                        rootRoute({})
-                          .blog({})
-                          .changelog({})
-                          .entry({ year, month, id: entry.id }).$
-                      }
+                    <Text
+                      fontSize="lg"
+                      fontWeight="medium"
+                      color="gray.900"
+                      _hover={{
+                        color: "primary.600",
+                        textDecoration: "underline",
+                      }}
+                      display="block"
+                      mb={3}
+                      cursor="pointer"
+                      lineHeight="1.4"
                     >
-                      <Text
-                        fontSize="lg"
-                        fontWeight="medium"
-                        color="gray.900"
-                        _hover={{
-                          color: "primary.600",
-                          textDecoration: "underline",
-                        }}
-                        display="block"
-                        mb={3}
-                        cursor="pointer"
-                        lineHeight="1.4"
-                      >
-                        {entry.title}
-                      </Text>
-                    </Link>
+                      {entry.title}
+                    </Text>
 
                     <HStack gap={2} flexWrap="wrap">
                       {entry.tags.map((tag) => (
@@ -115,8 +117,6 @@ const ChangeMonthSection: React.FC<{
                       ))}
                     </HStack>
                   </Box>
-
-                  <Box mt={6} h="1px" bg="gray.200" />
                 </Box>
               ))}
             </VStack>
