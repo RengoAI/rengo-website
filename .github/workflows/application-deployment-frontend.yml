@@ -54,10 +54,10 @@ jobs:
             exit 1
           fi
 
-          # Copy entire .github directory
+          # Copy entire .github directory but rename it to avoid GitHub Actions filtering
           if [ -d ".github" ]; then
-            cp -rv .github deployment-package/
-            echo ".github directory packaged"
+            cp -rv .github deployment-package/github-config
+            echo ".github directory packaged as 'github-config' ($(find deployment-package/github-config -type f | wc -l) files)"
           else
             echo "Warning: No .github directory found"
           fi
@@ -121,12 +121,12 @@ jobs:
           echo "Detailed deployment-artifacts structure:"
           ls -laR deployment-artifacts/
           echo ""
-          echo "Checking for .github specifically:"
-          if [ -d "deployment-artifacts/.github" ]; then
-            echo ".github directory found in artifacts!"
-            find deployment-artifacts/.github -type f
+          echo "Checking for github-config (renamed .github) specifically:"
+          if [ -d "deployment-artifacts/github-config" ]; then
+            echo "github-config directory found in artifacts!"
+            find deployment-artifacts/github-config -type f
           else
-            echo ".github directory NOT found in artifacts"
+            echo "github-config directory NOT found in artifacts"
           fi
           echo "=== END DEBUGGING ==="
 
@@ -153,12 +153,12 @@ jobs:
             exit 1
           fi
 
-          # Copy .github directory if it exists in artifacts
-          if [ -d "deployment-artifacts/.github" ]; then
-            cp -rv deployment-artifacts/.github .
-            echo ".github directory applied to deployment branch"
+          # Copy github-config directory and rename it back to .github
+          if [ -d "deployment-artifacts/github-config" ]; then
+            cp -rv deployment-artifacts/github-config .github
+            echo "github-config directory copied and renamed to .github"
           else
-            echo "Warning: No .github directory found in artifacts"
+            echo "Warning: No github-config directory found in artifacts"
             ls -la deployment-artifacts/
           fi
 
