@@ -4,8 +4,7 @@ on:
   pull_request:
     types: [opened, synchronize]
     paths:
-      - frontend/**
-      - .github/**
+      - .release-sha
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
