@@ -45,9 +45,11 @@ export const rootRoute = route(
           {
             index: route("/", {}, {}),
             entry: route(
-              "/changelog/:slug",
+              "/changelog/:year/:month/:id",
               {
-                slug: stringParser,
+                year: stringParser,
+                month: stringParser,
+                id: stringParser,
               },
               {},
             ),

@@ -33,7 +33,7 @@ export const blogRoutes: RouteObject = {
         },
         {
           id: "changelogEntry",
-          path: "changelog/:slug",
+          path: "changelog/:year/:id",
           handle: {
             pageTitle: "Changelog Entry",
           },

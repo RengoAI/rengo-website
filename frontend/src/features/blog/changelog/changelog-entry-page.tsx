@@ -1,3 +1,5 @@
+import { getChangelogEntriesByYearAndMonthAndId } from "@/features/blog/changelog/utils";
+import { useRequiredStringParams } from "@/shared/hooks/use-required-string-params";
 import {
   Badge,
   Box,
@@ -8,96 +10,11 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import React from "react";
-import { Link as RouterLink, useParams } from "react-router-dom";
-
-interface ChangelogEntryData {
-  [key: string]: {
-    date: string;
-    type: "Release" | "Improvement" | "Retired";
-    title: string;
-    tags: string[];
-    readTime: string;
-    sections: {
-      id: string;
-      title: string;
-      content: string[];
-    }[];
-  };
-}
-
-const CHANGELOG_DATA: ChangelogEntryData = {
-  "enhanced-data-connector-performance": {
-    date: "January 15, 2025",
-    type: "Release",
-    title: "Enhanced data connector performance with real-time streaming",
-    tags: ["data connectors", "performance"],
-    readTime: "2 minute read",
-    sections: [
-      {
-        id: "whats-new",
-        title: "What's new?",
-        content: [
-          "We're excited to announce significant performance improvements to our data connector infrastructure. The new real-time streaming capabilities provide up to 10x faster data synchronization across all supported data sources.",
-          "This release introduces optimized connection pooling, intelligent caching mechanisms, and adaptive batching that automatically adjusts to your data volume and velocity. Whether you're processing high-frequency trading data or batch analytics workloads, the enhanced connectors deliver consistent, reliable performance.",
-          "Key improvements include reduced latency for real-time data feeds, better error handling and retry mechanisms, and enhanced monitoring capabilities that provide detailed insights into data flow performance.",
-        ],
-      },
-      {
-        id: "key-features",
-        title: "Key Features",
-        content: [
-          "Real-time streaming support for all major data sources including SQL databases, APIs, and file systems",
-          "Intelligent connection pooling that optimizes resource usage and reduces overhead",
-          "Adaptive batching with automatic optimization based on data patterns",
-          "Enhanced error handling with exponential backoff and circuit breaker patterns",
-          "Comprehensive monitoring and alerting for data pipeline health",
-          "Zero-downtime deployment support for connector updates",
-        ],
-      },
-      {
-        id: "feedback",
-        title: "We'd love your feedback!",
-        content: [
-          "Your feedback is essential as we continue to improve our data connector platform. If you experience any issues with the new streaming capabilities or have suggestions for additional features, please reach out to our support team.",
-          "We're particularly interested in hearing about your use cases and performance requirements to help guide future development priorities.",
-        ],
-      },
-    ],
-  },
-  "portfolio-monitoring-custom-metrics": {
-    date: "January 12, 2025",
-    type: "Improvement",
-    title: "Portfolio monitoring dashboard now supports custom metrics",
-    tags: ["portfolio monitoring", "dashboards"],
-    readTime: "3 minute read",
-    sections: [
-      {
-        id: "whats-changed",
-        title: "What's changed?",
-        content: [
-          "Portfolio managers can now create and track custom metrics tailored to their specific investment strategies and reporting requirements. This enhancement provides the flexibility to define proprietary performance indicators and risk measures beyond standard industry metrics.",
-          "The new custom metrics builder supports complex calculations, time-weighted averages, and conditional logic. You can combine multiple data sources and apply custom formulas to create meaningful insights for your investment process.",
-          "Custom metrics seamlessly integrate with existing dashboards and can be included in automated reports, alerts, and API responses.",
-        ],
-      },
-      {
-        id: "how-to-use",
-        title: "How to use custom metrics",
-        content: [
-          "Navigate to the Portfolio Monitoring dashboard and select 'Custom Metrics' from the configuration menu",
-          "Use the visual formula builder to define your metric calculation using available data fields",
-          "Set up display preferences including chart types, time periods, and formatting options",
-          "Configure alerts and thresholds for your custom metrics to receive notifications when values exceed defined ranges",
-          "Add custom metrics to your existing dashboards and reports for comprehensive portfolio analysis",
-        ],
-      },
-    ],
-  },
-};
+import { Link as RouterLink } from "react-router-dom";
 
 export const ChangelogEntryPage: React.FC = () => {
-  const { slug } = useParams<{ slug: string }>();
-  const entry = slug ? CHANGELOG_DATA[slug] : null;
+  const { year, month, id } = useRequiredStringParams();
+  const entry = getChangelogEntriesByYearAndMonthAndId()[year][month][id];
 
   if (!entry) {
     return (
@@ -158,7 +75,8 @@ export const ChangelogEntryPage: React.FC = () => {
                 {entry.type}
               </Badge>
               <Text fontSize="sm" color="gray.600">
-                {entry.date} • {entry.readTime}
+                {entry.date.day} {entry.date.month} {entry.date.year} •{" "}
+                {entry.readTime}
               </Text>
             </HStack>
 
