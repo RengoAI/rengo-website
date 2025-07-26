@@ -63,13 +63,12 @@ jobs:
             exit 1
           fi
 
-          # Copy CODEOWNERS file if it exists
-          if [ -f ".github/CODEOWNERS" ]; then
-            mkdir -p temp-deploy/.github
-            cp -v .github/CODEOWNERS temp-deploy/.github/
-            echo "CODEOWNERS file copied"
+          # Copy entire .github directory if it exists
+          if [ -d ".github" ]; then
+            cp -rv .github temp-deploy/
+            echo ".github directory copied (includes CODEOWNERS, workflows, etc.)"
           else
-            echo "No CODEOWNERS file found"
+            echo "No .github directory found"
           fi
 
           # List what we're deploying
