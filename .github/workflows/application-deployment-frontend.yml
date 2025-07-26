@@ -74,13 +74,7 @@ jobs:
           path: deployment-package/
           retention-days: 1
 
-      - name: Download deployment artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: deployment-package-${{ github.sha }}
-          path: deployment-artifacts/
-
-      - name: Create deployment branch and PR
+      - name: Create deployment branch
         run: |
           # Configure git
           git config --global user.name 'github-actions[bot]'
@@ -88,16 +82,6 @@ jobs:
 
           # Create a unique branch name for this deployment
           BRANCH_NAME="deploy/production-$(date +%Y%m%d-%H%M%S)-${GITHUB_SHA:0:7}"
-
-          # Verify deployment artifacts exist
-          if [ ! -d "deployment-artifacts" ] || [ -z "$(ls -A deployment-artifacts)" ]; then
-            echo "Error: deployment-artifacts directory is empty or doesn't exist"
-            echo "Current directory contents:"
-            ls -la
-            exit 1
-          fi
-
-          echo "Verified deployment artifacts: $(find deployment-artifacts -type f | wc -l) files"
 
           # Fetch production branch to ensure we have the latest
           git fetch origin production:production 2>/dev/null || {
@@ -120,6 +104,24 @@ jobs:
           # Remove all files except .git to start fresh
           echo "Clearing deployment branch..."
           find . -maxdepth 1 -not -name '.git' -not -name '.' -not -name '..' -exec rm -rf {} + 2>/dev/null || true
+
+      - name: Download deployment artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: deployment-package-${{ github.sha }}
+          path: deployment-artifacts/
+
+      - name: Copy deployment artifacts to deployment branch
+        run: |
+          # Verify deployment artifacts exist
+          if [ ! -d "deployment-artifacts" ] || [ -z "$(ls -A deployment-artifacts)" ]; then
+            echo "Error: deployment-artifacts directory is empty or doesn't exist"
+            echo "Current directory contents:"
+            ls -la
+            exit 1
+          fi
+
+          echo "Verified deployment artifacts: $(find deployment-artifacts -type f | wc -l) files"
 
           # Copy build files from artifacts to root of deployment branch
           echo "Applying deployment artifacts..."
