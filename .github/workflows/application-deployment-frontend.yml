@@ -91,6 +91,22 @@ jobs:
           # Create a unique branch name for this deployment
           BRANCH_NAME="deploy/production-$(date +%Y%m%d-%H%M%S)-${GITHUB_SHA:0:7}"
 
+          # Verify temp-deploy directory exists and has content before doing anything
+          if [ ! -d "temp-deploy" ] || [ -z "$(ls -A temp-deploy)" ]; then
+            echo "Error: temp-deploy directory is empty or doesn't exist"
+            echo "Current directory contents:"
+            ls -la
+            echo "Looking for temp-deploy:"
+            find . -name "temp-deploy" -type d 2>/dev/null || echo "temp-deploy directory not found"
+            exit 1
+          fi
+
+          echo "Verified temp-deploy directory exists with $(find temp-deploy -type f | wc -l) files"
+
+          # Store the current directory (where temp-deploy exists)
+          ORIGINAL_DIR=$(pwd)
+          echo "Working in directory: $ORIGINAL_DIR"
+
           # Fetch production branch to ensure we have the latest
           git fetch origin production:production 2>/dev/null || {
             echo "Production branch doesn't exist, creating it..."
@@ -102,6 +118,8 @@ jobs:
             git commit -m "Initialize production branch"
             git push origin production
             echo "Production branch created and pushed"
+            # Return to original directory and branch
+            git checkout -
           }
 
           # Create deployment branch from production branch to maintain history
@@ -113,30 +131,30 @@ jobs:
           echo "Clearing deployment branch..."
           find . -maxdepth 1 -not -name '.git' -not -name '.' -not -name '..' -exec rm -rf {} + 2>/dev/null || true
 
-          # Verify temp-deploy directory exists and has content
-          if [ ! -d "temp-deploy" ] || [ -z "$(ls -A temp-deploy)" ]; then
-            echo "Error: temp-deploy directory is empty or doesn't exist"
-            ls -la
+          # Copy build files from the original location (which should still be accessible)
+          echo "Copying files to deployment branch..."
+          if [ -d "$ORIGINAL_DIR/temp-deploy" ]; then
+            cp -rv "$ORIGINAL_DIR/temp-deploy"/* . 2>/dev/null || true
+            
+            # Copy hidden files if they exist
+            if ls "$ORIGINAL_DIR/temp-deploy"/.* 1> /dev/null 2>&1; then
+              cp -v "$ORIGINAL_DIR/temp-deploy"/.* . 2>/dev/null || true
+            fi
+            
+            # Copy .github directory if it exists in temp-deploy
+            if [ -d "$ORIGINAL_DIR/temp-deploy/.github" ]; then
+              cp -rv "$ORIGINAL_DIR/temp-deploy/.github" .
+              echo ".github directory copied"
+            fi
+          else
+            echo "Error: Cannot find temp-deploy directory at $ORIGINAL_DIR/temp-deploy"
+            echo "Contents of $ORIGINAL_DIR:"
+            ls -la "$ORIGINAL_DIR/"
             exit 1
           fi
 
-          # Copy build files to root of deployment branch
-          echo "Copying files to deployment branch..."
-          cp -rv temp-deploy/* . 2>/dev/null || true
-
-          # Copy hidden files if they exist
-          if ls temp-deploy/.* 1> /dev/null 2>&1; then
-            cp -v temp-deploy/.* . 2>/dev/null || true
-          fi
-
-          # Copy .github directory if it exists in temp-deploy
-          if [ -d "temp-deploy/.github" ]; then
-            cp -rv temp-deploy/.github .
-            echo ".github directory copied"
-          fi
-
           # Clean up temp directory
-          rm -rf temp-deploy
+          rm -rf "$ORIGINAL_DIR/temp-deploy"
 
           # Show what's in the deployment branch
           echo "Files in deployment branch:"
