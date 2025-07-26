@@ -49,6 +49,7 @@ jobs:
 
       - name: Create deployment branch and PR
         run: |
+          # Go to the root directory
           cd ..
 
           # Configure git
