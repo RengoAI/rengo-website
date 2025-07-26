@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 export const AppFooter: React.FC = () => (
   <Box bg="primary.700" py={12}>
-    <Container maxW="6xl" px={8}>
+    <Container maxW="6xl" px={16}>
       <VStack gap={8}>
         {/* Top section */}
         <Flex
@@ -25,10 +25,76 @@ export const AppFooter: React.FC = () => (
             <Logo color="white" />
           </VStack>
 
+          <VStack align={{ base: "center", md: "flex-start" }} gap={3}>
+            <Text fontSize="sm" fontWeight="semibold" color="white">
+              Solutions
+            </Text>
+            <VStack gap={2} align={{ base: "center", md: "flex-start" }}>
+              <Link to={rootRoute({}).solutions({}).portfolioMonitoring({}).$}>
+                <Text
+                  fontSize="sm"
+                  color="white"
+                  cursor="pointer"
+                  _hover={{ color: "gray.100" }}
+                >
+                  Portfolio Monitoring
+                </Text>
+              </Link>
+              <Link to={rootRoute({}).solutions({}).dataConnectors({}).$}>
+                <Text
+                  fontSize="sm"
+                  color="white"
+                  cursor="pointer"
+                  _hover={{ color: "gray.100" }}
+                >
+                  Data Connectors
+                </Text>
+              </Link>
+            </VStack>
+          </VStack>
+
+          <VStack align={{ base: "center", md: "flex-start" }} gap={3}>
+            <Text fontSize="sm" fontWeight="semibold" color="white">
+              Legal
+            </Text>
+            <VStack gap={2} align={{ base: "center", md: "flex-start" }}>
+              <Link to={rootRoute({}).legal({}).privacyPolicy({}).$}>
+                <Text
+                  fontSize="sm"
+                  color="white"
+                  cursor="pointer"
+                  _hover={{ color: "gray.100" }}
+                >
+                  Privacy Policy
+                </Text>
+              </Link>
+              <Link to={rootRoute({}).legal({}).termsOfService({}).$}>
+                <Text
+                  fontSize="sm"
+                  color="white"
+                  cursor="pointer"
+                  _hover={{ color: "gray.100" }}
+                >
+                  Terms of Service
+                </Text>
+              </Link>
+              <Link to={rootRoute({}).legal({}).security({}).$}>
+                <Text
+                  fontSize="sm"
+                  color="white"
+                  cursor="pointer"
+                  _hover={{ color: "gray.100" }}
+                >
+                  Security
+                </Text>
+              </Link>
+            </VStack>
+          </VStack>
+
           {/* Quick links */}
           <VStack align={{ base: "center", md: "flex-start" }} gap={3}>
             <Text fontSize="sm" fontWeight="semibold" color="white">
-              Connect
+              Company
             </Text>
             <VStack gap={2} align={{ base: "center", md: "flex-start" }}>
               <Link to={rootRoute({}).blog({}).changelog({}).$}>
@@ -49,50 +115,6 @@ export const AppFooter: React.FC = () => (
                   _hover={{ color: "gray.100" }}
                 >
                   Careers
-                </Text>
-              </Link>
-              <Text
-                fontSize="sm"
-                color="white"
-                cursor="pointer"
-                _hover={{ color: "white" }}
-              >
-                sales@getrengo.com
-              </Text>
-            </VStack>
-          </VStack>
-
-          {/* Legal links */}
-          <VStack align={{ base: "center", md: "flex-start" }} gap={3}>
-            <Text fontSize="sm" fontWeight="semibold" color="white">
-              Legal
-            </Text>
-            <VStack gap={2} align={{ base: "center", md: "flex-start" }}>
-              <Link to={rootRoute({}).legal({}).privacyPolicy({}).$}>
-                <Text
-                  variant="helperLink"
-                  color="white"
-                  _hover={{ color: "gray.100" }}
-                >
-                  Privacy Policy
-                </Text>
-              </Link>
-              <Link to={rootRoute({}).legal({}).termsOfService({}).$}>
-                <Text
-                  variant="helperLink"
-                  color="white"
-                  _hover={{ color: "gray.100" }}
-                >
-                  Terms of Service
-                </Text>
-              </Link>
-              <Link to={rootRoute({}).legal({}).security({}).$}>
-                <Text
-                  variant="helperLink"
-                  color="white"
-                  _hover={{ color: "gray.100" }}
-                >
-                  Security
                 </Text>
               </Link>
             </VStack>
@@ -121,14 +143,6 @@ export const AppFooter: React.FC = () => (
               _hover={{ color: "white" }}
             >
               LinkedIn
-            </Text>
-            <Text
-              fontSize="sm"
-              color="gray.200"
-              cursor="pointer"
-              _hover={{ color: "white" }}
-            >
-              Twitter
             </Text>
             <Text
               fontSize="sm"
