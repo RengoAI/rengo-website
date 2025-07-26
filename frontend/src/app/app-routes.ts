@@ -27,6 +27,14 @@ export const rootRoute = route(
         index: route("/", {}, {}),
       },
     ),
+    solutions: route(
+      "/solutions",
+      {},
+      {
+        dataConnectors: route("/data-connectors", {}, {}),
+        portfolioMonitoring: route("/portfolio-monitoring", {}, {}),
+      },
+    ),
     notFound: route("/*", {}, {}),
   },
 );
