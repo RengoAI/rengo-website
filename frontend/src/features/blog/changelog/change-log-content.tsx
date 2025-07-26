@@ -9,10 +9,10 @@ import { useNavigate } from "react-router-dom";
 
 const ChangeMonthSection: React.FC<{
   isOpen: boolean;
-  filteredEntries: Record<string, ChangelogEntryData>;
+  entries: Record<string, ChangelogEntryData>;
   year: string;
   month: string;
-}> = ({ isOpen, filteredEntries, year, month }) => {
+}> = ({ isOpen, entries, year, month }) => {
   const navigate = useNavigate();
   const getTypeColor = (type: ChangelogEntryType) => {
     switch (type) {
@@ -20,7 +20,7 @@ const ChangeMonthSection: React.FC<{
         return "primary";
       case "Improvement":
         return "green";
-      case "Retired":
+      case "Fix":
         return "orange";
       default:
         return "gray";
@@ -43,7 +43,7 @@ const ChangeMonthSection: React.FC<{
           <Accordion.ItemBody>
             {/* Changelog Entries */}
             <VStack gap={6} align="stretch">
-              {Object.entries(filteredEntries).map(([id, entry]) => (
+              {Object.entries(entries).map(([id, entry]) => (
                 <Box
                   key={id}
                   onClick={() => {
@@ -128,7 +128,6 @@ const ChangeMonthSection: React.FC<{
 };
 
 export const ChangelogContent: React.FC<{
-  filteredEntries: ChangelogEntryData[];
   changelogEntriesByYearByMonthById: Record<
     string,
     Record<string, Record<string, ChangelogEntryData>>
@@ -161,7 +160,7 @@ export const ChangelogContent: React.FC<{
           <ChangeMonthSection
             key={`${selectedYear}-${month}`}
             isOpen={Object.entries(selectedYearEntries)[0][0] === month}
-            filteredEntries={entriesById}
+            entries={entriesById}
             year={selectedYear}
             month={month}
           />

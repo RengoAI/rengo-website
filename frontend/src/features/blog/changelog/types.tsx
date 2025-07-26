@@ -1,4 +1,4 @@
-export type ChangelogEntryType = "Release" | "Improvement" | "Retired";
+export type ChangelogEntryType = "Release" | "Improvement" | "Fix";
 export type ChangelogEntryTag =
   | "Data Connectors"
   | "Portfolio Monitoring"

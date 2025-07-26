@@ -1,27 +1,29 @@
+import { ChangelogEntryType } from "@/features/blog/changelog/types";
 import {
-    Box,
-    Button,
-    ButtonProps,
-    Container,
-    Flex,
-    HStack,
-    Text,
-    VStack,
+  Box,
+  Button,
+  ButtonProps,
+  Container,
+  Flex,
+  HStack,
+  Text,
+  VStack,
 } from "@chakra-ui/react";
+import { BookPlus, Globe, Sparkle, TriangleAlert } from "lucide-react";
 import React from "react";
 
 const FilterSection: React.FC<{
-  selectedType: string;
-  setSelectedType: (type: string) => void;
+  selectedType: ChangelogEntryType | null;
+  setSelectedType: (type: ChangelogEntryType | null) => void;
 }> = ({ selectedType, setSelectedType }) => {
   const getFilterButtonStyle = (
-    filterType: string,
+    filterType: ChangelogEntryType | null,
   ): ButtonProps & React.RefAttributes<HTMLButtonElement> => {
     const isActive = selectedType === filterType;
     return {
       variant: isActive ? "solid" : ("ghost" as const),
       color: isActive ? "white" : "gray.600",
-      bg: isActive ? "primary.600" : "transparent",
+      bg: isActive ? "primary.600" : "gray.50",
       _hover: {
         bg: isActive ? "primary.700" : "gray.100",
       },
@@ -33,49 +35,49 @@ const FilterSection: React.FC<{
       <HStack gap={2}>
         <Button
           size="sm"
-          onClick={() => setSelectedType("ALL")}
-          {...getFilterButtonStyle("ALL")}
+          onClick={() => setSelectedType(null)}
+          {...getFilterButtonStyle(null)}
         >
           <HStack gap={2}>
-            <Box w="8px" h="8px" bg="gray.400" borderRadius="full" />
+            <Globe size={16} />
             <Text fontSize="sm" fontWeight="medium">
-              ALL
+              All
             </Text>
           </HStack>
         </Button>
         <Button
           size="sm"
-          onClick={() => setSelectedType("NEW RELEASES")}
-          {...getFilterButtonStyle("NEW RELEASES")}
+          onClick={() => setSelectedType("Release")}
+          {...getFilterButtonStyle("Release")}
         >
           <HStack gap={2}>
-            <Box w="8px" h="8px" bg="green.400" borderRadius="full" />
+            <Sparkle size={16} color="green" />
             <Text fontSize="sm" fontWeight="medium">
-              NEW RELEASES
+              New Releases
             </Text>
           </HStack>
         </Button>
         <Button
           size="sm"
-          onClick={() => setSelectedType("IMPROVEMENTS")}
-          {...getFilterButtonStyle("IMPROVEMENTS")}
+          onClick={() => setSelectedType("Improvement")}
+          {...getFilterButtonStyle("Improvement")}
         >
           <HStack gap={2}>
-            <Box w="8px" h="8px" bg="blue.400" borderRadius="full" />
+            <BookPlus size={16} color="blue" />
             <Text fontSize="sm" fontWeight="medium">
-              IMPROVEMENTS
+              Improvements
             </Text>
           </HStack>
         </Button>
         <Button
           size="sm"
-          onClick={() => setSelectedType("RETIRED")}
-          {...getFilterButtonStyle("RETIRED")}
+          onClick={() => setSelectedType("Fix")}
+          {...getFilterButtonStyle("Fix")}
         >
           <HStack gap={2}>
-            <Box w="8px" h="8px" bg="orange.400" borderRadius="full" />
+            <TriangleAlert size={16} color="orange" />
             <Text fontSize="sm" fontWeight="medium">
-              FIXES
+              Fixes
             </Text>
           </HStack>
         </Button>
@@ -85,8 +87,8 @@ const FilterSection: React.FC<{
 };
 
 export const ChangeLogHeader: React.FC<{
-  selectedType: string;
-  setSelectedType: (type: string) => void;
+  selectedType: ChangelogEntryType | null;
+  setSelectedType: (type: ChangelogEntryType | null) => void;
 }> = ({ selectedType, setSelectedType }) => (
   <Box py={12} borderBottom="1px solid" borderColor="gray.200">
     <Container maxW="6xl" px={8}>

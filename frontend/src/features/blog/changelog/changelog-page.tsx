@@ -1,23 +1,21 @@
 import { ChangelogContent } from "@/features/blog/changelog/change-log-content";
 import { ChangeLogHeader } from "@/features/blog/changelog/change-log-header";
-import { CHANGELOG_DATA } from "@/features/blog/changelog/entries";
+import { ChangelogEntryType } from "@/features/blog/changelog/types";
 import { getChangelogEntriesByYearAndMonthAndId } from "@/features/blog/changelog/utils";
 import { Box, Button, Container, Flex, HStack } from "@chakra-ui/react";
 import React, { useState } from "react";
 
 export const ChangelogPage: React.FC = () => {
-  const [selectedType, setSelectedType] = useState<string>("ALL");
+  const [selectedType, setSelectedType] = useState<ChangelogEntryType | null>(
+    null,
+  );
   const [selectedYear, setSelectedYear] = useState<string>("2025");
-  const filteredEntries = CHANGELOG_DATA.filter((entry) => {
-    if (selectedType === "ALL") return true;
-    if (selectedType === "NEW RELEASES") return entry.type === "Release";
-    if (selectedType === "IMPROVEMENTS") return entry.type === "Improvement";
-    if (selectedType === "RETIRED") return entry.type === "Retired";
-    return true;
-  });
 
   const changelogEntriesByYearByMonthById =
-    getChangelogEntriesByYearAndMonthAndId();
+    getChangelogEntriesByYearAndMonthAndId({
+      type: selectedType,
+      year: selectedYear,
+    });
 
   return (
     <Box w="full" bg="white" minH="100vh">
@@ -29,7 +27,6 @@ export const ChangelogPage: React.FC = () => {
       {/* Content */}
       <Container maxW="6xl" py={8} px={8}>
         <ChangelogContent
-          filteredEntries={filteredEntries}
           changelogEntriesByYearByMonthById={changelogEntriesByYearByMonthById}
           selectedYear={selectedYear}
         />
