@@ -141,6 +141,12 @@ export const AppFooter: React.FC = () => (
               color="gray.200"
               cursor="pointer"
               _hover={{ color: "white" }}
+              onClick={() =>
+                window.open(
+                  "https://www.linkedin.com/company/106703002",
+                  "_blank",
+                )
+              }
             >
               LinkedIn
             </Text>
@@ -149,6 +155,7 @@ export const AppFooter: React.FC = () => (
               color="gray.200"
               cursor="pointer"
               _hover={{ color: "white" }}
+              onClick={() => window.open("mailto:sales@getrengo.com", "_blank")}
             >
               Contact
             </Text>
