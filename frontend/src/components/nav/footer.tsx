@@ -31,6 +31,16 @@ export const AppFooter: React.FC = () => (
               Connect
             </Text>
             <VStack gap={2} align={{ base: "center", md: "flex-start" }}>
+              <Link to={rootRoute({}).blog({}).changelog({}).$}>
+                <Text
+                  fontSize="sm"
+                  color="white"
+                  cursor="pointer"
+                  _hover={{ color: "gray.100" }}
+                >
+                  Changelog
+                </Text>
+              </Link>
               <Link to={rootRoute({}).careers({}).$}>
                 <Text
                   fontSize="sm"
@@ -49,36 +59,15 @@ export const AppFooter: React.FC = () => (
               >
                 sales@getrengo.com
               </Text>
-              <Text
-                fontSize="sm"
-                color="white"
-                cursor="pointer"
-                _hover={{ color: "white" }}
-                onClick={() =>
-                  window.open(
-                    "https://www.linkedin.com/company/106703002",
-                    "_blank",
-                  )
-                }
-              >
-                LinkedIn
-              </Text>
             </VStack>
           </VStack>
-        </Flex>
 
-        {/* Bottom section */}
-        <Box w="full" pt={8} borderTop="1px solid" borderColor="white">
-          <Flex
-            direction={{ base: "column", md: "row" }}
-            justify="space-between"
-            align="center"
-            gap={4}
-          >
-            <Text fontSize="sm" color="white">
-              © 2025 Rengo AI, Inc.
+          {/* Legal links */}
+          <VStack align={{ base: "center", md: "flex-start" }} gap={3}>
+            <Text fontSize="sm" fontWeight="semibold" color="white">
+              Legal
             </Text>
-            <HStack gap={6} fontSize="sm" color="white">
+            <VStack gap={2} align={{ base: "center", md: "flex-start" }}>
               <Link to={rootRoute({}).legal({}).privacyPolicy({}).$}>
                 <Text
                   variant="helperLink"
@@ -94,7 +83,7 @@ export const AppFooter: React.FC = () => (
                   color="white"
                   _hover={{ color: "gray.100" }}
                 >
-                  Terms of Use
+                  Terms of Service
                 </Text>
               </Link>
               <Link to={rootRoute({}).legal({}).security({}).$}>
@@ -106,9 +95,51 @@ export const AppFooter: React.FC = () => (
                   Security
                 </Text>
               </Link>
-            </HStack>
-          </Flex>
-        </Box>
+            </VStack>
+          </VStack>
+        </Flex>
+
+        {/* Bottom section */}
+        <Flex
+          direction={{ base: "column", md: "row" }}
+          justify="space-between"
+          align="center"
+          w="full"
+          pt={8}
+          borderTop="1px solid"
+          borderColor="primary.600"
+          gap={4}
+        >
+          <Text fontSize="sm" color="gray.200">
+            © 2025 Rengo AI, Inc. All rights reserved.
+          </Text>
+          <HStack gap={6}>
+            <Text
+              fontSize="sm"
+              color="gray.200"
+              cursor="pointer"
+              _hover={{ color: "white" }}
+            >
+              LinkedIn
+            </Text>
+            <Text
+              fontSize="sm"
+              color="gray.200"
+              cursor="pointer"
+              _hover={{ color: "white" }}
+            >
+              Twitter
+            </Text>
+            <Text
+              fontSize="sm"
+              color="gray.200"
+              cursor="pointer"
+              _hover={{ color: "white" }}
+            >
+              Contact
+            </Text>
+          </HStack>
+        </Flex>
       </VStack>
     </Container>
   </Box>
