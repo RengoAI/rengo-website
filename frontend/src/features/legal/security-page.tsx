@@ -16,7 +16,7 @@ export const SecurityPage: React.FC = () => (
               color="gray.900"
               lineHeight={1.2}
             >
-              Security at Rengo
+              Security at Rengo AI
             </Text>
             <Text textStyle="body" fontSize="lg" color="gray.600">
               Effective: July 24, 2025
