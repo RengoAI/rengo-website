@@ -19,5 +19,18 @@ export const legalRoutes: RouteObject = {
         return { Component: TermsOfServicePage };
       },
     },
+    {
+      id: "privacyPolicy",
+      path: "privacy-policy",
+      handle: {
+        pageTitle: "Privacy Policy",
+      },
+      lazy: async () => {
+        const { PrivacyPolicyPage } = await import(
+          "@/features/legal/privacy-policy-page"
+        );
+        return { Component: PrivacyPolicyPage };
+      },
+    },
   ],
 };

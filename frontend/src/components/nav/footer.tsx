@@ -2,7 +2,7 @@ import { rootRoute } from "@/app/app-routes";
 import { Logo } from "@/components/logo/logo";
 import { Box, Container, Flex, HStack, Text, VStack } from "@chakra-ui/react";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const AppFooter: React.FC = () => {
   const navigate = useNavigate();
@@ -72,27 +72,24 @@ export const AppFooter: React.FC = () => {
                 © 2025 Rengo AI, Inc.
               </Text>
               <HStack gap={6} fontSize="sm" color="white">
-                <Text
-                  cursor="pointer"
-                  variant="helperLink"
-                  color="white"
-                  _hover={{ color: "white" }}
-                >
-                  Privacy Policy
-                </Text>
-                <Text
-                  cursor="pointer"
-                  variant="helperLink"
-                  color="white"
-                  _hover={{ color: "gray.100" }}
-                  onClick={() =>
-                    navigate(rootRoute({}).legal({}).termsOfService({}).$, {
-                      replace: true,
-                    })
-                  }
-                >
-                  Terms of Service
-                </Text>
+                <Link to={rootRoute({}).legal({}).privacyPolicy({}).$}>
+                  <Text
+                    variant="helperLink"
+                    color="white"
+                    _hover={{ color: "gray.100" }}
+                  >
+                    Privacy Policy
+                  </Text>
+                </Link>
+                <Link to={rootRoute({}).legal({}).termsOfService({}).$}>
+                  <Text
+                    variant="helperLink"
+                    color="white"
+                    _hover={{ color: "gray.100" }}
+                  >
+                    Terms of Use
+                  </Text>
+                </Link>
               </HStack>
             </Flex>
           </Box>
