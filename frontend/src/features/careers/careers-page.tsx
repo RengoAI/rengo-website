@@ -24,7 +24,7 @@ export const CareersPage: React.FC = () => (
             color="primary.500"
             letterSpacing="-0.02em"
           >
-            Build the future of private data.
+            Build the operating system for alternative investment managers.
           </Text>
           <Box>
             <Text textStyle="body" fontSize="md" color="gray.600" mt={4}>
