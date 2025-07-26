@@ -16,6 +16,7 @@ export const rootRoute = route(
       {},
       {
         termsOfService: route("/terms-of-service", {}, {}),
+        privacyPolicy: route("/privacy-policy", {}, {}),
       },
     ),
     notFound: route("/*", {}, {}),
