@@ -5,8 +5,7 @@ description = "Generate changelog entries from Linear issues using AI"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "linear-python>=0.2.0",
-    "pydantic-ai>=0.0.14", 
+    "pydantic-ai>=0.0.14",
     "pydantic>=2.5.0",
     "python-dotenv>=1.0.0",
     "click>=8.1.0",
@@ -14,4 +13,5 @@ dependencies = [
     "anthropic>=0.39.0",
     "python-slugify>=8.0.0",
     "tiktoken>=0.5.0",
+    "linear-python>=0.2.2",
 ]
