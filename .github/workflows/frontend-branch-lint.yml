@@ -17,7 +17,7 @@ env:
 
 jobs:
   lint:
-    if: github.ref != 'refs/heads/production'
+    if: github.base_ref != 'production'
     name: Lint
     timeout-minutes: 15
     runs-on: ubuntu-latest

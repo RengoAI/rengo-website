@@ -17,7 +17,7 @@ env:
 
 jobs:
   test:
-    if: github.ref != 'refs/heads/production'
+    if: github.base_ref != 'production'
     name: Test
     timeout-minutes: 15
     runs-on: ubuntu-latest
