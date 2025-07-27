@@ -9,6 +9,7 @@ on:
 
 jobs:
   validate_title:
+    if: github.actor != 'dependabot[bot]' && github.ref != 'refs/heads/production'
     name: Validate PR title
     runs-on: ubuntu-latest
     permissions:
