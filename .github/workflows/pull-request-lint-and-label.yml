@@ -9,7 +9,7 @@ on:
 
 jobs:
   validate_title:
-    if: github.actor != 'dependabot[bot]' && github.ref != 'refs/heads/production'
+    if: github.actor != 'dependabot[bot]' && github.base_ref != 'production'
     name: Validate PR title
     runs-on: ubuntu-latest
     permissions:
@@ -52,7 +52,7 @@ jobs:
           headerPattern: '^(\w*)(?:\(([\w$.\-*/ ]*)\))?: (.*)$'
           headerPatternCorrespondence: type, scope, subject
   label_pr:
-    if: github.actor != 'dependabot[bot]' && github.ref != 'refs/heads/production'
+    if: github.actor != 'dependabot[bot]' && github.base_ref != 'production'
     name: Label PR
     runs-on: ubuntu-latest
     permissions:
