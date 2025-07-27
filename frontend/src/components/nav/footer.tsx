@@ -1,6 +1,6 @@
 import { rootRoute } from "@/app/app-routes";
 import { Logo } from "@/components/logo/logo";
-import { Box, Container, Flex, Text, VStack } from "@chakra-ui/react";
+import { Box, Container, Flex, HStack, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -94,9 +94,19 @@ export const AppFooter: React.FC = () => (
           {/* Quick links */}
           <VStack align={{ base: "center", md: "flex-start" }} gap={3}>
             <Text fontSize="sm" fontWeight="semibold" color="white">
-              Connect
+              Company
             </Text>
             <VStack gap={2} align={{ base: "center", md: "flex-start" }}>
+              <Link to={rootRoute({}).blog({}).changelog({}).$}>
+                <Text
+                  fontSize="sm"
+                  color="white"
+                  cursor="pointer"
+                  _hover={{ color: "gray.100" }}
+                >
+                  Changelog
+                </Text>
+              </Link>
               <Link to={rootRoute({}).careers({}).$}>
                 <Text
                   fontSize="sm"
@@ -107,37 +117,50 @@ export const AppFooter: React.FC = () => (
                   Careers
                 </Text>
               </Link>
-              <Text
-                fontSize="sm"
-                color="white"
-                cursor="pointer"
-                _hover={{ color: "white" }}
-                onClick={() =>
-                  window.open(
-                    "https://www.linkedin.com/company/106703002",
-                    "_blank",
-                  )
-                }
-              >
-                LinkedIn
-              </Text>
             </VStack>
           </VStack>
         </Flex>
 
         {/* Bottom section */}
-        <Box w="full" pt={8} borderTop="1px solid" borderColor="white">
-          <Flex
-            direction={{ base: "column", md: "row" }}
-            justify="space-between"
-            align="center"
-            gap={4}
-          >
-            <Text fontSize="sm" color="white">
-              © 2025 Rengo AI, Inc.
+        <Flex
+          direction={{ base: "column", md: "row" }}
+          justify="space-between"
+          align="center"
+          w="full"
+          pt={8}
+          borderTop="1px solid"
+          borderColor="primary.600"
+          gap={4}
+        >
+          <Text fontSize="sm" color="gray.200">
+            © 2025 Rengo AI, Inc. All rights reserved.
+          </Text>
+          <HStack gap={6}>
+            <Text
+              fontSize="sm"
+              color="gray.200"
+              cursor="pointer"
+              _hover={{ color: "white" }}
+              onClick={() =>
+                window.open(
+                  "https://www.linkedin.com/company/106703002",
+                  "_blank",
+                )
+              }
+            >
+              LinkedIn
             </Text>
-          </Flex>
-        </Box>
+            <Text
+              fontSize="sm"
+              color="gray.200"
+              cursor="pointer"
+              _hover={{ color: "white" }}
+              onClick={() => window.open("mailto:sales@getrengo.com", "_blank")}
+            >
+              Contact
+            </Text>
+          </HStack>
+        </Flex>
       </VStack>
     </Container>
   </Box>

@@ -4,7 +4,7 @@
  * Run `pnpm gen` to re-generate this file.
  */
 
-import { route } from "typesafe-routes";
+import { route, stringParser } from "typesafe-routes";
 
 export const rootRoute = route(
   "/",
@@ -33,6 +33,28 @@ export const rootRoute = route(
       {
         dataConnectors: route("/data-connectors", {}, {}),
         portfolioMonitoring: route("/portfolio-monitoring", {}, {}),
+      },
+    ),
+    blog: route(
+      "/blog",
+      {},
+      {
+        changelog: route(
+          "/changelog",
+          {},
+          {
+            index: route("/", {}, {}),
+            entry: route(
+              "/changelog/:year/:month/:id",
+              {
+                year: stringParser,
+                month: stringParser,
+                id: stringParser,
+              },
+              {},
+            ),
+          },
+        ),
       },
     ),
     notFound: route("/*", {}, {}),

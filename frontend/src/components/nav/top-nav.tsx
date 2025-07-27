@@ -24,7 +24,12 @@ export const AppTopNav: React.FC = () => (
       >
         Sign in
       </Button>
-      <Button colorScheme="primary" variant="solid" size="sm">
+      <Button
+        colorScheme="primary"
+        variant="solid"
+        size="sm"
+        onClick={() => window.open("mailto:sales@getrengo.com", "_blank")}
+      >
         Join waitlist
       </Button>
     </HStack>

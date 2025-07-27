@@ -1,5 +1,6 @@
 import AppRoot from "@/app/app-root";
 import NotFoundPage from "@/components/empty/app-not-found-page";
+import { blogRoutes } from "@/features/blog/blog-routes";
 import { careersRoutes } from "@/features/careers/careers-routes";
 import { landingRoutes } from "@/features/landing/landing-routes";
 import { legalRoutes } from "@/features/legal/legal-routes";
@@ -11,6 +12,7 @@ export const ALL_ROUTES: RouteObject[] = [
   legalRoutes,
   careersRoutes,
   solutionsRoutes,
+  blogRoutes,
 ];
 
 export const appRouter = createBrowserRouter([
