@@ -1,5 +1,5 @@
 ---
-name: "Frontend PR Tests"
+name: "Production PR Tests"
 on:
   pull_request:
     types: [opened, synchronize]
@@ -16,11 +16,5 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-
-      - name: Setup node
-        uses: ./.github/actions/node-setup
-
       - name: Run tests
         run: echo "This is a dummy action. No real steps are executed."
