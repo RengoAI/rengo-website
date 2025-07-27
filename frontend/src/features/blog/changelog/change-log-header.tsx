@@ -22,10 +22,12 @@ const FilterSection: React.FC<{
     const isActive = selectedType === filterType;
     return {
       variant: isActive ? "solid" : ("ghost" as const),
-      color: isActive ? "white" : "gray.600",
-      bg: isActive ? "primary.600" : "gray.50",
+      color: "gray.600",
+      bg: isActive ? "white" : "gray.50",
       _hover: {
-        bg: isActive ? "primary.700" : "gray.100",
+        bg: "white",
+        border: "1px solid",
+        borderColor: "primary.700",
       },
     };
   };
