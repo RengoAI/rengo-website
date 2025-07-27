@@ -40,10 +40,10 @@ const ChangeMonthSection: React.FC<{
           <Accordion.ItemIndicator />
         </Accordion.ItemTrigger>
         <Accordion.ItemContent>
-          <Accordion.ItemBody>
+          <Accordion.ItemBody p={0}>
             {/* Changelog Entries */}
-            <VStack gap={6} align="stretch">
-              {Object.entries(entries).map(([id, entry]) => (
+            <VStack gap={0} align="stretch">
+              {Object.entries(entries).map(([id, entry], index) => (
                 <Box
                   key={id}
                   onClick={() => {
@@ -55,11 +55,18 @@ const ChangeMonthSection: React.FC<{
                     );
                   }}
                   _hover={{
-                    bg: "gray.50",
+                    bg: "white",
                     cursor: "pointer",
+                    borderBottom: "1px solid",
+                    borderColor: "primary.200",
                   }}
                   transition="background 0.2s"
-                  borderRadius="md"
+                  borderBottom={
+                    index === Object.entries(entries).length - 1
+                      ? "none"
+                      : "1px solid"
+                  }
+                  borderColor="gray.200"
                   p={4}
                 >
                   <HStack gap={4} align="flex-start" mb={3}>
@@ -75,8 +82,8 @@ const ChangeMonthSection: React.FC<{
                       colorScheme={getTypeColor(entry.type)}
                       variant="outline"
                       size="sm"
-                      textTransform="uppercase"
-                      fontWeight="semibold"
+                      fontSize="xs"
+                      fontWeight="normal"
                       px={2}
                       py={1}
                     >
@@ -89,13 +96,8 @@ const ChangeMonthSection: React.FC<{
                       fontSize="lg"
                       fontWeight="medium"
                       color="gray.900"
-                      _hover={{
-                        color: "primary.600",
-                        textDecoration: "underline",
-                      }}
                       display="block"
                       mb={3}
-                      cursor="pointer"
                       lineHeight="1.4"
                     >
                       {entry.title}
@@ -107,10 +109,9 @@ const ChangeMonthSection: React.FC<{
                           key={tag}
                           variant="outline"
                           colorScheme="gray"
-                          size="sm"
-                          textTransform="uppercase"
-                          fontSize="xs"
-                          fontWeight="medium"
+                          size="xs"
+                          fontSize="xxs"
+                          fontWeight="normal"
                         >
                           {tag}
                         </Badge>

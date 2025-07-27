@@ -3,7 +3,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 
 export const ChangelogLayout: React.FC = () => (
-  <Box w="full">
+  <Box>
     <Outlet />
   </Box>
 );

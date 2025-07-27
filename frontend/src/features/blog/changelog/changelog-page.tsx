@@ -1,8 +1,9 @@
+import { Page } from "@/components/layout/page";
 import { ChangelogContent } from "@/features/blog/changelog/change-log-content";
 import { ChangeLogHeader } from "@/features/blog/changelog/change-log-header";
 import { ChangelogEntryType } from "@/features/blog/changelog/types";
 import { getChangelogEntriesByYearAndMonthAndId } from "@/features/blog/changelog/utils";
-import { Box, Button, Container, Flex, HStack } from "@chakra-ui/react";
+import { Button, Container, Flex, HStack } from "@chakra-ui/react";
 import React, { useState } from "react";
 
 export const ChangelogPage: React.FC = () => {
@@ -18,20 +19,16 @@ export const ChangelogPage: React.FC = () => {
     });
 
   return (
-    <Box w="full" bg="white" minH="100vh">
+    <Page sizeProps={{ fullHeight: true }}>
       <ChangeLogHeader
         selectedType={selectedType}
         setSelectedType={setSelectedType}
       />
-
-      {/* Content */}
       <Container maxW="6xl" py={8} px={8}>
         <ChangelogContent
           changelogEntriesByYearByMonthById={changelogEntriesByYearByMonthById}
           selectedYear={selectedYear}
         />
-
-        {/* Pagination */}
         <Flex justify="center" py={8}>
           <HStack gap={4}>
             <Button variant="outline" size="sm" disabled>
@@ -56,6 +53,6 @@ export const ChangelogPage: React.FC = () => {
           </HStack>
         </Flex>
       </Container>
-    </Box>
+    </Page>
   );
 };

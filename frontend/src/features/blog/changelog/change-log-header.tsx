@@ -90,10 +90,16 @@ export const ChangeLogHeader: React.FC<{
   selectedType: ChangelogEntryType | null;
   setSelectedType: (type: ChangelogEntryType | null) => void;
 }> = ({ selectedType, setSelectedType }) => (
-  <Box py={12} borderBottom="1px solid" borderColor="gray.200">
-    <Container maxW="6xl" px={8}>
+  <Box px={8} py={4} borderColor="gray.200">
+    <Container maxW="6xl" px={8} py={8}>
       <VStack gap={8} align="stretch">
-        <HStack justify="space-between" align="center">
+        <HStack
+          justify="space-between"
+          align="flex-start"
+          borderBottom="1px solid"
+          borderColor="gray.200"
+          pb={8}
+        >
           <Text
             fontSize={{ base: "3xl", md: "4xl" }}
             fontWeight="bold"

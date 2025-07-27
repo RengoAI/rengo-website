@@ -7,6 +7,9 @@ interface PageProps {
     title?: string;
     description?: string;
   };
+  sizeProps?: {
+    fullHeight?: boolean;
+  };
   actions?: React.ReactNode;
   disableBreadcrumbs?: boolean;
 }
@@ -42,8 +45,15 @@ export const Page: React.FC<React.PropsWithChildren<PageProps>> = ({
   children,
   header,
   actions,
+  sizeProps,
 }) => (
-  <Box flex={1} display="flex" flexDirection="column">
+  <Box
+    flex={1}
+    display="flex"
+    flexDirection="column"
+    bg="bg.subtle"
+    minH={sizeProps?.fullHeight ? "100vh" : undefined}
+  >
     <Box
       display="flex"
       justifyContent="space-between"

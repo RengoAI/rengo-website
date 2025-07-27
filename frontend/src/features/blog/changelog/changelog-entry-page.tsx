@@ -1,4 +1,5 @@
 import { rootRoute } from "@/app/app-routes";
+import { Page } from "@/components/layout/page";
 import { getChangelogEntriesByYearAndMonthAndId } from "@/features/blog/changelog/utils";
 import { useRequiredStringParams } from "@/shared/hooks/use-required-string-params";
 import {
@@ -18,13 +19,13 @@ export const ChangelogEntryPage: React.FC = () => {
 
   if (!entry) {
     return (
-      <Box w="full" bg="white" minH="100vh">
+      <Page sizeProps={{ fullHeight: true }}>
         <Container maxW="4xl" py={16} px={8}>
           <Text fontSize="xl" color="gray.600">
             Changelog entry not found.
           </Text>
         </Container>
-      </Box>
+      </Page>
     );
   }
 
@@ -42,14 +43,14 @@ export const ChangelogEntryPage: React.FC = () => {
   };
 
   return (
-    <Box w="full" bg="white" minH="100vh">
+    <Page sizeProps={{ fullHeight: true }}>
       {/* Breadcrumb */}
       <Box
         bg="gray.50"
         py={4}
         borderBottom="1px solid"
         borderColor="gray.200"
-        px={4}
+        px={8}
       >
         <Link href={rootRoute({}).blog({}).changelog({}).$}>
           <Text
@@ -97,7 +98,7 @@ export const ChangelogEntryPage: React.FC = () => {
           {/* Table of Contents */}
           <Box
             p={6}
-            bg="gray.50"
+            bg="white"
             borderRadius="md"
             border="1px solid"
             borderColor="gray.200"
@@ -179,6 +180,6 @@ export const ChangelogEntryPage: React.FC = () => {
           </Box>
         </VStack>
       </Container>
-    </Box>
+    </Page>
   );
 };

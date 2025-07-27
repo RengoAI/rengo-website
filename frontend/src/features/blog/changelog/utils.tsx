@@ -10,7 +10,7 @@ interface Filters {
 }
 
 export const getChangelogEntriesByYearAndMonthAndId = (
-  filters: Filters,
+  filters?: Filters,
 ): Record<string, Record<string, Record<string, ChangelogEntryData>>> =>
   CHANGELOG_DATA.reduce(
     (acc, entry) => {
@@ -22,10 +22,10 @@ export const getChangelogEntriesByYearAndMonthAndId = (
       if (!acc[year][month]) {
         acc[year][month] = {};
       }
-      if (filters.type && entry.type !== filters.type) {
+      if (filters?.type && entry.type !== filters.type) {
         return acc;
       }
-      if (filters.year && entry.date.year !== filters.year) {
+      if (filters?.year && entry.date.year !== filters.year) {
         return acc;
       }
       acc[year][month][entry.id] = entry;
