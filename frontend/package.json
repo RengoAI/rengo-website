@@ -118,7 +118,7 @@
     "vite": "^6.3.5",
     "vite-node": "^3.0.6",
     "vite-plugin-mkcert": "^1.17.6",
-    "vite-plugin-pwa": "^1.0.0",
+    "vite-plugin-pwa": "^1.0.2",
     "vite-plugin-svgr": "^4.3.0",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.2.4",
