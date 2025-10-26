@@ -30,11 +30,11 @@ export const CareersPage: React.FC = () => (
             <Text textStyle="body" fontSize="md" color="gray.600" mt={4}>
               Interested in joining our team? Send us your resume at{" "}
               <Link
-                href="mailto:careers@getrengo.com"
+                href="mailto:careers@rengoai.com"
                 color="primary.600"
                 textDecoration="underline"
               >
-                careers@getrengo.com
+                careers@rengoai.com
               </Link>
             </Text>
           </Box>

@@ -32,7 +32,7 @@ export const TermsOfServicePage: React.FC = () => (
               color="gray.700"
             >
               Rengo AI, Inc. ("Rengo AI," "we," "us," or "our") welcomes you. We
-              invite you to access our website, available at www.getrengo.com
+              invite you to access our website, available at www.rengoai.com
               (the "Website"), subject to the following Terms of Use (the "Terms
               of Use") and our Privacy Policy ("Privacy Policy") which is
               incorporated herein and made a part hereof by this reference
@@ -730,7 +730,7 @@ export const TermsOfServicePage: React.FC = () => (
               </Text>
               <br />
               If you have any questions about these Terms of Use, please contact
-              us at: legal@getrengo.com
+              us at: legal@rengoai.com
             </Text>
 
             <Text
