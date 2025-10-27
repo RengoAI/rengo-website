@@ -1,8 +1,0 @@
-# dependabot.yml file with updates
-
-version: 2
-updates:
-  - package-ecosystem: "npm"
-    directory: "/frontend"
-    schedule:
-      interval: "monthly"
