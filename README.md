@@ -49,7 +49,7 @@ To serve the site:
 1. Go to repository Settings → Pages
 2. Set source branch to `production`
 3. Set folder to `/ (root)`
-4. Your site will be available at `https://getrengo.com`
+4. Your site will be available at `https://rengoai.com`
 
 ## 🛠 Build Scripts
 
@@ -88,7 +88,7 @@ src/
 
 ## 🌐 Custom Domain
 
-The site is configured to serve from `getrengo.com` via the `CNAME` file. Make sure your DNS is configured to point to GitHub Pages:
+The site is configured to serve from `rengoai.com` via the `CNAME` file. Make sure your DNS is configured to point to GitHub Pages:
 
 ```
 A records:
