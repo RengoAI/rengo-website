@@ -483,7 +483,7 @@ export const SecurityPage: React.FC = () => (
             >
               If you have any questions about our security practices or would
               like to report a security concern, please contact us at:
-              security@getrengo.com
+              security@rengoai.com
             </Text>
 
             <Text

@@ -35,7 +35,7 @@ export const PrivacyPolicyPage: React.FC = () => (
               data privacy is very important to you. We have created this
               privacy policy (the "Privacy Policy") to describe how we collect
               and process information from and about you via our website at
-              www.getrengo.com (the "Website") and when you otherwise interact
+              www.rengoai.com (the "Website") and when you otherwise interact
               with us (collectively, the "Services").
             </Text>
 
@@ -515,7 +515,7 @@ export const PrivacyPolicyPage: React.FC = () => (
               with whom they have an established business relationship have
               shared with third parties for direct marketing purposes. If you
               wish to submit a request pursuant to Section 1798.83, please
-              contact us via email at legal@getrengo.com.
+              contact us via email at legal@rengoai.com.
             </Text>
 
             <Text
@@ -582,7 +582,7 @@ export const PrivacyPolicyPage: React.FC = () => (
               color="gray.700"
             >
               To exercise these rights, you may submit a request by emailing
-              legal@getrengo.com. We do not discriminate against individuals who
+              legal@rengoai.com. We do not discriminate against individuals who
               exercise their CPRA rights.
             </Text>
 
@@ -605,7 +605,7 @@ export const PrivacyPolicyPage: React.FC = () => (
               law. Nonetheless, if you are a resident of Nevada, you have the
               right to opt-out of the sale of certain personal information to
               third parties. You can exercise this right by emailing us at
-              legal@getrengo.com with the subject line "Nevada Do Not Sell
+              legal@rengoai.com with the subject line "Nevada Do Not Sell
               Request."
             </Text>
 
@@ -668,7 +668,7 @@ export const PrivacyPolicyPage: React.FC = () => (
             >
               If you have any questions about our Privacy Policy, our privacy
               practices, or if you would like to exercise your rights and
-              choices, please contact us at: legal@getrengo.com
+              choices, please contact us at: legal@rengoai.com
             </Text>
 
             <Text

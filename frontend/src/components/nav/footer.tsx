@@ -155,7 +155,7 @@ export const AppFooter: React.FC = () => (
               color="gray.200"
               cursor="pointer"
               _hover={{ color: "white" }}
-              onClick={() => window.open("mailto:sales@getrengo.com", "_blank")}
+              onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
             >
               Contact
             </Text>

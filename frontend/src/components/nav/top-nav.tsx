@@ -28,7 +28,7 @@ export const AppTopNav: React.FC = () => (
         colorScheme="primary"
         variant="solid"
         size="sm"
-        onClick={() => window.open("mailto:sales@getrengo.com", "_blank")}
+        onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
       >
         Join waitlist
       </Button>
