@@ -38,14 +38,20 @@ jobs:
         working-directory: ./frontend
         run: cp CNAME build/CNAME
 
+      - name: Prepare deployment artifacts
+        run: |
+          # Store build artifacts in a temporary location outside the repo
+          mkdir -p /tmp/deployment
+          cp -r frontend/build/* /tmp/deployment/
+
+          # Also save the .github directory
+          cp -r .github /tmp/deployment/.github
+
       - name: Deploy to production branch
         run: |
           # Configure git
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-
-          # Store build directory path
-          BUILD_DIR="$(pwd)/frontend/build"
 
           # Check if production branch exists
           if git ls-remote --exit-code --heads origin production >/dev/null 2>&1; then
@@ -60,12 +66,10 @@ jobs:
           # Clear everything except .git
           find . -maxdepth 1 -not -name '.git' -not -name '.' -not -name '..' -exec rm -rf {} + 2>/dev/null || true
 
-          # Copy build files to root
+          # Copy build files from temp location
           echo "Copying build artifacts..."
-          cp -r "$BUILD_DIR"/* .
-
-          # Copy .github directory for workflow preservation
-          git checkout main -- .github
+          cp -r /tmp/deployment/* .
+          cp -r /tmp/deployment/.github .
 
           # Create .nojekyll file for GitHub Pages
           touch .nojekyll
@@ -99,6 +103,9 @@ jobs:
           git push origin production
 
           echo "✅ Successfully deployed to production branch"
+
+          # Return to main branch for cleanup
+          git checkout main
 
       - name: Comment on commit
         if: success()
