@@ -52,9 +52,6 @@ jobs:
           mkdir -p /tmp/deployment
           cp -r frontend/build/* /tmp/deployment/
 
-          # Also save the .github directory
-          cp -r .github /tmp/deployment/.github
-
       - name: Deploy to production branch
         run: |
           # Configure git
@@ -77,7 +74,6 @@ jobs:
           # Copy build files from temp location
           echo "Copying build artifacts..."
           cp -r /tmp/deployment/* .
-          cp -r /tmp/deployment/.github .
 
           # Create .nojekyll file for GitHub Pages
           touch .nojekyll
