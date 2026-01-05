@@ -8,8 +8,6 @@ const TRUST_ITEMS = [
   "Venture Capital",
   "Private Credit",
   "Growth Equity",
-  "Fund of Funds",
-  "Family Offices",
 ];
 
 const scroll = keyframes`
