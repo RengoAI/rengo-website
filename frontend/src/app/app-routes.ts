@@ -31,7 +31,6 @@ export const rootRoute = route(
       "/solutions",
       {},
       {
-        dataConnectors: route("/data-connectors", {}, {}),
         portfolioMonitoring: route("/portfolio-monitoring", {}, {}),
       },
     ),
