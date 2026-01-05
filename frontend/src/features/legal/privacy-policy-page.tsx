@@ -257,6 +257,40 @@ export const PrivacyPolicyPage: React.FC = () => (
             </Text>
 
             <Text
+              textStyle="h3"
+              fontSize="xl"
+              fontWeight="semibold"
+              color="gray.900"
+              mt={4}
+            >
+              6. Online advertising and tracking partners
+            </Text>
+            <Text
+              textStyle="body"
+              fontSize="md"
+              lineHeight="1.7"
+              color="gray.700"
+            >
+              When you visit or log in to our website, cookies and similar
+              technologies may be used by our online data partners or vendors to
+              associate these activities with other personal information they or
+              others have about you, including by association with your email or
+              mailing address. We (or service providers on our behalf) may then
+              send communications and marketing to these email addresses. You
+              may opt out of receiving this advertising by visiting{" "}
+              <Link
+                href="https://app.retention.com/optout"
+                target="_blank"
+                rel="noopener noreferrer"
+                color="blue.600"
+                textDecoration="underline"
+              >
+                https://app.retention.com/optout
+              </Link>
+              .
+            </Text>
+
+            <Text
               textStyle="h2"
               fontSize="2xl"
               fontWeight="semibold"
