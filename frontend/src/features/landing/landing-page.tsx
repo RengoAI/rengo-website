@@ -31,28 +31,31 @@ const LogoMarquee: React.FC = () => (
       gap={16}
       width="max-content"
       css={{
-        animation: `${scroll} 20s linear infinite`,
+        animation: `${scroll} 80s linear infinite`,
       }}
     >
-      {/* Double the items for seamless loop */}
-      {[...TRUST_ITEMS, ...TRUST_ITEMS].map((item, index) => (
-        <Text
-          key={index}
-          fontSize={{ base: "sm", md: "md" }}
-          color="gray.400"
-          whiteSpace="nowrap"
-          fontWeight="medium"
-        >
-          {item}
-        </Text>
-      ))}
+      {/* Repeat items to fill screen width */}
+      {Array(6)
+        .fill(TRUST_ITEMS)
+        .flat()
+        .map((item, index) => (
+          <Text
+            key={index}
+            fontSize={{ base: "sm", md: "md" }}
+            color="gray.400"
+            whiteSpace="nowrap"
+            fontWeight="medium"
+          >
+            {item}
+          </Text>
+        ))}
     </Flex>
   </Box>
 );
 
 export const LandingPage: React.FC = () => (
   <Page>
-    <VStack h="calc(100vh - 48px)" width="100%">
+    <VStack h="calc(100vh - 64px)" width="100%">
       {/* Main content - centered in upper area */}
       <Flex flex={1} alignItems="center" justifyContent="center">
         <VStack gap={8} maxW="4xl" textAlign="center" px={8}>
