@@ -5,26 +5,17 @@ import React from "react";
 export const CareersPage: React.FC = () => (
   <Page>
     <Center py={32} px={8} minH="100vh">
-      <VStack gap={12} maxW="4xl" textAlign="center">
+      <VStack gap={12} maxW="4xl" textAlign="left">
         {/* Main headline */}
-        <VStack gap={6}>
+        <VStack gap={1} align="flex-start">
           <Text
-            fontSize={{ base: "lg", md: "xl", lg: "2xl" }}
-            fontWeight="bold"
+            fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
+            fontWeight="medium"
             lineHeight={1.1}
-            color="primary.500"
+            color="primary.700"
             letterSpacing="-0.02em"
           >
             Join Us
-          </Text>
-          <Text
-            fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
-            fontWeight="bold"
-            lineHeight={1.1}
-            color="primary.500"
-            letterSpacing="-0.02em"
-          >
-            Build the operating system for alternative investment managers.
           </Text>
           <Box>
             <Text textStyle="body" fontSize="md" color="gray.600" mt={4}>

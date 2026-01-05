@@ -52,24 +52,36 @@ export function ColorModeIcon() {
 
 interface ColorModeButtonProps extends Omit<IconButtonProps, "aria-label"> {}
 
+const iconSizeMap: Record<
+  string,
+  { buttonSize: "sm" | "lg"; iconSize: string }
+> = {
+  sm: { buttonSize: "sm", iconSize: "5" },
+  lg: { buttonSize: "lg", iconSize: "9" },
+  "2xl": { buttonSize: "lg", iconSize: "11" },
+};
+
 export const ColorModeButton = React.forwardRef<
   HTMLButtonElement,
   ColorModeButtonProps
 >(function ColorModeButton(props, ref) {
   const { toggleColorMode } = useColorMode();
+  const size = (props.size as string) ?? "sm";
+  const sizeConfig = iconSizeMap[size] ?? iconSizeMap.sm;
+
   return (
     <ClientOnly fallback={<Skeleton boxSize="8" />}>
       <IconButton
         onClick={toggleColorMode}
         variant="ghost"
         aria-label="Toggle color mode"
-        size="sm"
+        size={sizeConfig.buttonSize}
         ref={ref}
         {...props}
         css={{
           _icon: {
-            width: "5",
-            height: "5",
+            width: sizeConfig.iconSize,
+            height: sizeConfig.iconSize,
           },
         }}
       >

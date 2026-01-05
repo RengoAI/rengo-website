@@ -1,45 +1,55 @@
-import { rootRoute } from "@/app/app-routes";
 import { ColorModeButton } from "@/components/ui/color-mode";
-import { Flex, FlexProps, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { noop } from "lodash-es";
-import { useNavigate } from "react-router-dom";
 
-interface LogoProps extends FlexProps {
-  color?: "primary.500" | "white";
+interface LogoProps {
+  color: "white" | "primary.700";
+  size: "default" | "large";
+  isCollapsed?: boolean;
 }
 
+const sizeStyles = {
+  default: {
+    iconSize: "sm" as const,
+    iconMt: "2",
+    iconGap: 1,
+    fontSize: "2xl",
+  },
+  large: {
+    iconSize: "2xl" as const,
+    iconMt: "3",
+    iconGap: 2,
+    fontSize: "5xl",
+  },
+};
+
 export const Logo: React.FC<LogoProps> = ({
-  color = "primary.500",
-  ...props
+  color,
+  size = "default",
+  isCollapsed = false,
 }) => {
-  const navigate = useNavigate();
+  const styles = sizeStyles[size];
 
   return (
     <Flex
-      height="16"
       alignItems="center"
       justify="flex-start"
-      gap="0"
-      {...props}
+      gap={isCollapsed ? 0 : styles.iconGap}
     >
-      <Flex
-        alignItems="center"
-        cursor="pointer"
-        _hover={{ color: "gray.900" }}
-        onClick={() => navigate(rootRoute({}).landingIndex({}).$)}
-      >
-        <Text fontSize="2xl" fontWeight="bold" color={color}>
+      <ColorModeButton
+        mt={styles.iconMt}
+        size={styles.iconSize}
+        variant="ghost"
+        color={color}
+        onClick={noop}
+        tabIndex={-1}
+        _hover={{ bg: "transparent" }}
+      />
+      {!isCollapsed && (
+        <Text fontSize={styles.fontSize} fontWeight="bold" color={color}>
           rengo ai
         </Text>
-        <ColorModeButton
-          size="sm"
-          variant="ghost"
-          color={color}
-          pointerEvents="none"
-          tabIndex={-1}
-          onClick={noop}
-        />
-      </Flex>
+      )}
     </Flex>
   );
 };

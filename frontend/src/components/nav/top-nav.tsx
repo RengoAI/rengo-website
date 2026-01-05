@@ -1,5 +1,6 @@
 import { Logo } from "@/components/logo/logo";
 import { Button, Flex, HStack } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 export const AppTopNav: React.FC = () => (
   <Flex
@@ -14,13 +15,16 @@ export const AppTopNav: React.FC = () => (
     zIndex={1000}
   >
     {/* Header */}
-    <Logo color="primary.500" ml={6} />
+    <Link to="/" style={{ marginLeft: "0.5rem" }}>
+      <Logo color="primary.700" size="default" />
+    </Link>
     {/* CTA Buttons */}
     <HStack gap={3} mr={8}>
       <Button
         variant="ghost"
         size="sm"
         display={{ base: "none", sm: "inline-flex" }}
+        onClick={() => window.open("https://app.rengoai.com/", "_blank")}
       >
         Sign in
       </Button>

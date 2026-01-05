@@ -51,7 +51,7 @@ export const Page: React.FC<React.PropsWithChildren<PageProps>> = ({
     flex={1}
     display="flex"
     flexDirection="column"
-    bg="bg.subtle"
+    bg="bg.extraSubtle"
     minH={sizeProps?.fullHeight ? "100vh" : undefined}
   >
     <Box
