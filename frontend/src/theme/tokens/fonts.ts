@@ -1,13 +1,13 @@
 import { defineTokens } from "@chakra-ui/react";
 
-const fallback = `-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"`;
+const fontStack = `ui-sans-serif, -apple-system, "system-ui", "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"`;
 
 export const fonts = defineTokens.fonts({
   heading: {
-    value: `Inter, sans-serif, ${fallback}`,
+    value: fontStack,
   },
   body: {
-    value: `Inter, sans-serif, ${fallback}`,
+    value: fontStack,
   },
   mono: {
     value: `SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace`,

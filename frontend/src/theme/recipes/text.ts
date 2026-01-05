@@ -53,9 +53,14 @@ export const textRecipe = defineRecipe({
         fontWeight: "400",
         lineHeight: "20px",
       },
-      bodySemibold: {
+      bodyMedium: {
         fontSize: "14px",
         fontWeight: "500",
+        lineHeight: "20px",
+      },
+      bodySemibold: {
+        fontSize: "14px",
+        fontWeight: "600",
         lineHeight: "20px",
       },
       bodyBold: {
@@ -81,19 +86,30 @@ export const textRecipe = defineRecipe({
         lineHeight: "16px",
         color: "gray.500",
       },
+      labelXSmall: {
+        fontSize: "10px",
+        fontWeight: "500",
+        lineHeight: "14px",
+        color: "gray.500",
+      },
       small: {
         fontSize: "12px",
         fontWeight: "400",
         lineHeight: "16px",
       },
-      smallSemibold: {
+      smallMedium: {
         fontSize: "12px",
         fontWeight: "500",
         lineHeight: "16px",
       },
+      smallSemibold: {
+        fontSize: "12px",
+        fontWeight: "600",
+        lineHeight: "16px",
+      },
       smallBold: {
         fontSize: "12px",
-        fontWeight: "500",
+        fontWeight: "700",
         lineHeight: "16px",
       },
       caption: {

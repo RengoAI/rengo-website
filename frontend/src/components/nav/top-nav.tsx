@@ -1,5 +1,5 @@
 import { Logo } from "@/components/logo/logo";
-import { Box, Button, Flex, HStack } from "@chakra-ui/react";
+import { Box, Button, Flex, HStack, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 export const TOP_NAV_HEIGHT = 48;
@@ -21,12 +21,12 @@ export const AppTopNav: React.FC = () => (
       </Link>
       <HStack gap={3}>
         <Button
-          variant="ghost"
+          variant="outline"
           size="sm"
           display={{ base: "none", sm: "inline-flex" }}
           onClick={() => window.open("https://app.rengoai.com/", "_blank")}
         >
-          Sign in
+          <Text fontSize="sm">Sign in</Text>
         </Button>
         <Button
           colorScheme="primary"
@@ -34,7 +34,7 @@ export const AppTopNav: React.FC = () => (
           size="sm"
           onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
         >
-          Join waitlist
+          <Text fontSize="sm">See a demo</Text>
         </Button>
       </HStack>
     </Flex>
