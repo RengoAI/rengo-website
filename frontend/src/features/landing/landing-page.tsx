@@ -1,13 +1,61 @@
 import { Page } from "@/components/layout/page";
-import { Center, Flex, Text, VStack } from "@chakra-ui/react";
+import { Box, Flex, Text, VStack } from "@chakra-ui/react";
+import { keyframes } from "@emotion/react";
 import React from "react";
+
+const TRUST_ITEMS = [
+  "Private Equity",
+  "Venture Capital",
+  "Private Credit",
+  "Growth Equity",
+  "Fund of Funds",
+  "Family Offices",
+];
+
+const scroll = keyframes`
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+`;
+
+const LogoMarquee: React.FC = () => (
+  <Box
+    position="relative"
+    width="100vw"
+    overflow="hidden"
+    css={{
+      maskImage:
+        "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+    }}
+  >
+    <Flex
+      gap={16}
+      width="max-content"
+      css={{
+        animation: `${scroll} 20s linear infinite`,
+      }}
+    >
+      {/* Double the items for seamless loop */}
+      {[...TRUST_ITEMS, ...TRUST_ITEMS].map((item, index) => (
+        <Text
+          key={index}
+          fontSize={{ base: "sm", md: "md" }}
+          color="gray.400"
+          whiteSpace="nowrap"
+          fontWeight="medium"
+        >
+          {item}
+        </Text>
+      ))}
+    </Flex>
+  </Box>
+);
 
 export const LandingPage: React.FC = () => (
   <Page>
-    <Center py={32} px={8} minH="100vh">
-      <VStack gap={12} maxW="4xl" textAlign="center">
-        {/* Main headline */}
-        <VStack gap={8}>
+    <VStack h="calc(100vh - 48px)" width="100%">
+      {/* Main content - centered in upper area */}
+      <Flex flex={1} alignItems="center" justifyContent="center">
+        <VStack gap={8} maxW="4xl" textAlign="center" px={8}>
           <Text
             fontSize={{ base: "4xl", md: "5xl", lg: "6xl" }}
             fontWeight="bold"
@@ -25,42 +73,19 @@ export const LandingPage: React.FC = () => (
             markets.
           </Text>
         </VStack>
+      </Flex>
 
-        {/* Trust indicators */}
-        <VStack gap={4}>
-          <Text
-            fontSize={{ base: "xs", md: "sm", lg: "md" }}
-            color="gray.500"
-            fontWeight="medium"
-          >
-            Trusted by leading investment firms
-          </Text>
-          <Flex
-            gap={{ base: 4, md: 8 }}
-            opacity={0.4}
-            color="gray.400"
-            flexWrap="wrap"
-            justify="center"
-            rowGap={{ base: 2, md: 4 }}
-          >
-            <Text fontSize={{ base: "xs", md: "sm", lg: "md" }}>
-              Private Equity
-            </Text>
-            <Text display={{ base: "none", md: "block" }}>•</Text>
-            <Text fontSize={{ base: "xs", md: "sm", lg: "md" }}>
-              Venture Capital
-            </Text>
-            <Text display={{ base: "none", md: "block" }}>•</Text>
-            <Text fontSize={{ base: "xs", md: "sm", lg: "md" }}>
-              Private Credit
-            </Text>
-            <Text display={{ base: "none", md: "block" }}>•</Text>
-            <Text fontSize={{ base: "xs", md: "sm", lg: "md" }}>
-              Growth Equity
-            </Text>
-          </Flex>
-        </VStack>
+      {/* Trust indicators - pinned to bottom */}
+      <VStack gap={4} width="100%" pb={64}>
+        <Text
+          fontSize={{ base: "xs", md: "sm" }}
+          color="gray.500"
+          fontWeight="medium"
+        >
+          Trusted by leading investment firms
+        </Text>
+        <LogoMarquee />
       </VStack>
-    </Center>
+    </VStack>
   </Page>
 );
