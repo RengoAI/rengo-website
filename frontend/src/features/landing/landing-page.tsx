@@ -21,7 +21,8 @@ export const LandingPage: React.FC = () => (
             maxW="2xl"
             lineHeight={1.5}
           >
-            AI-Native Operating System for Alternative Investment Managers.
+            The first AI-native portfolio monitoring platform for private
+            markets.
           </Text>
         </VStack>
 
@@ -35,25 +36,26 @@ export const LandingPage: React.FC = () => (
             Trusted by leading investment firms
           </Text>
           <Flex
-            gap={8}
+            gap={{ base: 4, md: 8 }}
             opacity={0.4}
             color="gray.400"
             flexWrap="wrap"
             justify="center"
+            rowGap={{ base: 2, md: 4 }}
           >
-            <Text fontSize={{ base: "2xs", md: "sm", lg: "md" }}>
+            <Text fontSize={{ base: "xs", md: "sm", lg: "md" }}>
               Private Equity
             </Text>
-            <Text>•</Text>
-            <Text fontSize={{ base: "2xs", md: "sm", lg: "md" }}>
+            <Text display={{ base: "none", md: "block" }}>•</Text>
+            <Text fontSize={{ base: "xs", md: "sm", lg: "md" }}>
               Venture Capital
             </Text>
-            <Text>•</Text>
-            <Text fontSize={{ base: "2xs", md: "sm", lg: "md" }}>
+            <Text display={{ base: "none", md: "block" }}>•</Text>
+            <Text fontSize={{ base: "xs", md: "sm", lg: "md" }}>
               Private Credit
             </Text>
-            <Text>•</Text>
-            <Text fontSize={{ base: "2xs", md: "sm", lg: "md" }}>
+            <Text display={{ base: "none", md: "block" }}>•</Text>
+            <Text fontSize={{ base: "xs", md: "sm", lg: "md" }}>
               Growth Equity
             </Text>
           </Flex>

@@ -123,9 +123,9 @@ export const AppFooter: React.FC = () => (
           </FooterLinkSection>
 
           <FooterLinkSection title="Company">
-            <FooterLink to={rootRoute({}).blog({}).changelog({}).$}>
+            {/* <FooterLink to={rootRoute({}).blog({}).changelog({}).$}>
               Changelog
-            </FooterLink>
+            </FooterLink> */}
             <FooterLink to={rootRoute({}).careers({}).$}>Careers</FooterLink>
           </FooterLinkSection>
         </Flex>
