@@ -24,9 +24,9 @@ export const buttonRecipe = defineRecipe({
       },
     },
     _focus: {
-      borderColor: "primary.focusRing",
-      outlineColor: "primary.focusRing",
-      outlineWidth: "1px",
+      borderColor: "transparent",
+      outlineColor: "transparent",
+      outlineWidth: "0px",
       outlineOffset: "0px",
       boxShadow: "none",
     },
@@ -87,6 +87,17 @@ export const buttonRecipe = defineRecipe({
           bg: "bg.subtle",
         },
       },
+      transparent: {
+        borderRadius: "6px",
+        bg: "transparent",
+        cursor: "pointer",
+        _hover: {
+          bg: "bg.subtle",
+        },
+        _active: {
+          bg: "bg.subtle",
+        },
+      },
       outline: {
         borderRadius: "6px",
         bg: "transparent",
@@ -98,6 +109,11 @@ export const buttonRecipe = defineRecipe({
         _active: {
           bg: "bg.surface",
         },
+        _focus: {
+          borderWidth: "1px",
+          borderColor: "gray.200",
+          boxShadow: "none",
+        },
       },
       link: {
         bg: "transparent",
@@ -108,16 +124,17 @@ export const buttonRecipe = defineRecipe({
         height: "auto",
         minHeight: "auto",
         fontWeight: "normal",
-        color: "primary.600",
+        color: "primary.700",
         textDecoration: "underline",
         cursor: "pointer",
+        transitionProperty: "none",
         _hover: {
           color: "primary.700",
           textDecoration: "underline",
           bg: "transparent",
         },
         _active: {
-          color: "primary.800",
+          color: "primary.600",
           bg: "transparent",
         },
         _disabled: {
@@ -173,7 +190,7 @@ export const buttonRecipe = defineRecipe({
         height: "48px",
         pr: "12px",
         _focusVisible: {
-          borderColor: "primary.400",
+          borderColor: "transparent",
           outline: "none",
           boxShadow: "none",
         },
@@ -203,6 +220,18 @@ export const buttonRecipe = defineRecipe({
       xs: {
         py: "5px",
         px: "12px",
+        minHeight: "32px",
+        height: "unset",
+      },
+      toolbarIcon: {
+        py: "5px",
+        px: "8px",
+        minHeight: "32px",
+        height: "unset",
+      },
+      toolbarNarrowIcon: {
+        py: "5px",
+        px: "6px",
         minHeight: "32px",
         height: "unset",
       },
@@ -276,6 +305,10 @@ export const buttonRecipe = defineRecipe({
       tertiary: {},
       destructive: {},
       edit: {},
+      transparent: {},
+      green: {},
+      red: {},
+      yellow: {},
     },
   },
 
@@ -286,31 +319,35 @@ export const buttonRecipe = defineRecipe({
       variant: "solid",
       colorScheme: "primary",
       css: {
-        bg: "primary.700",
+        bg: "primary.600",
         borderColor: "primary.700",
         color: "white",
         _hover: {
-          color: "white",
-          bg: "primary.800",
-          borderColor: "primary.800",
+          color: "gray.100",
+          bg: "primary.700",
+          borderColor: "transparent",
         },
         _focus: {
           color: "white",
-          bg: "primary.800",
-          borderColor: "primary.focusRing",
-          outlineColor: "primary.focusRing",
-          outlineWidth: "1px",
+          bg: "primary.600",
+          borderColor: "primary.700",
+          outlineColor: "transparent",
+          outlineWidth: "0px",
           outlineOffset: "0px",
           boxShadow: "none",
         },
         _active: {
-          bg: "primary.700",
+          bg: "primary.800",
           shadow: "inset 0px 4px 7px primary.100",
+        },
+        "&[data-state=open]": {
+          bg: "primary.800",
+          borderColor: "primary.700",
         },
         _disabled: {
           opacity: 0.5,
-          bg: "primary.600",
-          borderColor: "primary.600",
+          bg: "primary.500",
+          borderColor: "primary.500",
         },
       },
     },
@@ -330,10 +367,10 @@ export const buttonRecipe = defineRecipe({
         },
         _focus: {
           bg: "gray.100",
-          borderColor: "primary.focusRing",
+          borderColor: "transparent",
           color: "gray.800",
-          outlineColor: "primary.focusRing",
-          outlineWidth: "1px",
+          outlineColor: "transparent",
+          outlineWidth: "0px",
           outlineOffset: "0px",
           boxShadow: "none",
         },
@@ -356,31 +393,31 @@ export const buttonRecipe = defineRecipe({
       variant: "solid",
       colorScheme: "tertiary",
       css: {
-        bg: "teal.25",
-        borderColor: "teal.100",
-        color: "teal.900",
+        bg: "cyan.50",
+        borderColor: "cyan.100",
+        color: "cyan.900",
         _hover: {
-          color: "teal.900",
-          bg: "teal.50",
+          color: "cyan.900",
+          bg: "cyan.100",
         },
         _focus: {
-          color: "teal.900",
-          bg: "teal.50",
-          borderColor: "primary.focusRing",
-          outlineColor: "primary.focusRing",
-          outlineWidth: "1px",
+          color: "cyan.900",
+          bg: "cyan.100",
+          borderColor: "transparent",
+          outlineColor: "transparent",
+          outlineWidth: "0px",
           outlineOffset: "0px",
           boxShadow: "none",
         },
         _active: {
-          bg: "teal.50",
+          bg: "cyan.100",
           shadow: "inset 0px 4px 6px rgba(2, 39, 21, 0.2)",
         },
         _disabled: {
           opacity: 0.5,
           bg: "primary.50",
           borderColor: "primary.300",
-          color: "primary.800",
+          color: "primary.600",
         },
       },
     },
@@ -402,8 +439,8 @@ export const buttonRecipe = defineRecipe({
           color: "error.700",
           bg: "error.100",
           borderColor: "error.600",
-          outlineColor: "error.600",
-          outlineWidth: "1px",
+          outlineColor: "transparent",
+          outlineWidth: "0px",
           outlineOffset: "0px",
           boxShadow: "none",
         },
@@ -448,14 +485,14 @@ export const buttonRecipe = defineRecipe({
       variant: ["subtle", "ghost"],
       colorScheme: "edit",
       css: {
-        color: "teal.600",
+        color: "cyan.600",
         _hover: {
-          bg: "teal.25",
-          color: "teal.600",
+          bg: "cyan.50",
+          color: "cyan.600",
         },
         _active: {
-          bg: "teal.50",
-          color: "teal.800",
+          bg: "cyan.100",
+          color: "cyan.800",
         },
         _disabled: {
           opacity: 0.5,
@@ -483,6 +520,303 @@ export const buttonRecipe = defineRecipe({
           opacity: 0.5,
           color: "error.600",
           bg: "unset",
+        },
+      },
+    },
+
+    // Green + Solid
+    {
+      variant: "solid",
+      colorScheme: "green",
+      css: {
+        bg: "green.200",
+        borderColor: "green.200",
+        color: "black",
+        _hover: {
+          color: "black",
+          bg: "green.300",
+          borderColor: "green.300",
+        },
+        _focus: {
+          color: "black",
+          bg: "green.200",
+          borderColor: "transparent",
+          outlineColor: "transparent",
+          outlineWidth: "0px",
+          outlineOffset: "0px",
+          boxShadow: "none",
+        },
+        _active: {
+          bg: "green.300",
+          shadow: "inset 0px 4px 7px green.100",
+        },
+        _disabled: {
+          opacity: 0.5,
+          bg: "green.200",
+          borderColor: "green.200",
+        },
+      },
+    },
+
+    // Green + Outline
+    {
+      variant: "outline",
+      colorScheme: "green",
+      css: {
+        bg: "transparent",
+        borderColor: "green.300",
+        color: "green.700",
+        _hover: {
+          bg: "green.50",
+          borderColor: "green.400",
+          color: "green.800",
+        },
+        _focus: {
+          bg: "green.50",
+          borderColor: "green.300",
+          color: "green.700",
+          outlineColor: "transparent",
+          outlineWidth: "0px",
+          outlineOffset: "0px",
+          boxShadow: "none",
+        },
+        _active: {
+          bg: "green.100",
+          borderColor: "green.400",
+          color: "green.800",
+        },
+        _disabled: {
+          opacity: 0.5,
+          bg: "transparent",
+          borderColor: "green.200",
+          color: "green.400",
+        },
+      },
+    },
+
+    // Green + Subtle/Ghost
+    {
+      variant: ["subtle", "ghost"],
+      colorScheme: "green",
+      css: {
+        color: "green.600",
+        _hover: {
+          bg: "green.50",
+          color: "green.700",
+        },
+        _active: {
+          bg: "green.100",
+          color: "green.800",
+        },
+        _disabled: {
+          opacity: 0.5,
+          color: "green.600",
+          bg: "unset",
+        },
+      },
+    },
+
+    // Red + Solid
+    {
+      variant: "solid",
+      colorScheme: "red",
+      css: {
+        bg: "red.600",
+        borderColor: "red.600",
+        color: "white",
+        _hover: {
+          color: "white",
+          bg: "red.700",
+          borderColor: "red.700",
+        },
+        _focus: {
+          color: "white",
+          bg: "red.600",
+          borderColor: "transparent",
+          outlineColor: "transparent",
+          outlineWidth: "0px",
+          outlineOffset: "0px",
+          boxShadow: "none",
+        },
+        _active: {
+          bg: "red.700",
+          shadow: "inset 0px 4px 7px red.100",
+        },
+        _disabled: {
+          opacity: 0.5,
+          bg: "red.500",
+          borderColor: "red.500",
+        },
+      },
+    },
+
+    // Red + Outline
+    {
+      variant: "outline",
+      colorScheme: "red",
+      css: {
+        bg: "transparent",
+        borderColor: "red.700",
+        color: "red.700",
+        _hover: {
+          bg: "red.50",
+          borderColor: "red.700",
+          color: "red.800",
+        },
+        _focus: {
+          bg: "red.50",
+          borderColor: "red.600",
+          color: "red.700",
+          outlineColor: "transparent",
+          outlineWidth: "0px",
+          outlineOffset: "0px",
+          boxShadow: "none",
+        },
+        _active: {
+          bg: "red.100",
+          borderColor: "red.700",
+          color: "red.800",
+        },
+        _disabled: {
+          opacity: 0.5,
+          bg: "transparent",
+          borderColor: "red.300",
+          color: "red.400",
+        },
+      },
+    },
+
+    // Red + Subtle/Ghost
+    {
+      variant: ["subtle", "ghost"],
+      colorScheme: "red",
+      css: {
+        color: "red.600",
+        _hover: {
+          bg: "red.50",
+          color: "red.700",
+        },
+        _active: {
+          bg: "red.100",
+          color: "red.800",
+        },
+        _disabled: {
+          opacity: 0.5,
+          color: "red.600",
+          bg: "unset",
+        },
+      },
+    },
+
+    // Yellow + Solid
+    {
+      variant: "solid",
+      colorScheme: "yellow",
+      css: {
+        bg: "yellow.100",
+        borderColor: "yellow.200",
+        color: "gray.900",
+        _hover: {
+          color: "gray.900",
+          bg: "yellow.200",
+          borderColor: "yellow.200",
+        },
+        _focus: {
+          color: "gray.900",
+          bg: "yellow.100",
+          borderColor: "transparent",
+          outlineColor: "transparent",
+          outlineWidth: "0px",
+          outlineOffset: "0px",
+          boxShadow: "none",
+        },
+        _active: {
+          bg: "yellow.200",
+          shadow: "inset 0px 4px 7px yellow.50",
+        },
+        _disabled: {
+          opacity: 0.5,
+          bg: "yellow.50",
+          borderColor: "yellow.50",
+        },
+      },
+    },
+
+    // Yellow + Outline
+    {
+      variant: "outline",
+      colorScheme: "yellow",
+      css: {
+        bg: "transparent",
+        borderColor: "yellow.500",
+        color: "yellow.700",
+        _hover: {
+          bg: "yellow.50",
+          borderColor: "yellow.600",
+          color: "yellow.800",
+        },
+        _focus: {
+          bg: "yellow.50",
+          borderColor: "yellow.500",
+          color: "yellow.700",
+          outlineColor: "transparent",
+          outlineWidth: "0px",
+          outlineOffset: "0px",
+          boxShadow: "none",
+        },
+        _active: {
+          bg: "yellow.100",
+          borderColor: "yellow.600",
+          color: "yellow.800",
+        },
+        _disabled: {
+          opacity: 0.5,
+          bg: "transparent",
+          borderColor: "yellow.200",
+          color: "yellow.400",
+        },
+      },
+    },
+
+    // Yellow + Subtle/Ghost
+    {
+      variant: ["subtle", "ghost"],
+      colorScheme: "yellow",
+      css: {
+        color: "yellow.600",
+        _hover: {
+          bg: "yellow.50",
+          color: "yellow.700",
+        },
+        _active: {
+          bg: "yellow.100",
+          color: "yellow.800",
+        },
+        _disabled: {
+          opacity: 0.5,
+          color: "yellow.400",
+          bg: "unset",
+        },
+      },
+    },
+
+    {
+      variant: ["subtle", "ghost"],
+      colorScheme: "transparent",
+      css: {
+        color: "inherit",
+        _hover: {
+          bg: "inherit",
+          color: "inherit",
+        },
+        _active: {
+          bg: "inherit",
+          color: "inherit",
+        },
+        _disabled: {
+          opacity: "inherit",
+          color: "inherit",
+          bg: "inherit",
         },
       },
     },

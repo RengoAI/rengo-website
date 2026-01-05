@@ -10,19 +10,6 @@ export const solutionsRoutes: RouteObject = {
   element: <SolutionsLayout />,
   children: [
     {
-      id: "dataConnectors",
-      path: "data-connectors",
-      handle: {
-        pageTitle: "Data Connectors",
-      },
-      lazy: async () => {
-        const { DataConnectorsPage } = await import(
-          "@/features/solutions/data-connectors-page"
-        );
-        return { Component: DataConnectorsPage };
-      },
-    },
-    {
       id: "portfolioMonitoring",
       path: "portfolio-monitoring",
       handle: {

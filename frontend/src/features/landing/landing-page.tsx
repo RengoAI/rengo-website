@@ -1,56 +1,92 @@
 import { Page } from "@/components/layout/page";
-import { Center, Flex, Text, VStack } from "@chakra-ui/react";
+import { Box, Flex, Text, VStack } from "@chakra-ui/react";
+import { keyframes } from "@emotion/react";
 import React from "react";
+
+const TRUST_ITEMS = [
+  "Private Equity",
+  "Venture Capital",
+  "Private Credit",
+  "Growth Equity",
+];
+
+const scroll = keyframes`
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+`;
+
+const LogoMarquee: React.FC = () => (
+  <Box
+    position="relative"
+    width="100vw"
+    overflow="hidden"
+    css={{
+      maskImage:
+        "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+    }}
+  >
+    <Flex
+      gap={16}
+      width="max-content"
+      css={{
+        animation: `${scroll} 80s linear infinite`,
+      }}
+    >
+      {/* Repeat items to fill screen width */}
+      {Array(6)
+        .fill(TRUST_ITEMS)
+        .flat()
+        .map((item, index) => (
+          <Text
+            key={index}
+            fontSize={{ base: "sm", md: "md" }}
+            color="gray.400"
+            whiteSpace="nowrap"
+            fontWeight="medium"
+          >
+            {item}
+          </Text>
+        ))}
+    </Flex>
+  </Box>
+);
 
 export const LandingPage: React.FC = () => (
   <Page>
-    <Center py={32} px={8} minH="100vh">
-      <VStack gap={12} maxW="4xl" textAlign="center">
-        {/* Main headline */}
-        <VStack gap={6}>
+    <VStack h="calc(100vh - 64px)" width="100%">
+      {/* Main content - centered in upper area */}
+      <Flex flex={1} alignItems="center" justifyContent="center">
+        <VStack gap={8} maxW="4xl" textAlign="center" px={8}>
           <Text
-            fontSize={{ base: "4xl", md: "6xl", lg: "7xl" }}
+            fontSize={{ base: "4xl", md: "5xl", lg: "6xl" }}
             fontWeight="bold"
-            lineHeight={1.1}
-            color="primary.500"
-            letterSpacing="-0.02em"
+            color="primary.700"
           >
             Coming Soon
           </Text>
           <Text
-            fontSize={{ base: "lg", md: "xl", lg: "2xl" }}
+            fontSize={{ base: "md", md: "lg", lg: "xl" }}
             color="gray.600"
             maxW="2xl"
             lineHeight={1.5}
           >
-            Building next generation software for alternative investment
-            managers.
+            The first AI-native portfolio monitoring platform for private
+            markets.
           </Text>
         </VStack>
+      </Flex>
 
-        {/* Trust indicators */}
-        <VStack gap={4}>
-          <Text fontSize="sm" color="gray.500" fontWeight="medium">
-            Trusted by leading investment firms
-          </Text>
-          <Flex
-            gap={8}
-            opacity={0.4}
-            fontSize="sm"
-            color="gray.400"
-            flexWrap="wrap"
-            justify="center"
-          >
-            <Text>Private Equity</Text>
-            <Text>•</Text>
-            <Text>Venture Capital</Text>
-            <Text>•</Text>
-            <Text>Private Credit</Text>
-            <Text>•</Text>
-            <Text>Growth Equity</Text>
-          </Flex>
-        </VStack>
+      {/* Trust indicators - pinned to bottom */}
+      <VStack gap={4} width="100%" pb={64}>
+        <Text
+          fontSize={{ base: "xs", md: "sm" }}
+          color="gray.500"
+          fontWeight="medium"
+        >
+          Trusted by leading investment firms
+        </Text>
+        <LogoMarquee />
       </VStack>
-    </Center>
+    </VStack>
   </Page>
 );
