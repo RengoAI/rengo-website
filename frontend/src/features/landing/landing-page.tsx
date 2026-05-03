@@ -68,7 +68,7 @@ const HeroNav: React.FC = () => {
       display="flex"
       alignItems="center"
       justifyContent="space-between"
-      px={12}
+      px={20}
       py={4}
       borderBottom="1px solid"
       borderColor={overHero ? "whiteAlpha.100" : "border.muted"}
@@ -164,7 +164,7 @@ const HeroSection: React.FC = () => (
       flex={1}
       direction="column"
       justify="center"
-      px={16}
+      px={20}
       pt="80px"
       pb={12}
     >
@@ -234,7 +234,7 @@ const FirmsStrip: React.FC = () => (
       color="gray.500"
       letterSpacing="0.08em"
       textTransform="uppercase"
-      px={12}
+      px={20}
       mb={4}
     >
       Built with leading firms across
@@ -280,7 +280,7 @@ const FirmsStrip: React.FC = () => (
 );
 
 const ThreePillars: React.FC = () => (
-  <Box as="section" px={12} py={28} bg="gray.25">
+  <Box as="section" px={20} py={28} bg="gray.25">
     <Box
       as="h2"
       m={0}
@@ -374,7 +374,7 @@ const FooterLink: React.FC<{
 };
 
 const LandingFooter: React.FC = () => (
-  <Box as="footer" bg={NAVY} color="white" px={12} pt={16} pb={8}>
+  <Box as="footer" bg={NAVY} color="white" px={20} pt={16} pb={8}>
     <Flex justify="space-between" align="flex-start" w="full">
       <FooterCol title="Overview">
         <FooterLink to="/solutions/portfolio-monitoring">Portfolio Monitoring</FooterLink>
