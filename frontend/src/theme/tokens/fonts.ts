@@ -8,6 +8,6 @@ export const fonts = defineTokens.fonts({
     value: `"Inter Tight", Inter, ui-sans-serif, -apple-system, system-ui, sans-serif`,
   },
   mono: {
-    value: `"JetBrains Mono", SFMono-Regular, Menlo, Monaco, ui-monospace, monospace`,
+    value: `"Space Mono", SFMono-Regular, Menlo, Monaco, ui-monospace, monospace`,
   },
 });

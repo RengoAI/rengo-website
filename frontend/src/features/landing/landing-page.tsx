@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 const ACCENT_SOFT = "primary.400";
 const TINT = "#1A3358";
 const NAVY = "gray.900";
+const EDICT = '"Space Mono", SFMono-Regular, ui-monospace, monospace';
 
 const FIRM_TYPES = [
   "Private Equity",
@@ -80,28 +81,56 @@ const HeroNav: React.FC = () => {
       </Link>
 
       <Flex as="nav" gap={8} fontSize="sm" color={navColor} fontWeight="medium">
-        <Text as="span">Product</Text>
-        <Text as="span">Security</Text>
-        <Text as="span">Company</Text>
         <Text
           as="span"
+          color={overHero ? "white" : "gray.700"}
+          _hover={{ color: navColor }}
+          cursor="default"
+        >
+          Product
+        </Text>
+        <Text
+          as="span"
+          color={overHero ? "white" : "gray.700"}
+          _hover={{ color: navColor }}
+          cursor="default"
+        >
+          Security
+        </Text>
+        <Text
+          as="span"
+          color={overHero ? "white" : "gray.700"}
+          _hover={{ color: navColor }}
+          cursor="default"
+        >
+          Company
+        </Text>
+      </Flex>
+
+      <Flex gap={4} alignItems="center">
+        <Text
+          as="span"
+          fontSize="sm"
+          fontWeight="medium"
+          color={overHero ? "white" : "gray.700"}
           cursor="pointer"
+          opacity={0.9}
+          _hover={{ opacity: 0.6 }}
           onClick={() => window.open("https://app.rengoai.com/", "_blank")}
         >
           Log in
         </Text>
+        <Button
+          borderRadius="md"
+          bg={overHero ? "white" : "primary.700"}
+          color={overHero ? NAVY : "white"}
+          size="sm"
+          _hover={{ bg: overHero ? "gray.100" : "primary.800" }}
+          onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
+        >
+          See a demo
+        </Button>
       </Flex>
-
-      <Button
-        borderRadius="md"
-        bg={overHero ? "white" : "primary.700"}
-        color={overHero ? NAVY : "white"}
-        size="sm"
-        _hover={{ bg: overHero ? "gray.100" : "primary.800" }}
-        onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
-      >
-        See a demo
-      </Button>
     </Box>
   );
 };
@@ -169,7 +198,7 @@ const HeroSection: React.FC = () => (
       pb={12}
     >
       <Text
-        fontFamily="mono"
+        fontFamily={EDICT}
         fontSize="11px"
         letterSpacing="0.18em"
         textTransform="uppercase"
@@ -213,7 +242,7 @@ const HeroSection: React.FC = () => (
           _hover={{ bg: "gray.50" }}
           onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
         >
-          Talk to our team
+          See a demo
         </Button>
       </Flex>
     </Flex>
@@ -229,7 +258,7 @@ const FirmsStrip: React.FC = () => (
     py={8}
   >
     <Text
-      fontFamily="mono"
+      fontFamily={EDICT}
       fontSize="11px"
       color="gray.500"
       letterSpacing="0.08em"
@@ -265,7 +294,7 @@ const FirmsStrip: React.FC = () => (
             <Text
               key={i}
               as="span"
-              fontSize="28px"
+              fontSize="16px"
               color="primary.700"
               opacity={0.3}
               fontWeight={400}
@@ -301,7 +330,7 @@ const ThreePillars: React.FC = () => (
         <Box key={n} borderTop="1px solid" borderColor="primary.700" pt={5}>
           <Text
             as="span"
-            fontFamily="mono"
+            fontFamily={EDICT}
             fontSize="11px"
             color="primary.700"
             letterSpacing="0.08em"
@@ -336,7 +365,7 @@ interface FooterColProps {
 const FooterCol: React.FC<FooterColProps> = ({ title, children }) => (
   <Flex direction="column" gap={3} minW="120px">
     <Text
-      fontFamily="mono"
+      fontFamily={EDICT}
       fontSize="11px"
       letterSpacing="0.08em"
       textTransform="uppercase"
@@ -377,7 +406,9 @@ const LandingFooter: React.FC = () => (
   <Box as="footer" bg={NAVY} color="white" px={20} pt={16} pb={8}>
     <Flex justify="space-between" align="flex-start" w="full">
       <FooterCol title="Overview">
-        <FooterLink to="/solutions/portfolio-monitoring">Portfolio Monitoring</FooterLink>
+        <FooterLink to="/solutions/portfolio-monitoring">
+          Portfolio Monitoring
+        </FooterLink>
         <FooterLink to="/legal/security">Security</FooterLink>
       </FooterCol>
 
@@ -392,14 +423,16 @@ const LandingFooter: React.FC = () => (
 
       <FooterCol title="Contact">
         <FooterLink href="mailto:sales@rengoai.com">See a demo</FooterLink>
-        <FooterLink href="https://www.linkedin.com/company/106703002">LinkedIn</FooterLink>
         <FooterLink href="mailto:sales@rengoai.com">Sales</FooterLink>
+        <FooterLink href="https://www.linkedin.com/company/106703002">
+          LinkedIn
+        </FooterLink>
       </FooterCol>
     </Flex>
 
     <Text
       mt={12}
-      fontFamily="mono"
+      fontFamily={EDICT}
       fontSize="11px"
       letterSpacing="0.06em"
       textTransform="uppercase"
