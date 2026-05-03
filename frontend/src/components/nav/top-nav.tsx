@@ -5,7 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export const TOP_NAV_HEIGHT = 64;
 
-const NAVY = "gray.900";
+const NAVY = "#0C1D34";
 
 const DARK_HERO_PATHS = ["/", "/security"];
 
@@ -39,14 +39,14 @@ export const AppTopNav: React.FC = () => {
       alignItems="center"
       justifyContent="space-between"
       px={20}
-      py={4}
+      py={2.5}
       borderBottom="1px solid"
       borderColor={overHero ? "whiteAlpha.100" : "border.muted"}
       bg={overHero ? NAVY : "white"}
       style={{ transition: "background 200ms ease, border-color 200ms ease" }}
     >
       <Link to="/" style={{ textDecoration: "none" }}>
-        <Logo color={overHero ? "white" : "primary.700"} size="default" />
+        <Logo color={overHero ? "white" : "primary.700"} />
       </Link>
 
       <Flex as="nav" gap={1}>
@@ -77,7 +77,7 @@ export const AppTopNav: React.FC = () => {
         </Button>
       </Flex>
 
-      <Flex gap={1} alignItems="center">
+      <Flex gap={2} alignItems="center">
         <Button
           variant="ghost"
           size="sm"

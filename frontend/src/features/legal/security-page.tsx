@@ -1,7 +1,7 @@
-import { Box, Button, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 
-const NAVY = "gray.900";
+const NAVY = "#0C1D34";
 const EDICT = '"Space Mono", SFMono-Regular, ui-monospace, monospace';
 
 const CARDS = [
@@ -29,8 +29,18 @@ const CARDS = [
 
 export const SecurityPage: React.FC = () => (
   <Box fontFamily='"Inter Tight", Inter, sans-serif'>
-    {/* Hero */}
-    <Box bg={NAVY} color="white" px={20} pt={40} pb={20}>
+    {/* Hero — full viewport height matching landing page */}
+    <Flex
+      as="section"
+      bg={NAVY}
+      color="white"
+      px={20}
+      minH="100vh"
+      direction="column"
+      justify="center"
+      pt="80px"
+      pb={12}
+    >
       <Text
         fontFamily={EDICT}
         fontSize="11px"
@@ -44,42 +54,45 @@ export const SecurityPage: React.FC = () => (
       <Box
         as="h1"
         fontFamily="heading"
-        fontSize="clamp(40px, 5vw, 72px)"
+        fontSize="clamp(52px, 6vw, 84px)"
         fontWeight={400}
-        lineHeight={1.06}
+        lineHeight={1.04}
         letterSpacing="-0.025em"
         color="white"
-        maxW="780px"
+        maxW="880px"
         m={0}
-        mb={6}
+        mb={7}
       >
         Dedicated infrastructure
         <br />
         for sensitive data
       </Box>
+      <Box h="1px" bg="whiteAlpha.500" w="72px" mb={7} />
       <Text
         fontSize="lg"
-        lineHeight={1.5}
-        color="whiteAlpha.700"
-        maxW="560px"
-        mb={10}
+        lineHeight={1.45}
+        color="whiteAlpha.800"
+        maxW="580px"
+        mb={9}
       >
-        Every architectural decision starts with security
+        Every architectural decision starts with security.
       </Text>
-      <Button
-        borderRadius="md"
-        bg="white"
-        color={NAVY}
-        h="42px"
-        px={6}
-        fontSize="15px"
-        fontWeight="medium"
-        _hover={{ bg: "gray.100" }}
-        onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
-      >
-        Talk to our team
-      </Button>
-    </Box>
+      <Box>
+        <Button
+          borderRadius="md"
+          bg="white"
+          color={NAVY}
+          h="42px"
+          px={6}
+          fontSize="15px"
+          fontWeight="medium"
+          _hover={{ bg: "gray.50" }}
+          onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
+        >
+          See a demo
+        </Button>
+      </Box>
+    </Flex>
 
     {/* Feature cards — sales deck grid style */}
     <Box bg="white" px={20} py={24}>
@@ -89,10 +102,20 @@ export const SecurityPage: React.FC = () => (
         fontWeight={400}
         letterSpacing="-0.02em"
         color={NAVY}
-        mb={16}
+        mb={4}
         maxW="600px"
       >
         Safe, secure, and compliant
+      </Text>
+      <Text
+        fontSize="md"
+        lineHeight={1.6}
+        color="gray.500"
+        maxW="600px"
+        mb={16}
+      >
+        Rengo AI is always working to meet and exceed established data security
+        standards and best practices.
       </Text>
       <Box
         display="grid"

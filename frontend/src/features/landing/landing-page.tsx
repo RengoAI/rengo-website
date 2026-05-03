@@ -5,7 +5,7 @@ import React from "react";
 
 const ACCENT_SOFT = "primary.400";
 const TINT = "#1A3358";
-const NAVY = "gray.900";
+const NAVY = "#0C1D34";
 const EDICT = '"Space Mono", SFMono-Regular, ui-monospace, monospace';
 
 const FIRM_TYPES = [
@@ -225,9 +225,7 @@ const ThreePillars: React.FC = () => (
       color={NAVY}
       maxW="720px"
     >
-      Three workflows.
-      <br />
-      One source of truth.
+      One integrated platform
     </Box>
 
     <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap={16} mt={16}>

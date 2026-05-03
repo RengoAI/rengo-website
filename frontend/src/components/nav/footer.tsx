@@ -2,7 +2,7 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
 
-const NAVY = "gray.900";
+const NAVY = "#0C1D34";
 const EDICT = '"Space Mono", SFMono-Regular, ui-monospace, monospace';
 
 interface FooterColProps {

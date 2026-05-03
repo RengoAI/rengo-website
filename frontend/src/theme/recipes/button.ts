@@ -8,7 +8,6 @@ export const buttonRecipe = defineRecipe({
     transitionProperty: "common",
     transitionDuration: "normal",
     textDecoration: "none",
-    fontWeight: "medium",
     cursor: "pointer",
     _hover: {
       textDecoration: "none",
