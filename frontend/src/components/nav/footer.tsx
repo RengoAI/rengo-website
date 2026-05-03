@@ -26,13 +26,6 @@ const FooterCol: React.FC<FooterColProps> = ({ title, children }) => (
   </Flex>
 );
 
-const linkStyles: React.CSSProperties = {
-  color: "rgba(255,255,255,0.65)",
-  textDecoration: "none",
-  fontSize: "14px",
-  cursor: "pointer",
-};
-
 const FooterLink: React.FC<{
   to?: string;
   href?: string;
@@ -40,12 +33,12 @@ const FooterLink: React.FC<{
 }> = ({ to, href, children }) => {
   if (to)
     return (
-      <Link to={to} style={linkStyles}>
+      <Link to={to} className="footer-link">
         {children}
       </Link>
     );
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" style={linkStyles}>
+    <a href={href} target="_blank" rel="noopener noreferrer" className="footer-link">
       {children}
     </a>
   );
@@ -53,6 +46,18 @@ const FooterLink: React.FC<{
 
 export const AppFooter: React.FC = () => (
   <Box as="footer" bg={NAVY} color="white" px={20} pt={16} pb={8}>
+    <style>{`
+      .footer-link {
+        color: rgba(255,255,255,0.65);
+        text-decoration: none;
+        font-size: 14px;
+        cursor: pointer;
+        transition: color 150ms ease;
+      }
+      .footer-link:hover {
+        color: rgba(255,255,255,1);
+      }
+    `}</style>
     <Flex justify="space-between" align="flex-start" w="full">
       <FooterCol title="Overview">
         <FooterLink to="/product/portfolio-monitoring">

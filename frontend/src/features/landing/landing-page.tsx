@@ -155,13 +155,7 @@ const HeroSection: React.FC = () => (
 );
 
 const FirmsStrip: React.FC = () => (
-  <Box
-    as="section"
-    bg="primary.25"
-    borderBottom="1px solid"
-    borderColor="border.muted"
-    py={8}
-  >
+  <Box as="section" borderBottom="1px solid" borderColor="border.muted" py={8}>
     <Text
       fontFamily={EDICT}
       fontSize="11px"
@@ -169,7 +163,7 @@ const FirmsStrip: React.FC = () => (
       letterSpacing="0.08em"
       textTransform="uppercase"
       px={20}
-      mb={4}
+      mb={8}
     >
       Built with leading firms across
     </Text>
