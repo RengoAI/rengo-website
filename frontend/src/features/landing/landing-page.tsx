@@ -1,3 +1,4 @@
+import { Logo } from "@/components/logo/logo";
 import { PulseGrid } from "@/components/pulse-grid";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
@@ -40,52 +41,24 @@ const marqueeScroll = keyframes`
   to   { transform: translateX(-50%); }
 `;
 
-const LogoMark: React.FC<{ color?: string }> = ({ color = "currentColor" }) => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    style={{ width: 22, height: 22, display: "block", stroke: color }}
-  >
-    <circle cx="12" cy="12" r="4" />
-    <path d="M12 2v2" />
-    <path d="M12 20v2" />
-    <path d="m4.93 4.93 1.41 1.41" />
-    <path d="m17.66 17.66 1.41 1.41" />
-    <path d="M2 12h2" />
-    <path d="M20 12h2" />
-    <path d="m6.34 17.66-1.41 1.41" />
-    <path d="m19.07 4.93-1.41 1.41" />
-  </svg>
-);
 
 const HeroNav: React.FC = () => (
   <Box
     as="header"
-    position="relative"
-    zIndex={2}
+    position="sticky"
+    top={0}
+    zIndex={10}
     display="flex"
     alignItems="center"
     justifyContent="space-between"
     px={12}
-    py={5}
+    py={4}
     borderBottom="1px solid"
     borderColor="whiteAlpha.100"
+    bg={NAVY}
   >
     <Link to="/" style={{ textDecoration: "none" }}>
-      <Flex alignItems="center" gap={2} color="white">
-        <LogoMark color="white" />
-        <Text
-          fontSize="md"
-          fontWeight="medium"
-          letterSpacing="-0.01em"
-          color="white"
-        >
-          Rengo
-        </Text>
-      </Flex>
+      <Logo color="white" size="default" />
     </Link>
 
     <Flex
@@ -95,24 +68,35 @@ const HeroNav: React.FC = () => (
       color="whiteAlpha.700"
       fontWeight="medium"
     >
-      <Text as="span">Home</Text>
-      <Text as="span">Platform</Text>
-      <Text as="span">Insights</Text>
-      <Text as="span">Contact</Text>
+      <Text as="span">Product</Text>
+      <Text as="span">Security</Text>
+      <Text as="span">Company</Text>
     </Flex>
 
-    <Button
-      variant="outline"
-      borderRadius="full"
-      borderColor="whiteAlpha.400"
-      color="white"
-      bg="transparent"
-      size="sm"
-      _hover={{ bg: "whiteAlpha.100" }}
-      onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
-    >
-      Talk to our team
-    </Button>
+    <Flex gap={3}>
+      <Button
+        variant="outline"
+        borderRadius="md"
+        borderColor="whiteAlpha.400"
+        color="white"
+        bg="transparent"
+        size="sm"
+        _hover={{ bg: "whiteAlpha.100" }}
+        onClick={() => window.open("https://app.rengoai.com/", "_blank")}
+      >
+        Log in
+      </Button>
+      <Button
+        borderRadius="md"
+        bg="white"
+        color={NAVY}
+        size="sm"
+        _hover={{ bg: "gray.100" }}
+        onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
+      >
+        Talk to our team
+      </Button>
+    </Flex>
   </Box>
 );
 
@@ -214,7 +198,7 @@ const HeroSection: React.FC = () => (
 
       <Flex mt={9} gap={3}>
         <Button
-          borderRadius="full"
+          borderRadius="md"
           bg="white"
           color={NAVY}
           border="1px solid white"
@@ -226,20 +210,6 @@ const HeroSection: React.FC = () => (
           onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
         >
           Talk to our team
-        </Button>
-        <Button
-          borderRadius="full"
-          bg="transparent"
-          color="whiteAlpha.900"
-          border="1px solid"
-          borderColor="whiteAlpha.300"
-          h="42px"
-          px={6}
-          fontSize="15px"
-          _hover={{ bg: "whiteAlpha.100" }}
-          onClick={() => window.open("https://app.rengoai.com/", "_blank")}
-        >
-          See the platform
         </Button>
       </Flex>
     </Flex>
@@ -357,17 +327,7 @@ const ThreePillars: React.FC = () => (
 const LandingFooter: React.FC = () => (
   <Box as="footer" bg={NAVY} color="white" px={12} pt={10} pb={6}>
     <Flex justify="space-between" align="flex-start" gap={8}>
-      <Flex alignItems="center" gap={2} color="white">
-        <LogoMark color="white" />
-        <Text
-          fontSize="md"
-          fontWeight="medium"
-          letterSpacing="-0.01em"
-          color="white"
-        >
-          Rengo
-        </Text>
-      </Flex>
+      <Logo color="white" size="default" />
 
       <Flex gap={14} fontSize="sm">
         <Flex direction="column" gap={2}>
