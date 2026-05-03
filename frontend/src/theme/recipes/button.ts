@@ -79,12 +79,13 @@ export const buttonRecipe = defineRecipe({
       ghost: {
         borderRadius: "6px",
         bg: "transparent",
+        fontWeight: "normal",
         cursor: "pointer",
         _hover: {
-          bg: "bg.subtle",
+          bg: "transparent",
         },
         _active: {
-          bg: "bg.subtle",
+          bg: "transparent",
         },
       },
       transparent: {

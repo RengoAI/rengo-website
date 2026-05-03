@@ -18,10 +18,14 @@ export const AppTopNav: React.FC = () => {
   useEffect(() => {
     setOverHero(isDarkHero);
     if (!isDarkHero) return;
-    const onScroll = () => setOverHero(window.scrollY < window.innerHeight - 64);
+    const onScroll = () =>
+      setOverHero(window.scrollY < window.innerHeight - 64);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [isDarkHero]);
+
+  const navColor = overHero ? "whiteAlpha.900" : "gray.700";
+  const navHoverColor = overHero ? "whiteAlpha.500" : "gray.400";
 
   return (
     <Box
@@ -45,20 +49,20 @@ export const AppTopNav: React.FC = () => {
         <Logo color={overHero ? "white" : "primary.700"} size="default" />
       </Link>
 
-      <Flex as="nav" gap={1} fontSize="sm" fontWeight="medium">
+      <Flex as="nav" gap={1}>
         <Button
           variant="ghost"
           size="sm"
-          color={overHero ? "white" : "gray.700"}
-          _hover={{ bg: overHero ? "whiteAlpha.100" : "gray.100" }}
+          color={navColor}
+          _hover={{ bg: "transparent", color: navHoverColor }}
         >
           Product
         </Button>
         <Button
           variant="ghost"
           size="sm"
-          color={overHero ? "white" : "gray.700"}
-          _hover={{ bg: overHero ? "whiteAlpha.100" : "gray.100" }}
+          color={navColor}
+          _hover={{ bg: "transparent", color: navHoverColor }}
           onClick={() => navigate("/security")}
         >
           Security
@@ -66,8 +70,8 @@ export const AppTopNav: React.FC = () => {
         <Button
           variant="ghost"
           size="sm"
-          color={overHero ? "white" : "gray.700"}
-          _hover={{ bg: overHero ? "whiteAlpha.100" : "gray.100" }}
+          color={navColor}
+          _hover={{ bg: "transparent", color: navHoverColor }}
         >
           Company
         </Button>
@@ -77,8 +81,8 @@ export const AppTopNav: React.FC = () => {
         <Button
           variant="ghost"
           size="sm"
-          color={overHero ? "white" : "gray.700"}
-          _hover={{ bg: overHero ? "whiteAlpha.100" : "gray.100" }}
+          color={navColor}
+          _hover={{ bg: "transparent", color: navHoverColor }}
           onClick={() => window.open("https://app.rengoai.com/", "_blank")}
         >
           Log in
