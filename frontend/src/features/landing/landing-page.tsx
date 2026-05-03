@@ -1,13 +1,12 @@
 import { PulseGrid } from "@/components/pulse-grid";
-import { Box } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
 import React from "react";
 import { Link } from "react-router-dom";
 
-const NAVY = "#0C1D34";
-const NAVY_DEEP = "#07142A";
-const ACCENT_SOFT = "#3B8BE0";
+const ACCENT_SOFT = "primary.400";
 const TINT = "#1A3358";
+const NAVY = "gray.900";
 
 const FIRM_TYPES = [
   "Private Equity",
@@ -41,108 +40,95 @@ const marqueeScroll = keyframes`
   to   { transform: translateX(-50%); }
 `;
 
+const LogoMark: React.FC<{ color?: string }> = ({ color = "currentColor" }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: 22, height: 22, display: "block", stroke: color }}
+  >
+    <circle cx="12" cy="12" r="4" />
+    <path d="M12 2v2" />
+    <path d="M12 20v2" />
+    <path d="m4.93 4.93 1.41 1.41" />
+    <path d="m17.66 17.66 1.41 1.41" />
+    <path d="M2 12h2" />
+    <path d="M20 12h2" />
+    <path d="m6.34 17.66-1.41 1.41" />
+    <path d="m19.07 4.93-1.41 1.41" />
+  </svg>
+);
+
 const HeroNav: React.FC = () => (
-  <header
-    style={{
-      position: "relative",
-      zIndex: 2,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-      padding: "20px 48px",
-      borderBottom: "1px solid rgba(255,255,255,0.08)",
-    }}
+  <Box
+    as="header"
+    position="relative"
+    zIndex={2}
+    display="flex"
+    alignItems="center"
+    justifyContent="space-between"
+    px={12}
+    py={5}
+    borderBottom="1px solid"
+    borderColor="whiteAlpha.100"
   >
     <Link to="/" style={{ textDecoration: "none" }}>
-      <span
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 8,
-          color: "#fff",
-          fontFamily: '"Inter Tight", Inter, sans-serif',
-          fontSize: 16,
-          fontWeight: 500,
-          letterSpacing: "-0.01em",
-        }}
-      >
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          style={{
-            width: 22,
-            height: 22,
-            display: "block",
-            stroke: "currentColor",
-          }}
+      <Flex alignItems="center" gap={2} color="white">
+        <LogoMark color="white" />
+        <Text
+          fontSize="md"
+          fontWeight="medium"
+          letterSpacing="-0.01em"
+          color="white"
         >
-          <circle cx="12" cy="12" r="4" />
-          <path d="M12 2v2" />
-          <path d="M12 20v2" />
-          <path d="m4.93 4.93 1.41 1.41" />
-          <path d="m17.66 17.66 1.41 1.41" />
-          <path d="M2 12h2" />
-          <path d="M20 12h2" />
-          <path d="m6.34 17.66-1.41 1.41" />
-          <path d="m19.07 4.93-1.41 1.41" />
-        </svg>
-        Rengo
-      </span>
+          Rengo
+        </Text>
+      </Flex>
     </Link>
 
-    <nav
-      style={{
-        display: "flex",
-        gap: 32,
-        fontSize: 14,
-        color: "rgba(255,255,255,0.7)",
-        fontWeight: 500,
-        fontFamily: '"Inter Tight", Inter, sans-serif',
-      }}
+    <Flex
+      as="nav"
+      gap={8}
+      fontSize="sm"
+      color="whiteAlpha.700"
+      fontWeight="medium"
     >
-      <span style={{ cursor: "default" }}>Home</span>
-      <span style={{ cursor: "default" }}>Platform</span>
-      <span style={{ cursor: "default" }}>Insights</span>
-      <span style={{ cursor: "default" }}>Contact</span>
-    </nav>
+      <Text as="span">Home</Text>
+      <Text as="span">Platform</Text>
+      <Text as="span">Insights</Text>
+      <Text as="span">Contact</Text>
+    </Flex>
 
-    <button
+    <Button
+      variant="outline"
+      borderRadius="full"
+      borderColor="whiteAlpha.400"
+      color="white"
+      bg="transparent"
+      size="sm"
+      _hover={{ bg: "whiteAlpha.100" }}
       onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
-      style={{
-        background: "transparent",
-        color: "#fff",
-        border: "1px solid rgba(255,255,255,0.3)",
-        borderRadius: 999,
-        padding: "0 18px",
-        height: 36,
-        fontSize: 14,
-        fontWeight: 500,
-        fontFamily: '"Inter Tight", Inter, sans-serif',
-        cursor: "pointer",
-      }}
     >
       Talk to our team
-    </button>
-  </header>
+    </Button>
+  </Box>
 );
 
 const HeroSection: React.FC = () => (
-  <section
-    style={{
-      position: "relative",
-      background: NAVY,
-      color: "#fff",
-      minHeight: "100vh",
-      display: "flex",
-      flexDirection: "column",
-      overflow: "hidden",
-    }}
+  <Box
+    as="section"
+    position="relative"
+    bg={NAVY}
+    color="white"
+    minH="100vh"
+    display="flex"
+    flexDirection="column"
+    overflow="hidden"
   >
     {/* PulseGrid background */}
-    <div style={{ position: "absolute", inset: 0 }}>
+    <Box position="absolute" inset={0}>
       <PulseGrid
         id="a2-hero"
         tone="navy"
@@ -153,169 +139,137 @@ const HeroSection: React.FC = () => (
         rows={26}
         showHeaderRow={false}
         tintColor={TINT}
-        greenColor={ACCENT_SOFT}
+        greenColor="#3B8BE0"
         fadeBottom={false}
       />
-    </div>
+    </Box>
 
-    {/* Left-to-right gradient wash under the type */}
-    <div
+    {/* Left-to-right gradient wash */}
+    <Box
+      position="absolute"
+      inset={0}
+      pointerEvents="none"
       style={{
-        position: "absolute",
-        inset: 0,
-        pointerEvents: "none",
-        background: `linear-gradient(to right, rgba(7,20,42,0.92) 0%, rgba(12,29,52,0.78) 38%, rgba(12,29,52,0.4) 65%, rgba(12,29,52,0.15) 100%)`,
+        background:
+          "linear-gradient(to right, rgba(7,20,42,0.92) 0%, rgba(12,29,52,0.78) 38%, rgba(12,29,52,0.4) 65%, rgba(12,29,52,0.15) 100%)",
       }}
     />
 
-    {/* Bottom fade into the page */}
-    <div
+    {/* Bottom fade */}
+    <Box
+      position="absolute"
+      left={0}
+      right={0}
+      bottom={0}
+      h="200px"
+      pointerEvents="none"
       style={{
-        position: "absolute",
-        left: 0,
-        right: 0,
-        bottom: 0,
-        height: 200,
-        background: `linear-gradient(to bottom, transparent, ${NAVY} 100%)`,
-        pointerEvents: "none",
+        background: "linear-gradient(to bottom, transparent, #0C1D34 100%)",
       }}
     />
 
     <HeroNav />
 
-    {/* Hero copy — bottom-left anchored */}
-    <div
-      style={{
-        position: "relative",
-        zIndex: 2,
-        flex: 1,
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        padding: "0 64px 48px",
-      }}
+    {/* Hero copy */}
+    <Flex
+      position="relative"
+      zIndex={2}
+      flex={1}
+      direction="column"
+      justify="center"
+      px={16}
+      pb={12}
     >
-      {/* Mono eyebrow */}
-      <div
-        style={{
-          fontFamily: '"JetBrains Mono", SFMono-Regular, monospace',
-          fontSize: 11,
-          letterSpacing: "0.18em",
-          textTransform: "uppercase",
-          color: ACCENT_SOFT,
-          marginBottom: 24,
-        }}
+      <Text
+        fontFamily="mono"
+        fontSize="11px"
+        letterSpacing="0.18em"
+        textTransform="uppercase"
+        color={ACCENT_SOFT}
+        mb={6}
       >
-        For private capital
-      </div>
+        Portfolio Intelligence
+      </Text>
 
-      {/* Headline */}
-      <h1
-        style={{
-          margin: 0,
-          fontFamily: '"Source Serif 4", Georgia, serif',
-          fontSize: "clamp(52px, 6vw, 84px)",
-          lineHeight: 1.04,
-          letterSpacing: "-0.025em",
-          fontWeight: 400,
-          color: "#fff",
-          maxWidth: 880,
-        }}
+      <Box
+        as="h1"
+        m={0}
+        fontFamily="heading"
+        fontSize="clamp(52px, 6vw, 84px)"
+        lineHeight={1.04}
+        letterSpacing="-0.025em"
+        fontWeight={400}
+        color="white"
+        maxW="880px"
       >
-        The operating system
+        Financial Infrastructure for Private Capital
         <br />
-        for private capital.
-      </h1>
+      </Box>
 
-      {/* Thin rule */}
-      <div
-        style={{
-          height: 1,
-          background: "rgba(255,255,255,0.35)",
-          width: 72,
-          margin: "28px 0 20px",
-        }}
-      />
+      <Box h="1px" bg="whiteAlpha.500" w="72px" my={7} />
 
-      {/* Subtitle */}
-      <p
-        style={{
-          margin: 0,
-          fontSize: 18,
-          lineHeight: 1.45,
-          color: "rgba(255,255,255,0.78)",
-          maxWidth: 580,
-          fontFamily: '"Inter Tight", Inter, sans-serif',
-        }}
-      >
-        Rengo is the first AI-native portfolio monitoring platform for private
-        markets. The system of record. The intelligence layer. The standard.
-      </p>
+      <Text fontSize="lg" lineHeight={1.45} color="whiteAlpha.800" maxW="580px">
+        Purpose built AI trusted by leading asset managers to organize portfolio
+        data into a single, searchable source of truth for firm operations.
+      </Text>
 
-      {/* CTAs */}
-      <div style={{ marginTop: 36, display: "flex", gap: 12 }}>
-        <button
+      <Flex mt={9} gap={3}>
+        <Button
+          borderRadius="full"
+          bg="white"
+          color={NAVY}
+          border="1px solid white"
+          h="42px"
+          px={6}
+          fontSize="15px"
+          fontWeight="medium"
+          _hover={{ bg: "gray.50" }}
           onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
-          style={{
-            background: "#fff",
-            color: NAVY,
-            border: "1px solid #fff",
-            borderRadius: 999,
-            padding: "0 22px",
-            height: 42,
-            fontSize: 15,
-            fontWeight: 500,
-            fontFamily: '"Inter Tight", Inter, sans-serif',
-            cursor: "pointer",
-          }}
         >
           Talk to our team
-        </button>
-        <button
+        </Button>
+        <Button
+          borderRadius="full"
+          bg="transparent"
+          color="whiteAlpha.900"
+          border="1px solid"
+          borderColor="whiteAlpha.300"
+          h="42px"
+          px={6}
+          fontSize="15px"
+          _hover={{ bg: "whiteAlpha.100" }}
           onClick={() => window.open("https://app.rengoai.com/", "_blank")}
-          style={{
-            background: "transparent",
-            color: "rgba(255,255,255,0.85)",
-            border: "1px solid rgba(255,255,255,0.25)",
-            borderRadius: 999,
-            padding: "0 22px",
-            height: 42,
-            fontSize: 15,
-            fontFamily: '"Inter Tight", Inter, sans-serif',
-            cursor: "pointer",
-          }}
         >
           See the platform
-        </button>
-      </div>
-    </div>
-  </section>
+        </Button>
+      </Flex>
+    </Flex>
+  </Box>
 );
 
 const FirmsStrip: React.FC = () => (
-  <section
-    style={{
-      background: "#F3F7FC",
-      borderBottom: "1px solid #E2E7EE",
-      padding: "32px 0",
-    }}
+  <Box
+    as="section"
+    bg="primary.25"
+    borderBottom="1px solid"
+    borderColor="border.muted"
+    py={8}
   >
-    <div
-      style={{
-        fontSize: 11,
-        fontFamily: '"JetBrains Mono", SFMono-Regular, monospace',
-        color: "#6B7A8F",
-        letterSpacing: "0.08em",
-        textTransform: "uppercase",
-        padding: "0 48px 16px",
-      }}
+    <Text
+      fontFamily="mono"
+      fontSize="11px"
+      color="gray.500"
+      letterSpacing="0.08em"
+      textTransform="uppercase"
+      px={12}
+      mb={4}
     >
       Built with leading firms across
-    </div>
-    <div
-      style={{
-        width: "100%",
-        overflow: "hidden",
+    </Text>
+    <Box
+      w="full"
+      overflow="hidden"
+      css={{
         WebkitMaskImage:
           "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
         maskImage:
@@ -324,7 +278,6 @@ const FirmsStrip: React.FC = () => (
     >
       <Box
         display="flex"
-        gap={16}
         css={{
           gap: "64px",
           animation: `${marqueeScroll} 40s linear infinite`,
@@ -336,167 +289,94 @@ const FirmsStrip: React.FC = () => (
           .fill(FIRM_TYPES)
           .flat()
           .map((label, i) => (
-            <span
+            <Text
               key={i}
-              style={{
-                fontSize: 28,
-                color: "#0052A3",
-                opacity: 0.3,
-                fontWeight: 400,
-                letterSpacing: "-0.01em",
-                fontFamily: '"Inter Tight", Inter, sans-serif',
-              }}
+              as="span"
+              fontSize="28px"
+              color="primary.700"
+              opacity={0.3}
+              fontWeight={400}
+              letterSpacing="-0.01em"
             >
               {label}
-            </span>
+            </Text>
           ))}
       </Box>
-    </div>
-  </section>
+    </Box>
+  </Box>
 );
 
 const ThreePillars: React.FC = () => (
-  <section
-    style={{
-      padding: "112px 48px",
-      background: "#FCFBFA",
-    }}
-  >
-    <h2
-      style={{
-        margin: 0,
-        fontFamily: '"Source Serif 4", Georgia, serif',
-        fontSize: 40,
-        fontWeight: 400,
-        letterSpacing: "-0.025em",
-        color: "#0C1D34",
-        maxWidth: 720,
-      }}
+  <Box as="section" px={12} py={28} bg="gray.25">
+    <Box
+      as="h2"
+      m={0}
+      fontFamily="heading"
+      fontSize="40px"
+      fontWeight={400}
+      letterSpacing="-0.025em"
+      color={NAVY}
+      maxW="720px"
     >
       Three workflows.
       <br />
       One source of truth.
-    </h2>
+    </Box>
 
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(3, 1fr)",
-        gap: 64,
-        marginTop: 64,
-      }}
-    >
+    <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap={16} mt={16}>
       {PILLARS.map(([n, title, desc]) => (
-        <div
-          key={n}
-          style={{
-            borderTop: "1px solid #0052A3",
-            paddingTop: 20,
-          }}
-        >
-          <span
-            style={{
-              fontSize: 11,
-              fontFamily: '"JetBrains Mono", SFMono-Regular, monospace',
-              color: "#0052A3",
-              letterSpacing: "0.08em",
-            }}
+        <Box key={n} borderTop="1px solid" borderColor="primary.700" pt={5}>
+          <Text
+            as="span"
+            fontFamily="mono"
+            fontSize="11px"
+            color="primary.700"
+            letterSpacing="0.08em"
           >
             {n}
-          </span>
-          <h3
-            style={{
-              margin: "10px 0 12px",
-              fontFamily: '"Source Serif 4", Georgia, serif',
-              fontSize: 24,
-              fontWeight: 400,
-              color: "#0C1D34",
-            }}
+          </Text>
+          <Box
+            as="h3"
+            mt="10px"
+            mb="12px"
+            fontFamily="heading"
+            fontSize="24px"
+            fontWeight={400}
+            color={NAVY}
           >
             {title}
-          </h3>
-          <p
-            style={{
-              margin: 0,
-              fontSize: 14,
-              lineHeight: 1.6,
-              color: "#4F5E76",
-              fontFamily: '"Inter Tight", Inter, sans-serif',
-            }}
-          >
+          </Box>
+          <Text fontSize="sm" lineHeight={1.6} color="gray.600">
             {desc}
-          </p>
-        </div>
+          </Text>
+        </Box>
       ))}
-    </div>
-  </section>
+    </Box>
+  </Box>
 );
 
 const LandingFooter: React.FC = () => (
-  <footer
-    style={{
-      background: NAVY,
-      color: "#fff",
-      padding: "40px 48px 24px",
-      fontFamily: '"Inter Tight", Inter, sans-serif',
-    }}
-  >
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "flex-start",
-        gap: 32,
-      }}
-    >
-      {/* Logo */}
-      <span
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 8,
-          color: "#fff",
-          fontSize: 16,
-          fontWeight: 500,
-          letterSpacing: "-0.01em",
-        }}
-      >
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          style={{
-            width: 22,
-            height: 22,
-            display: "block",
-            stroke: "currentColor",
-          }}
+  <Box as="footer" bg={NAVY} color="white" px={12} pt={10} pb={6}>
+    <Flex justify="space-between" align="flex-start" gap={8}>
+      <Flex alignItems="center" gap={2} color="white">
+        <LogoMark color="white" />
+        <Text
+          fontSize="md"
+          fontWeight="medium"
+          letterSpacing="-0.01em"
+          color="white"
         >
-          <circle cx="12" cy="12" r="4" />
-          <path d="M12 2v2" />
-          <path d="M12 20v2" />
-          <path d="m4.93 4.93 1.41 1.41" />
-          <path d="m17.66 17.66 1.41 1.41" />
-          <path d="M2 12h2" />
-          <path d="M20 12h2" />
-          <path d="m6.34 17.66-1.41 1.41" />
-          <path d="m19.07 4.93-1.41 1.41" />
-        </svg>
-        Rengo
-      </span>
+          Rengo
+        </Text>
+      </Flex>
 
-      {/* Link columns */}
-      <div style={{ display: "flex", gap: 56, fontSize: 14 }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          <strong style={{ fontWeight: 600 }}>Solutions</strong>
-          <span style={{ opacity: 0.7, cursor: "default" }}>
-            Portfolio Monitoring
-          </span>
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          <strong style={{ fontWeight: 600 }}>Legal</strong>
+      <Flex gap={14} fontSize="sm">
+        <Flex direction="column" gap={2}>
+          <Text fontWeight="semibold">Solutions</Text>
+          <Text opacity={0.7}>Portfolio Monitoring</Text>
+        </Flex>
+        <Flex direction="column" gap={2}>
+          <Text fontWeight="semibold">Legal</Text>
           <Link
             to="/legal/privacy-policy"
             style={{ opacity: 0.7, color: "inherit", textDecoration: "none" }}
@@ -509,59 +389,59 @@ const LandingFooter: React.FC = () => (
           >
             Terms of Service
           </Link>
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          <strong style={{ fontWeight: 600 }}>Company</strong>
+        </Flex>
+        <Flex direction="column" gap={2}>
+          <Text fontWeight="semibold">Company</Text>
           <Link
             to="/careers"
             style={{ opacity: 0.7, color: "inherit", textDecoration: "none" }}
           >
             Careers
           </Link>
-        </div>
-      </div>
-    </div>
+        </Flex>
+      </Flex>
+    </Flex>
 
-    <div
-      style={{
-        marginTop: 32,
-        paddingTop: 16,
-        borderTop: "1px solid rgba(255,255,255,0.12)",
-        display: "flex",
-        justifyContent: "space-between",
-        fontFamily: '"JetBrains Mono", SFMono-Regular, monospace',
-        fontSize: 11,
-        letterSpacing: "0.08em",
-        textTransform: "uppercase",
-        color: "rgba(255,255,255,0.5)",
-      }}
+    <Flex
+      mt={8}
+      pt={4}
+      borderTop="1px solid"
+      borderColor="whiteAlpha.200"
+      justify="space-between"
+      fontFamily="mono"
+      fontSize="11px"
+      letterSpacing="0.08em"
+      textTransform="uppercase"
+      color="whiteAlpha.500"
     >
-      <span>© 2026 Rengo AI, Inc.</span>
-      <div style={{ display: "flex", gap: 24 }}>
-        <span
-          style={{ cursor: "pointer" }}
+      <Text as="span">© 2026 Rengo AI, Inc.</Text>
+      <Flex gap={6}>
+        <Text
+          as="span"
+          cursor="pointer"
           onClick={() =>
             window.open("https://www.linkedin.com/company/106703002", "_blank")
           }
         >
           LinkedIn
-        </span>
-        <span
-          style={{ cursor: "pointer" }}
+        </Text>
+        <Text
+          as="span"
+          cursor="pointer"
           onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
         >
           Contact
-        </span>
-      </div>
-    </div>
-  </footer>
+        </Text>
+      </Flex>
+    </Flex>
+  </Box>
 );
 
 export const LandingPage: React.FC = () => (
-  <div style={{ fontFamily: '"Inter Tight", Inter, sans-serif' }}>
+  <Box fontFamily="body">
     <HeroSection />
     <FirmsStrip />
     <ThreePillars />
     <LandingFooter />
-  </div>
+  </Box>
 );
