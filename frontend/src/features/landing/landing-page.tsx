@@ -108,18 +108,20 @@ const HeroNav: React.FC = () => {
       </Flex>
 
       <Flex gap={4} alignItems="center">
-        <Text
-          as="span"
-          fontSize="sm"
-          fontWeight="medium"
-          color={overHero ? "white" : "gray.700"}
-          cursor="pointer"
-          opacity={0.9}
-          _hover={{ opacity: 0.6 }}
-          onClick={() => window.open("https://app.rengoai.com/", "_blank")}
-        >
-          Log in
-        </Text>
+        <Box px={2}>
+          <Text
+            as="span"
+            fontSize="sm"
+            fontWeight="medium"
+            color={overHero ? "white" : "gray.700"}
+            cursor="pointer"
+            opacity={0.9}
+            _hover={{ opacity: 0.6 }}
+            onClick={() => window.open("https://app.rengoai.com/", "_blank")}
+          >
+            Log in
+          </Text>
+        </Box>
         <Button
           borderRadius="md"
           bg={overHero ? "white" : "primary.700"}
