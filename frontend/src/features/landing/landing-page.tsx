@@ -2,7 +2,7 @@ import { Logo } from "@/components/logo/logo";
 import { PulseGrid } from "@/components/pulse-grid";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const ACCENT_SOFT = "primary.400";
@@ -41,59 +41,70 @@ const marqueeScroll = keyframes`
   to   { transform: translateX(-50%); }
 `;
 
+const HERO_HEIGHT_VH = 100;
 
-const HeroNav: React.FC = () => (
-  <Box
-    as="header"
-    position="fixed"
-    top={0}
-    left={0}
-    right={0}
-    zIndex={100}
-    display="flex"
-    alignItems="center"
-    justifyContent="space-between"
-    px={12}
-    py={4}
-    borderBottom="1px solid"
-    borderColor="whiteAlpha.100"
-    bg="transparent"
-  >
-    <Link to="/" style={{ textDecoration: "none" }}>
-      <Logo color="white" size="default" />
-    </Link>
+const HeroNav: React.FC = () => {
+  const [overHero, setOverHero] = useState(true);
 
-    <Flex
-      as="nav"
-      gap={8}
-      fontSize="sm"
-      color="whiteAlpha.700"
-      fontWeight="medium"
+  useEffect(() => {
+    const onScroll = () => {
+      const heroH = (window.innerHeight * HERO_HEIGHT_VH) / 100;
+      setOverHero(window.scrollY < heroH - 64);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const navColor = overHero ? "whiteAlpha.700" : "gray.600";
+
+  return (
+    <Box
+      as="header"
+      position="fixed"
+      top={0}
+      left={0}
+      right={0}
+      zIndex={100}
+      display="flex"
+      alignItems="center"
+      justifyContent="space-between"
+      px={12}
+      py={4}
+      borderBottom="1px solid"
+      borderColor={overHero ? "whiteAlpha.100" : "border.muted"}
+      bg={overHero ? "gray.900" : "white"}
+      style={{ transition: "background 200ms ease, border-color 200ms ease" }}
     >
-      <Text as="span">Product</Text>
-      <Text as="span">Security</Text>
-      <Text as="span">Company</Text>
-      <Text
-        as="span"
-        cursor="pointer"
-        onClick={() => window.open("https://app.rengoai.com/", "_blank")}
+      <Link to="/" style={{ textDecoration: "none" }}>
+        <Logo color={overHero ? "white" : "primary.700"} size="default" />
+      </Link>
+
+      <Flex as="nav" gap={8} fontSize="sm" color={navColor} fontWeight="medium">
+        <Text as="span">Product</Text>
+        <Text as="span">Security</Text>
+        <Text as="span">Company</Text>
+        <Text
+          as="span"
+          cursor="pointer"
+          onClick={() => window.open("https://app.rengoai.com/", "_blank")}
+        >
+          Log in
+        </Text>
+      </Flex>
+
+      <Button
+        borderRadius="md"
+        bg={overHero ? "white" : "primary.700"}
+        color={overHero ? NAVY : "white"}
+        size="sm"
+        _hover={{ bg: overHero ? "gray.100" : "primary.800" }}
+        onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
       >
-        Log in
-      </Text>
-    </Flex>
-
-    <Button
-      borderRadius="md"
-      bg="white"
-      color={NAVY}
-      size="sm"
-      _hover={{ bg: "gray.100" }}
-      onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
-    >
-      Talk to our team
-    </Button>
-  </Box>
-);
+        See a demo
+      </Button>
+    </Box>
+  );
+};
 
 const HeroSection: React.FC = () => (
   <Box
@@ -317,75 +328,85 @@ const ThreePillars: React.FC = () => (
   </Box>
 );
 
-const LandingFooter: React.FC = () => (
-  <Box as="footer" bg={NAVY} color="white" px={12} pt={10} pb={6}>
-    <Flex justify="space-between" align="flex-start" gap={8}>
-      <Logo color="white" size="default" />
+interface FooterColProps {
+  title: string;
+  children: React.ReactNode;
+}
 
-      <Flex gap={14} fontSize="sm">
-        <Flex direction="column" gap={2}>
-          <Text fontWeight="semibold">Solutions</Text>
-          <Text opacity={0.7}>Portfolio Monitoring</Text>
-        </Flex>
-        <Flex direction="column" gap={2}>
-          <Text fontWeight="semibold">Legal</Text>
-          <Link
-            to="/legal/privacy-policy"
-            style={{ opacity: 0.7, color: "inherit", textDecoration: "none" }}
-          >
-            Privacy Policy
-          </Link>
-          <Link
-            to="/legal/terms-of-service"
-            style={{ opacity: 0.7, color: "inherit", textDecoration: "none" }}
-          >
-            Terms of Service
-          </Link>
-        </Flex>
-        <Flex direction="column" gap={2}>
-          <Text fontWeight="semibold">Company</Text>
-          <Link
-            to="/careers"
-            style={{ opacity: 0.7, color: "inherit", textDecoration: "none" }}
-          >
-            Careers
-          </Link>
-        </Flex>
-      </Flex>
-    </Flex>
-
-    <Flex
-      mt={8}
-      pt={4}
-      borderTop="1px solid"
-      borderColor="whiteAlpha.200"
-      justify="space-between"
+const FooterCol: React.FC<FooterColProps> = ({ title, children }) => (
+  <Flex direction="column" gap={3} minW="120px">
+    <Text
       fontFamily="mono"
       fontSize="11px"
       letterSpacing="0.08em"
       textTransform="uppercase"
       color="whiteAlpha.500"
+      mb={1}
     >
-      <Text as="span">© 2026 Rengo AI, Inc.</Text>
-      <Flex gap={6}>
-        <Text
-          as="span"
-          cursor="pointer"
-          onClick={() =>
-            window.open("https://www.linkedin.com/company/106703002", "_blank")
-          }
-        >
-          LinkedIn
-        </Text>
-        <Text
-          as="span"
-          cursor="pointer"
-          onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
-        >
-          Contact
-        </Text>
-      </Flex>
+      {title}
+    </Text>
+    {children}
+  </Flex>
+);
+
+const FooterLink: React.FC<{
+  to?: string;
+  href?: string;
+  children: React.ReactNode;
+}> = ({ to, href, children }) => {
+  const styles: React.CSSProperties = {
+    color: "rgba(255,255,255,0.65)",
+    textDecoration: "none",
+    fontSize: "14px",
+    cursor: "pointer",
+  };
+  if (to)
+    return (
+      <Link to={to} style={styles}>
+        {children}
+      </Link>
+    );
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" style={styles}>
+      {children}
+    </a>
+  );
+};
+
+const LandingFooter: React.FC = () => (
+  <Box as="footer" bg={NAVY} color="white" px={12} pt={16} pb={8}>
+    <Flex justify="space-between" align="flex-start" w="full">
+      <FooterCol title="Overview">
+        <FooterLink to="/solutions/portfolio-monitoring">Portfolio Monitoring</FooterLink>
+        <FooterLink to="/legal/security">Security</FooterLink>
+      </FooterCol>
+
+      <FooterCol title="Company">
+        <FooterLink to="/careers">Careers</FooterLink>
+      </FooterCol>
+
+      <FooterCol title="Legal">
+        <FooterLink to="/legal/privacy-policy">Privacy Policy</FooterLink>
+        <FooterLink to="/legal/terms-of-service">Terms of Service</FooterLink>
+      </FooterCol>
+
+      <FooterCol title="Contact">
+        <FooterLink href="mailto:sales@rengoai.com">See a demo</FooterLink>
+        <FooterLink href="https://www.linkedin.com/company/106703002">LinkedIn</FooterLink>
+        <FooterLink href="mailto:sales@rengoai.com">Sales</FooterLink>
+      </FooterCol>
     </Flex>
+
+    <Text
+      mt={12}
+      fontFamily="mono"
+      fontSize="11px"
+      letterSpacing="0.06em"
+      textTransform="uppercase"
+      color="whiteAlpha.500"
+    >
+      © 2026 Rengo AI, Inc.
+    </Text>
   </Box>
 );
 

@@ -46,7 +46,7 @@ export const Logo: React.FC<LogoProps> = ({
         _hover={{ bg: "transparent" }}
       />
       {!isCollapsed && (
-        <Text fontSize={styles.fontSize} fontWeight="bold" color={color}>
+        <Text fontSize={styles.fontSize} fontWeight="medium" color={color}>
           rengo ai
         </Text>
       )}
