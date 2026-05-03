@@ -25,7 +25,7 @@ export const AppTopNav: React.FC = () => {
   }, [isDarkHero]);
 
   const navColor = overHero ? "whiteAlpha.900" : "gray.700";
-  const navHoverColor = overHero ? "whiteAlpha.500" : "gray.400";
+  const navHoverColor = overHero ? "whiteAlpha.500" : NAVY;
 
   return (
     <Box
