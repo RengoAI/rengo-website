@@ -39,7 +39,7 @@ export const AppTopNav: React.FC = () => {
       alignItems="center"
       justifyContent="space-between"
       px={20}
-      py={2.5}
+      py={2}
       borderBottom="1px solid"
       borderColor={overHero ? "whiteAlpha.100" : "border.muted"}
       bg={overHero ? NAVY : "white"}

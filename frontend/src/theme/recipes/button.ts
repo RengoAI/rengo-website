@@ -236,7 +236,7 @@ export const buttonRecipe = defineRecipe({
         height: "unset",
       },
       sm: {
-        py: "7px",
+        py: "6px",
         px: "14px",
         fontSize: "14px",
         minHeight: "32px",
