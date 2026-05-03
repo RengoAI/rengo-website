@@ -95,20 +95,20 @@ export const SecurityPage: React.FC = () => (
     </Flex>
 
     {/* Feature cards — sales deck grid style */}
-    <Box bg="white" px={20} py={24}>
+    <Box bg="white" px={20} py={28}>
       <Text
         fontFamily="heading"
-        fontSize={{ base: "28px", md: "36px" }}
+        fontSize="40px"
         fontWeight={400}
-        letterSpacing="-0.02em"
+        letterSpacing="-0.025em"
         color={NAVY}
         mb={4}
-        maxW="600px"
+        maxW="720px"
       >
         Safe, secure, and compliant
       </Text>
       <Text
-        fontSize="md"
+        fontSize="lg"
         lineHeight={1.6}
         color="gray.500"
         maxW="600px"
@@ -147,9 +147,9 @@ export const SecurityPage: React.FC = () => (
             <Box
               as="h3"
               fontFamily="heading"
-              fontSize="22px"
+              fontSize="24px"
               fontWeight={400}
-              letterSpacing="-0.015em"
+              letterSpacing="-0.02em"
               lineHeight={1.15}
               color={NAVY}
               m={0}
