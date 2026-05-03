@@ -8,14 +8,15 @@ import { useLocation } from "react-router-dom";
 
 export const AppLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const location = useLocation();
+  const isLanding = location.pathname === "/";
 
   return (
     <ErrorBoundary fallback={AppError} resetKeys={[location.pathname]}>
-      <AppTopNav />
-      <Box minH="calc(100vh - 64px)">
+      {!isLanding && <AppTopNav />}
+      <Box minH={isLanding ? undefined : "calc(100vh - 64px)"}>
         <ErrorBoundary fallback={AppError} resetKeys={[location.pathname]}>
           {children}
-          <AppFooter />
+          {!isLanding && <AppFooter />}
         </ErrorBoundary>
       </Box>
     </ErrorBoundary>
