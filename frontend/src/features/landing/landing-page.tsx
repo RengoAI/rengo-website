@@ -45,9 +45,11 @@ const marqueeScroll = keyframes`
 const HeroNav: React.FC = () => (
   <Box
     as="header"
-    position="sticky"
+    position="fixed"
     top={0}
-    zIndex={10}
+    left={0}
+    right={0}
+    zIndex={100}
     display="flex"
     alignItems="center"
     justifyContent="space-between"
@@ -55,7 +57,7 @@ const HeroNav: React.FC = () => (
     py={4}
     borderBottom="1px solid"
     borderColor="whiteAlpha.100"
-    bg={NAVY}
+    bg="transparent"
   >
     <Link to="/" style={{ textDecoration: "none" }}>
       <Logo color="white" size="default" />
@@ -71,32 +73,25 @@ const HeroNav: React.FC = () => (
       <Text as="span">Product</Text>
       <Text as="span">Security</Text>
       <Text as="span">Company</Text>
-    </Flex>
-
-    <Flex gap={3}>
-      <Button
-        variant="outline"
-        borderRadius="md"
-        borderColor="whiteAlpha.400"
-        color="white"
-        bg="transparent"
-        size="sm"
-        _hover={{ bg: "whiteAlpha.100" }}
+      <Text
+        as="span"
+        cursor="pointer"
         onClick={() => window.open("https://app.rengoai.com/", "_blank")}
       >
         Log in
-      </Button>
-      <Button
-        borderRadius="md"
-        bg="white"
-        color={NAVY}
-        size="sm"
-        _hover={{ bg: "gray.100" }}
-        onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
-      >
-        Talk to our team
-      </Button>
+      </Text>
     </Flex>
+
+    <Button
+      borderRadius="md"
+      bg="white"
+      color={NAVY}
+      size="sm"
+      _hover={{ bg: "gray.100" }}
+      onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
+    >
+      Talk to our team
+    </Button>
   </Box>
 );
 
@@ -109,10 +104,9 @@ const HeroSection: React.FC = () => (
     minH="100vh"
     display="flex"
     flexDirection="column"
-    overflow="hidden"
   >
     {/* PulseGrid background */}
-    <Box position="absolute" inset={0}>
+    <Box position="absolute" inset={0} overflow="hidden">
       <PulseGrid
         id="a2-hero"
         tone="navy"
@@ -152,8 +146,6 @@ const HeroSection: React.FC = () => (
       }}
     />
 
-    <HeroNav />
-
     {/* Hero copy */}
     <Flex
       position="relative"
@@ -162,6 +154,7 @@ const HeroSection: React.FC = () => (
       direction="column"
       justify="center"
       px={16}
+      pt="80px"
       pb={12}
     >
       <Text
@@ -398,6 +391,7 @@ const LandingFooter: React.FC = () => (
 
 export const LandingPage: React.FC = () => (
   <Box fontFamily="body">
+    <HeroNav />
     <HeroSection />
     <FirmsStrip />
     <ThreePillars />
