@@ -32,16 +32,17 @@ export const legalRoutes: RouteObject = {
         return { Component: PrivacyPolicyPage };
       },
     },
-    {
-      id: "security",
-      path: "security",
-      handle: {
-        pageTitle: "Security",
-      },
-      lazy: async () => {
-        const { SecurityPage } = await import("@/features/legal/security-page");
-        return { Component: SecurityPage };
-      },
-    },
   ],
+};
+
+export const securityRoute: RouteObject = {
+  id: "security",
+  path: "security",
+  handle: {
+    pageTitle: "Security",
+  },
+  lazy: async () => {
+    const { SecurityPage } = await import("@/features/legal/security-page");
+    return { Component: SecurityPage };
+  },
 };

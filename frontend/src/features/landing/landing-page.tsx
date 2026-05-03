@@ -1,9 +1,7 @@
-import { Logo } from "@/components/logo/logo";
 import { PulseGrid } from "@/components/pulse-grid";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 
 const ACCENT_SOFT = "primary.400";
 const TINT = "#1A3358";
@@ -41,101 +39,6 @@ const marqueeScroll = keyframes`
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
 `;
-
-const HERO_HEIGHT_VH = 100;
-
-const HeroNav: React.FC = () => {
-  const [overHero, setOverHero] = useState(true);
-
-  useEffect(() => {
-    const onScroll = () => {
-      const heroH = (window.innerHeight * HERO_HEIGHT_VH) / 100;
-      setOverHero(window.scrollY < heroH - 64);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  const navColor = overHero ? "whiteAlpha.700" : "gray.600";
-
-  return (
-    <Box
-      as="header"
-      position="fixed"
-      top={0}
-      left={0}
-      right={0}
-      zIndex={100}
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-      px={20}
-      py={4}
-      borderBottom="1px solid"
-      borderColor={overHero ? "whiteAlpha.100" : "border.muted"}
-      bg={overHero ? "gray.900" : "white"}
-      style={{ transition: "background 200ms ease, border-color 200ms ease" }}
-    >
-      <Link to="/" style={{ textDecoration: "none" }}>
-        <Logo color={overHero ? "white" : "primary.700"} size="default" />
-      </Link>
-
-      <Flex as="nav" gap={8} fontSize="sm" color={navColor} fontWeight="medium">
-        <Text
-          as="span"
-          color={overHero ? "white" : "gray.700"}
-          _hover={{ color: navColor }}
-          cursor="default"
-        >
-          Product
-        </Text>
-        <Text
-          as="span"
-          color={overHero ? "white" : "gray.700"}
-          _hover={{ color: navColor }}
-          cursor="default"
-        >
-          Security
-        </Text>
-        <Text
-          as="span"
-          color={overHero ? "white" : "gray.700"}
-          _hover={{ color: navColor }}
-          cursor="default"
-        >
-          Company
-        </Text>
-      </Flex>
-
-      <Flex gap={4} alignItems="center">
-        <Box px={2}>
-          <Text
-            as="span"
-            fontSize="sm"
-            fontWeight="medium"
-            color={overHero ? "white" : "gray.700"}
-            cursor="pointer"
-            opacity={0.9}
-            _hover={{ opacity: 0.6 }}
-            onClick={() => window.open("https://app.rengoai.com/", "_blank")}
-          >
-            Log in
-          </Text>
-        </Box>
-        <Button
-          borderRadius="md"
-          bg={overHero ? "white" : "primary.700"}
-          color={overHero ? NAVY : "white"}
-          size="sm"
-          _hover={{ bg: overHero ? "gray.100" : "primary.800" }}
-          onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
-        >
-          See a demo
-        </Button>
-      </Flex>
-    </Box>
-  );
-};
 
 const HeroSection: React.FC = () => (
   <Box
@@ -359,98 +262,10 @@ const ThreePillars: React.FC = () => (
   </Box>
 );
 
-interface FooterColProps {
-  title: string;
-  children: React.ReactNode;
-}
-
-const FooterCol: React.FC<FooterColProps> = ({ title, children }) => (
-  <Flex direction="column" gap={3} minW="120px">
-    <Text
-      fontFamily={EDICT}
-      fontSize="11px"
-      letterSpacing="0.08em"
-      textTransform="uppercase"
-      color="whiteAlpha.500"
-      mb={1}
-    >
-      {title}
-    </Text>
-    {children}
-  </Flex>
-);
-
-const FooterLink: React.FC<{
-  to?: string;
-  href?: string;
-  children: React.ReactNode;
-}> = ({ to, href, children }) => {
-  const styles: React.CSSProperties = {
-    color: "rgba(255,255,255,0.65)",
-    textDecoration: "none",
-    fontSize: "14px",
-    cursor: "pointer",
-  };
-  if (to)
-    return (
-      <Link to={to} style={styles}>
-        {children}
-      </Link>
-    );
-  return (
-    <a href={href} target="_blank" rel="noopener noreferrer" style={styles}>
-      {children}
-    </a>
-  );
-};
-
-const LandingFooter: React.FC = () => (
-  <Box as="footer" bg={NAVY} color="white" px={20} pt={16} pb={8}>
-    <Flex justify="space-between" align="flex-start" w="full">
-      <FooterCol title="Overview">
-        <FooterLink to="/solutions/portfolio-monitoring">
-          Portfolio Monitoring
-        </FooterLink>
-        <FooterLink to="/legal/security">Security</FooterLink>
-      </FooterCol>
-
-      <FooterCol title="Company">
-        <FooterLink to="/careers">Careers</FooterLink>
-      </FooterCol>
-
-      <FooterCol title="Legal">
-        <FooterLink to="/legal/privacy-policy">Privacy Policy</FooterLink>
-        <FooterLink to="/legal/terms-of-service">Terms of Service</FooterLink>
-      </FooterCol>
-
-      <FooterCol title="Contact">
-        <FooterLink href="mailto:sales@rengoai.com">See a demo</FooterLink>
-        <FooterLink href="mailto:sales@rengoai.com">Sales</FooterLink>
-        <FooterLink href="https://www.linkedin.com/company/106703002">
-          LinkedIn
-        </FooterLink>
-      </FooterCol>
-    </Flex>
-
-    <Text
-      mt={12}
-      fontFamily={EDICT}
-      fontSize="11px"
-      letterSpacing="0.06em"
-      textTransform="uppercase"
-      color="whiteAlpha.500"
-    >
-      © 2026 Rengo AI, Inc.
-    </Text>
-  </Box>
-);
-
 export const LandingPage: React.FC = () => (
   <Box fontFamily="body">
-    <HeroNav />
     <HeroSection />
     <FirmsStrip />
     <ThreePillars />
-    <LandingFooter />
   </Box>
 );

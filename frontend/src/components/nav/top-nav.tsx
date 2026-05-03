@@ -1,42 +1,99 @@
 import { Logo } from "@/components/logo/logo";
-import { Box, Button, Flex, HStack, Text } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Box, Button, Flex } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
-export const TOP_NAV_HEIGHT = 48;
+export const TOP_NAV_HEIGHT = 64;
 
-export const AppTopNav: React.FC = () => (
-  <Box
-    bg="bg.surface"
-    borderBottom="1px solid"
-    borderColor="border.muted"
-    p={2}
-    width="100%"
-    position="sticky"
-    top={0}
-    zIndex={1000}
-  >
-    <Flex alignItems="center" justifyContent="space-between">
-      <Link to="/">
-        <Logo color="primary.700" size="default" />
+const NAVY = "gray.900";
+
+const DARK_HERO_PATHS = ["/", "/security"];
+
+export const AppTopNav: React.FC = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isDarkHero = DARK_HERO_PATHS.includes(location.pathname);
+  const [overHero, setOverHero] = useState(isDarkHero);
+
+  useEffect(() => {
+    setOverHero(isDarkHero);
+    if (!isDarkHero) return;
+    const onScroll = () => setOverHero(window.scrollY < window.innerHeight - 64);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [isDarkHero]);
+
+  return (
+    <Box
+      as="header"
+      position="fixed"
+      top={0}
+      left={0}
+      right={0}
+      zIndex={100}
+      display="flex"
+      alignItems="center"
+      justifyContent="space-between"
+      px={20}
+      py={4}
+      borderBottom="1px solid"
+      borderColor={overHero ? "whiteAlpha.100" : "border.muted"}
+      bg={overHero ? NAVY : "white"}
+      style={{ transition: "background 200ms ease, border-color 200ms ease" }}
+    >
+      <Link to="/" style={{ textDecoration: "none" }}>
+        <Logo color={overHero ? "white" : "primary.700"} size="default" />
       </Link>
-      <HStack gap={3}>
+
+      <Flex as="nav" gap={1} fontSize="sm" fontWeight="medium">
         <Button
-          variant="outline"
+          variant="ghost"
           size="sm"
-          display={{ base: "none", sm: "inline-flex" }}
+          color={overHero ? "white" : "gray.700"}
+          _hover={{ bg: overHero ? "whiteAlpha.100" : "gray.100" }}
+        >
+          Product
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          color={overHero ? "white" : "gray.700"}
+          _hover={{ bg: overHero ? "whiteAlpha.100" : "gray.100" }}
+          onClick={() => navigate("/security")}
+        >
+          Security
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          color={overHero ? "white" : "gray.700"}
+          _hover={{ bg: overHero ? "whiteAlpha.100" : "gray.100" }}
+        >
+          Company
+        </Button>
+      </Flex>
+
+      <Flex gap={1} alignItems="center">
+        <Button
+          variant="ghost"
+          size="sm"
+          color={overHero ? "white" : "gray.700"}
+          _hover={{ bg: overHero ? "whiteAlpha.100" : "gray.100" }}
           onClick={() => window.open("https://app.rengoai.com/", "_blank")}
         >
-          <Text fontSize="sm">Sign in</Text>
+          Log in
         </Button>
         <Button
-          colorScheme="primary"
-          variant="solid"
+          borderRadius="md"
+          bg={overHero ? "white" : "primary.700"}
+          color={overHero ? NAVY : "white"}
           size="sm"
+          _hover={{ bg: overHero ? "gray.100" : "primary.800" }}
           onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
         >
-          <Text fontSize="sm">See a demo</Text>
+          See a demo
         </Button>
-      </HStack>
-    </Flex>
-  </Box>
-);
+      </Flex>
+    </Box>
+  );
+};
