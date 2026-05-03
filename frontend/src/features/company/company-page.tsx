@@ -30,8 +30,14 @@ export const CompanyPage: React.FC = () => {
   return (
     <Box fontFamily='"Inter Tight", Inter, sans-serif'>
       <PageHero
-        headline={<>Help build the future<br />of private markets infrastructure.</>}
-        subtext="Rengo is purpose-built AI for private markets — giving asset managers a single, searchable source of truth for their portfolio data."
+        headline={
+          <>
+            Build the future
+            <br />
+            of private markets
+          </>
+        }
+        subtext="Rengo is purpose built AI for private markets giving asset managers a single, searchable source of truth for their portfolio data"
         ctaLabel="See a demo"
         onCtaClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
       />
@@ -108,7 +114,11 @@ export const CompanyPage: React.FC = () => {
         >
           How we work.
         </Box>
-        <Box display="grid" gridTemplateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }} gap={16}>
+        <Box
+          display="grid"
+          gridTemplateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }}
+          gap={16}
+        >
           {VALUES.map(({ n, title, body }) => (
             <Box key={n} borderTop="1px solid" borderColor="primary.700" pt={5}>
               <Text

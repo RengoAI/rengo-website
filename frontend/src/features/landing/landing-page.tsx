@@ -1,9 +1,9 @@
 import { PulseGrid } from "@/components/pulse-grid";
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { PageHero } from "@/components/layout/page-hero";
+import { Box, Text } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
 import React from "react";
 
-const ACCENT_SOFT = "primary.400";
 const TINT = "#1A3358";
 const NAVY = "#0C1D34";
 const EDICT = '"Space Mono", SFMono-Regular, ui-monospace, monospace';
@@ -40,34 +40,21 @@ const marqueeScroll = keyframes`
   to   { transform: translateX(-50%); }
 `;
 
-const HeroSection: React.FC = () => (
-  <Box
-    as="section"
-    position="relative"
-    bg={NAVY}
-    color="white"
-    minH="100vh"
-    display="flex"
-    flexDirection="column"
-  >
-    {/* PulseGrid background */}
-    <Box position="absolute" inset={0} overflow="hidden">
-      <PulseGrid
-        id="a2-hero"
-        tone="navy"
-        density="quiet"
-        width={1280}
-        height={900}
-        cols={22}
-        rows={26}
-        showHeaderRow={false}
-        tintColor={TINT}
-        greenColor="#3B8BE0"
-        fadeBottom={false}
-      />
-    </Box>
-
-    {/* Left-to-right gradient wash */}
+const LandingHeroBackground: React.FC = () => (
+  <>
+    <PulseGrid
+      id="a2-hero"
+      tone="navy"
+      density="quiet"
+      width={1280}
+      height={900}
+      cols={22}
+      rows={26}
+      showHeaderRow={false}
+      tintColor={TINT}
+      greenColor="#3B8BE0"
+      fadeBottom={false}
+    />
     <Box
       position="absolute"
       inset={0}
@@ -77,8 +64,6 @@ const HeroSection: React.FC = () => (
           "linear-gradient(to right, rgba(7,20,42,0.92) 0%, rgba(12,29,52,0.78) 38%, rgba(12,29,52,0.4) 65%, rgba(12,29,52,0.15) 100%)",
       }}
     />
-
-    {/* Bottom fade */}
     <Box
       position="absolute"
       left={0}
@@ -90,68 +75,7 @@ const HeroSection: React.FC = () => (
         background: "linear-gradient(to bottom, transparent, #0C1D34 100%)",
       }}
     />
-
-    {/* Hero copy */}
-    <Flex
-      position="relative"
-      zIndex={2}
-      flex={1}
-      direction="column"
-      justify="center"
-      px={20}
-      pt="80px"
-      pb={12}
-    >
-      <Text
-        fontFamily={EDICT}
-        fontSize="11px"
-        letterSpacing="0.18em"
-        textTransform="uppercase"
-        color={ACCENT_SOFT}
-        mb={6}
-      >
-        Built for private markets
-      </Text>
-
-      <Box
-        as="h1"
-        m={0}
-        fontFamily="heading"
-        fontSize="clamp(52px, 6vw, 84px)"
-        lineHeight={1.04}
-        letterSpacing="-0.025em"
-        fontWeight={400}
-        color="white"
-        maxW="880px"
-      >
-        Portfolio Intelligence
-      </Box>
-
-      <Box h="1px" bg="whiteAlpha.500" w="72px" my={7} />
-
-      <Text fontSize="lg" lineHeight={1.45} color="whiteAlpha.800" maxW="580px">
-        Purpose built AI trusted by leading asset managers to organize portfolio
-        data into a single, searchable source of truth for firm operations.
-      </Text>
-
-      <Flex mt={9} gap={3}>
-        <Button
-          borderRadius="md"
-          bg="white"
-          color={NAVY}
-          border="1px solid white"
-          h="42px"
-          px={6}
-          fontSize="15px"
-          fontWeight="medium"
-          _hover={{ bg: "gray.50" }}
-          onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
-        >
-          See a demo
-        </Button>
-      </Flex>
-    </Flex>
-  </Box>
+  </>
 );
 
 const FirmsStrip: React.FC = () => (
@@ -256,7 +180,16 @@ const ThreePillars: React.FC = () => (
 
 export const LandingPage: React.FC = () => (
   <Box fontFamily="body">
-    <HeroSection />
+    <PageHero
+      align="left"
+      eyebrow="Built for private markets"
+      headline="Portfolio Intelligence"
+      subtext="Purpose built AI trusted by leading asset managers to organize portfolio data into a single, searchable source of truth for firm operations."
+      subtextMaxW="580px"
+      ctaLabel="See a demo"
+      onCtaClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
+      background={<LandingHeroBackground />}
+    />
     <FirmsStrip />
     <ThreePillars />
   </Box>
