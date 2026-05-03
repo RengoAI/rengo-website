@@ -39,7 +39,7 @@ export const CareersPage: React.FC = () => (
         m={0}
         mb={7}
       >
-        Join Us
+        Join the Team
       </Box>
       <Box h="1px" bg="whiteAlpha.500" w="72px" mb={7} />
       <Text
@@ -49,7 +49,7 @@ export const CareersPage: React.FC = () => (
         maxW="580px"
         mb={9}
       >
-        Interested in joining our team? We'd love to hear from you.
+        Help us reimagine private markets infrastructure.
       </Text>
       <Box>
         <Button

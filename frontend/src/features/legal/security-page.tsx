@@ -64,8 +64,6 @@ export const SecurityPage: React.FC = () => (
         mb={7}
       >
         Dedicated infrastructure
-        <br />
-        for sensitive data
       </Box>
       <Box h="1px" bg="whiteAlpha.500" w="72px" mb={7} />
       <Text
@@ -75,7 +73,8 @@ export const SecurityPage: React.FC = () => (
         maxW="580px"
         mb={9}
       >
-        Every architectural decision starts with security.
+        Purpose built for private markets, every architectural decision starts
+        with security.
       </Text>
       <Box>
         <Button
