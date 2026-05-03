@@ -1,3 +1,4 @@
+import { PageHero } from "@/components/layout/page-hero";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -28,61 +29,12 @@ export const CompanyPage: React.FC = () => {
 
   return (
     <Box fontFamily='"Inter Tight", Inter, sans-serif'>
-      {/* Hero */}
-      <Flex
-        as="section"
-        bg={NAVY}
-        color="white"
-        px={20}
-        minH="100vh"
-        direction="column"
-        justify="center"
-        align="center"
-        textAlign="center"
-        pt="80px"
-        pb={12}
-      >
-        <Box
-          as="h1"
-          fontFamily="heading"
-          fontSize="clamp(52px, 6vw, 84px)"
-          fontWeight={400}
-          lineHeight={1.04}
-          letterSpacing="-0.025em"
-          color="white"
-          maxW="880px"
-          m={0}
-          mb={7}
-        >
-          Help build the future
-          <br />
-          of private markets infrastructure.
-        </Box>
-        <Box h="1px" bg="whiteAlpha.500" w="72px" mb={7} />
-        <Text
-          fontSize="lg"
-          lineHeight={1.45}
-          color="whiteAlpha.800"
-          maxW="480px"
-          mb={9}
-        >
-          Rengo is purpose-built AI for private markets — giving asset managers
-          a single, searchable source of truth for their portfolio data.
-        </Text>
-        <Button
-          borderRadius="md"
-          bg="white"
-          color={NAVY}
-          h="42px"
-          px={6}
-          fontSize="15px"
-          fontWeight="medium"
-          _hover={{ bg: "gray.50" }}
-          onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
-        >
-          See a demo
-        </Button>
-      </Flex>
+      <PageHero
+        headline={<>Help build the future<br />of private markets infrastructure.</>}
+        subtext="Rengo is purpose-built AI for private markets — giving asset managers a single, searchable source of truth for their portfolio data."
+        ctaLabel="See a demo"
+        onCtaClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
+      />
 
       {/* Mission */}
       <Box bg="white" px={20} py={28}>
@@ -156,11 +108,7 @@ export const CompanyPage: React.FC = () => {
         >
           How we work.
         </Box>
-        <Box
-          display="grid"
-          gridTemplateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }}
-          gap={16}
-        >
+        <Box display="grid" gridTemplateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }} gap={16}>
           {VALUES.map(({ n, title, body }) => (
             <Box key={n} borderTop="1px solid" borderColor="primary.700" pt={5}>
               <Text

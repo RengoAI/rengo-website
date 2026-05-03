@@ -1,4 +1,5 @@
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { PageHero } from "@/components/layout/page-hero";
+import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 
 const NAVY = "#0C1D34";
@@ -29,59 +30,12 @@ const CARDS = [
 
 export const SecurityPage: React.FC = () => (
   <Box fontFamily='"Inter Tight", Inter, sans-serif'>
-    {/* Hero — full viewport height matching landing page */}
-    <Flex
-      as="section"
-      bg={NAVY}
-      color="white"
-      px={20}
-      minH="100vh"
-      direction="column"
-      justify="center"
-      align="center"
-      textAlign="center"
-      pt="80px"
-      pb={12}
-    >
-      <Box
-        as="h1"
-        fontFamily="heading"
-        fontSize="clamp(52px, 6vw, 84px)"
-        fontWeight={400}
-        lineHeight={1.04}
-        letterSpacing="-0.025em"
-        color="white"
-        maxW="880px"
-        m={0}
-        mb={7}
-      >
-        Dedicated infrastructure
-      </Box>
-      <Box h="1px" bg="whiteAlpha.500" w="72px" mb={7} />
-      <Text
-        fontSize="lg"
-        lineHeight={1.45}
-        color="whiteAlpha.800"
-        maxW="480px"
-        mb={9}
-      >
-        Purpose built for private markets, every architectural decision starts
-        with security.
-      </Text>
-      <Button
-        borderRadius="md"
-        bg="white"
-        color={NAVY}
-        h="42px"
-        px={6}
-        fontSize="15px"
-        fontWeight="medium"
-        _hover={{ bg: "gray.50" }}
-        onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
-      >
-        See a demo
-      </Button>
-    </Flex>
+    <PageHero
+      headline="Dedicated infrastructure"
+      subtext="Purpose built for private markets, every architectural decision starts with security."
+      ctaLabel="See a demo"
+      onCtaClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
+    />
 
     {/* Feature cards — sales deck grid style */}
     <Box bg="white" px={20} py={28}>
