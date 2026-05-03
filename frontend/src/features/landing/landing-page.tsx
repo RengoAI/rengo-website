@@ -188,7 +188,7 @@ const HeroSection: React.FC = () => (
         color={ACCENT_SOFT}
         mb={6}
       >
-        Portfolio Intelligence
+        Built for private markets
       </Text>
 
       <Box
@@ -202,8 +202,7 @@ const HeroSection: React.FC = () => (
         color="white"
         maxW="880px"
       >
-        Financial Infrastructure for Private Capital
-        <br />
+        Portfolio Intelligence
       </Box>
 
       <Box h="1px" bg="whiteAlpha.500" w="72px" my={7} />
