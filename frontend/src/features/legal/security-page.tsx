@@ -9,12 +9,12 @@ const CARDS = [
   {
     n: "01",
     title: "No training on your data",
-    body: "Customer data is never used for model training or improvement. Your data stays yours — always.",
+    body: "Customer data is never used for model training or improvement.",
   },
   {
     n: "02",
     title: "Data isolation",
-    body: "Strong data isolation with enforced boundaries at the storage layer. Each firm's data is siloed end-to-end.",
+    body: "Strong data isolation with enforced boundaries at the storage layer.",
   },
   {
     n: "03",

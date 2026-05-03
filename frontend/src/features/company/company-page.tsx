@@ -1,4 +1,6 @@
 import { PageHero } from "@/components/layout/page-hero";
+import { SectionBlock } from "@/components/layout/section-block";
+import { ValueCard } from "@/components/layout/value-card";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -43,52 +45,19 @@ export const CompanyPage: React.FC = () => {
       />
 
       {/* Mission */}
-      <Box bg="white" px={20} py={28}>
-        <Box
-          display="grid"
-          gridTemplateColumns={{ base: "1fr", md: "1fr 2fr" }}
-          gap={16}
-          alignItems="start"
-        >
-          <Box>
-            <Text
-              fontFamily={EDICT}
-              fontSize="11px"
-              letterSpacing="0.15em"
-              textTransform="uppercase"
-              color="primary.700"
-              mb={6}
-            >
-              Our mission
-            </Text>
-            <Box
-              as="h2"
-              fontFamily="heading"
-              fontSize={{ base: "28px", md: "40px" }}
-              fontWeight={400}
-              letterSpacing="-0.025em"
-              lineHeight={1.1}
-              color={NAVY}
-              m={0}
-            >
-              Why we exist.
-            </Box>
-          </Box>
-          <Box pt={{ base: 0, md: "52px" }}>
-            <Text fontSize="lg" lineHeight={1.7} color="gray.600" mb={5}>
-              Private markets firms are drowning in unstructured data — board
-              decks, CIMs, financial statements, cap tables — scattered across
-              inboxes and shared drives with no way to search or synthesize.
-            </Text>
-            <Text fontSize="lg" lineHeight={1.7} color="gray.600">
-              Rengo changes that. We ingest everything, structure it
-              automatically, and give every analyst and partner instant, cited
-              answers across their entire portfolio. One platform. One source of
-              truth.
-            </Text>
-          </Box>
-        </Box>
-      </Box>
+      <SectionBlock eyebrow="Our mission" heading="Why we exist.">
+        <Text fontSize="lg" lineHeight={1.7} color="gray.600" mb={5}>
+          Private markets firms are drowning in unstructured data — board
+          decks, CIMs, financial statements, cap tables — scattered across
+          inboxes and shared drives with no way to search or synthesize.
+        </Text>
+        <Text fontSize="lg" lineHeight={1.7} color="gray.600">
+          Rengo changes that. We ingest everything, structure it
+          automatically, and give every analyst and partner instant, cited
+          answers across their entire portfolio. One platform. One source of
+          truth.
+        </Text>
+      </SectionBlock>
 
       {/* Values */}
       <Box as="section" bg="gray.25" px={20} py={28}>
@@ -120,31 +89,7 @@ export const CompanyPage: React.FC = () => {
           gap={16}
         >
           {VALUES.map(({ n, title, body }) => (
-            <Box key={n} borderTop="1px solid" borderColor="primary.700" pt={5}>
-              <Text
-                as="span"
-                fontFamily={EDICT}
-                fontSize="11px"
-                color="primary.700"
-                letterSpacing="0.08em"
-              >
-                {n}
-              </Text>
-              <Box
-                as="h3"
-                mt="10px"
-                mb="12px"
-                fontFamily="heading"
-                fontSize="24px"
-                fontWeight={400}
-                color={NAVY}
-              >
-                {title}
-              </Box>
-              <Text fontSize="sm" lineHeight={1.6} color="gray.600">
-                {body}
-              </Text>
-            </Box>
+            <ValueCard key={n} number={n} title={title} body={body} />
           ))}
         </Box>
       </Box>

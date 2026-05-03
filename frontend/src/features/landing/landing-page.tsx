@@ -1,5 +1,6 @@
 import { PulseGrid } from "@/components/pulse-grid";
 import { PageHero } from "@/components/layout/page-hero";
+import { ValueCard } from "@/components/layout/value-card";
 import { Box, Text } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
 import React from "react";
@@ -148,31 +149,7 @@ const ThreePillars: React.FC = () => (
 
     <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap={16} mt={16}>
       {PILLARS.map(([n, title, desc]) => (
-        <Box key={n} borderTop="1px solid" borderColor="primary.700" pt={5}>
-          <Text
-            as="span"
-            fontFamily={EDICT}
-            fontSize="11px"
-            color="primary.700"
-            letterSpacing="0.08em"
-          >
-            {n}
-          </Text>
-          <Box
-            as="h3"
-            mt="10px"
-            mb="12px"
-            fontFamily="heading"
-            fontSize="24px"
-            fontWeight={400}
-            color={NAVY}
-          >
-            {title}
-          </Box>
-          <Text fontSize="sm" lineHeight={1.6} color="gray.600">
-            {desc}
-          </Text>
-        </Box>
+        <ValueCard key={n} number={n} title={title} body={desc} />
       ))}
     </Box>
   </Box>
