@@ -11,6 +11,7 @@ export const Logo: React.FC<LogoProps> = ({ color, isCollapsed = false }) => (
   <Flex alignItems="center" justify="flex-start" gap={isCollapsed ? 0 : 0.5}>
     <ColorModeButton
       mt="2"
+      ml="-12px"
       size="sm"
       variant="ghost"
       color={color}
