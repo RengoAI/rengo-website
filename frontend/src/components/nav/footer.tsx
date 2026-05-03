@@ -55,7 +55,7 @@ export const AppFooter: React.FC = () => (
   <Box as="footer" bg={NAVY} color="white" px={20} pt={16} pb={8}>
     <Flex justify="space-between" align="flex-start" w="full">
       <FooterCol title="Overview">
-        <FooterLink to="/solutions/portfolio-monitoring">
+        <FooterLink to="/product/portfolio-monitoring">
           Portfolio Monitoring
         </FooterLink>
         <FooterLink to="/security">Security</FooterLink>

@@ -2,10 +2,10 @@ import { SolutionsLayout } from "@/features/solutions/solutions-layout";
 import { RouteObject } from "react-router-dom";
 
 export const solutionsRoutes: RouteObject = {
-  id: "solutions",
-  path: "solutions",
+  id: "product",
+  path: "product",
   handle: {
-    pageTitle: "Solutions",
+    pageTitle: "Product",
   },
   element: <SolutionsLayout />,
   children: [
