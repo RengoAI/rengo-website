@@ -5,26 +5,36 @@ import React from "react";
 export const PrivacyPolicyPage: React.FC = () => (
   <Page>
     <Box w="full">
-      <Container maxW="4xl" py={16} px={8}>
-        <VStack gap={8} align="stretch">
+      <Container maxW="3xl" pt={40} pb={28} px={8}>
+        <VStack gap={12} align="stretch">
           {/* Header */}
-          <VStack gap={4} textAlign="center" maxW="2xl" mx="auto">
+          <VStack gap={3} align="flex-start">
             <Text
-              textStyle="h1"
-              fontSize={{ base: "3xl", md: "4xl" }}
-              fontWeight="bold"
+              fontFamily='"Space Mono", SFMono-Regular, ui-monospace, monospace'
+              fontSize="11px"
+              letterSpacing="0.18em"
+              textTransform="uppercase"
+              color="primary.400"
+            >
+              Legal
+            </Text>
+            <Text
+              fontFamily="heading"
+              fontSize={{ base: "3xl", md: "48px" }}
+              fontWeight={400}
+              letterSpacing="-0.025em"
+              lineHeight={1.06}
               color="gray.900"
-              lineHeight={1.2}
             >
               Privacy Policy
             </Text>
-            <Text textStyle="body" fontSize="lg" color="gray.600">
+            <Text fontSize="sm" color="gray.400">
               Effective: July 24, 2025
             </Text>
           </VStack>
 
           {/* Privacy Policy Content */}
-          <VStack gap={6} align="stretch" maxW="none" w="full">
+          <VStack gap={5} align="stretch" w="full">
             <Text
               textStyle="body"
               fontSize="md"
@@ -63,11 +73,12 @@ export const PrivacyPolicyPage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h2"
-              fontSize="2xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="xl"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={6}
+              mt={10}
             >
               I. The Information We Collect
             </Text>
@@ -83,11 +94,12 @@ export const PrivacyPolicyPage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h3"
-              fontSize="xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="lg"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={4}
+              mt={8}
             >
               1. Contact Information
             </Text>
@@ -107,11 +119,12 @@ export const PrivacyPolicyPage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h3"
-              fontSize="xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="lg"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={4}
+              mt={8}
             >
               2. Information obtained automatically from your online activity
             </Text>
@@ -161,11 +174,12 @@ export const PrivacyPolicyPage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h3"
-              fontSize="xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="lg"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={4}
+              mt={8}
             >
               3. Geolocation information
             </Text>
@@ -184,11 +198,12 @@ export const PrivacyPolicyPage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h3"
-              fontSize="xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="lg"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={4}
+              mt={8}
             >
               4. Information obtained from other sources
             </Text>
@@ -207,11 +222,12 @@ export const PrivacyPolicyPage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h3"
-              fontSize="xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="lg"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={4}
+              mt={8}
             >
               5. Information obtained from third-party analytics services
             </Text>
@@ -257,11 +273,12 @@ export const PrivacyPolicyPage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h3"
-              fontSize="xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="lg"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={4}
+              mt={8}
             >
               6. Online advertising and tracking partners
             </Text>
@@ -291,11 +308,12 @@ export const PrivacyPolicyPage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h2"
-              fontSize="2xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="xl"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={6}
+              mt={10}
             >
               II. Information Use and Sharing
             </Text>
@@ -408,11 +426,12 @@ export const PrivacyPolicyPage: React.FC = () => (
             </Box>
 
             <Text
-              textStyle="h2"
-              fontSize="2xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="xl"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={6}
+              mt={10}
             >
               III. User Access and Choice
             </Text>
@@ -440,11 +459,12 @@ export const PrivacyPolicyPage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h2"
-              fontSize="2xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="xl"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={6}
+              mt={10}
             >
               IV. External Websites and Third Parties
             </Text>
@@ -462,11 +482,12 @@ export const PrivacyPolicyPage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h2"
-              fontSize="2xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="xl"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={6}
+              mt={10}
             >
               V. Security
             </Text>
@@ -484,11 +505,12 @@ export const PrivacyPolicyPage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h2"
-              fontSize="2xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="xl"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={6}
+              mt={10}
             >
               VI. Children's Privacy
             </Text>
@@ -507,11 +529,12 @@ export const PrivacyPolicyPage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h2"
-              fontSize="2xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="xl"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={6}
+              mt={10}
             >
               VII. Do Not Track
             </Text>
@@ -529,11 +552,12 @@ export const PrivacyPolicyPage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h2"
-              fontSize="2xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="xl"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={6}
+              mt={10}
             >
               VIII. Notice to California Residents
             </Text>
@@ -621,11 +645,12 @@ export const PrivacyPolicyPage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h2"
-              fontSize="2xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="xl"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={6}
+              mt={10}
             >
               IX. Notice to Nevada Residents
             </Text>
@@ -644,11 +669,12 @@ export const PrivacyPolicyPage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h2"
-              fontSize="2xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="xl"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={6}
+              mt={10}
             >
               X. Notice to Non-US Residents
             </Text>
@@ -666,11 +692,12 @@ export const PrivacyPolicyPage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h2"
-              fontSize="2xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="xl"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={6}
+              mt={10}
             >
               XI. Changes to this Privacy Policy
             </Text>
@@ -686,11 +713,12 @@ export const PrivacyPolicyPage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h2"
-              fontSize="2xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="xl"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={6}
+              mt={10}
             >
               XII. Contacting Us
             </Text>

@@ -25,7 +25,7 @@ export const PortfolioMonitoringPage: React.FC = () => (
         color="primary.400"
         mb={6}
       >
-        Solutions
+        Product
       </Text>
       <Box
         as="h1"
@@ -49,8 +49,8 @@ export const PortfolioMonitoringPage: React.FC = () => (
         maxW="580px"
         mb={9}
       >
-        Real-time portfolio analytics and monitoring for private equity,
-        venture capital, private credit, and growth equity investments.
+        Real-time portfolio analytics and monitoring for private equity, venture
+        capital, private credit, and growth equity investments.
       </Text>
       <Box>
         <Button
