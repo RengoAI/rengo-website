@@ -1,8 +1,7 @@
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import React from "react";
 
 const NAVY = "#0C1D34";
-const EDICT = '"Space Mono", SFMono-Regular, ui-monospace, monospace';
 
 export const PortfolioMonitoringPage: React.FC = () => (
   <Box fontFamily='"Inter Tight", Inter, sans-serif'>
@@ -14,19 +13,11 @@ export const PortfolioMonitoringPage: React.FC = () => (
       minH="100vh"
       direction="column"
       justify="center"
+      align="center"
+      textAlign="center"
       pt="80px"
       pb={12}
     >
-      <Text
-        fontFamily={EDICT}
-        fontSize="11px"
-        letterSpacing="0.18em"
-        textTransform="uppercase"
-        color="primary.400"
-        mb={6}
-      >
-        Product
-      </Text>
       <Box
         as="h1"
         fontFamily="heading"
@@ -42,31 +33,29 @@ export const PortfolioMonitoringPage: React.FC = () => (
         Portfolio Monitoring
       </Box>
       <Box h="1px" bg="whiteAlpha.500" w="72px" mb={7} />
-      <Text
+      <Box
         fontSize="lg"
         lineHeight={1.45}
         color="whiteAlpha.800"
-        maxW="580px"
+        maxW="520px"
         mb={9}
       >
         Real-time portfolio analytics and monitoring for private equity, venture
         capital, private credit, and growth equity investments.
-      </Text>
-      <Box>
-        <Button
-          borderRadius="md"
-          bg="white"
-          color={NAVY}
-          h="42px"
-          px={6}
-          fontSize="15px"
-          fontWeight="medium"
-          _hover={{ bg: "gray.50" }}
-          onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
-        >
-          See a demo
-        </Button>
       </Box>
+      <Button
+        borderRadius="md"
+        bg="white"
+        color={NAVY}
+        h="42px"
+        px={6}
+        fontSize="15px"
+        fontWeight="medium"
+        _hover={{ bg: "gray.50" }}
+        onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
+      >
+        See a demo
+      </Button>
     </Flex>
   </Box>
 );

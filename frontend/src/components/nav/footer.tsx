@@ -67,6 +67,7 @@ export const AppFooter: React.FC = () => (
       </FooterCol>
 
       <FooterCol title="Company">
+        <FooterLink to="/company">About</FooterLink>
         <FooterLink to="/careers">Careers</FooterLink>
       </FooterCol>
 

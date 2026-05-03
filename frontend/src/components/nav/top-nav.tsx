@@ -7,7 +7,7 @@ export const TOP_NAV_HEIGHT = 64;
 
 const NAVY = "#0C1D34";
 
-const DARK_HERO_PATHS = ["/", "/security", "/careers", "/product/portfolio-monitoring"];
+const DARK_HERO_PATHS = ["/", "/security", "/careers", "/company", "/product/portfolio-monitoring"];
 
 export const AppTopNav: React.FC = () => {
   const location = useLocation();
@@ -72,6 +72,7 @@ export const AppTopNav: React.FC = () => {
           size="sm"
           color={navColor}
           _hover={{ bg: "transparent", color: navHoverColor }}
+          onClick={() => navigate("/company")}
         >
           Company
         </Button>

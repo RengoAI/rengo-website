@@ -38,19 +38,11 @@ export const SecurityPage: React.FC = () => (
       minH="100vh"
       direction="column"
       justify="center"
+      align="center"
+      textAlign="center"
       pt="80px"
       pb={12}
     >
-      <Text
-        fontFamily={EDICT}
-        fontSize="11px"
-        letterSpacing="0.18em"
-        textTransform="uppercase"
-        color="primary.400"
-        mb={6}
-      >
-        Security
-      </Text>
       <Box
         as="h1"
         fontFamily="heading"
@@ -70,27 +62,25 @@ export const SecurityPage: React.FC = () => (
         fontSize="lg"
         lineHeight={1.45}
         color="whiteAlpha.800"
-        maxW="580px"
+        maxW="480px"
         mb={9}
       >
         Purpose built for private markets, every architectural decision starts
         with security.
       </Text>
-      <Box>
-        <Button
-          borderRadius="md"
-          bg="white"
-          color={NAVY}
-          h="42px"
-          px={6}
-          fontSize="15px"
-          fontWeight="medium"
-          _hover={{ bg: "gray.50" }}
-          onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
-        >
-          See a demo
-        </Button>
-      </Box>
+      <Button
+        borderRadius="md"
+        bg="white"
+        color={NAVY}
+        h="42px"
+        px={6}
+        fontSize="15px"
+        fontWeight="medium"
+        _hover={{ bg: "gray.50" }}
+        onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
+      >
+        See a demo
+      </Button>
     </Flex>
 
     {/* Feature cards — sales deck grid style */}

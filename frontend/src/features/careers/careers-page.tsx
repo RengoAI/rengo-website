@@ -1,8 +1,7 @@
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import React from "react";
 
 const NAVY = "#0C1D34";
-const EDICT = '"Space Mono", SFMono-Regular, ui-monospace, monospace';
 
 export const CareersPage: React.FC = () => (
   <Box fontFamily='"Inter Tight", Inter, sans-serif'>
@@ -14,19 +13,11 @@ export const CareersPage: React.FC = () => (
       minH="100vh"
       direction="column"
       justify="center"
+      align="center"
+      textAlign="center"
       pt="80px"
       pb={12}
     >
-      <Text
-        fontFamily={EDICT}
-        fontSize="11px"
-        letterSpacing="0.18em"
-        textTransform="uppercase"
-        color="primary.400"
-        mb={6}
-      >
-        Careers
-      </Text>
       <Box
         as="h1"
         fontFamily="heading"
@@ -42,30 +33,28 @@ export const CareersPage: React.FC = () => (
         Join the Team
       </Box>
       <Box h="1px" bg="whiteAlpha.500" w="72px" mb={7} />
-      <Text
+      <Box
         fontSize="lg"
         lineHeight={1.45}
         color="whiteAlpha.800"
-        maxW="580px"
+        maxW="480px"
         mb={9}
       >
         Help us reimagine private markets infrastructure.
-      </Text>
-      <Box>
-        <Button
-          borderRadius="md"
-          bg="white"
-          color={NAVY}
-          h="42px"
-          px={6}
-          fontSize="15px"
-          fontWeight="medium"
-          _hover={{ bg: "gray.50" }}
-          onClick={() => window.open("mailto:careers@rengoai.com", "_blank")}
-        >
-          Get in touch
-        </Button>
       </Box>
+      <Button
+        borderRadius="md"
+        bg="white"
+        color={NAVY}
+        h="42px"
+        px={6}
+        fontSize="15px"
+        fontWeight="medium"
+        _hover={{ bg: "gray.50" }}
+        onClick={() => window.open("mailto:careers@rengoai.com", "_blank")}
+      >
+        Get in touch
+      </Button>
     </Flex>
   </Box>
 );
