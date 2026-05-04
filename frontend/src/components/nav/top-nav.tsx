@@ -7,7 +7,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 export const TOP_NAV_HEIGHT = 64;
 
-const DARK_HERO_PATHS = ["/", "/security", "/careers", "/company", "/product/portfolio-monitoring"];
+const DARK_HERO_PATHS = [
+  "/",
+  "/security",
+  "/careers",
+  "/company",
+  "/product/portfolio-monitoring",
+];
 
 export const AppTopNav: React.FC = () => {
   const location = useLocation();
@@ -77,7 +83,11 @@ export const AppTopNav: React.FC = () => {
         </Flex>
 
         {/* Desktop CTAs */}
-        <Flex gap={2} alignItems="center" display={{ base: "none", md: "flex" }}>
+        <Flex
+          gap={2}
+          alignItems="center"
+          display={{ base: "none", md: "flex" }}
+        >
           <Button
             variant="ghost"
             size="sm"
@@ -91,7 +101,7 @@ export const AppTopNav: React.FC = () => {
             borderRadius="md"
             bg={overHero ? "white" : "primary.700"}
             color={overHero ? "primary.800" : "white"}
-            size="sm"
+            size="xs"
             _hover={{ bg: overHero ? "gray.100" : "primary.800" }}
             onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
           >

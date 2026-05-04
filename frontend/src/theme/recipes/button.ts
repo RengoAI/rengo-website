@@ -218,9 +218,10 @@ export const buttonRecipe = defineRecipe({
         height: "unset",
       },
       xs: {
-        py: "5px",
-        px: "12px",
-        minHeight: "32px",
+        py: "6px",
+        px: "13px",
+        fontSize: "14px",
+        minHeight: "38px",
         height: "unset",
       },
       toolbarIcon: {
