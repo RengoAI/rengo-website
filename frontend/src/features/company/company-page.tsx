@@ -1,3 +1,4 @@
+import { rootRoute } from "@/app/app-routes";
 import { PageContainer } from "@/components/layout/page-container";
 import { PageHero } from "@/components/layout/page-hero";
 import { TeamLogoGrid } from "@/components/team-logo-grid";
@@ -192,7 +193,7 @@ export const CompanyPage: React.FC = () => {
         headline="Join us."
         subtext="We're hiring across engineering and product."
         ctaLabel="View careers"
-        onCtaClick={() => navigate("/careers")}
+        onCtaClick={() => navigate(rootRoute({}).careers({}).$)}
         tone="light"
         minH="auto"
         contentPt={24}

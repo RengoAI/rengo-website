@@ -1,3 +1,4 @@
+import { rootRoute } from "@/app/app-routes";
 import { PageContainer } from "@/components/layout/page-container";
 import { Logo } from "@/components/logo/logo";
 import { Box, Flex, Text } from "@chakra-ui/react";
@@ -74,18 +75,24 @@ export const AppFooter: React.FC = () => (
           minW={{ base: "min(100%, 280px)", lg: 0 }}
         >
           <FooterCol title="Platform">
-            <FooterLink to="/product/portfolio-monitoring">Product</FooterLink>
-            <FooterLink to="/security">Security</FooterLink>
+            <FooterLink
+              to={rootRoute({}).product({}).portfolioMonitoring({}).$}
+            >
+              Product
+            </FooterLink>
+            <FooterLink to={rootRoute({}).security({}).$}>Security</FooterLink>
           </FooterCol>
 
           <FooterCol title="Company">
-            <FooterLink to="/company">About</FooterLink>
-            <FooterLink to="/careers">Careers</FooterLink>
+            <FooterLink to={rootRoute({}).company({}).$}>About</FooterLink>
+            <FooterLink to={rootRoute({}).careers({}).$}>Careers</FooterLink>
           </FooterCol>
 
           <FooterCol title="Legal">
-            <FooterLink to="/legal/privacy-policy">Privacy Policy</FooterLink>
-            <FooterLink to="/legal/terms-of-service">
+            <FooterLink to={rootRoute({}).legal({}).privacyPolicy({}).$}>
+              Privacy Policy
+            </FooterLink>
+            <FooterLink to={rootRoute({}).legal({}).termsOfService({}).$}>
               Terms of Service
             </FooterLink>
           </FooterCol>

@@ -1,3 +1,4 @@
+import { rootRoute } from "@/app/app-routes";
 import { Flex, Text } from "@chakra-ui/react";
 import { Sun } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -27,7 +28,10 @@ export const Logo: React.FC<LogoProps> = ({
       />
       {!isCollapsed &&
         (homeLink ? (
-          <Link to="/" style={{ textDecoration: "none" }}>
+          <Link
+            to={rootRoute({}).landingIndex({}).$}
+            style={{ textDecoration: "none" }}
+          >
             {wordmark}
           </Link>
         ) : (

@@ -1,3 +1,4 @@
+import { rootRoute } from "@/app/app-routes";
 import { Logo } from "@/components/logo/logo";
 import { MobileNavDrawer } from "@/components/nav/mobile-nav-drawer";
 import { Box, Button, Flex, IconButton } from "@chakra-ui/react";
@@ -8,11 +9,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 export const TOP_NAV_HEIGHT = 64;
 
 const DARK_HERO_PATHS = [
-  "/",
-  "/security",
-  "/careers",
-  "/company",
-  "/product/portfolio-monitoring",
+  rootRoute({}).landingIndex({}).$,
+  rootRoute({}).security({}).$,
+  rootRoute({}).careers({}).$,
+  rootRoute({}).company({}).$,
+  rootRoute({}).product({}).portfolioMonitoring({}).$,
 ];
 
 export const AppTopNav: React.FC = () => {
@@ -40,9 +41,12 @@ export const AppTopNav: React.FC = () => {
   const navHoverColor = overHero ? "whiteAlpha.500" : "primary.800";
 
   const navItems = [
-    { label: "Product", path: "/product/portfolio-monitoring" },
-    { label: "Security", path: "/security" },
-    { label: "Company", path: "/company" },
+    {
+      label: "Product",
+      path: rootRoute({}).product({}).portfolioMonitoring({}).$,
+    },
+    { label: "Security", path: rootRoute({}).security({}).$ },
+    { label: "Company", path: rootRoute({}).company({}).$ },
   ];
 
   return (
