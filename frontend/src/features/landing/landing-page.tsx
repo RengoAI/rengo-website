@@ -64,7 +64,7 @@ const FirmsStrip: React.FC = () => (
     <PageContainer>
       <Text
         fontFamily={EDICT}
-        fontSize="11px"
+        fontSize="xs"
         color="gray.500"
         letterSpacing="0.08em"
         textTransform="uppercase"
@@ -99,7 +99,7 @@ const FirmsStrip: React.FC = () => (
             <Text
               key={i}
               as="span"
-              fontSize="16px"
+              fontSize="1rem"
               color="primary.700"
               opacity={0.3}
               fontWeight={400}

@@ -14,7 +14,7 @@ export const ValueCard: React.FC<ValueCardProps> = ({ number, title, body }) => 
     <Text
       as="span"
       fontFamily={EDICT}
-      fontSize="11px"
+      fontSize="xs"
       color="primary.700"
       letterSpacing="0.08em"
     >
@@ -22,10 +22,10 @@ export const ValueCard: React.FC<ValueCardProps> = ({ number, title, body }) => 
     </Text>
     <Box
       as="h3"
-      mt="10px"
-      mb="12px"
+      mt="0.625rem"
+      mb="0.75rem"
       fontFamily="heading"
-      fontSize="24px"
+      fontSize="1.5rem"
       fontWeight={400}
       color="primary.800"
     >

@@ -11,7 +11,7 @@ interface FooterColProps {
 
 const FooterCol: React.FC<FooterColProps> = ({ title, children }) => (
   <Flex direction="column" gap={2} minW={{ base: "auto", sm: "128px" }}>
-    <Text fontSize="14px" color="whiteAlpha.900" lineHeight="20px" mb={1}>
+    <Text fontSize="0.875rem" color="whiteAlpha.900" lineHeight="1.25rem" mb={1}>
       {title}
     </Text>
     {children}
@@ -109,7 +109,7 @@ export const AppFooter: React.FC = () => (
       flexWrap="wrap"
       gapY={4}
     >
-      <Text fontSize="13px" color="whiteAlpha.450" lineHeight="20px" m={0} textAlign="right">
+      <Text fontSize="0.8125rem" color="whiteAlpha.450" lineHeight="1.25rem" m={0} textAlign="right">
         © 2026 Rengo AI, Inc. All rights reserved.
       </Text>
     </Flex>

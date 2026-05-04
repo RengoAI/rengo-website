@@ -11,7 +11,7 @@ export const TermsOfServicePage: React.FC = () => (
           <VStack gap={3} align="flex-start">
             <Text
               fontFamily='"Space Mono", SFMono-Regular, ui-monospace, monospace'
-              fontSize="11px"
+              fontSize="xs"
               letterSpacing="0.18em"
               textTransform="uppercase"
               color="primary.400"

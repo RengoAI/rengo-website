@@ -7,12 +7,12 @@ export const NotFound = () => {
   const navigate = useNavigate();
   return (
     <Center w="100%" minH="100vh">
-      <VStack alignItems="flex-start" gap="48px" w="100%" maxW="450px">
-        <VStack alignItems="flex-start" gap="16px">
-          <Text fontSize="44px" color="gray.700">
+      <VStack alignItems="flex-start" gap={12} w="100%" maxW="450px">
+        <VStack alignItems="flex-start" gap={4}>
+          <Text fontSize="2.75rem" color="gray.700">
             Not Found
           </Text>
-          <Text fontSize="16px" color="gray.500">
+          <Text fontSize="1rem" color="gray.500">
             Looks like the page you are looking for does not exist. If you need
             help, please contact support.
           </Text>

@@ -17,7 +17,7 @@ export const SectionBlock: React.FC<SectionBlockProps> = ({
   heading,
   children,
   bg = "white",
-  headingOffset = "52px",
+  headingOffset = "3.25rem",
 }) => (
   <Box bg={bg} py={{ base: 16, md: 28 }}>
     <PageContainer>
@@ -31,7 +31,7 @@ export const SectionBlock: React.FC<SectionBlockProps> = ({
           {eyebrow && (
             <Text
               fontFamily={EDICT}
-              fontSize="11px"
+              fontSize="xs"
               letterSpacing="0.15em"
               textTransform="uppercase"
               color="primary.700"
@@ -43,7 +43,7 @@ export const SectionBlock: React.FC<SectionBlockProps> = ({
           <Box
             as="h2"
             fontFamily="heading"
-            fontSize={{ base: "28px", md: "40px" }}
+            fontSize="clamp(1.75rem, 3.5vw, 2.5rem)"
             fontWeight={400}
             letterSpacing="-0.025em"
             lineHeight={1.1}

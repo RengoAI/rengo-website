@@ -42,7 +42,7 @@ export const SecurityPage: React.FC = () => (
       <PageContainer>
       <Text
         fontFamily="heading"
-        fontSize="40px"
+        fontSize="2.5rem"
         fontWeight={400}
         letterSpacing="-0.025em"
         color={"primary.800"}
@@ -81,7 +81,7 @@ export const SecurityPage: React.FC = () => (
           >
             <Text
               fontFamily={EDICT}
-              fontSize="11px"
+              fontSize="xs"
               letterSpacing="0.2em"
               color="primary.700"
               fontWeight={700}
@@ -91,7 +91,7 @@ export const SecurityPage: React.FC = () => (
             <Box
               as="h3"
               fontFamily="heading"
-              fontSize="24px"
+              fontSize="1.5rem"
               fontWeight={400}
               letterSpacing="-0.02em"
               lineHeight={1.15}

@@ -95,7 +95,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
               <Button
                 key={item.path}
                 variant="ghost"
-                h="72px"
+                h={18}
                 px={5}
                 w="full"
                 borderRadius={0}
@@ -117,7 +117,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
               borderRadius="8px"
               bg="primary.700"
               color="white"
-              fontSize="16px"
+              fontSize="sm"
               fontWeight={400}
               _hover={{ bg: "primary.800" }}
               onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}

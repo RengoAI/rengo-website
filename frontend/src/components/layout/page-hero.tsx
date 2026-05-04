@@ -30,7 +30,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
   background,
   tone = "dark",
   minH = "100vh",
-  contentPt = "80px",
+  contentPt = 20,
   contentPb = 12,
 }) => {
   const isLeft = align === "left";
@@ -72,7 +72,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
         {eyebrow && (
           <Text
             fontFamily={EDICT}
-            fontSize="11px"
+            fontSize="xs"
             letterSpacing="0.18em"
             textTransform="uppercase"
             color={isLight ? "primary.700" : "primary.400"}
@@ -119,7 +119,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
           color={isLight ? "white" : "primary.800"}
           h={{ base: "44px", md: "42px" }}
           px={6}
-          fontSize="15px"
+          fontSize="sm"
           fontWeight="medium"
           _hover={{ bg: isLight ? "primary.800" : "gray.50" }}
           onClick={onCtaClick}
