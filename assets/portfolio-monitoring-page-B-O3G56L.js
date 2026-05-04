@@ -1,0 +1,2 @@
+import{j as o,B as t}from"./react-vendor-DijhWf6G.js";import{P as i}from"./page-hero-CijNSNXC.js";import"./vendor-CAc91cwn.js";import"./index-ByZPR1VQ.js";const s=()=>o.jsx(t,{fontFamily:'"Inter Tight", Inter, sans-serif',children:o.jsx(i,{headline:"Portfolio Monitoring",subtext:"Purpose built AI for analyzing, structuring, and cataloging portfolio data",ctaLabel:"See a demo",onCtaClick:()=>window.open("mailto:sales@rengoai.com","_blank")})});export{s as PortfolioMonitoringPage};
+//# sourceMappingURL=portfolio-monitoring-page-B-O3G56L.js.map
