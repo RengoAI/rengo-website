@@ -73,7 +73,7 @@ export const PulseGrid: React.FC<PulseGridProps> = ({
   const fadeColor =
     tone === "navy" ? "#0C1D34" : isDark ? "#0C1D34" : "#fff";
 
-  const pulseOpacity = isDark ? 0.85 : 0.55;
+  const pulseOpacity = tone === "navy" ? 0.68 : isDark ? 0.85 : 0.55;
   const tintOpacity = isDark ? 0.22 : 0.45;
 
   const tintKeyframes = tintRows

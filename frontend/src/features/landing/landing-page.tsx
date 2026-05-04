@@ -1,6 +1,6 @@
-import { PulseGrid } from "@/components/pulse-grid";
 import { PageHero } from "@/components/layout/page-hero";
 import { ValueCard } from "@/components/layout/value-card";
+import { PulseGrid } from "@/components/pulse-grid";
 import { Box, Text } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
 import React from "react";
