@@ -98,9 +98,7 @@ export const AppFooter: React.FC = () => (
         minW={{ base: "min(100%, 280px)", lg: 0 }}
       >
         <FooterCol title="Platform">
-          <FooterLink to="/product/portfolio-monitoring">
-            Portfolio Monitoring
-          </FooterLink>
+          <FooterLink to="/product/portfolio-monitoring">Product</FooterLink>
           <FooterLink to="/security">Security</FooterLink>
         </FooterCol>
 

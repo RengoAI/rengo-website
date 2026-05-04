@@ -13,6 +13,7 @@ interface PageHeroProps {
   align?: "left" | "center";
   subtextMaxW?: string;
   background?: React.ReactNode;
+  tone?: "dark" | "light";
 }
 
 export const PageHero: React.FC<PageHeroProps> = ({
@@ -24,15 +25,17 @@ export const PageHero: React.FC<PageHeroProps> = ({
   align = "center",
   subtextMaxW = "480px",
   background,
+  tone = "dark",
 }) => {
   const isLeft = align === "left";
+  const isLight = tone === "light";
 
   return (
     <Box
       as="section"
       position="relative"
-      bg={NAVY}
-      color="white"
+      bg={isLight ? "white" : NAVY}
+      color={isLight ? NAVY : "white"}
       minH="100vh"
       display="flex"
       flexDirection="column"
@@ -61,7 +64,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
             fontSize="11px"
             letterSpacing="0.18em"
             textTransform="uppercase"
-            color="primary.400"
+            color={isLight ? "primary.700" : "primary.400"}
             mb={6}
           >
             {eyebrow}
@@ -75,7 +78,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
           fontWeight={400}
           lineHeight={1.04}
           letterSpacing="-0.025em"
-          color="white"
+          color={isLight ? NAVY : "white"}
           maxW="880px"
           m={0}
           mb={7}
@@ -83,12 +86,14 @@ export const PageHero: React.FC<PageHeroProps> = ({
           {headline}
         </Box>
 
-        {isLeft && <Box h="1px" bg="whiteAlpha.500" w="72px" mb={7} />}
+        {isLeft && (
+          <Box h="1px" bg={isLight ? "gray.300" : "whiteAlpha.500"} w="72px" mb={7} />
+        )}
 
         <Box
           fontSize="lg"
           lineHeight={1.45}
-          color="whiteAlpha.800"
+          color={isLight ? "gray.500" : "whiteAlpha.800"}
           maxW={subtextMaxW}
           mb={9}
         >
@@ -97,13 +102,13 @@ export const PageHero: React.FC<PageHeroProps> = ({
 
         <Button
           borderRadius="md"
-          bg="white"
-          color={NAVY}
+          bg={isLight ? NAVY : "white"}
+          color={isLight ? "white" : NAVY}
           h="42px"
           px={6}
           fontSize="15px"
           fontWeight="medium"
-          _hover={{ bg: "gray.50" }}
+          _hover={{ bg: isLight ? "primary.800" : "gray.50" }}
           onClick={onCtaClick}
         >
           {ctaLabel}
