@@ -239,21 +239,21 @@ export const buttonRecipe = defineRecipe({
         py: "6px",
         px: "14px",
         fontSize: "14px",
-        minHeight: "32px",
+        minHeight: "44px",
         height: "unset",
       },
       md: {
         py: "9px",
         px: "16px",
         fontSize: "14px",
-        minHeight: "40px",
+        minHeight: "44px",
         height: "unset",
       },
       lg: {
         py: "11px",
         px: "18px",
         fontSize: "16px",
-        minHeight: "40px",
+        minHeight: "44px",
         height: "unset",
       },
       xxsIcon: {
@@ -279,8 +279,8 @@ export const buttonRecipe = defineRecipe({
         },
       },
       mdIcon: {
-        minWidth: "40px",
-        minHeight: "40px",
+        minWidth: "44px",
+        minHeight: "44px",
       },
       tableboxIcon: {
         width: "28px",

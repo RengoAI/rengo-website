@@ -19,7 +19,7 @@ export const SectionBlock: React.FC<SectionBlockProps> = ({
   bg = "white",
   headingOffset = "52px",
 }) => (
-  <Box bg={bg} px={20} py={28}>
+  <Box bg={bg} px={{ base: 4, md: 20 }} py={{ base: 16, md: 28 }}>
     <Box
       display="grid"
       gridTemplateColumns={{ base: "1fr", md: "1fr 2fr" }}

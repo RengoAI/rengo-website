@@ -60,7 +60,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
         justify="center"
         align={isLeft ? "flex-start" : "center"}
         textAlign={isLeft ? "left" : "center"}
-        px={20}
+        px={{ base: 4, md: 20 }}
         pt={contentPt}
         pb={contentPb}
       >
@@ -112,7 +112,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
           borderRadius="md"
           bg={isLight ? NAVY : "white"}
           color={isLight ? "white" : NAVY}
-          h="42px"
+          h={{ base: "44px", md: "42px" }}
           px={6}
           fontSize="15px"
           fontWeight="medium"

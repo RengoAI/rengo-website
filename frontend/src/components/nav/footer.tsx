@@ -11,7 +11,7 @@ interface FooterColProps {
 }
 
 const FooterCol: React.FC<FooterColProps> = ({ title, children }) => (
-  <Flex direction="column" gap={2} minW="128px">
+  <Flex direction="column" gap={2} minW={{ base: "auto", sm: "128px" }}>
     <Text fontSize="14px" color="whiteAlpha.900" lineHeight="20px" mb={1}>
       {title}
     </Text>
@@ -47,7 +47,7 @@ export const AppFooter: React.FC = () => (
     as="footer"
     bg={NAVY}
     color="white"
-    px={20}
+    px={{ base: 4, md: 20 }}
     pt={16}
     pb={10}
     borderTopWidth="1px"
