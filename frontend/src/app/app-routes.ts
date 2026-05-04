@@ -17,9 +17,9 @@ export const rootRoute = route(
       {
         termsOfService: route("/terms-of-service", {}, {}),
         privacyPolicy: route("/privacy-policy", {}, {}),
-        security: route("/security", {}, {}),
       },
     ),
+    security: route("/security", {}, {}),
     careers: route(
       "/careers",
       {},
@@ -27,8 +27,9 @@ export const rootRoute = route(
         index: route("/", {}, {}),
       },
     ),
-    solutions: route(
-      "/solutions",
+    company: route("/company", {}, {}),
+    product: route(
+      "/product",
       {},
       {
         portfolioMonitoring: route("/portfolio-monitoring", {}, {}),
