@@ -5,26 +5,36 @@ import React from "react";
 export const TermsOfServicePage: React.FC = () => (
   <Page>
     <Box w="full">
-      <Container maxW="4xl" py={16} px={8}>
-        <VStack gap={8} align="stretch">
+      <Container maxW="3xl" pt={40} pb={28} px={8}>
+        <VStack gap={12} align="stretch">
           {/* Header */}
-          <VStack gap={4} textAlign="center" maxW="2xl" mx="auto">
+          <VStack gap={3} align="flex-start">
             <Text
-              textStyle="h1"
-              fontSize={{ base: "3xl", md: "4xl" }}
-              fontWeight="bold"
+              fontFamily='"Space Mono", SFMono-Regular, ui-monospace, monospace'
+              fontSize="xs"
+              letterSpacing="0.18em"
+              textTransform="uppercase"
+              color="primary.400"
+            >
+              Legal
+            </Text>
+            <Text
+              fontFamily="heading"
+              fontSize={{ base: "3xl", md: "48px" }}
+              fontWeight={400}
+              letterSpacing="-0.025em"
+              lineHeight={1.06}
               color="gray.900"
-              lineHeight={1.2}
             >
               Terms of Use
             </Text>
-            <Text textStyle="body" fontSize="lg" color="gray.600">
+            <Text fontSize="sm" color="gray.400">
               Effective: July 24, 2025
             </Text>
           </VStack>
 
           {/* Terms Content */}
-          <VStack gap={6} align="stretch" maxW="none" w="full">
+          <VStack gap={5} align="stretch" w="full">
             <Text
               textStyle="body"
               fontSize="md"
@@ -127,11 +137,12 @@ export const TermsOfServicePage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h2"
-              fontSize="2xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="xl"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={6}
+              mt={10}
             >
               1. GUIDELINES
             </Text>
@@ -304,11 +315,12 @@ export const TermsOfServicePage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h2"
-              fontSize="2xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="xl"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={6}
+              mt={10}
             >
               2. INTELLECTUAL PROPERTY
             </Text>
@@ -380,11 +392,12 @@ export const TermsOfServicePage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h2"
-              fontSize="2xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="xl"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={6}
+              mt={10}
             >
               3. NO WARRANTIES; LIMITATION OF LIABILITY
             </Text>
@@ -432,11 +445,12 @@ export const TermsOfServicePage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h2"
-              fontSize="2xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="xl"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={6}
+              mt={10}
             >
               4. FEEDBACK
             </Text>
@@ -459,11 +473,12 @@ export const TermsOfServicePage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h2"
-              fontSize="2xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="xl"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={6}
+              mt={10}
             >
               5. EXTERNAL SITES
             </Text>
@@ -490,11 +505,12 @@ export const TermsOfServicePage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h2"
-              fontSize="2xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="xl"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={6}
+              mt={10}
             >
               6. INDEMNIFICATION
             </Text>
@@ -515,11 +531,12 @@ export const TermsOfServicePage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h2"
-              fontSize="2xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="xl"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={6}
+              mt={10}
             >
               7. COMPLIANCE WITH APPLICABLE LAWS
             </Text>
@@ -539,11 +556,12 @@ export const TermsOfServicePage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h2"
-              fontSize="2xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="xl"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={6}
+              mt={10}
             >
               8. CHANGES TO THESE TERMS
             </Text>
@@ -562,11 +580,12 @@ export const TermsOfServicePage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h2"
-              fontSize="2xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="xl"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={6}
+              mt={10}
             >
               9. BINDING ARBITRATION
             </Text>
@@ -598,11 +617,12 @@ export const TermsOfServicePage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h2"
-              fontSize="2xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="xl"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={6}
+              mt={10}
             >
               10. CLASS ACTION WAIVER
             </Text>
@@ -629,11 +649,12 @@ export const TermsOfServicePage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h2"
-              fontSize="2xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="xl"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={6}
+              mt={10}
             >
               11. EQUITABLE RELIEF
             </Text>
@@ -655,11 +676,12 @@ export const TermsOfServicePage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h2"
-              fontSize="2xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="xl"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={6}
+              mt={10}
             >
               12. CONTROLLING LAW; EXCLUSIVE FORUM
             </Text>
@@ -678,11 +700,12 @@ export const TermsOfServicePage: React.FC = () => (
             </Text>
 
             <Text
-              textStyle="h2"
-              fontSize="2xl"
-              fontWeight="semibold"
+              fontFamily="heading"
+              fontSize="xl"
+              fontWeight={400}
+              letterSpacing="-0.01em"
               color="gray.900"
-              mt={6}
+              mt={10}
             >
               13. MISCELLANEOUS
             </Text>

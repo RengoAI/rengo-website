@@ -49,6 +49,19 @@ const config = defineConfig({
       borderTop: "1px solid",
       borderColor: "gray.200",
     },
+    // Footer link styles using token CSS variables
+    ".footer-link": {
+      color: "var(--rengo-colors-white-alpha-550)",
+      textDecoration: "none",
+      fontSize: "14px",
+      lineHeight: "20px",
+      cursor: "pointer",
+      transition: "color 150ms ease",
+      display: "block",
+    },
+    ".footer-link:hover": {
+      color: "var(--rengo-colors-white)",
+    },
     // React-PDF styling to match provided HTML/CSS example
     ".react-pdf__Document": {
       display: "flex",

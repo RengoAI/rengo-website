@@ -12,7 +12,7 @@ export const AppLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <ErrorBoundary fallback={AppError} resetKeys={[location.pathname]}>
       <AppTopNav />
-      <Box minH="calc(100vh - 64px)">
+      <Box>
         <ErrorBoundary fallback={AppError} resetKeys={[location.pathname]}>
           {children}
           <AppFooter />

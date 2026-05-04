@@ -54,11 +54,11 @@ export const FormDrawer = <T extends FieldValues, R>({
           <Drawer.Content ref={initialFocusRef}>
             <Drawer.CloseTrigger />
             <DrawerHeader>
-              <Text fontSize="20px" fontWeight="500">
+              <Text fontSize="1.25rem" fontWeight="500">
                 {title}
               </Text>
               {!!subtitle && (
-                <Text fontSize="18px" fontWeight="400">
+                <Text fontSize="1.125rem" fontWeight="400">
                   {subtitle}
                 </Text>
               )}

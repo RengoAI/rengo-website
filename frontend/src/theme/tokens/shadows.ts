@@ -8,6 +8,9 @@ export const shadows = defineTokens.shadows({
   bottomBar: {
     value: "0px -2px 8px -2px rgba(16, 24, 40, 0.1)",
   },
+  overlay: {
+    value: "0 24px 80px rgba(0, 0, 0, 0.32)",
+  },
   outline: {
     value: "inset 0 0 0 2px {colors.primary.200}",
   },

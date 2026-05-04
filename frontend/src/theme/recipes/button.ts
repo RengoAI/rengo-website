@@ -8,7 +8,6 @@ export const buttonRecipe = defineRecipe({
     transitionProperty: "common",
     transitionDuration: "normal",
     textDecoration: "none",
-    fontWeight: "medium",
     cursor: "pointer",
     _hover: {
       textDecoration: "none",
@@ -79,12 +78,13 @@ export const buttonRecipe = defineRecipe({
       ghost: {
         borderRadius: "6px",
         bg: "transparent",
+        fontWeight: "normal",
         cursor: "pointer",
         _hover: {
-          bg: "bg.subtle",
+          bg: "transparent",
         },
         _active: {
-          bg: "bg.subtle",
+          bg: "transparent",
         },
       },
       transparent: {
@@ -218,9 +218,10 @@ export const buttonRecipe = defineRecipe({
         height: "unset",
       },
       xs: {
-        py: "5px",
-        px: "12px",
-        minHeight: "32px",
+        py: "6px",
+        px: "13px",
+        fontSize: "14px",
+        minHeight: "38px",
         height: "unset",
       },
       toolbarIcon: {
@@ -236,24 +237,24 @@ export const buttonRecipe = defineRecipe({
         height: "unset",
       },
       sm: {
-        py: "7px",
+        py: "6px",
         px: "14px",
         fontSize: "14px",
-        minHeight: "32px",
+        minHeight: "44px",
         height: "unset",
       },
       md: {
         py: "9px",
         px: "16px",
         fontSize: "14px",
-        minHeight: "40px",
+        minHeight: "44px",
         height: "unset",
       },
       lg: {
         py: "11px",
         px: "18px",
         fontSize: "16px",
-        minHeight: "40px",
+        minHeight: "44px",
         height: "unset",
       },
       xxsIcon: {
@@ -279,8 +280,8 @@ export const buttonRecipe = defineRecipe({
         },
       },
       mdIcon: {
-        minWidth: "40px",
-        minHeight: "40px",
+        minWidth: "44px",
+        minHeight: "44px",
       },
       tableboxIcon: {
         width: "28px",
@@ -319,18 +320,18 @@ export const buttonRecipe = defineRecipe({
       variant: "solid",
       colorScheme: "primary",
       css: {
-        bg: "primary.600",
-        borderColor: "primary.700",
+        bg: "primary.700",
+        borderColor: "primary.800",
         color: "white",
         _hover: {
           color: "gray.100",
-          bg: "primary.700",
+          bg: "primary.800",
           borderColor: "transparent",
         },
         _focus: {
           color: "white",
-          bg: "primary.600",
-          borderColor: "primary.700",
+          bg: "primary.700",
+          borderColor: "primary.800",
           outlineColor: "transparent",
           outlineWidth: "0px",
           outlineOffset: "0px",

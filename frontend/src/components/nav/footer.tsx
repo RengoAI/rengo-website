@@ -1,137 +1,131 @@
-import { rootRoute } from "@/app/app-routes";
+import { PageContainer } from "@/components/layout/page-container";
 import { Logo } from "@/components/logo/logo";
-import { Box, Container, Flex, HStack, Text, VStack } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
 
-interface FooterLinkProps {
-  to: string;
-  children: React.ReactNode;
-}
-
-const FooterLink: React.FC<FooterLinkProps> = ({ to, children }) => (
-  <Link to={to}>
-    <Text
-      fontSize="sm"
-      color="white"
-      cursor="pointer"
-      _hover={{ color: "gray.100" }}
-    >
-      {children}
-    </Text>
-  </Link>
-);
-
-interface FooterLinkSectionProps {
+interface FooterColProps {
   title: string;
   children: React.ReactNode;
 }
 
-const FooterLinkSection: React.FC<FooterLinkSectionProps> = ({
-  title,
-  children,
-}) => (
-  <VStack align={{ base: "center", md: "flex-start" }} gap={3}>
-    <Text fontSize="sm" fontWeight="semibold" color="white">
+const FooterCol: React.FC<FooterColProps> = ({ title, children }) => (
+  <Flex direction="column" gap={2} minW={{ base: "auto", sm: "128px" }}>
+    <Text
+      fontSize="0.875rem"
+      color="whiteAlpha.900"
+      lineHeight="1.25rem"
+      mb={1}
+    >
       {title}
     </Text>
-    <VStack gap={2} align={{ base: "center", md: "flex-start" }}>
-      {children}
-    </VStack>
-  </VStack>
-);
-
-const FooterLogo: React.FC = () => (
-  <VStack align={{ base: "center", md: "flex-start" }} gap={4} maxW="md">
-    <Link to="/">
-      <Logo color="white" size="default" />
-    </Link>
-  </VStack>
-);
-
-const FooterBottom: React.FC = () => (
-  <Flex
-    direction={{ base: "column", md: "row" }}
-    justify="space-between"
-    align="center"
-    w="full"
-    py={4}
-    borderTop="1px solid"
-    borderColor="primary.600"
-    gap={4}
-  >
-    <Text fontSize="sm" color="gray.200">
-      © 2025 Rengo AI, Inc. All rights reserved.
-    </Text>
-    <HStack gap={6}>
-      <Text
-        fontSize="sm"
-        color="gray.200"
-        cursor="pointer"
-        _hover={{ color: "white" }}
-        onClick={() =>
-          window.open("https://www.linkedin.com/company/106703002", "_blank")
-        }
-      >
-        LinkedIn
-      </Text>
-      <Text
-        fontSize="sm"
-        color="gray.200"
-        cursor="pointer"
-        _hover={{ color: "white" }}
-        onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
-      >
-        Contact
-      </Text>
-    </HStack>
+    {children}
   </Flex>
 );
 
+const FooterLink: React.FC<{
+  to?: string;
+  href?: string;
+  children: React.ReactNode;
+}> = ({ to, href, children }) => {
+  if (to)
+    return (
+      <Link to={to} className="footer-link">
+        {children}
+      </Link>
+    );
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="footer-link"
+    >
+      {children}
+    </a>
+  );
+};
+
 export const AppFooter: React.FC = () => (
-  <Box bg="primary.700">
-    <Container maxW="6xl" px={16}>
-      <VStack gap={0}>
+  <Box
+    as="footer"
+    bg="primary.800"
+    color="white"
+    pt={16}
+    pb={10}
+    borderTopWidth="1px"
+    borderTopColor="whiteAlpha.200"
+  >
+    <PageContainer>
+      <Flex
+        justify="space-between"
+        align="flex-start"
+        w="full"
+        flexWrap="wrap"
+        gapX={16}
+        gapY={12}
+      >
+        <Box flexShrink={0}>
+          <Logo
+            color="white"
+            layout="footer"
+            colorModeBehavior="display"
+            isCollapsed
+          />
+        </Box>
+
         <Flex
-          direction={{ base: "column", md: "row" }}
-          justify="space-between"
-          align={{ base: "center", md: "flex-start" }}
-          w="full"
-          gap={8}
-          py={6}
+          flex="1"
+          justify={{ base: "flex-start", lg: "flex-end" }}
+          align="flex-start"
+          flexWrap="wrap"
+          gapX={{ base: 14, md: 24 }}
+          gapY={10}
+          minW={{ base: "min(100%, 280px)", lg: 0 }}
         >
-          <FooterLogo />
+          <FooterCol title="Platform">
+            <FooterLink to="/product/portfolio-monitoring">Product</FooterLink>
+            <FooterLink to="/security">Security</FooterLink>
+          </FooterCol>
 
-          <FooterLinkSection title="Solutions">
-            <FooterLink
-              to={rootRoute({}).solutions({}).portfolioMonitoring({}).$}
-            >
-              Portfolio Monitoring
-            </FooterLink>
-          </FooterLinkSection>
+          <FooterCol title="Company">
+            <FooterLink to="/company">About</FooterLink>
+            <FooterLink to="/careers">Careers</FooterLink>
+          </FooterCol>
 
-          <FooterLinkSection title="Legal">
-            <FooterLink to={rootRoute({}).legal({}).privacyPolicy({}).$}>
-              Privacy Policy
-            </FooterLink>
-            <FooterLink to={rootRoute({}).legal({}).termsOfService({}).$}>
+          <FooterCol title="Legal">
+            <FooterLink to="/legal/privacy-policy">Privacy Policy</FooterLink>
+            <FooterLink to="/legal/terms-of-service">
               Terms of Service
             </FooterLink>
-            <FooterLink to={rootRoute({}).legal({}).security({}).$}>
-              Security
+          </FooterCol>
+
+          <FooterCol title="Contact">
+            <FooterLink href="https://www.linkedin.com/company/106703002">
+              LinkedIn
             </FooterLink>
-          </FooterLinkSection>
-
-          <FooterLinkSection title="Company">
-            {/* <FooterLink to={rootRoute({}).blog({}).changelog({}).$}>
-              Changelog
-            </FooterLink> */}
-            <FooterLink to={rootRoute({}).careers({}).$}>Careers</FooterLink>
-          </FooterLinkSection>
+            <FooterLink href="mailto:sales@rengoai.com">Sales</FooterLink>
+          </FooterCol>
         </Flex>
+      </Flex>
 
-        <FooterBottom />
-      </VStack>
-    </Container>
+      <Flex
+        mt={24}
+        align={{ base: "flex-start", sm: "center" }}
+        justify="flex-end"
+        flexWrap="wrap"
+        gapY={4}
+      >
+        <Text
+          fontSize="0.8125rem"
+          color="whiteAlpha.450"
+          lineHeight="1.25rem"
+          m={0}
+          textAlign="right"
+        >
+          © 2026 Rengo AI, Inc. All rights reserved.
+        </Text>
+      </Flex>
+    </PageContainer>
   </Box>
 );
