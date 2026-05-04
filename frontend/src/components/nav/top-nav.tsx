@@ -7,8 +7,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 export const TOP_NAV_HEIGHT = 64;
 
-const NAVY = "#0C1D34";
-
 const DARK_HERO_PATHS = ["/", "/security", "/careers", "/company", "/product/portfolio-monitoring"];
 
 export const AppTopNav: React.FC = () => {
@@ -33,7 +31,7 @@ export const AppTopNav: React.FC = () => {
   }, [location.pathname]);
 
   const navColor = overHero ? "whiteAlpha.900" : "gray.700";
-  const navHoverColor = overHero ? "whiteAlpha.500" : NAVY;
+  const navHoverColor = overHero ? "whiteAlpha.500" : "primary.800";
 
   const navItems = [
     { label: "Product", path: "/product/portfolio-monitoring" },
@@ -57,7 +55,7 @@ export const AppTopNav: React.FC = () => {
         py={2}
         borderBottom="1px solid"
         borderColor={overHero ? "whiteAlpha.100" : "border.muted"}
-        bg={overHero ? NAVY : "white"}
+        bg={overHero ? "primary.800" : "white"}
         style={{ transition: "background 200ms ease, border-color 200ms ease" }}
       >
         <Logo color={overHero ? "white" : "primary.700"} homeLink />
@@ -92,7 +90,7 @@ export const AppTopNav: React.FC = () => {
           <Button
             borderRadius="md"
             bg={overHero ? "white" : "primary.700"}
-            color={overHero ? NAVY : "white"}
+            color={overHero ? "primary.800" : "white"}
             size="sm"
             _hover={{ bg: overHero ? "gray.100" : "primary.800" }}
             onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}

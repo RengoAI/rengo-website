@@ -4,8 +4,6 @@ import { X } from "lucide-react";
 import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
 
-const NAVY = "#0C1D34";
-
 interface MobileNavItem {
   label: string;
   path: string;
@@ -58,10 +56,10 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
         right={0}
         zIndex={9999}
         bg="white"
-        color={NAVY}
+        color={"primary.800"}
         borderBottomRadius="18px"
         overflow="hidden"
-        boxShadow="0 24px 80px rgba(0,0,0,0.32)"
+        boxShadow="overlay"
       >
         {/* Header row with logo and close button */}
         <Box
@@ -78,7 +76,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
             variant="ghost"
             size="sm"
             aria-label="Close menu"
-            color={NAVY}
+            color={"primary.800"}
             bg="gray.50"
             borderRadius="8px"
             w="44px"
@@ -101,7 +99,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
                 px={5}
                 w="full"
                 borderRadius={0}
-                color={NAVY}
+                color={"primary.800"}
                 fontSize="sm"
                 fontWeight={400}
                 justifyContent="space-between"

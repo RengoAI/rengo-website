@@ -4,7 +4,6 @@ import { Box, Text } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
 import React from "react";
 
-const TINT = "#1A3358";
 const EDICT = '"Space Mono", SFMono-Regular, ui-monospace, monospace';
 
 const FIRM_TYPES = [
@@ -32,8 +31,8 @@ const LandingHeroBackground: React.FC = () => (
       cols={22}
       rows={26}
       showHeaderRow={false}
-      tintColor={TINT}
-      greenColor="#3B8BE0"
+      tintColor="var(--rengo-colors-primary-650)"
+      greenColor="var(--rengo-colors-brand-highlight)"
       fadeBottom={false}
     />
     <Box
@@ -42,7 +41,7 @@ const LandingHeroBackground: React.FC = () => (
       pointerEvents="none"
       style={{
         background:
-          "linear-gradient(to right, rgba(7,20,42,0.92) 0%, rgba(12,29,52,0.78) 38%, rgba(12,29,52,0.4) 65%, rgba(12,29,52,0.15) 100%)",
+          "linear-gradient(to right, color-mix(in srgb, var(--rengo-colors-primary-900) 92%, transparent) 0%, color-mix(in srgb, var(--rengo-colors-primary-800) 78%, transparent) 38%, color-mix(in srgb, var(--rengo-colors-primary-800) 40%, transparent) 65%, color-mix(in srgb, var(--rengo-colors-primary-800) 15%, transparent) 100%)",
       }}
     />
     <Box
@@ -53,7 +52,7 @@ const LandingHeroBackground: React.FC = () => (
       h="200px"
       pointerEvents="none"
       style={{
-        background: "linear-gradient(to bottom, transparent, #0C1D34 100%)",
+        background: "linear-gradient(to bottom, transparent, var(--rengo-colors-primary-800) 100%)",
       }}
     />
   </>

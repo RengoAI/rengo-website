@@ -1,7 +1,6 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 
-const NAVY = "#0C1D34";
 const EDICT = '"Space Mono", SFMono-Regular, ui-monospace, monospace';
 
 interface PageHeroProps {
@@ -40,8 +39,8 @@ export const PageHero: React.FC<PageHeroProps> = ({
     <Box
       as="section"
       position="relative"
-      bg={isLight ? "white" : NAVY}
-      color={isLight ? NAVY : "white"}
+      bg={isLight ? "white" : "primary.800"}
+      color={isLight ? "primary.800" : "white"}
       minH={minH}
       display="flex"
       flexDirection="column"
@@ -84,7 +83,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
           fontWeight={400}
           lineHeight={1.04}
           letterSpacing="-0.025em"
-          color={isLight ? NAVY : "white"}
+          color={isLight ? "primary.800" : "white"}
           maxW="880px"
           m={0}
           mb={7}
@@ -111,7 +110,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
         <Button
           borderRadius="md"
           bg={isLight ? "primary.700" : "white"}
-          color={isLight ? "white" : NAVY}
+          color={isLight ? "white" : "primary.800"}
           h={{ base: "44px", md: "42px" }}
           px={6}
           fontSize="15px"

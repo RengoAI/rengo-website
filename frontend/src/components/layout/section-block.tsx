@@ -1,7 +1,6 @@
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 
-const NAVY = "#0C1D34";
 const EDICT = '"Space Mono", SFMono-Regular, ui-monospace, monospace';
 
 interface SectionBlockProps {
@@ -46,7 +45,7 @@ export const SectionBlock: React.FC<SectionBlockProps> = ({
           fontWeight={400}
           letterSpacing="-0.025em"
           lineHeight={1.1}
-          color={NAVY}
+          color="primary.800"
           m={0}
         >
           {heading}

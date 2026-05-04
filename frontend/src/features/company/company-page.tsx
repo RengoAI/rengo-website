@@ -13,7 +13,6 @@ const ANGELS = [
 ] as const;
 
 const EDICT = '"Space Mono", SFMono-Regular, ui-monospace, monospace';
-const NAVY = "#0C1D34";
 
 const MissionSection: React.FC = () => (
   <Box
@@ -38,7 +37,7 @@ const MissionSection: React.FC = () => (
           fontWeight={400}
           lineHeight={1.04}
           letterSpacing="-0.035em"
-          color={NAVY}
+          color={"primary.800"}
           maxW="620px"
           m={0}
         >
@@ -73,7 +72,7 @@ const BuiltBySection: React.FC = () => (
         fontWeight={400}
         lineHeight={1.06}
         letterSpacing="-0.03em"
-        color={NAVY}
+        color={"primary.800"}
         m={0}
         mb={4}
       >
@@ -106,7 +105,7 @@ const InvestorsSection: React.FC = () => (
         fontWeight={400}
         lineHeight={1.06}
         letterSpacing="-0.03em"
-        color={NAVY}
+        color={"primary.800"}
         m={0}
         mb={4}
       >

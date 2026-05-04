@@ -1,7 +1,6 @@
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 
-const NAVY = "#0C1D34";
 const EDICT = '"Space Mono", SFMono-Regular, ui-monospace, monospace';
 
 interface ValueCardProps {
@@ -28,7 +27,7 @@ export const ValueCard: React.FC<ValueCardProps> = ({ number, title, body }) => 
       fontFamily="heading"
       fontSize="24px"
       fontWeight={400}
-      color={NAVY}
+      color="primary.800"
     >
       {title}
     </Box>

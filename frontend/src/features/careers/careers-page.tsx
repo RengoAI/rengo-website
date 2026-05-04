@@ -3,8 +3,6 @@ import { TeamLogoGrid } from "@/components/team-logo-grid";
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 
-const NAVY = "#0C1D34";
-
 const BuiltBySection: React.FC = () => (
   <Box
     as="section"
@@ -22,7 +20,7 @@ const BuiltBySection: React.FC = () => (
         fontWeight={400}
         lineHeight={1.06}
         letterSpacing="-0.03em"
-        color={NAVY}
+        color={"primary.800"}
         m={0}
         mb={4}
       >

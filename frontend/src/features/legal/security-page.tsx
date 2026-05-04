@@ -2,7 +2,6 @@ import { PageHero } from "@/components/layout/page-hero";
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 
-const NAVY = "#0C1D34";
 const EDICT = '"Space Mono", SFMono-Regular, ui-monospace, monospace';
 
 const CARDS = [
@@ -44,7 +43,7 @@ export const SecurityPage: React.FC = () => (
         fontSize="40px"
         fontWeight={400}
         letterSpacing="-0.025em"
-        color={NAVY}
+        color={"primary.800"}
         mb={4}
         maxW="720px"
       >
@@ -94,7 +93,7 @@ export const SecurityPage: React.FC = () => (
               fontWeight={400}
               letterSpacing="-0.02em"
               lineHeight={1.15}
-              color={NAVY}
+              color={"primary.800"}
               m={0}
             >
               {title}

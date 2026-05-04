@@ -3,8 +3,6 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
 
-const NAVY = "#0C1D34";
-
 interface FooterColProps {
   title: string;
   children: React.ReactNode;
@@ -45,7 +43,7 @@ const FooterLink: React.FC<{
 export const AppFooter: React.FC = () => (
   <Box
     as="footer"
-    bg={NAVY}
+    bg="primary.800"
     color="white"
     px={{ base: 4, md: 20 }}
     pt={16}
@@ -53,24 +51,6 @@ export const AppFooter: React.FC = () => (
     borderTopWidth="1px"
     borderTopColor="whiteAlpha.200"
   >
-    <style>{`
-      .footer-link {
-        color: rgba(255,255,255,0.52);
-        text-decoration: none;
-        font-size: 14px;
-        line-height: 20px;
-        cursor: pointer;
-        transition: color 150ms ease;
-      }
-      .footer-link:hover {
-        color: rgba(255,255,255,1);
-      }
-      .footer-bottom-copyright {
-        font-size: 13px;
-        color: rgba(255, 255, 255, 0.42);
-        line-height: 20px;
-      }
-    `}</style>
     <Flex
       justify="space-between"
       align="flex-start"
@@ -128,7 +108,7 @@ export const AppFooter: React.FC = () => (
       flexWrap="wrap"
       gapY={4}
     >
-      <Text className="footer-bottom-copyright" m={0} textAlign="right">
+      <Text fontSize="13px" color="whiteAlpha.450" lineHeight="20px" m={0} textAlign="right">
         © 2026 Rengo AI, Inc. All rights reserved.
       </Text>
     </Flex>

@@ -23,8 +23,8 @@ export const PulseGrid: React.FC<PulseGridProps> = ({
   cols = 10,
   rows = 25,
   showHeaderRow = true,
-  tintColor = "#E6F0FF",
-  greenColor = "#7aa58e",
+  tintColor = "var(--rengo-colors-primary-50)",
+  greenColor = "var(--rengo-colors-green-400)",
   fadeBottom = true,
 }) => {
   const cellW = width / cols;
@@ -93,13 +93,13 @@ export const PulseGrid: React.FC<PulseGridProps> = ({
   const isDark = tone === "dark" || tone === "navy";
   const strokeColor =
     tone === "navy"
-      ? "rgba(255,255,255,0.16)"
+      ? "var(--rengo-colors-white-alpha-300)"
       : isDark
-        ? "rgba(255,255,255,0.10)"
-        : "#B8C0CE";
-  const headerFill = isDark ? "rgba(255,255,255,0.04)" : "#EEF1F5";
+        ? "var(--rengo-colors-white-alpha-150)"
+        : "var(--rengo-colors-gray-275)";
+  const headerFill = isDark ? "var(--rengo-colors-white-alpha-50)" : "var(--rengo-colors-gray-115)";
   const fadeColor =
-    tone === "navy" ? "#0C1D34" : isDark ? "#0C1D34" : "#fff";
+    tone === "navy" ? "var(--rengo-colors-primary-800)" : isDark ? "var(--rengo-colors-primary-800)" : "var(--rengo-colors-white)";
 
   const pulseOpacity = tone === "navy" ? 0.68 : isDark ? 0.85 : 0.55;
   const tintOpacity = isDark ? 0.22 : 0.45;
