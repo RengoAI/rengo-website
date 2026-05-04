@@ -68,8 +68,6 @@ export const AppFooter: React.FC = () => (
         <Box flexShrink={0}>
           <Logo
             color="white"
-            layout="footer"
-            colorModeBehavior="display"
             isCollapsed
           />
         </Box>
