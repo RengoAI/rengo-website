@@ -178,9 +178,9 @@ export const colors = defineTokens.colors({
     "400": { value: "#3169A8" },
     "500": { value: "#1A4F8A" },
     "600": { value: "#163F6E" },
-    "700": { value: "#1A3A6B" },
-    "800": { value: "#0F2547" },
-    "900": { value: "#0C1D34" },
+    "700": { value: "#0F2D52" },
+    "800": { value: "#0C1D34" },
+    "900": { value: "#060F1A" },
   },
   // Mirror hunter green palette to success tokens for consistency
   success: {

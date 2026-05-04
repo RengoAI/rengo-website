@@ -319,18 +319,18 @@ export const buttonRecipe = defineRecipe({
       variant: "solid",
       colorScheme: "primary",
       css: {
-        bg: "primary.600",
-        borderColor: "primary.700",
+        bg: "primary.700",
+        borderColor: "primary.800",
         color: "white",
         _hover: {
           color: "gray.100",
-          bg: "primary.700",
+          bg: "primary.800",
           borderColor: "transparent",
         },
         _focus: {
           color: "white",
-          bg: "primary.600",
-          borderColor: "primary.700",
+          bg: "primary.700",
+          borderColor: "primary.800",
           outlineColor: "transparent",
           outlineWidth: "0px",
           outlineOffset: "0px",

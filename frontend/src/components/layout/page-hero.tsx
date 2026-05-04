@@ -110,7 +110,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
 
         <Button
           borderRadius="md"
-          bg={isLight ? NAVY : "white"}
+          bg={isLight ? "primary.700" : "white"}
           color={isLight ? "white" : NAVY}
           h={{ base: "44px", md: "42px" }}
           px={6}
