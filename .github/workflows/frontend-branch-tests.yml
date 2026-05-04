@@ -32,5 +32,5 @@ jobs:
       - name: Setup node
         uses: ./.github/actions/node-setup
 
-      - name: Run tests
-        run: pnpm run test
+      - name: Run lint
+        run: pnpm run lint

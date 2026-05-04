@@ -1,3 +1,4 @@
+import { rootRoute } from "@/app/app-routes";
 import { PageContainer } from "@/components/layout/page-container";
 import { Logo } from "@/components/logo/logo";
 import { Box, Flex, Text } from "@chakra-ui/react";
@@ -11,12 +12,7 @@ interface FooterColProps {
 
 const FooterCol: React.FC<FooterColProps> = ({ title, children }) => (
   <Flex direction="column" gap={2} minW={{ base: "auto", sm: "128px" }}>
-    <Text
-      fontSize="0.875rem"
-      color="whiteAlpha.900"
-      lineHeight="1.25rem"
-      mb={1}
-    >
+    <Text fontSize="sm" color="whiteAlpha.900" lineHeight="short" mb={1}>
       {title}
     </Text>
     {children}
@@ -66,12 +62,7 @@ export const AppFooter: React.FC = () => (
         gapY={12}
       >
         <Box flexShrink={0}>
-          <Logo
-            color="white"
-            layout="footer"
-            colorModeBehavior="display"
-            isCollapsed
-          />
+          <Logo color="white" isCollapsed />
         </Box>
 
         <Flex
@@ -84,18 +75,24 @@ export const AppFooter: React.FC = () => (
           minW={{ base: "min(100%, 280px)", lg: 0 }}
         >
           <FooterCol title="Platform">
-            <FooterLink to="/product/portfolio-monitoring">Product</FooterLink>
-            <FooterLink to="/security">Security</FooterLink>
+            <FooterLink
+              to={rootRoute({}).product({}).portfolioMonitoring({}).$}
+            >
+              Product
+            </FooterLink>
+            <FooterLink to={rootRoute({}).security({}).$}>Security</FooterLink>
           </FooterCol>
 
           <FooterCol title="Company">
-            <FooterLink to="/company">About</FooterLink>
-            <FooterLink to="/careers">Careers</FooterLink>
+            <FooterLink to={rootRoute({}).company({}).$}>About</FooterLink>
+            <FooterLink to={rootRoute({}).careers({}).$}>Careers</FooterLink>
           </FooterCol>
 
           <FooterCol title="Legal">
-            <FooterLink to="/legal/privacy-policy">Privacy Policy</FooterLink>
-            <FooterLink to="/legal/terms-of-service">
+            <FooterLink to={rootRoute({}).legal({}).privacyPolicy({}).$}>
+              Privacy Policy
+            </FooterLink>
+            <FooterLink to={rootRoute({}).legal({}).termsOfService({}).$}>
               Terms of Service
             </FooterLink>
           </FooterCol>
@@ -117,9 +114,9 @@ export const AppFooter: React.FC = () => (
         gapY={4}
       >
         <Text
-          fontSize="0.8125rem"
+          fontSize="xs"
           color="whiteAlpha.450"
-          lineHeight="1.25rem"
+          lineHeight="short"
           m={0}
           textAlign="right"
         >

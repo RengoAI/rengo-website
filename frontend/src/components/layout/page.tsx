@@ -1,6 +1,5 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import React from "react";
-import { create } from "zustand";
 
 interface PageProps {
   header?: {
@@ -11,35 +10,7 @@ interface PageProps {
     fullHeight?: boolean;
   };
   actions?: React.ReactNode;
-  disableBreadcrumbs?: boolean;
 }
-
-interface HandleData {
-  pageTitle?: string;
-  tabTitle?: string;
-  icon?: React.ElementType;
-  disableLink?: boolean;
-  href?: string;
-}
-
-interface HandleStore {
-  handles: Record<string, HandleData>;
-  updateHandle: (routeId: string, data: Partial<HandleData>) => void;
-}
-
-export const usePageHandleStore = create<HandleStore>((set) => ({
-  handles: {},
-  updateHandle: (routeId, data) =>
-    set((state) => ({
-      handles: {
-        ...state.handles,
-        [routeId]: {
-          ...state.handles[routeId],
-          ...data,
-        },
-      },
-    })),
-}));
 
 export const Page: React.FC<React.PropsWithChildren<PageProps>> = ({
   children,
@@ -69,7 +40,7 @@ export const Page: React.FC<React.PropsWithChildren<PageProps>> = ({
               </Text>
             </Flex>
             {header.description && (
-              <Text variant="body" color="fg.muted">
+              <Text fontSize="sm" color="fg.muted">
                 {header.description}
               </Text>
             )}

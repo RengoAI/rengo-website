@@ -18,7 +18,7 @@ const BuiltBySection: React.FC = () => (
           as="h2"
           fontFamily="heading"
           fontSize={{ base: "34px", md: "48px" }}
-          fontWeight={400}
+          fontWeight="normal"
           lineHeight={1.06}
           letterSpacing="-0.03em"
           color="primary.800"

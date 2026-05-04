@@ -1,3 +1,4 @@
+import { rootRoute } from "@/app/app-routes";
 import { PageContainer } from "@/components/layout/page-container";
 import { PageHero } from "@/components/layout/page-hero";
 import { TeamLogoGrid } from "@/components/team-logo-grid";
@@ -35,7 +36,7 @@ const MissionSection: React.FC = () => (
             as="h2"
             fontFamily="heading"
             fontSize={{ base: "36px", md: "52px" }}
-            fontWeight={400}
+            fontWeight="normal"
             lineHeight={1.04}
             letterSpacing="-0.035em"
             color="primary.800"
@@ -71,7 +72,7 @@ const BuiltBySection: React.FC = () => (
           as="h2"
           fontFamily="heading"
           fontSize={{ base: "34px", md: "48px" }}
-          fontWeight={400}
+          fontWeight="normal"
           lineHeight={1.06}
           letterSpacing="-0.03em"
           color="primary.800"
@@ -105,7 +106,7 @@ const InvestorsSection: React.FC = () => (
           as="h2"
           fontFamily="heading"
           fontSize={{ base: "34px", md: "48px" }}
-          fontWeight={400}
+          fontWeight="normal"
           lineHeight={1.06}
           letterSpacing="-0.03em"
           color="primary.800"
@@ -141,7 +142,7 @@ const InvestorsSection: React.FC = () => (
           >
             <Text
               fontFamily={EDICT}
-              fontSize="0.625rem"
+              fontSize="xs"
               color="gray.400"
               letterSpacing="0.12em"
               textTransform="uppercase"
@@ -154,10 +155,10 @@ const InvestorsSection: React.FC = () => (
                 <Text
                   key={name}
                   as="span"
-                  fontSize="1.125rem"
+                  fontSize="lg"
                   color="primary.700"
                   opacity={0.58}
-                  fontWeight={400}
+                  fontWeight="normal"
                   letterSpacing="-0.01em"
                 >
                   {name}
@@ -192,7 +193,7 @@ export const CompanyPage: React.FC = () => {
         headline="Join us."
         subtext="We're hiring across engineering and product."
         ctaLabel="View careers"
-        onCtaClick={() => navigate("/careers")}
+        onCtaClick={() => navigate(rootRoute({}).careers({}).$)}
         tone="light"
         minH="auto"
         contentPt={24}

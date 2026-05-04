@@ -84,7 +84,7 @@ export const checkboxSlotRecipe = defineSlotRecipe({
     },
     label: {
       fontSize: "14px",
-      fontWeight: "400",
+      fontWeight: "normal",
       lineHeight: "20px",
       color: "fg.default",
       userSelect: "none",

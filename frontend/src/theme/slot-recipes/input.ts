@@ -14,7 +14,7 @@ export const inputSlotRecipe = defineSlotRecipe({
       minWidth: "unset",
       lineHeight: "20px",
       fontSize: "14px",
-      fontWeight: "400",
+      fontWeight: "normal",
       borderWidth: "1px",
       borderRadius: "4px",
       borderColor: "border.muted",
@@ -25,7 +25,7 @@ export const inputSlotRecipe = defineSlotRecipe({
       },
       _placeholder: {
         color: "gray.400",
-        fontWeight: "400",
+        fontWeight: "normal",
         opacity: 1,
       },
       _invalid: {
@@ -92,7 +92,7 @@ export const inputSlotRecipe = defineSlotRecipe({
           py: "12px",
           px: "16px",
           fontSize: "14px",
-          fontWeight: "400",
+          fontWeight: "normal",
         },
       },
       md: {

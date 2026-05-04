@@ -26,11 +26,11 @@ export const ValueCard: React.FC<ValueCardProps> = ({
     </Text>
     <Box
       as="h3"
-      mt="0.625rem"
-      mb="0.75rem"
+      mt={2.5}
+      mb={3}
       fontFamily="heading"
-      fontSize="1.5rem"
-      fontWeight={400}
+      fontSize="2xl"
+      fontWeight="normal"
       color="primary.800"
     >
       {title}
