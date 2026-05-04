@@ -41,10 +41,19 @@ export const PulseGrid: React.FC<PulseGridProps> = ({
   const rng = makeRng();
 
   const pulseCount = density === "dense" ? 8 : 4;
-  const highlights = Array.from({ length: pulseCount }).map(() => ({
-    col: Math.floor(rng() * cols),
-    row: 2 + Math.floor(rng() * (rows - 4)),
-    delay: rng() * 4,
+  const clampCell = (col: number, row: number) => ({
+    col: Math.min(cols - 1, Math.max(0, col)),
+    row: Math.min(rows - 1, Math.max(0, row)),
+  });
+  const highlightLocations = [
+    clampCell(Math.round(cols * 0.5), Math.round(rows * 0.18)),
+    clampCell(Math.round(cols * 0.82), Math.round(rows * 0.58)),
+    clampCell(Math.round(cols * 0.56), Math.round(rows * 0.82)),
+    clampCell(Math.round(cols * 0.9), Math.round(rows * 0.76)),
+  ];
+  const highlights = Array.from({ length: pulseCount }).map((_, index) => ({
+    delay: index * 1.35,
+    location: highlightLocations[index % highlightLocations.length],
   }));
 
   const tintRows: number[] = [];
@@ -132,8 +141,8 @@ export const PulseGrid: React.FC<PulseGridProps> = ({
         {highlights.map((h, i) => (
           <rect
             key={i}
-            x={h.col * cellW + 0.5}
-            y={h.row * cellH + 0.5}
+            x={h.location.col * cellW + 0.5}
+            y={h.location.row * cellH + 0.5}
             width={cellW - 1}
             height={cellH - 1}
             fill={greenColor}
