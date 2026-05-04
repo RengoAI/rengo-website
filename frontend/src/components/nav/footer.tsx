@@ -1,9 +1,9 @@
+import { Logo } from "@/components/logo/logo";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
 
 const NAVY = "#0C1D34";
-const EDICT = '"Space Mono", SFMono-Regular, ui-monospace, monospace';
 
 interface FooterColProps {
   title: string;
@@ -11,33 +11,12 @@ interface FooterColProps {
 }
 
 const FooterCol: React.FC<FooterColProps> = ({ title, children }) => (
-  <Flex direction="column" gap={3} minW="120px">
-    <Text
-      fontFamily={EDICT}
-      fontSize="11px"
-      letterSpacing="0.08em"
-      textTransform="uppercase"
-      color="whiteAlpha.500"
-      mb={1}
-    >
+  <Flex direction="column" gap={2} minW="128px">
+    <Text fontSize="14px" color="whiteAlpha.900" lineHeight="20px" mb={1}>
       {title}
     </Text>
     {children}
   </Flex>
-);
-
-const LinkedInGlyph: React.FC = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    width={22}
-    height={22}
-    fill="currentColor"
-    aria-hidden
-    style={{ flexShrink: 0, display: "block" }}
-  >
-    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-  </svg>
 );
 
 const FooterLink: React.FC<{
@@ -52,11 +31,25 @@ const FooterLink: React.FC<{
       </Link>
     );
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className="footer-link">
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="footer-link"
+    >
       {children}
     </a>
   );
 };
+
+const FooterLegalLink: React.FC<{
+  to: string;
+  children: React.ReactNode;
+}> = ({ to, children }) => (
+  <Link to={to} className="footer-legal-link">
+    {children}
+  </Link>
+);
 
 export const AppFooter: React.FC = () => (
   <Box
@@ -65,84 +58,122 @@ export const AppFooter: React.FC = () => (
     color="white"
     px={20}
     pt={16}
-    pb={8}
+    pb={10}
     borderTopWidth="1px"
     borderTopColor="whiteAlpha.200"
   >
     <style>{`
       .footer-link {
-        color: rgba(255,255,255,0.65);
+        color: rgba(255,255,255,0.52);
         text-decoration: none;
         font-size: 14px;
+        line-height: 20px;
         cursor: pointer;
         transition: color 150ms ease;
       }
       .footer-link:hover {
         color: rgba(255,255,255,1);
       }
-      .footer-social-link {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        color: rgba(255,255,255,0.7);
+      .footer-bottom-copyright {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.42);
+        line-height: 20px;
+      }
+      .footer-legal-link {
+        color: rgba(255, 255, 255, 0.42);
+        text-decoration: none;
+        font-size: 13px;
+        line-height: 20px;
+        cursor: pointer;
         transition: color 150ms ease;
       }
-      .footer-social-link:hover {
-        color: rgba(255,255,255,1);
+      .footer-legal-link:hover {
+        color: rgba(255, 255, 255, 0.72);
       }
     `}</style>
-    <Flex justify="space-between" align="flex-start" w="full">
-      <FooterCol title="Overview">
-        <FooterLink to="/product/portfolio-monitoring">
-          Portfolio Monitoring
-        </FooterLink>
-        <FooterLink to="/security">Security</FooterLink>
-      </FooterCol>
+    <Flex
+      justify="space-between"
+      align="flex-start"
+      w="full"
+      flexWrap="wrap"
+      gapX={16}
+      gapY={12}
+    >
+      <Box flexShrink={0}>
+        <Logo
+          color="white"
+          layout="footer"
+          colorModeBehavior="display"
+          isCollapsed
+        />
+      </Box>
 
-      <FooterCol title="Company">
-        <FooterLink to="/company">About</FooterLink>
-        <FooterLink to="/careers">Careers</FooterLink>
-      </FooterCol>
+      <Flex
+        flex="1"
+        justify={{ base: "flex-start", lg: "flex-end" }}
+        align="flex-start"
+        flexWrap="wrap"
+        gapX={{ base: 14, md: 24 }}
+        gapY={10}
+        minW={{ base: "min(100%, 280px)", lg: 0 }}
+      >
+        <FooterCol title="Platform">
+          <FooterLink to="/product/portfolio-monitoring">
+            Portfolio Monitoring
+          </FooterLink>
+          <FooterLink to="/security">Security</FooterLink>
+        </FooterCol>
 
-      <FooterCol title="Legal">
-        <FooterLink to="/legal/privacy-policy">Privacy Policy</FooterLink>
-        <FooterLink to="/legal/terms-of-service">Terms of Service</FooterLink>
-      </FooterCol>
+        <FooterCol title="Company">
+          <FooterLink to="/company">About</FooterLink>
+          <FooterLink to="/careers">Careers</FooterLink>
+        </FooterCol>
 
-      <FooterCol title="Contact">
-        <FooterLink href="mailto:sales@rengoai.com">See a demo</FooterLink>
-        <FooterLink href="mailto:sales@rengoai.com">Sales</FooterLink>
-      </FooterCol>
+        <FooterCol title="Contact">
+          <FooterLink href="mailto:sales@rengoai.com">Sales</FooterLink>
+          <FooterLink href="https://www.linkedin.com/company/106703002">
+            LinkedIn
+          </FooterLink>
+        </FooterCol>
+      </Flex>
     </Flex>
 
     <Flex
-      mt={12}
-      pt={6}
-      align="center"
+      mt={24}
+      align={{ base: "flex-start", sm: "center" }}
       justify="space-between"
-      gap={4}
-      borderTopWidth="1px"
-      borderTopColor="whiteAlpha.200"
+      flexWrap="wrap"
+      gapX={16}
+      gapY={4}
     >
-      <a
-        href="https://www.linkedin.com/company/106703002"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Rengo AI on LinkedIn"
-        className="footer-social-link"
+      <Box flexShrink={0} w={{ base: 0, lg: "40px" }} />
+      <Flex
+        flex="1"
+        justify={{ base: "space-between", lg: "flex-end" }}
+        flexWrap="wrap"
+        gap={4}
+        minW={{ base: "full", lg: 0 }}
       >
-        <LinkedInGlyph />
-      </a>
-      <Text
-        fontFamily={EDICT}
-        fontSize="11px"
-        letterSpacing="0.06em"
-        textTransform="uppercase"
-        color="whiteAlpha.500"
-        textAlign="right"
-      >
-        © 2026 Rengo AI, Inc.
-      </Text>
+        <Flex
+          w={{ base: "full", lg: "576px" }}
+          align={{ base: "flex-start", sm: "center" }}
+          justify="space-between"
+          flexWrap="wrap"
+          gap={4}
+        >
+          <Flex align="center" gap={5} flexShrink={0}>
+            <FooterLegalLink to="/legal/privacy-policy">
+              Privacy
+            </FooterLegalLink>
+            <FooterLegalLink to="/legal/terms-of-service">
+              Terms
+            </FooterLegalLink>
+          </Flex>
+          <Text className="footer-bottom-copyright" m={0} textAlign="right">
+            © 2026 Rengo AI, Inc. All rights reserved.
+          </Text>
+        </Flex>
+      </Flex>
     </Flex>
   </Box>
 );

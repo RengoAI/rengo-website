@@ -1,7 +1,7 @@
 import { Logo } from "@/components/logo/logo";
 import { Box, Button, Flex } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const TOP_NAV_HEIGHT = 64;
 
@@ -45,9 +45,7 @@ export const AppTopNav: React.FC = () => {
       bg={overHero ? NAVY : "white"}
       style={{ transition: "background 200ms ease, border-color 200ms ease" }}
     >
-      <Link to="/" style={{ textDecoration: "none" }}>
-        <Logo color={overHero ? "white" : "primary.700"} />
-      </Link>
+      <Logo color={overHero ? "white" : "primary.700"} homeLink />
 
       <Flex as="nav" gap={1}>
         <Button
