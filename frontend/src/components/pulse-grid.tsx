@@ -41,6 +41,8 @@ export const PulseGrid: React.FC<PulseGridProps> = ({
   const rng = makeRng();
 
   const pulseCount = density === "dense" ? 8 : 4;
+  const pulseCycle = 5;
+  const pulseDelayStep = 0.45;
   const clampCell = (col: number, row: number) => ({
     col: Math.min(cols - 1, Math.max(0, col)),
     row: Math.min(rows - 1, Math.max(0, row)),
@@ -50,10 +52,27 @@ export const PulseGrid: React.FC<PulseGridProps> = ({
     clampCell(Math.round(cols * 0.82), Math.round(rows * 0.58)),
     clampCell(Math.round(cols * 0.56), Math.round(rows * 0.82)),
     clampCell(Math.round(cols * 0.9), Math.round(rows * 0.76)),
+    clampCell(Math.round(cols * 0.72), Math.round(rows * 0.32)),
+    clampCell(Math.round(cols * 0.38), Math.round(rows * 0.68)),
+    clampCell(Math.round(cols * 0.88), Math.round(rows * 0.44)),
+    clampCell(Math.round(cols * 0.62), Math.round(rows * 0.9)),
   ];
+  const [pulseCycleIndex, setPulseCycleIndex] = React.useState(0);
+
+  React.useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setPulseCycleIndex((index) => index + 1);
+    }, pulseCycle * 1000);
+
+    return () => window.clearInterval(intervalId);
+  }, [pulseCycle]);
+
   const highlights = Array.from({ length: pulseCount }).map((_, index) => ({
-    delay: index * 1.35,
-    location: highlightLocations[index % highlightLocations.length],
+    delay: index * pulseDelayStep,
+    location:
+      highlightLocations[
+        (pulseCycleIndex * pulseCount + index) % highlightLocations.length
+      ],
   }));
 
   const tintRows: number[] = [];
@@ -101,7 +120,7 @@ export const PulseGrid: React.FC<PulseGridProps> = ({
       <style>{`
         @keyframes ${id}-cellPulse {
           0%, 100% { opacity: 0; }
-          30%, 70% { opacity: ${pulseOpacity}; }
+          18%, 38% { opacity: ${pulseOpacity}; }
         }
         @keyframes ${id}-tintCycle {
           ${tintKeyframes}
@@ -140,14 +159,14 @@ export const PulseGrid: React.FC<PulseGridProps> = ({
         />
         {highlights.map((h, i) => (
           <rect
-            key={i}
+            key={`${pulseCycleIndex}-${i}`}
             x={h.location.col * cellW + 0.5}
             y={h.location.row * cellH + 0.5}
             width={cellW - 1}
             height={cellH - 1}
             fill={greenColor}
             style={{
-              animation: `${id}-cellPulse 5s ease-in-out ${h.delay}s infinite`,
+              animation: `${id}-cellPulse ${pulseCycle}s ease-in-out ${h.delay}s infinite`,
               opacity: 0,
             }}
           />
