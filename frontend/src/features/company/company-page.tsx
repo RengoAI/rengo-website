@@ -24,35 +24,35 @@ const MissionSection: React.FC = () => (
     borderColor="border.muted"
   >
     <PageContainer>
-    <Box
-      display="grid"
-      gridTemplateColumns={{ base: "1fr", lg: "0.9fr 1.1fr" }}
-      gap={{ base: 14, lg: 20 }}
-      alignItems="start"
-    >
-      <Box>
-        <Box
-          as="h2"
-          fontFamily="heading"
-          fontSize={{ base: "36px", md: "52px" }}
-          fontWeight={400}
-          lineHeight={1.04}
-          letterSpacing="-0.035em"
-          color={"primary.800"}
-          maxW="620px"
-          m={0}
-        >
-          Building managed data warehouses
+      <Box
+        display="grid"
+        gridTemplateColumns={{ base: "1fr", lg: "0.9fr 1.1fr" }}
+        gap={{ base: 14, lg: 20 }}
+        alignItems="start"
+      >
+        <Box>
+          <Box
+            as="h2"
+            fontFamily="heading"
+            fontSize={{ base: "36px", md: "52px" }}
+            fontWeight={400}
+            lineHeight={1.04}
+            letterSpacing="-0.035em"
+            color="primary.800"
+            maxW="620px"
+            m={0}
+          >
+            Building managed data warehouses
+          </Box>
         </Box>
-      </Box>
 
-      <Text fontSize="lg" lineHeight={1.75} color="gray.600" maxW="720px">
-        Private markets have expanded into a mainstream part of global capital
-        allocation, but the infrastructure supporting them has not kept pace.
-        Rengo AI deploys AI agents that continuously transform raw investment
-        data into a structured system of record.
-      </Text>
-    </Box>
+        <Text fontSize="lg" lineHeight={1.75} color="gray.600" maxW="720px">
+          Private markets have expanded into a mainstream part of global capital
+          allocation, but the infrastructure supporting them has not kept pace.
+          Rengo AI deploys AI agents that continuously transform raw investment
+          data into a structured system of record.
+        </Text>
+      </Box>
     </PageContainer>
   </Box>
 );
@@ -66,27 +66,27 @@ const BuiltBySection: React.FC = () => (
     borderColor="border.muted"
   >
     <PageContainer>
-    <Box maxW="680px" mb={16}>
-      <Box
-        as="h2"
-        fontFamily="heading"
-        fontSize={{ base: "34px", md: "48px" }}
-        fontWeight={400}
-        lineHeight={1.06}
-        letterSpacing="-0.03em"
-        color={"primary.800"}
-        m={0}
-        mb={4}
-      >
-        From people behind leading products
+      <Box maxW="680px" mb={16}>
+        <Box
+          as="h2"
+          fontFamily="heading"
+          fontSize={{ base: "34px", md: "48px" }}
+          fontWeight={400}
+          lineHeight={1.06}
+          letterSpacing="-0.03em"
+          color="primary.800"
+          m={0}
+          mb={4}
+        >
+          From people behind leading products
+        </Box>
+        <Text fontSize="md" lineHeight={1.65} color="gray.500" maxW="560px">
+          Experience from category-defining technology, financial services, and
+          private markets companies.
+        </Text>
       </Box>
-      <Text fontSize="md" lineHeight={1.65} color="gray.500" maxW="560px">
-        Experience from category-defining technology, financial services, and
-        private markets companies.
-      </Text>
-    </Box>
 
-    <TeamLogoGrid />
+      <TeamLogoGrid />
     </PageContainer>
   </Box>
 );
@@ -100,73 +100,73 @@ const InvestorsSection: React.FC = () => (
     borderColor="border.muted"
   >
     <PageContainer>
-    <Box maxW="680px" mb={16}>
-      <Box
-        as="h2"
-        fontFamily="heading"
-        fontSize={{ base: "34px", md: "48px" }}
-        fontWeight={400}
-        lineHeight={1.06}
-        letterSpacing="-0.03em"
-        color={"primary.800"}
-        m={0}
-        mb={4}
-      >
-        Backed by investors
-      </Box>
-      <Text fontSize="md" lineHeight={1.65} color="gray.500" maxW="560px">
-        Supported by venture investors and angels with experience across public
-        markets, private markets, and financial data infrastructure.
-      </Text>
-    </Box>
-
-    <Box
-      display="grid"
-      gridTemplateColumns={{ base: "1fr", lg: "repeat(2, 1fr)" }}
-      borderTop="1px solid"
-      borderLeft="1px solid"
-      borderColor="border.muted"
-    >
-      {[
-        ["Investors", INVESTORS],
-        ["Angels from", ANGELS],
-      ].map(([label, names]) => (
+      <Box maxW="680px" mb={16}>
         <Box
-          key={label as string}
-          minH="156px"
-          borderRight="1px solid"
-          borderBottom="1px solid"
-          borderColor="border.muted"
-          p={8}
+          as="h2"
+          fontFamily="heading"
+          fontSize={{ base: "34px", md: "48px" }}
+          fontWeight={400}
+          lineHeight={1.06}
+          letterSpacing="-0.03em"
+          color="primary.800"
+          m={0}
+          mb={4}
         >
-          <Text
-            fontFamily={EDICT}
-            fontSize="0.625rem"
-            color="gray.400"
-            letterSpacing="0.12em"
-            textTransform="uppercase"
-            mb={3}
-          >
-            {label as string}
-          </Text>
-          <Flex wrap="wrap" gapX={10} gapY={3}>
-            {(names as readonly string[]).map((name) => (
-              <Text
-                key={name}
-                as="span"
-                fontSize="1.125rem"
-                color="primary.700"
-                opacity={0.58}
-                fontWeight={400}
-                letterSpacing="-0.01em"
-              >
-                {name}
-              </Text>
-            ))}
-          </Flex>
+          Backed by investors
         </Box>
-      ))}
-    </Box>
+        <Text fontSize="md" lineHeight={1.65} color="gray.500" maxW="560px">
+          Supported by venture investors and angels with experience across
+          public markets, private markets, and financial data infrastructure.
+        </Text>
+      </Box>
+
+      <Box
+        display="grid"
+        gridTemplateColumns={{ base: "1fr", lg: "repeat(2, 1fr)" }}
+        borderTop="1px solid"
+        borderLeft="1px solid"
+        borderColor="border.muted"
+      >
+        {[
+          ["Investors", INVESTORS],
+          ["Angels from", ANGELS],
+        ].map(([label, names]) => (
+          <Box
+            key={label as string}
+            minH="156px"
+            borderRight="1px solid"
+            borderBottom="1px solid"
+            borderColor="border.muted"
+            p={8}
+          >
+            <Text
+              fontFamily={EDICT}
+              fontSize="0.625rem"
+              color="gray.400"
+              letterSpacing="0.12em"
+              textTransform="uppercase"
+              mb={3}
+            >
+              {label as string}
+            </Text>
+            <Flex wrap="wrap" gapX={10} gapY={3}>
+              {(names as readonly string[]).map((name) => (
+                <Text
+                  key={name}
+                  as="span"
+                  fontSize="1.125rem"
+                  color="primary.700"
+                  opacity={0.58}
+                  fontWeight={400}
+                  letterSpacing="-0.01em"
+                >
+                  {name}
+                </Text>
+              ))}
+            </Flex>
+          </Box>
+        ))}
+      </Box>
     </PageContainer>
   </Box>
 );

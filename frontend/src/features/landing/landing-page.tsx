@@ -53,7 +53,8 @@ const LandingHeroBackground: React.FC = () => (
       h="200px"
       pointerEvents="none"
       style={{
-        background: "linear-gradient(to bottom, transparent, var(--rengo-colors-primary-800) 100%)",
+        background:
+          "linear-gradient(to bottom, transparent, var(--rengo-colors-primary-800) 100%)",
       }}
     />
   </>

@@ -9,7 +9,11 @@ interface ValueCardProps {
   body: string;
 }
 
-export const ValueCard: React.FC<ValueCardProps> = ({ number, title, body }) => (
+export const ValueCard: React.FC<ValueCardProps> = ({
+  number,
+  title,
+  body,
+}) => (
   <Box borderTop="1px solid" borderColor="primary.700" pt={5}>
     <Text
       as="span"

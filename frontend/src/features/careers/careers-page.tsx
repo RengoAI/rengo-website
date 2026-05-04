@@ -13,28 +13,28 @@ const BuiltBySection: React.FC = () => (
     borderColor="border.muted"
   >
     <PageContainer>
-    <Box maxW="700px" mb={16}>
-      <Box
-        as="h2"
-        fontFamily="heading"
-        fontSize={{ base: "34px", md: "48px" }}
-        fontWeight={400}
-        lineHeight={1.06}
-        letterSpacing="-0.03em"
-        color={"primary.800"}
-        m={0}
-        mb={4}
-      >
-        Join a world class team
+      <Box maxW="700px" mb={16}>
+        <Box
+          as="h2"
+          fontFamily="heading"
+          fontSize={{ base: "34px", md: "48px" }}
+          fontWeight={400}
+          lineHeight={1.06}
+          letterSpacing="-0.03em"
+          color="primary.800"
+          m={0}
+          mb={4}
+        >
+          Join a world class team
+        </Box>
+        <Text fontSize="md" lineHeight={1.65} color="gray.500" maxW="580px">
+          We are a small team bringing together experience from enterprise
+          software, lending infrastructure, hedge funds, and private markets
+          systems.
+        </Text>
       </Box>
-      <Text fontSize="md" lineHeight={1.65} color="gray.500" maxW="580px">
-        We are a small team bringing together experience from enterprise
-        software, lending infrastructure, hedge funds, and private markets
-        systems.
-      </Text>
-    </Box>
 
-    <TeamLogoGrid />
+      <TeamLogoGrid />
     </PageContainer>
   </Box>
 );

@@ -27,6 +27,17 @@ export const PulseGrid: React.FC<PulseGridProps> = ({
   greenColor = "var(--rengo-colors-green-400)",
   fadeBottom = true,
 }) => {
+  const pulseCycle = 5;
+  const [pulseCycleIndex, setPulseCycleIndex] = React.useState(0);
+
+  React.useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setPulseCycleIndex((index) => index + 1);
+    }, pulseCycle * 1000);
+
+    return () => window.clearInterval(intervalId);
+  }, [pulseCycle]);
+
   const cellW = width / cols;
   const cellH = height / rows;
 
@@ -41,7 +52,6 @@ export const PulseGrid: React.FC<PulseGridProps> = ({
   const rng = makeRng();
 
   const pulseCount = density === "dense" ? 8 : 4;
-  const pulseCycle = 5;
   const pulseDelayStep = 0.45;
   const clampCell = (col: number, row: number) => ({
     col: Math.min(cols - 1, Math.max(0, col)),
@@ -57,15 +67,6 @@ export const PulseGrid: React.FC<PulseGridProps> = ({
     clampCell(Math.round(cols * 0.88), Math.round(rows * 0.44)),
     clampCell(Math.round(cols * 0.62), Math.round(rows * 0.9)),
   ];
-  const [pulseCycleIndex, setPulseCycleIndex] = React.useState(0);
-
-  React.useEffect(() => {
-    const intervalId = window.setInterval(() => {
-      setPulseCycleIndex((index) => index + 1);
-    }, pulseCycle * 1000);
-
-    return () => window.clearInterval(intervalId);
-  }, [pulseCycle]);
 
   const highlights = Array.from({ length: pulseCount }).map((_, index) => ({
     delay: index * pulseDelayStep,
@@ -97,9 +98,15 @@ export const PulseGrid: React.FC<PulseGridProps> = ({
       : isDark
         ? "var(--rengo-colors-white-alpha-150)"
         : "var(--rengo-colors-gray-275)";
-  const headerFill = isDark ? "var(--rengo-colors-white-alpha-50)" : "var(--rengo-colors-gray-115)";
+  const headerFill = isDark
+    ? "var(--rengo-colors-white-alpha-50)"
+    : "var(--rengo-colors-gray-115)";
   const fadeColor =
-    tone === "navy" ? "var(--rengo-colors-primary-800)" : isDark ? "var(--rengo-colors-primary-800)" : "var(--rengo-colors-white)";
+    tone === "navy"
+      ? "var(--rengo-colors-primary-800)"
+      : isDark
+        ? "var(--rengo-colors-primary-800)"
+        : "var(--rengo-colors-white)";
 
   const pulseOpacity = tone === "navy" ? 0.68 : isDark ? 0.85 : 0.55;
   const tintOpacity = isDark ? 0.22 : 0.45;
@@ -130,21 +137,52 @@ export const PulseGrid: React.FC<PulseGridProps> = ({
       <svg
         viewBox={`0 0 ${width} ${height}`}
         preserveAspectRatio="xMidYMid slice"
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+        }}
       >
         <defs>
           <linearGradient id={fadeId} x1="0" x2="1" y1="0.2" y2="1">
             <stop offset="0%" stopColor={fadeColor} stopOpacity={0} />
-            <stop offset="55%" stopColor={fadeColor} stopOpacity={isDark ? 0.5 : 0.7} />
-            <stop offset="100%" stopColor={fadeColor} stopOpacity={isDark ? 0.85 : 0.95} />
+            <stop
+              offset="55%"
+              stopColor={fadeColor}
+              stopOpacity={isDark ? 0.5 : 0.7}
+            />
+            <stop
+              offset="100%"
+              stopColor={fadeColor}
+              stopOpacity={isDark ? 0.85 : 0.95}
+            />
           </linearGradient>
-          <pattern id={cellsId} width={cellW} height={cellH} patternUnits="userSpaceOnUse">
-            <rect width={cellW} height={cellH} fill="none" stroke={strokeColor} strokeWidth="0.5" />
+          <pattern
+            id={cellsId}
+            width={cellW}
+            height={cellH}
+            patternUnits="userSpaceOnUse"
+          >
+            <rect
+              width={cellW}
+              height={cellH}
+              fill="none"
+              stroke={strokeColor}
+              strokeWidth="0.5"
+            />
           </pattern>
         </defs>
         <rect width={width} height={height} fill={`url(#${cellsId})`} />
         {showHeaderRow && (
-          <rect x="0" y="0" width={width} height={cellH} fill={headerFill} opacity="0.6" />
+          <rect
+            x="0"
+            y="0"
+            width={width}
+            height={cellH}
+            fill={headerFill}
+            opacity="0.6"
+          />
         )}
         <rect
           x="0"
@@ -171,7 +209,9 @@ export const PulseGrid: React.FC<PulseGridProps> = ({
             }}
           />
         ))}
-        {fadeBottom && <rect width={width} height={height} fill={`url(#${fadeId})`} />}
+        {fadeBottom && (
+          <rect width={width} height={height} fill={`url(#${fadeId})`} />
+        )}
       </svg>
     </>
   );

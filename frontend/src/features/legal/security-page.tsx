@@ -40,72 +40,72 @@ export const SecurityPage: React.FC = () => (
     {/* Feature cards — sales deck grid style */}
     <Box bg="white" py={28}>
       <PageContainer>
-      <Text
-        fontFamily="heading"
-        fontSize="2.5rem"
-        fontWeight={400}
-        letterSpacing="-0.025em"
-        color={"primary.800"}
-        mb={4}
-        maxW="720px"
-      >
-        Safe, secure, and compliant
-      </Text>
-      <Text
-        fontSize="lg"
-        lineHeight={1.6}
-        color="gray.500"
-        maxW="600px"
-        mb={16}
-      >
-        Rengo AI is always working to meet and exceed established data security
-        standards and best practices
-      </Text>
-      <Box
-        display="grid"
-        gridTemplateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
-        borderTop="1px solid"
-        borderLeft="1px solid"
-        borderColor="border.muted"
-      >
-        {CARDS.map(({ n, title, body }) => (
-          <Box
-            key={n}
-            borderRight="1px solid"
-            borderBottom="1px solid"
-            borderColor="border.muted"
-            p={8}
-            display="flex"
-            flexDirection="column"
-            gap={3}
-          >
-            <Text
-              fontFamily={EDICT}
-              fontSize="xs"
-              letterSpacing="0.2em"
-              color="primary.700"
-              fontWeight={700}
-            >
-              {n}
-            </Text>
+        <Text
+          fontFamily="heading"
+          fontSize="2.5rem"
+          fontWeight={400}
+          letterSpacing="-0.025em"
+          color="primary.800"
+          mb={4}
+          maxW="720px"
+        >
+          Safe, secure, and compliant
+        </Text>
+        <Text
+          fontSize="lg"
+          lineHeight={1.6}
+          color="gray.500"
+          maxW="600px"
+          mb={16}
+        >
+          Rengo AI is always working to meet and exceed established data
+          security standards and best practices
+        </Text>
+        <Box
+          display="grid"
+          gridTemplateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
+          borderTop="1px solid"
+          borderLeft="1px solid"
+          borderColor="border.muted"
+        >
+          {CARDS.map(({ n, title, body }) => (
             <Box
-              as="h3"
-              fontFamily="heading"
-              fontSize="1.5rem"
-              fontWeight={400}
-              letterSpacing="-0.02em"
-              lineHeight={1.15}
-              color={"primary.800"}
-              m={0}
+              key={n}
+              borderRight="1px solid"
+              borderBottom="1px solid"
+              borderColor="border.muted"
+              p={8}
+              display="flex"
+              flexDirection="column"
+              gap={3}
             >
-              {title}
+              <Text
+                fontFamily={EDICT}
+                fontSize="xs"
+                letterSpacing="0.2em"
+                color="primary.700"
+                fontWeight={700}
+              >
+                {n}
+              </Text>
+              <Box
+                as="h3"
+                fontFamily="heading"
+                fontSize="1.5rem"
+                fontWeight={400}
+                letterSpacing="-0.02em"
+                lineHeight={1.15}
+                color="primary.800"
+                m={0}
+              >
+                {title}
+              </Box>
+              <Text fontSize="sm" lineHeight={1.6} color="gray.500">
+                {body}
+              </Text>
             </Box>
-            <Text fontSize="sm" lineHeight={1.6} color="gray.500">
-              {body}
-            </Text>
-          </Box>
-        ))}
-      </Box>
+          ))}
+        </Box>
       </PageContainer>
     </Box>
   </Box>

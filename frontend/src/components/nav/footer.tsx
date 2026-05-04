@@ -11,7 +11,12 @@ interface FooterColProps {
 
 const FooterCol: React.FC<FooterColProps> = ({ title, children }) => (
   <Flex direction="column" gap={2} minW={{ base: "auto", sm: "128px" }}>
-    <Text fontSize="0.875rem" color="whiteAlpha.900" lineHeight="1.25rem" mb={1}>
+    <Text
+      fontSize="0.875rem"
+      color="whiteAlpha.900"
+      lineHeight="1.25rem"
+      mb={1}
+    >
       {title}
     </Text>
     {children}
@@ -52,67 +57,75 @@ export const AppFooter: React.FC = () => (
     borderTopColor="whiteAlpha.200"
   >
     <PageContainer>
-    <Flex
-      justify="space-between"
-      align="flex-start"
-      w="full"
-      flexWrap="wrap"
-      gapX={16}
-      gapY={12}
-    >
-      <Box flexShrink={0}>
-        <Logo
-          color="white"
-          layout="footer"
-          colorModeBehavior="display"
-          isCollapsed
-        />
-      </Box>
+      <Flex
+        justify="space-between"
+        align="flex-start"
+        w="full"
+        flexWrap="wrap"
+        gapX={16}
+        gapY={12}
+      >
+        <Box flexShrink={0}>
+          <Logo
+            color="white"
+            layout="footer"
+            colorModeBehavior="display"
+            isCollapsed
+          />
+        </Box>
+
+        <Flex
+          flex="1"
+          justify={{ base: "flex-start", lg: "flex-end" }}
+          align="flex-start"
+          flexWrap="wrap"
+          gapX={{ base: 14, md: 24 }}
+          gapY={10}
+          minW={{ base: "min(100%, 280px)", lg: 0 }}
+        >
+          <FooterCol title="Platform">
+            <FooterLink to="/product/portfolio-monitoring">Product</FooterLink>
+            <FooterLink to="/security">Security</FooterLink>
+          </FooterCol>
+
+          <FooterCol title="Company">
+            <FooterLink to="/company">About</FooterLink>
+            <FooterLink to="/careers">Careers</FooterLink>
+          </FooterCol>
+
+          <FooterCol title="Legal">
+            <FooterLink to="/legal/privacy-policy">Privacy Policy</FooterLink>
+            <FooterLink to="/legal/terms-of-service">
+              Terms of Service
+            </FooterLink>
+          </FooterCol>
+
+          <FooterCol title="Contact">
+            <FooterLink href="https://www.linkedin.com/company/106703002">
+              LinkedIn
+            </FooterLink>
+            <FooterLink href="mailto:sales@rengoai.com">Sales</FooterLink>
+          </FooterCol>
+        </Flex>
+      </Flex>
 
       <Flex
-        flex="1"
-        justify={{ base: "flex-start", lg: "flex-end" }}
-        align="flex-start"
+        mt={24}
+        align={{ base: "flex-start", sm: "center" }}
+        justify="flex-end"
         flexWrap="wrap"
-        gapX={{ base: 14, md: 24 }}
-        gapY={10}
-        minW={{ base: "min(100%, 280px)", lg: 0 }}
+        gapY={4}
       >
-        <FooterCol title="Platform">
-          <FooterLink to="/product/portfolio-monitoring">Product</FooterLink>
-          <FooterLink to="/security">Security</FooterLink>
-        </FooterCol>
-
-        <FooterCol title="Company">
-          <FooterLink to="/company">About</FooterLink>
-          <FooterLink to="/careers">Careers</FooterLink>
-        </FooterCol>
-
-        <FooterCol title="Legal">
-          <FooterLink to="/legal/privacy-policy">Privacy Policy</FooterLink>
-          <FooterLink to="/legal/terms-of-service">Terms of Service</FooterLink>
-        </FooterCol>
-
-        <FooterCol title="Contact">
-          <FooterLink href="https://www.linkedin.com/company/106703002">
-            LinkedIn
-          </FooterLink>
-          <FooterLink href="mailto:sales@rengoai.com">Sales</FooterLink>
-        </FooterCol>
+        <Text
+          fontSize="0.8125rem"
+          color="whiteAlpha.450"
+          lineHeight="1.25rem"
+          m={0}
+          textAlign="right"
+        >
+          © 2026 Rengo AI, Inc. All rights reserved.
+        </Text>
       </Flex>
-    </Flex>
-
-    <Flex
-      mt={24}
-      align={{ base: "flex-start", sm: "center" }}
-      justify="flex-end"
-      flexWrap="wrap"
-      gapY={4}
-    >
-      <Text fontSize="0.8125rem" color="whiteAlpha.450" lineHeight="1.25rem" m={0} textAlign="right">
-        © 2026 Rengo AI, Inc. All rights reserved.
-      </Text>
-    </Flex>
     </PageContainer>
   </Box>
 );
