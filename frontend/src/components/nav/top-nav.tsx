@@ -59,74 +59,74 @@ export const AppTopNav: React.FC = () => {
         bg={overHero ? "primary.800" : "white"}
         style={{ transition: "background 200ms ease, border-color 200ms ease" }}
       >
-      <Box
-        maxW="1440px"
-        mx="auto"
-        px={{ base: 4, md: 20 }}
-        py={2}
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        w="full"
-      >
-        <Logo color={overHero ? "white" : "primary.700"} homeLink />
+        <Box
+          maxW="1440px"
+          mx="auto"
+          px={{ base: 4, md: 20 }}
+          py={1}
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          w="full"
+        >
+          <Logo color={overHero ? "white" : "primary.700"} homeLink />
 
-        {/* Desktop nav */}
-        <Flex as="nav" gap={1} display={{ base: "none", md: "flex" }}>
-          {navItems.map((item) => (
+          {/* Desktop nav */}
+          <Flex as="nav" gap={1} display={{ base: "none", md: "flex" }}>
+            {navItems.map((item) => (
+              <Button
+                key={item.path}
+                variant="ghost"
+                size="sm"
+                color={navColor}
+                _hover={{ bg: "transparent", color: navHoverColor }}
+                onClick={() => navigate(item.path)}
+              >
+                {item.label}
+              </Button>
+            ))}
+          </Flex>
+
+          {/* Desktop CTAs */}
+          <Flex
+            gap={2}
+            alignItems="center"
+            display={{ base: "none", md: "flex" }}
+          >
             <Button
-              key={item.path}
               variant="ghost"
               size="sm"
               color={navColor}
               _hover={{ bg: "transparent", color: navHoverColor }}
-              onClick={() => navigate(item.path)}
+              onClick={() => window.open("https://app.rengoai.com/", "_blank")}
             >
-              {item.label}
+              Log in
             </Button>
-          ))}
-        </Flex>
+            <Button
+              borderRadius="md"
+              bg={overHero ? "white" : "primary.700"}
+              color={overHero ? "primary.800" : "white"}
+              size="xs"
+              _hover={{ bg: overHero ? "gray.100" : "primary.800" }}
+              onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
+            >
+              See a demo
+            </Button>
+          </Flex>
 
-        {/* Desktop CTAs */}
-        <Flex
-          gap={2}
-          alignItems="center"
-          display={{ base: "none", md: "flex" }}
-        >
-          <Button
+          {/* Mobile hamburger */}
+          <IconButton
+            display={{ base: "flex", md: "none" }}
+            aria-label="Open menu"
             variant="ghost"
             size="sm"
-            color={navColor}
-            _hover={{ bg: "transparent", color: navHoverColor }}
-            onClick={() => window.open("https://app.rengoai.com/", "_blank")}
+            color={overHero ? "white" : "gray.700"}
+            _hover={{ bg: "transparent" }}
+            onClick={() => setDrawerOpen(true)}
           >
-            Log in
-          </Button>
-          <Button
-            borderRadius="md"
-            bg={overHero ? "white" : "primary.700"}
-            color={overHero ? "primary.800" : "white"}
-            size="xs"
-            _hover={{ bg: overHero ? "gray.100" : "primary.800" }}
-            onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
-          >
-            See a demo
-          </Button>
-        </Flex>
-
-        {/* Mobile hamburger */}
-        <IconButton
-          display={{ base: "flex", md: "none" }}
-          aria-label="Open menu"
-          variant="ghost"
-          size="sm"
-          color={overHero ? "white" : "gray.700"}
-          _hover={{ bg: "transparent" }}
-          onClick={() => setDrawerOpen(true)}
-        >
-          <Menu size={22} />
-        </IconButton>
-      </Box>
+            <Menu size={22} />
+          </IconButton>
+        </Box>
       </Box>
 
       <MobileNavDrawer

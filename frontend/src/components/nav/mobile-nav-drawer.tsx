@@ -64,7 +64,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
         {/* Header row with logo and close button */}
         <Box
           px={4}
-          py={2}
+          py={1}
           borderBottom="1px solid"
           borderColor="gray.100"
           display="flex"

@@ -52,17 +52,22 @@ export const PageHero: React.FC<PageHeroProps> = ({
         </Box>
       )}
 
-      <PageContainer>
       <Flex
         position="relative"
         zIndex={2}
         flex={1}
         direction="column"
         justify="center"
-        align={isLeft ? "flex-start" : "center"}
-        textAlign={isLeft ? "left" : "center"}
+        align="stretch"
         pt={contentPt}
         pb={contentPb}
+      >
+      <PageContainer>
+      <Box
+        display="flex"
+        flexDirection="column"
+        textAlign={isLeft ? "left" : "center"}
+        alignItems={isLeft ? "flex-start" : "center"}
       >
         {eyebrow && (
           <Text
@@ -121,8 +126,9 @@ export const PageHero: React.FC<PageHeroProps> = ({
         >
           {ctaLabel}
         </Button>
-      </Flex>
+      </Box>
       </PageContainer>
+      </Flex>
     </Box>
   );
 };
