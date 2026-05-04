@@ -9,7 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 export const TOP_NAV_HEIGHT = 64;
 
 const DARK_HERO_PATHS = [
-  rootRoute({}).landingIndex({}).$,
+  rootRoute({}).$,
   rootRoute({}).security({}).$,
   rootRoute({}).careers({}).$,
   rootRoute({}).company({}).$,
