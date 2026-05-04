@@ -42,15 +42,6 @@ const FooterLink: React.FC<{
   );
 };
 
-const FooterLegalLink: React.FC<{
-  to: string;
-  children: React.ReactNode;
-}> = ({ to, children }) => (
-  <Link to={to} className="footer-legal-link">
-    {children}
-  </Link>
-);
-
 export const AppFooter: React.FC = () => (
   <Box
     as="footer"
@@ -78,17 +69,6 @@ export const AppFooter: React.FC = () => (
         font-size: 13px;
         color: rgba(255, 255, 255, 0.42);
         line-height: 20px;
-      }
-      .footer-legal-link {
-        color: rgba(255, 255, 255, 0.42);
-        text-decoration: none;
-        font-size: 13px;
-        line-height: 20px;
-        cursor: pointer;
-        transition: color 150ms ease;
-      }
-      .footer-legal-link:hover {
-        color: rgba(255, 255, 255, 0.72);
       }
     `}</style>
     <Flex
@@ -129,6 +109,11 @@ export const AppFooter: React.FC = () => (
           <FooterLink to="/careers">Careers</FooterLink>
         </FooterCol>
 
+        <FooterCol title="Legal">
+          <FooterLink to="/legal/privacy-policy">Privacy Policy</FooterLink>
+          <FooterLink to="/legal/terms-of-service">Terms of Service</FooterLink>
+        </FooterCol>
+
         <FooterCol title="Contact">
           <FooterLink href="mailto:sales@rengoai.com">Sales</FooterLink>
           <FooterLink href="https://www.linkedin.com/company/106703002">
@@ -141,39 +126,13 @@ export const AppFooter: React.FC = () => (
     <Flex
       mt={24}
       align={{ base: "flex-start", sm: "center" }}
-      justify="space-between"
+      justify="flex-end"
       flexWrap="wrap"
-      gapX={16}
       gapY={4}
     >
-      <Box flexShrink={0} w={{ base: 0, lg: "40px" }} />
-      <Flex
-        flex="1"
-        justify={{ base: "space-between", lg: "flex-end" }}
-        flexWrap="wrap"
-        gap={4}
-        minW={{ base: "full", lg: 0 }}
-      >
-        <Flex
-          w={{ base: "full", lg: "576px" }}
-          align={{ base: "flex-start", sm: "center" }}
-          justify="space-between"
-          flexWrap="wrap"
-          gap={4}
-        >
-          <Flex align="center" gap={5} flexShrink={0}>
-            <FooterLegalLink to="/legal/privacy-policy">
-              Privacy
-            </FooterLegalLink>
-            <FooterLegalLink to="/legal/terms-of-service">
-              Terms
-            </FooterLegalLink>
-          </Flex>
-          <Text className="footer-bottom-copyright" m={0} textAlign="right">
-            © 2026 Rengo AI, Inc. All rights reserved.
-          </Text>
-        </Flex>
-      </Flex>
+      <Text className="footer-bottom-copyright" m={0} textAlign="right">
+        © 2026 Rengo AI, Inc. All rights reserved.
+      </Text>
     </Flex>
   </Box>
 );
