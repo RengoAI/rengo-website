@@ -36,9 +36,6 @@ export const Logo: React.FC<LogoProps> = ({
       gap={isCollapsed ? 0 : isFooter ? 1.5 : 0.5}
     >
       <ColorModeButton
-        {...(isFooter
-          ? { mt: "0", ml: "0" }
-          : { mt: "2", ml: "-12px" })}
         size="sm"
         variant="ghost"
         color={color}
