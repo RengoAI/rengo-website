@@ -66,10 +66,7 @@ export const AppFooter: React.FC = () => (
         gapY={12}
       >
         <Box flexShrink={0}>
-          <Logo
-            color="white"
-            isCollapsed
-          />
+          <Logo color="white" isCollapsed />
         </Box>
 
         <Flex

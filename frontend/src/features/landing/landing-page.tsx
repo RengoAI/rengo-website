@@ -2,7 +2,6 @@ import { PageContainer } from "@/components/layout/page-container";
 import { PageHero } from "@/components/layout/page-hero";
 import { PulseGrid } from "@/components/pulse-grid";
 import { Box, Text } from "@chakra-ui/react";
-import { keyframes } from "@emotion/react";
 import React from "react";
 
 const EDICT = '"Space Mono", SFMono-Regular, ui-monospace, monospace';
@@ -16,10 +15,7 @@ const FIRM_TYPES = [
   "Fund of Funds",
 ];
 
-const marqueeScroll = keyframes`
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-`;
+const marqueeScroll = "marquee-scroll";
 
 const LandingHeroBackground: React.FC = () => (
   <>
@@ -62,6 +58,7 @@ const LandingHeroBackground: React.FC = () => (
 
 const FirmsStrip: React.FC = () => (
   <Box as="section" borderBottom="1px solid" borderColor="border.muted" py={8}>
+    <style>{`@keyframes marquee-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }`}</style>
     <PageContainer>
       <Text
         fontFamily={EDICT}

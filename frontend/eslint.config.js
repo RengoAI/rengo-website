@@ -1,5 +1,4 @@
 // eslint.config.js
-import reactQuery from "@tanstack/eslint-plugin-query";
 import ts from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
 import eslintConfigPrettier from "eslint-config-prettier";
@@ -32,7 +31,6 @@ export default [
       "@typescript-eslint": ts,
       react,
       "react-hooks": reactHooks,
-      "@tanstack/react-query": reactQuery,
       "simple-import-sort": simpleImportSort,
       import: importPlugin,
       "absolute-imports": absoluteImports,

@@ -20,12 +20,11 @@ export const Logo: React.FC<LogoProps> = ({
   );
 
   return (
-    <Flex
-      alignItems="center"
-      justify="flex-start"
-      gap={2}
-    >
-      <Sun size={18} color={color === "white" ? "white" : "var(--rengo-colors-primary-700)"} />
+    <Flex alignItems="center" justify="flex-start" gap={2}>
+      <Sun
+        size={18}
+        color={color === "white" ? "white" : "var(--rengo-colors-primary-700)"}
+      />
       {!isCollapsed &&
         (homeLink ? (
           <Link to="/" style={{ textDecoration: "none" }}>

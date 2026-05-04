@@ -11,24 +11,6 @@ import {
 import { Sun } from "lucide-react";
 import * as React from "react";
 
-export type ColorMode = "light" | "dark";
-
-export interface UseColorModeReturn {
-  colorMode: ColorMode;
-  setColorMode: (colorMode: ColorMode) => void;
-  toggleColorMode: () => void;
-}
-
-const useColorMode = (): UseColorModeReturn => ({
-  colorMode: "light",
-  setColorMode: () => {},
-  toggleColorMode: () => {},
-});
-
-export function useColorModeValue<T>(light: T, _dark: T) {
-  return light;
-}
-
 export function ColorModeIcon() {
   return <Sun />;
 }
