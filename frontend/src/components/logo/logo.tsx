@@ -28,10 +28,7 @@ export const Logo: React.FC<LogoProps> = ({
       />
       {!isCollapsed &&
         (homeLink ? (
-          <Link
-            to={rootRoute({}).landingIndex({}).$}
-            style={{ textDecoration: "none" }}
-          >
+          <Link to={rootRoute({}).$} style={{ textDecoration: "none" }}>
             {wordmark}
           </Link>
         ) : (
