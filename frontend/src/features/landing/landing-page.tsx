@@ -11,8 +11,7 @@ const FIRM_TYPES = [
   "Venture Capital",
   "Private Credit",
   "Growth Equity",
-  "Family Offices",
-  "Fund of Funds",
+  "Real Estate",
 ];
 
 const marqueeScroll = "marquee-scroll";
