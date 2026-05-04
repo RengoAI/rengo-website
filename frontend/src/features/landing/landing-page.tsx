@@ -96,7 +96,7 @@ const FirmsStrip: React.FC = () => (
             <Text
               key={i}
               as="span"
-              fontSize="1rem"
+              fontSize="md"
               color="primary.700"
               opacity={0.3}
               fontWeight={400}

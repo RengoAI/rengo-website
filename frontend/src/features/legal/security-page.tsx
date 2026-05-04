@@ -42,7 +42,7 @@ export const SecurityPage: React.FC = () => (
       <PageContainer>
         <Text
           fontFamily="heading"
-          fontSize="2.5rem"
+          fontSize="4xl"
           fontWeight={400}
           letterSpacing="-0.025em"
           color="primary.800"
@@ -91,7 +91,7 @@ export const SecurityPage: React.FC = () => (
               <Box
                 as="h3"
                 fontFamily="heading"
-                fontSize="1.5rem"
+                fontSize="2xl"
                 fontWeight={400}
                 letterSpacing="-0.02em"
                 lineHeight={1.15}

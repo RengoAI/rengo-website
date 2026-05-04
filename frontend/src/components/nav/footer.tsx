@@ -12,9 +12,9 @@ interface FooterColProps {
 const FooterCol: React.FC<FooterColProps> = ({ title, children }) => (
   <Flex direction="column" gap={2} minW={{ base: "auto", sm: "128px" }}>
     <Text
-      fontSize="0.875rem"
+      fontSize="sm"
       color="whiteAlpha.900"
-      lineHeight="1.25rem"
+      lineHeight="short"
       mb={1}
     >
       {title}
@@ -112,9 +112,9 @@ export const AppFooter: React.FC = () => (
         gapY={4}
       >
         <Text
-          fontSize="0.8125rem"
+          fontSize="xs"
           color="whiteAlpha.450"
-          lineHeight="1.25rem"
+          lineHeight="short"
           m={0}
           textAlign="right"
         >

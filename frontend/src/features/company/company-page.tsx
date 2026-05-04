@@ -141,7 +141,7 @@ const InvestorsSection: React.FC = () => (
           >
             <Text
               fontFamily={EDICT}
-              fontSize="0.625rem"
+              fontSize="xs"
               color="gray.400"
               letterSpacing="0.12em"
               textTransform="uppercase"
@@ -154,7 +154,7 @@ const InvestorsSection: React.FC = () => (
                 <Text
                   key={name}
                   as="span"
-                  fontSize="1.125rem"
+                  fontSize="lg"
                   color="primary.700"
                   opacity={0.58}
                   fontWeight={400}
