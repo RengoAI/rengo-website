@@ -101,7 +101,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
                 borderRadius={0}
                 color="primary.800"
                 fontSize="sm"
-                fontWeight={400}
+                fontWeight="normal"
                 justifyContent="space-between"
                 _hover={{ bg: "gray.50" }}
                 onClick={() => onNavigate(item.path)}
@@ -118,7 +118,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
               bg="primary.700"
               color="white"
               fontSize="sm"
-              fontWeight={400}
+              fontWeight="normal"
               _hover={{ bg: "primary.800" }}
               onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
             >

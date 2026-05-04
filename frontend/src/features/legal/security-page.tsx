@@ -43,7 +43,7 @@ export const SecurityPage: React.FC = () => (
         <Text
           fontFamily="heading"
           fontSize="4xl"
-          fontWeight={400}
+          fontWeight="normal"
           letterSpacing="-0.025em"
           color="primary.800"
           mb={4}
@@ -84,7 +84,7 @@ export const SecurityPage: React.FC = () => (
                 fontSize="xs"
                 letterSpacing="0.2em"
                 color="primary.700"
-                fontWeight={700}
+                fontWeight="bold"
               >
                 {n}
               </Text>
@@ -92,7 +92,7 @@ export const SecurityPage: React.FC = () => (
                 as="h3"
                 fontFamily="heading"
                 fontSize="2xl"
-                fontWeight={400}
+                fontWeight="normal"
                 letterSpacing="-0.02em"
                 lineHeight={1.15}
                 color="primary.800"

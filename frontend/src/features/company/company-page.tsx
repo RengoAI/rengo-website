@@ -35,7 +35,7 @@ const MissionSection: React.FC = () => (
             as="h2"
             fontFamily="heading"
             fontSize={{ base: "36px", md: "52px" }}
-            fontWeight={400}
+            fontWeight="normal"
             lineHeight={1.04}
             letterSpacing="-0.035em"
             color="primary.800"
@@ -71,7 +71,7 @@ const BuiltBySection: React.FC = () => (
           as="h2"
           fontFamily="heading"
           fontSize={{ base: "34px", md: "48px" }}
-          fontWeight={400}
+          fontWeight="normal"
           lineHeight={1.06}
           letterSpacing="-0.03em"
           color="primary.800"
@@ -105,7 +105,7 @@ const InvestorsSection: React.FC = () => (
           as="h2"
           fontFamily="heading"
           fontSize={{ base: "34px", md: "48px" }}
-          fontWeight={400}
+          fontWeight="normal"
           lineHeight={1.06}
           letterSpacing="-0.03em"
           color="primary.800"
@@ -157,7 +157,7 @@ const InvestorsSection: React.FC = () => (
                   fontSize="lg"
                   color="primary.700"
                   opacity={0.58}
-                  fontWeight={400}
+                  fontWeight="normal"
                   letterSpacing="-0.01em"
                 >
                   {name}

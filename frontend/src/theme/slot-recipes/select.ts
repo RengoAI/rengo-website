@@ -23,7 +23,7 @@ export const selectSlotRecipe = defineSlotRecipe({
       width: "100%",
       minWidth: "unset",
       fontSize: "14px",
-      fontWeight: "400",
+      fontWeight: "normal",
       borderWidth: "1px",
       borderRadius: "4px",
       borderColor: "border.muted",
@@ -96,7 +96,7 @@ export const selectSlotRecipe = defineSlotRecipe({
       _selected: {
         bg: "primary.100",
         color: "primary.800",
-        fontWeight: "500",
+        fontWeight: "medium",
       },
     },
     itemText: {
@@ -112,7 +112,7 @@ export const selectSlotRecipe = defineSlotRecipe({
     valueText: {
       flex: 1,
       textAlign: "left",
-      fontWeight: "400",
+      fontWeight: "normal",
       color: "inherit",
     },
     indicator: {

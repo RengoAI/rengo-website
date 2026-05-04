@@ -99,7 +99,7 @@ const FirmsStrip: React.FC = () => (
               fontSize="md"
               color="primary.700"
               opacity={0.3}
-              fontWeight={400}
+              fontWeight="normal"
               letterSpacing="-0.01em"
             >
               {label}

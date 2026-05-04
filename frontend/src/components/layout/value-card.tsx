@@ -30,7 +30,7 @@ export const ValueCard: React.FC<ValueCardProps> = ({
       mb={3}
       fontFamily="heading"
       fontSize="2xl"
-      fontWeight={400}
+      fontWeight="normal"
       color="primary.800"
     >
       {title}

@@ -36,7 +36,7 @@ export const comboboxSlotRecipe = defineSlotRecipe({
       width: "100%",
       minWidth: "unset",
       fontSize: "14px",
-      fontWeight: "400",
+      fontWeight: "normal",
       borderWidth: "1px",
       borderRadius: "4px",
       borderColor: "border.muted",
@@ -87,7 +87,7 @@ export const comboboxSlotRecipe = defineSlotRecipe({
       cursor: "inherit",
       _placeholder: {
         color: "gray.400",
-        fontWeight: "400",
+        fontWeight: "normal",
         opacity: 1,
       },
       _focus: {
@@ -235,7 +235,7 @@ export const comboboxSlotRecipe = defineSlotRecipe({
         input: {
           py: "7px",
           fontSize: "14px",
-          fontWeight: "400",
+          fontWeight: "normal",
         },
       },
       md: {
