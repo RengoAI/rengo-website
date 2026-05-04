@@ -1,12 +1,10 @@
 import { PageHero } from "@/components/layout/page-hero";
-import { ValueCard } from "@/components/layout/value-card";
 import { PulseGrid } from "@/components/pulse-grid";
 import { Box, Text } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
 import React from "react";
 
 const TINT = "#1A3358";
-const NAVY = "#0C1D34";
 const EDICT = '"Space Mono", SFMono-Regular, ui-monospace, monospace';
 
 const FIRM_TYPES = [
@@ -17,24 +15,6 @@ const FIRM_TYPES = [
   "Family Offices",
   "Fund of Funds",
 ];
-
-const PILLARS = [
-  [
-    "01",
-    "Ingest",
-    "Pull financials, board decks, and CIMs from every portfolio company. Schedule recurring data requests with one click.",
-  ],
-  [
-    "02",
-    "Query",
-    "Ask questions across the entire portfolio in natural language. Cited answers, every time.",
-  ],
-  [
-    "03",
-    "Monitor",
-    "Dashboards and alerts on covenants, KPIs, and material events — before quarterly reviews.",
-  ],
-] as const;
 
 const marqueeScroll = keyframes`
   from { transform: translateX(0); }
@@ -132,29 +112,6 @@ const FirmsStrip: React.FC = () => (
   </Box>
 );
 
-const ThreePillars: React.FC = () => (
-  <Box as="section" px={20} py={28} bg="gray.25">
-    <Box
-      as="h2"
-      m={0}
-      fontFamily="heading"
-      fontSize="40px"
-      fontWeight={400}
-      letterSpacing="-0.025em"
-      color={NAVY}
-      maxW="720px"
-    >
-      One integrated platform
-    </Box>
-
-    <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap={16} mt={16}>
-      {PILLARS.map(([n, title, desc]) => (
-        <ValueCard key={n} number={n} title={title} body={desc} />
-      ))}
-    </Box>
-  </Box>
-);
-
 export const LandingPage: React.FC = () => (
   <Box fontFamily="body">
     <PageHero
@@ -168,6 +125,5 @@ export const LandingPage: React.FC = () => (
       background={<LandingHeroBackground />}
     />
     <FirmsStrip />
-    <ThreePillars />
   </Box>
 );

@@ -53,6 +53,7 @@ export const AppTopNav: React.FC = () => {
           size="sm"
           color={navColor}
           _hover={{ bg: "transparent", color: navHoverColor }}
+          onClick={() => navigate("/product/portfolio-monitoring")}
         >
           Product
         </Button>

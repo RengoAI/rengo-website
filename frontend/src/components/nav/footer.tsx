@@ -113,10 +113,10 @@ export const AppFooter: React.FC = () => (
         </FooterCol>
 
         <FooterCol title="Contact">
-          <FooterLink href="mailto:sales@rengoai.com">Sales</FooterLink>
           <FooterLink href="https://www.linkedin.com/company/106703002">
             LinkedIn
           </FooterLink>
+          <FooterLink href="mailto:sales@rengoai.com">Sales</FooterLink>
         </FooterCol>
       </Flex>
     </Flex>
