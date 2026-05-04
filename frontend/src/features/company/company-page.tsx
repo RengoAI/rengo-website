@@ -42,16 +42,15 @@ const MissionSection: React.FC = () => (
           maxW="620px"
           m={0}
         >
-          Building the infrastructure layer for private markets
+          Building managed data warehouses
         </Box>
       </Box>
 
       <Text fontSize="lg" lineHeight={1.75} color="gray.600" maxW="720px">
         Private markets have expanded into a mainstream part of global capital
         allocation, but the infrastructure supporting them has not kept pace.
-        Rengo is building the AI-native data layer for alternative asset
-        managers: a system of record that turns scattered investment data into a
-        single, searchable foundation for firm operations.
+        Rengo AI deploys AI agents that continuously transform raw investment
+        data into a structured system of record.
       </Text>
     </Box>
   </Box>
@@ -78,7 +77,7 @@ const BuiltBySection: React.FC = () => (
         m={0}
         mb={4}
       >
-        Built by people from leading teams
+        From people behind leading products
       </Box>
       <Text fontSize="md" lineHeight={1.65} color="gray.500" maxW="560px">
         Experience from category-defining technology, financial services, and
@@ -175,8 +174,7 @@ export const CompanyPage: React.FC = () => {
   return (
     <Box fontFamily='"Inter Tight", Inter, sans-serif'>
       <PageHero
-        headline="Reimagining private markets infrastructure"
-        subtext="Private markets have expanded, but the systems behind them have not kept pace."
+        headline="Private markets need a new infrastructure layer"
         ctaLabel="See a demo"
         onCtaClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
       />
@@ -193,6 +191,9 @@ export const CompanyPage: React.FC = () => {
         ctaLabel="View careers"
         onCtaClick={() => navigate("/careers")}
         tone="light"
+        minH="auto"
+        contentPt={24}
+        contentPb={24}
       />
     </Box>
   );

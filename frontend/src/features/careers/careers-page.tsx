@@ -42,8 +42,8 @@ const BuiltBySection: React.FC = () => (
 export const CareersPage: React.FC = () => (
   <Box fontFamily='"Inter Tight", Inter, sans-serif'>
     <PageHero
-      headline="Join the Team"
-      subtext="Help us reimagine private markets infrastructure."
+      headline="Help us reimagine private markets infrastructure"
+      subtext="We're hiring across engineering and product"
       ctaLabel="Get in touch"
       onCtaClick={() => window.open("mailto:careers@rengoai.com", "_blank")}
     />

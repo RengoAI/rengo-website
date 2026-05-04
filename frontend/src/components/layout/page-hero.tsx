@@ -6,7 +6,7 @@ const EDICT = '"Space Mono", SFMono-Regular, ui-monospace, monospace';
 
 interface PageHeroProps {
   headline: React.ReactNode;
-  subtext: string;
+  subtext?: string;
   ctaLabel: string;
   onCtaClick: () => void;
   eyebrow?: string;
@@ -14,6 +14,9 @@ interface PageHeroProps {
   subtextMaxW?: string;
   background?: React.ReactNode;
   tone?: "dark" | "light";
+  minH?: string;
+  contentPt?: string | number;
+  contentPb?: string | number;
 }
 
 export const PageHero: React.FC<PageHeroProps> = ({
@@ -26,6 +29,9 @@ export const PageHero: React.FC<PageHeroProps> = ({
   subtextMaxW = "480px",
   background,
   tone = "dark",
+  minH = "100vh",
+  contentPt = "80px",
+  contentPb = 12,
 }) => {
   const isLeft = align === "left";
   const isLight = tone === "light";
@@ -36,7 +42,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
       position="relative"
       bg={isLight ? "white" : NAVY}
       color={isLight ? NAVY : "white"}
-      minH="100vh"
+      minH={minH}
       display="flex"
       flexDirection="column"
     >
@@ -55,8 +61,8 @@ export const PageHero: React.FC<PageHeroProps> = ({
         align={isLeft ? "flex-start" : "center"}
         textAlign={isLeft ? "left" : "center"}
         px={20}
-        pt="80px"
-        pb={12}
+        pt={contentPt}
+        pb={contentPb}
       >
         {eyebrow && (
           <Text
@@ -90,15 +96,17 @@ export const PageHero: React.FC<PageHeroProps> = ({
           <Box h="1px" bg={isLight ? "gray.300" : "whiteAlpha.500"} w="72px" mb={7} />
         )}
 
-        <Box
-          fontSize="lg"
-          lineHeight={1.45}
-          color={isLight ? "gray.500" : "whiteAlpha.800"}
-          maxW={subtextMaxW}
-          mb={9}
-        >
-          {subtext}
-        </Box>
+        {subtext && (
+          <Box
+            fontSize="lg"
+            lineHeight={1.45}
+            color={isLight ? "gray.500" : "whiteAlpha.800"}
+            maxW={subtextMaxW}
+            mb={9}
+          >
+            {subtext}
+          </Box>
+        )}
 
         <Button
           borderRadius="md"
