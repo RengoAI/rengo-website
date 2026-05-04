@@ -1,3 +1,4 @@
+import { PageContainer } from "@/components/layout/page-container";
 import { PageHero } from "@/components/layout/page-hero";
 import { TeamLogoGrid } from "@/components/team-logo-grid";
 import { Box, Text } from "@chakra-ui/react";
@@ -7,11 +8,11 @@ const BuiltBySection: React.FC = () => (
   <Box
     as="section"
     bg="gray.25"
-    px={20}
     py={24}
     borderBottom="1px solid"
     borderColor="border.muted"
   >
+    <PageContainer>
     <Box maxW="700px" mb={16}>
       <Box
         as="h2"
@@ -34,6 +35,7 @@ const BuiltBySection: React.FC = () => (
     </Box>
 
     <TeamLogoGrid />
+    </PageContainer>
   </Box>
 );
 

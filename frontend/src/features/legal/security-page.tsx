@@ -1,3 +1,4 @@
+import { PageContainer } from "@/components/layout/page-container";
 import { PageHero } from "@/components/layout/page-hero";
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
@@ -37,7 +38,8 @@ export const SecurityPage: React.FC = () => (
     />
 
     {/* Feature cards — sales deck grid style */}
-    <Box bg="white" px={20} py={28}>
+    <Box bg="white" py={28}>
+      <PageContainer>
       <Text
         fontFamily="heading"
         fontSize="40px"
@@ -104,6 +106,7 @@ export const SecurityPage: React.FC = () => (
           </Box>
         ))}
       </Box>
+      </PageContainer>
     </Box>
   </Box>
 );

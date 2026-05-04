@@ -1,3 +1,4 @@
+import { PageContainer } from "@/components/layout/page-container";
 import { PageHero } from "@/components/layout/page-hero";
 import { PulseGrid } from "@/components/pulse-grid";
 import { Box, Text } from "@chakra-ui/react";
@@ -60,17 +61,18 @@ const LandingHeroBackground: React.FC = () => (
 
 const FirmsStrip: React.FC = () => (
   <Box as="section" borderBottom="1px solid" borderColor="border.muted" py={8}>
-    <Text
-      fontFamily={EDICT}
-      fontSize="11px"
-      color="gray.500"
-      letterSpacing="0.08em"
-      textTransform="uppercase"
-      px={20}
-      mb={8}
-    >
-      Built with leading firms across
-    </Text>
+    <PageContainer>
+      <Text
+        fontFamily={EDICT}
+        fontSize="11px"
+        color="gray.500"
+        letterSpacing="0.08em"
+        textTransform="uppercase"
+        mb={8}
+      >
+        Built with leading firms across
+      </Text>
+    </PageContainer>
     <Box
       w="full"
       overflow="hidden"

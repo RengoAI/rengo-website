@@ -1,3 +1,4 @@
+import { PageContainer } from "@/components/layout/page-container";
 import { PageHero } from "@/components/layout/page-hero";
 import { TeamLogoGrid } from "@/components/team-logo-grid";
 import { Box, Flex, Text } from "@chakra-ui/react";
@@ -18,11 +19,11 @@ const MissionSection: React.FC = () => (
   <Box
     as="section"
     bg="white"
-    px={20}
     py={24}
     borderBottom="1px solid"
     borderColor="border.muted"
   >
+    <PageContainer>
     <Box
       display="grid"
       gridTemplateColumns={{ base: "1fr", lg: "0.9fr 1.1fr" }}
@@ -52,6 +53,7 @@ const MissionSection: React.FC = () => (
         data into a structured system of record.
       </Text>
     </Box>
+    </PageContainer>
   </Box>
 );
 
@@ -59,11 +61,11 @@ const BuiltBySection: React.FC = () => (
   <Box
     as="section"
     bg="gray.25"
-    px={20}
     py={24}
     borderBottom="1px solid"
     borderColor="border.muted"
   >
+    <PageContainer>
     <Box maxW="680px" mb={16}>
       <Box
         as="h2"
@@ -85,6 +87,7 @@ const BuiltBySection: React.FC = () => (
     </Box>
 
     <TeamLogoGrid />
+    </PageContainer>
   </Box>
 );
 
@@ -92,11 +95,11 @@ const InvestorsSection: React.FC = () => (
   <Box
     as="section"
     bg="white"
-    px={20}
     py={24}
     borderBottom="1px solid"
     borderColor="border.muted"
   >
+    <PageContainer>
     <Box maxW="680px" mb={16}>
       <Box
         as="h2"
@@ -164,6 +167,7 @@ const InvestorsSection: React.FC = () => (
         </Box>
       ))}
     </Box>
+    </PageContainer>
   </Box>
 );
 

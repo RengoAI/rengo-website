@@ -1,3 +1,4 @@
+import { PageContainer } from "@/components/layout/page-container";
 import { Logo } from "@/components/logo/logo";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import React from "react";
@@ -45,12 +46,12 @@ export const AppFooter: React.FC = () => (
     as="footer"
     bg="primary.800"
     color="white"
-    px={{ base: 4, md: 20 }}
     pt={16}
     pb={10}
     borderTopWidth="1px"
     borderTopColor="whiteAlpha.200"
   >
+    <PageContainer>
     <Flex
       justify="space-between"
       align="flex-start"
@@ -112,5 +113,6 @@ export const AppFooter: React.FC = () => (
         © 2026 Rengo AI, Inc. All rights reserved.
       </Text>
     </Flex>
+    </PageContainer>
   </Box>
 );

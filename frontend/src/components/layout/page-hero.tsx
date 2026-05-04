@@ -1,3 +1,4 @@
+import { PageContainer } from "@/components/layout/page-container";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 
@@ -51,6 +52,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
         </Box>
       )}
 
+      <PageContainer>
       <Flex
         position="relative"
         zIndex={2}
@@ -59,7 +61,6 @@ export const PageHero: React.FC<PageHeroProps> = ({
         justify="center"
         align={isLeft ? "flex-start" : "center"}
         textAlign={isLeft ? "left" : "center"}
-        px={{ base: 4, md: 20 }}
         pt={contentPt}
         pb={contentPb}
       >
@@ -121,6 +122,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
           {ctaLabel}
         </Button>
       </Flex>
+      </PageContainer>
     </Box>
   );
 };

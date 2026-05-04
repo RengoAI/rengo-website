@@ -54,15 +54,20 @@ export const AppTopNav: React.FC = () => {
         left={0}
         right={0}
         zIndex={100}
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        px={{ base: 4, md: 20 }}
-        py={2}
         borderBottom="1px solid"
         borderColor={overHero ? "whiteAlpha.100" : "border.muted"}
         bg={overHero ? "primary.800" : "white"}
         style={{ transition: "background 200ms ease, border-color 200ms ease" }}
+      >
+      <Box
+        maxW="1440px"
+        mx="auto"
+        px={{ base: 4, md: 20 }}
+        py={2}
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        w="full"
       >
         <Logo color={overHero ? "white" : "primary.700"} homeLink />
 
@@ -121,6 +126,7 @@ export const AppTopNav: React.FC = () => {
         >
           <Menu size={22} />
         </IconButton>
+      </Box>
       </Box>
 
       <MobileNavDrawer
