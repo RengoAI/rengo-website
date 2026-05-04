@@ -8,17 +8,8 @@ import {
   Skeleton,
   Span,
 } from "@chakra-ui/react";
-import { type ThemeProviderProps, ThemeProvider, useTheme } from "next-themes";
+import { Sun } from "lucide-react";
 import * as React from "react";
-import { LuMoon, LuSun } from "react-icons/lu";
-
-export interface ColorModeProviderProps extends ThemeProviderProps {}
-
-export function ColorModeProvider(props: ColorModeProviderProps) {
-  return (
-    <ThemeProvider attribute="class" disableTransitionOnChange {...props} />
-  );
-}
 
 export type ColorMode = "light" | "dark";
 
@@ -28,26 +19,18 @@ export interface UseColorModeReturn {
   toggleColorMode: () => void;
 }
 
-const useColorMode = (): UseColorModeReturn => {
-  const { resolvedTheme, setTheme } = useTheme();
-  const toggleColorMode = () => {
-    setTheme(resolvedTheme === "dark" ? "light" : "dark");
-  };
-  return {
-    colorMode: resolvedTheme as ColorMode,
-    setColorMode: setTheme,
-    toggleColorMode,
-  };
-};
+const useColorMode = (): UseColorModeReturn => ({
+  colorMode: "light",
+  setColorMode: () => {},
+  toggleColorMode: () => {},
+});
 
-export function useColorModeValue<T>(light: T, dark: T) {
-  const { colorMode } = useColorMode();
-  return colorMode === "dark" ? dark : light;
+export function useColorModeValue<T>(light: T, _dark: T) {
+  return light;
 }
 
 export function ColorModeIcon() {
-  const { colorMode } = useColorMode();
-  return colorMode === "dark" ? <LuMoon /> : <LuSun />;
+  return <Sun />;
 }
 
 interface ColorModeButtonProps extends Omit<IconButtonProps, "aria-label"> {}
@@ -65,14 +48,12 @@ export const ColorModeButton = React.forwardRef<
   HTMLButtonElement,
   ColorModeButtonProps
 >(function ColorModeButton(props, ref) {
-  const { toggleColorMode } = useColorMode();
   const size = (props.size as string) ?? "sm";
   const sizeConfig = iconSizeMap[size] ?? iconSizeMap.sm;
 
   return (
     <ClientOnly fallback={<Skeleton boxSize="8" />}>
       <IconButton
-        onClick={toggleColorMode}
         variant="ghost"
         aria-label="Toggle color mode"
         size={sizeConfig.buttonSize}
