@@ -32,7 +32,7 @@ export const SecurityPage: React.FC = () => (
   <Box fontFamily='"Inter Tight", Inter, sans-serif'>
     <PageHero
       headline="Dedicated infrastructure"
-      subtext="Purpose built for private markets, every architectural decision starts with security."
+      subtext="Secure by design and built for private markets"
       ctaLabel="See a demo"
       onCtaClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
     />
@@ -58,7 +58,7 @@ export const SecurityPage: React.FC = () => (
         mb={16}
       >
         Rengo AI is always working to meet and exceed established data security
-        standards and best practices.
+        standards and best practices
       </Text>
       <Box
         display="grid"

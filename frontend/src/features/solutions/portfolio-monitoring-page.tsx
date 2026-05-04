@@ -6,7 +6,7 @@ export const PortfolioMonitoringPage: React.FC = () => (
   <Box fontFamily='"Inter Tight", Inter, sans-serif'>
     <PageHero
       headline="Portfolio Monitoring"
-      subtext="Real-time portfolio analytics and monitoring for private equity, venture capital, private credit, and growth equity investments."
+      subtext="Purpose built AI for analyzing, structuring, and cataloging portfolio data"
       ctaLabel="See a demo"
       onCtaClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
     />

@@ -1,4 +1,5 @@
 import { PageHero } from "@/components/layout/page-hero";
+import { TeamLogoGrid } from "@/components/team-logo-grid";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -12,32 +13,131 @@ const ANGELS = [
 ] as const;
 
 const EDICT = '"Space Mono", SFMono-Regular, ui-monospace, monospace';
+const NAVY = "#0C1D34";
+
+const MissionSection: React.FC = () => (
+  <Box
+    as="section"
+    bg="white"
+    px={20}
+    py={24}
+    borderBottom="1px solid"
+    borderColor="border.muted"
+  >
+    <Box
+      display="grid"
+      gridTemplateColumns={{ base: "1fr", lg: "0.9fr 1.1fr" }}
+      gap={{ base: 14, lg: 20 }}
+      alignItems="start"
+    >
+      <Box>
+        <Box
+          as="h2"
+          fontFamily="heading"
+          fontSize={{ base: "36px", md: "52px" }}
+          fontWeight={400}
+          lineHeight={1.04}
+          letterSpacing="-0.035em"
+          color={NAVY}
+          maxW="620px"
+          m={0}
+        >
+          Building the infrastructure layer for private markets
+        </Box>
+      </Box>
+
+      <Text fontSize="lg" lineHeight={1.75} color="gray.600" maxW="720px">
+        Private markets have expanded into a mainstream part of global capital
+        allocation, but the infrastructure supporting them has not kept pace.
+        Rengo is building the AI-native data layer for alternative asset
+        managers: a system of record that turns scattered investment data into a
+        single, searchable foundation for firm operations.
+      </Text>
+    </Box>
+  </Box>
+);
+
+const BuiltBySection: React.FC = () => (
+  <Box
+    as="section"
+    bg="gray.25"
+    px={20}
+    py={24}
+    borderBottom="1px solid"
+    borderColor="border.muted"
+  >
+    <Box maxW="680px" mb={16}>
+      <Box
+        as="h2"
+        fontFamily="heading"
+        fontSize={{ base: "34px", md: "48px" }}
+        fontWeight={400}
+        lineHeight={1.06}
+        letterSpacing="-0.03em"
+        color={NAVY}
+        m={0}
+        mb={4}
+      >
+        Built by people from leading teams
+      </Box>
+      <Text fontSize="md" lineHeight={1.65} color="gray.500" maxW="560px">
+        Experience from category-defining technology, financial services, and
+        private markets companies.
+      </Text>
+    </Box>
+
+    <TeamLogoGrid />
+  </Box>
+);
 
 const InvestorsSection: React.FC = () => (
   <Box
     as="section"
     bg="white"
     px={20}
-    py={14}
+    py={24}
     borderBottom="1px solid"
     borderColor="border.muted"
   >
-    <Text
-      fontFamily={EDICT}
-      fontSize="11px"
-      color="gray.500"
-      letterSpacing="0.08em"
-      textTransform="uppercase"
-      mb={8}
+    <Box maxW="680px" mb={16}>
+      <Box
+        as="h2"
+        fontFamily="heading"
+        fontSize={{ base: "34px", md: "48px" }}
+        fontWeight={400}
+        lineHeight={1.06}
+        letterSpacing="-0.03em"
+        color={NAVY}
+        m={0}
+        mb={4}
+      >
+        Backed by investors
+      </Box>
+      <Text fontSize="md" lineHeight={1.65} color="gray.500" maxW="560px">
+        Supported by venture investors and angels with experience across public
+        markets, private markets, and financial data infrastructure.
+      </Text>
+    </Box>
+
+    <Box
+      display="grid"
+      gridTemplateColumns={{ base: "1fr", lg: "repeat(2, 1fr)" }}
+      borderTop="1px solid"
+      borderLeft="1px solid"
+      borderColor="border.muted"
     >
-      Backed by investors
-    </Text>
-    <Flex wrap="wrap" gapX={20} gapY={8}>
       {[
         ["Investors", INVESTORS],
         ["Angels from", ANGELS],
       ].map(([label, names]) => (
-        <Box key={label as string} minW={{ base: "100%", md: "260px" }}>
+        <Box
+          key={label as string}
+          minH="156px"
+          borderRight="1px solid"
+          borderBottom="1px solid"
+          borderColor="border.muted"
+          p={8}
+        >
           <Text
             fontFamily={EDICT}
             fontSize="10px"
@@ -65,7 +165,7 @@ const InvestorsSection: React.FC = () => (
           </Flex>
         </Box>
       ))}
-    </Flex>
+    </Box>
   </Box>
 );
 
@@ -75,17 +175,15 @@ export const CompanyPage: React.FC = () => {
   return (
     <Box fontFamily='"Inter Tight", Inter, sans-serif'>
       <PageHero
-        headline={
-          <>
-            Build the future
-            <br />
-            of private markets
-          </>
-        }
-        subtext="Purpose built AI for private markets giving asset managers a single, searchable source of truth for their portfolio data"
+        headline="Reimagining private markets infrastructure"
+        subtext="Private markets have expanded, but the systems behind them have not kept pace."
         ctaLabel="See a demo"
         onCtaClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
       />
+
+      <MissionSection />
+
+      <BuiltBySection />
 
       <InvestorsSection />
 
