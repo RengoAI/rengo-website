@@ -24,7 +24,7 @@ export const Logo: React.FC<LogoProps> = ({
   const displayOnly = colorModeBehavior === "display";
 
   const wordmark = (
-    <Text fontSize="xl" fontWeight="semibold" color={color}>
+    <Text fontSize="xl" fontFamily="heading" color={color}>
       rengo ai
     </Text>
   );
