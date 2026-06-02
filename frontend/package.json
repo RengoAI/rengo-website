@@ -31,7 +31,7 @@
     "typesafe-routes": "^10.0.6"
   },
   "devDependencies": {
-    "@chakra-ui/cli": "^3.24.0",
+    "@chakra-ui/cli": "^3.35.0",
     "@eslint/js": "^9.20.0",
     "@types/eslint": "^9.6.1",
     "@types/lodash-es": "^4.17.12",
