@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@chakra-ui/react": "^3.21.0",
-    "@suspensive/react": "^2.18.12",
+    "@suspensive/react": "^3.21.2",
     "color2k": "^2.0.3",
     "lodash-es": "^4.17.21",
     "lucide-react": "^0.475.0",
