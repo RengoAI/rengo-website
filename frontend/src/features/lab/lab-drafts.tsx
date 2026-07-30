@@ -75,35 +75,33 @@ export const LAB_DRAFTS: LabDraft[] = [
     },
   },
   {
-    slug: "landing-broadsheet",
-    title: "The Broadsheet",
+    slug: "landing-signal",
+    title: "The Signal",
     description:
-      "Stark white editorial. Space Mono headings at 9vw act as the grid. Slash-notated data band. Asymmetric label/body columns. Ghost capability figures. Reads like a private markets briefing document, not a SaaS page.",
+      "Deep navy intelligence terminal. Geist Light at 72px, Geist Mono for every data register. Stacked context cards in the hero make the product metaphor tangible before you read a word. One accent color, no gradients.",
     refs: [
-      { label: "Raw Materials", url: "https://www.therawmaterials.com/approach" },
-      { label: "Arena Physica", url: "https://www.arenaphysica.com/" },
-      { label: "Aaru",          url: "https://aaru.com/" },
+      { label: "ref.digital", url: "https://ref.digital/" },
+      { label: "Figma mockup", url: "https://www.figma.com/design/gOsCo1pbNrmwZxSzRq7xBb/Rengo-Marketing-Site----cookin?node-id=4-107" },
     ],
     notes: {
       thesis:
-        "Stark white editorial where Space Mono headlines ARE the grid. Slash-notated data. Reads like a private markets briefing document designed by an art director.",
+        "A deep-navy intelligence terminal — Geist Light at scale carries the editorial gravity, Geist Mono grounds every data register, and stacked context cards in the hero make the product metaphor tangible before you read a word.",
       palette: [
-        { hex: "#0A0A0A", name: "Near-black" },
-        { hex: "#FFFFFF", name: "White" },
-        { hex: "#F0EDE8", name: "Parchment" },
-        { hex: "#E0DDD8", name: "Hairline" },
-        { hex: "#1A4F8A", name: "Rengo blue" },
+        { hex: "#151B2D", name: "Abyss" },
+        { hex: "#232A41", name: "Navy card" },
+        { hex: "#2A3354", name: "Border" },
+        { hex: "#92A7EA", name: "Periwinkle" },
+        { hex: "#FBFBF6", name: "Off-white" },
+        { hex: "#8892AB", name: "Muted slate" },
       ],
-      type: "Space Mono for ALL headings — reads as terminal / financial ticker. Inter Tight body. No weight variation; hierarchy is scale only.",
+      type: "Geist 200 display — airy, precise, modern. Geist Mono 400 for all labels, data, and nav — terminal register. One family, two roles: no serif, no condensed.",
       layout:
-        "Statement (9vw mono, no hero) → slash data band → sticky label col + 2-col body → numbered ghost-figure capabilities → black closing",
-      stats: { time: "~2 min", tokens: "~7,200" },
+        "Fixed nav → hero 2-col (headline left, stacked cards right) → ticker strip → problem 2-col → platform capability rows → metrics grid → context/backers → footer CTA. All sections at 1440px max.",
+      stats: { time: "~3 min", tokens: "~8,800" },
     },
     load: async () => {
-      const { LandingBroadsheet } = await import(
-        "@/features/lab/drafts/landing-broadsheet"
-      );
-      return { Component: LandingBroadsheet };
+      const { LandingSignal } = await import("@/features/lab/drafts/landing-signal");
+      return { Component: LandingSignal };
     },
   },
   {

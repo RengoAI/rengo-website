@@ -14,10 +14,6 @@ Serve as a seasoned web designer with strong art direction experience. Reference
 - https://www.sanctuary.computer/
 - https://www.eleken.co/
 
-**Artistic & editorial (for visual artistic accents):**
-- https://crismascort.com/
-- https://www.patrik-huebner.com/
-
 # Process
 
 ## Step 1: Observe the references
