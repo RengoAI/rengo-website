@@ -4,17 +4,41 @@ import { ArrowUpRight } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
 
+const RefChip: React.FC<{ label: string; url: string }> = ({ label, url }) => (
+  <a
+    href={url}
+    target="_blank"
+    rel="noopener noreferrer"
+    onClick={(e) => e.stopPropagation()}
+    style={{
+      display: "inline-flex",
+      alignItems: "center",
+      gap: "3px",
+      padding: "2px 8px",
+      borderRadius: "4px",
+      border: "1px solid var(--rengo-colors-border-muted)",
+      fontSize: "11px",
+      color: "var(--rengo-colors-gray-500)",
+      fontFamily: "var(--rengo-fonts-mono)",
+      textDecoration: "none",
+      transition: "border-color 120ms ease, color 120ms ease",
+    }}
+  >
+    {label}
+    <ArrowUpRight size={10} />
+  </a>
+);
+
 export const LabIndexPage: React.FC = () => (
   <Box
-    maxW="1080px"
-    mx="auto"
-    px={{ base: 4, md: 6 }}
-    py={{ base: 10, md: 16 }}
+    px={{ base: 4, md: 8 }}
+    pt={{ base: 20, md: 28 }}
+    pb={{ base: 10, md: 16 }}
   >
-    <Text fontFamily="heading" fontSize="3xl" color="primary.800" mb={2}>
+    <Text fontFamily="heading" fontSize="2xl" color="primary.800" mb={2}>
       Design drafts
     </Text>
-    <Text fontSize="md" color="gray.500" maxW="640px" mb={10}>
+    <Text fontSize="sm" color="gray.500" maxW="480px" mb={10}>
       A scratch space for exploring website ideas. Each card is an in-progress
       concept; nothing here is live. Once a draft is finalized, promote it into
       the real feature and it ships through the normal deploy.
@@ -51,9 +75,16 @@ export const LabIndexPage: React.FC = () => (
                   color="var(--rengo-colors-primary-700)"
                 />
               </Flex>
-              <Text fontSize="sm" color="gray.500" lineHeight={1.5}>
+              <Text fontSize="sm" color="gray.500" lineHeight={1.5} mb={draft.refs?.length ? 4 : 0}>
                 {draft.description}
               </Text>
+              {draft.refs && draft.refs.length > 0 && (
+                <Flex gap={2} wrap="wrap">
+                  {draft.refs.map((ref) => (
+                    <RefChip key={ref.url} label={ref.label} url={ref.url} />
+                  ))}
+                </Flex>
+              )}
             </Box>
           </Link>
         ))}

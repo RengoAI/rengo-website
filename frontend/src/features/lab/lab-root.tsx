@@ -1,8 +1,10 @@
+import { DesignNotesPanel } from "@/features/lab/design-notes-panel";
+import { LAB_DRAFTS } from "@/features/lab/lab-drafts";
 import { ScrollToTop } from "@/shared/utils/scroll-to-top";
 import { Badge, Box, Flex, Text } from "@chakra-ui/react";
 import { FlaskConical } from "lucide-react";
-import React, { useEffect } from "react";
-import { Link, Outlet } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, Outlet, useLocation } from "react-router-dom";
 
 export const LAB_NAV_HEIGHT = 52;
 
@@ -13,6 +15,11 @@ export const LAB_NAV_HEIGHT = 52;
  * excluded from the production build).
  */
 export const LabRoot: React.FC = () => {
+  const [atTop, setAtTop] = useState(true);
+  const { pathname } = useLocation();
+  const slug = pathname.replace(/^\/lab\/?/, "").replace(/\/$/, "");
+  const activeDraft = LAB_DRAFTS.find(d => d.slug === slug);
+
   useEffect(() => {
     const meta = document.createElement("meta");
     meta.name = "robots";
@@ -23,14 +30,22 @@ export const LabRoot: React.FC = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const onScroll = () => setAtTop(window.scrollY < 8);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <Box minH="100dvh" bg="white">
       <ScrollToTop />
       <Flex
         as="header"
-        position="sticky"
+        position="fixed"
         top={0}
-        zIndex={100}
+        left={0}
+        right={0}
+        zIndex={500}
         h={`${LAB_NAV_HEIGHT}px`}
         align="center"
         justify="space-between"
@@ -38,6 +53,10 @@ export const LabRoot: React.FC = () => {
         borderBottom="1px solid"
         borderColor="border.muted"
         bg="white"
+        style={{
+          transform: atTop ? "translateY(0)" : `translateY(-${LAB_NAV_HEIGHT}px)`,
+          transition: "transform 240ms ease",
+        }}
       >
         <Link to="/lab" style={{ textDecoration: "none" }}>
           <Flex align="center" gap={2}>
@@ -54,6 +73,7 @@ export const LabRoot: React.FC = () => {
       <Box>
         <Outlet />
       </Box>
+      {activeDraft && <DesignNotesPanel draft={activeDraft} />}
     </Box>
   );
 };
