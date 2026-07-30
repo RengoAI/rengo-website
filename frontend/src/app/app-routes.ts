@@ -57,6 +57,14 @@ export const rootRoute = route(
         ),
       },
     ),
+    lab: route(
+      "/lab",
+      {},
+      {
+        index: route("/", {}, {}),
+        landingHeroV2: route("/landing-hero-v2", {}, {}),
+      },
+    ),
     notFound: route("/*", {}, {}),
   },
 );
