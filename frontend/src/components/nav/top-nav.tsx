@@ -59,9 +59,14 @@ export const AppTopNav: React.FC = () => {
         right={0}
         zIndex={100}
         borderBottom="1px solid"
-        borderColor={overHero ? "whiteAlpha.100" : "border.muted"}
-        bg={overHero ? "primary.800" : "white"}
-        style={{ transition: "background 200ms ease, border-color 200ms ease" }}
+        borderColor={overHero ? "transparent" : "border.muted"}
+        bg={overHero ? "transparent" : "white"}
+        style={{
+          transition:
+            "background 240ms ease, border-color 240ms ease, backdrop-filter 240ms ease",
+          backdropFilter: overHero ? "none" : "saturate(180%) blur(8px)",
+          WebkitBackdropFilter: overHero ? "none" : "saturate(180%) blur(8px)",
+        }}
       >
         <Box
           maxW="1440px"
