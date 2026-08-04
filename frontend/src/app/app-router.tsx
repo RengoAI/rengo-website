@@ -18,12 +18,27 @@ export const ALL_ROUTES: RouteObject[] = [
   blogRoutes,
 ];
 
+// The design lab is mounted everywhere EXCEPT the production build (which is
+// what deploys to rengoai.com). `import.meta.env.MODE` is statically replaced
+// at build time, so in a production build this `if` is `if (false)` and Rollup
+// drops the whole block — including the dynamic import — so no lab code (not
+// even its lazy chunks) ships. In dev / preview / sandbox it mounts at /lab as
+// a top-level sibling with its own stripped-down shell. The top-level await
+// resolves before app.tsx renders and before the route generator reads the
+// router, so both see the lab routes in non-production modes.
+const LAB_ROUTES: RouteObject[] = [];
+if (import.meta.env.MODE !== "production") {
+  const { labRoutes } = await import("@/features/lab/lab-routes");
+  LAB_ROUTES.push(labRoutes);
+}
+
 export const appRouter = createBrowserRouter([
   {
     id: "root",
     element: <AppRoot />,
     children: [...ALL_ROUTES],
   },
+  ...LAB_ROUTES,
   {
     id: "notFound",
     path: "*",
