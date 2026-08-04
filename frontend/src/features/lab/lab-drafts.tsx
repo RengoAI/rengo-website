@@ -42,6 +42,119 @@ export interface LabDraft {
 
 export const LAB_DRAFTS: LabDraft[] = [
   {
+    slug: "landing-partner-deck",
+    title: "The Partner Deck",
+    description:
+      "The sales-deck visual language, ported to web. Deep navy ink with the azure bloom from the deck cover, Source Serif 4 headlines, capability curve, function grid, and a transparent nav that dissolves into the hero.",
+    refs: [
+      { label: "Partner Deck PDF", url: "https://rengoai.com/" },
+    ],
+    notes: {
+      thesis:
+        "Bring the sales deck to the web. The cover bloom (rasterized JPEG in the deck) becomes live layered radial-gradients here; the nav dissolves into the hero so the bloom continues uninterrupted. Copy is deck-derived: the punchline 'AI deployment company for investment firms' opens the story, then reframes AI capability as the unblocked variable and data readiness as the constraint.",
+      palette: [
+        { hex: "#0A1728", name: "Deck ink" },
+        { hex: "#0C1D34", name: "Navy" },
+        { hex: "#163F6E", name: "Mid navy" },
+        { hex: "#4FA3E3", name: "Azure" },
+        { hex: "#9BDBFB", name: "Sky highlight" },
+        { hex: "#FFFFFF", name: "Paper" },
+        { hex: "#E4E4EC", name: "Hairline" },
+      ],
+      type: "Source Serif 4 display for every headline (matches the deck's serif register). Inter Tight body. Chivo Mono for eyebrows and small labels (Baseten-inspired — tighter, more engineered than Space Mono). Weight = 400 everywhere; hierarchy comes from scale and color, not weight.",
+      layout:
+        "Transparent-over-hero fixed nav → bloom hero (left-aligned 'Your data is your alpha' punchline) → firm-type marquee → today-vs-Rengo context reframe → four-function leverage grid → capability curve table (Restricted/Assistive/Operationalized) → dark stack section (Applications/Agents/Ontology) → security tiles → dark closing CTA.",
+      stats: { time: "~4 min", tokens: "~12,000" },
+    },
+    load: async () => {
+      const { LandingPartnerDeck } = await import(
+        "@/features/lab/drafts/landing-partner-deck"
+      );
+      return { Component: LandingPartnerDeck };
+    },
+  },
+  {
+    slug: "landing-partner-deck-product",
+    title: "Partner Deck · Product",
+    description:
+      "Product subpage in the deck-bloom system. Shorter bloom hero, three application cards with hairline bullets, agent kinds as a serif/body two-column table, portfolio-monitoring case study strip.",
+    notes: {
+      thesis:
+        "The Product page in the sibling series. Same tokens, same bloom, but a shorter hero to leave room for the actual product content. Applications sit in a hairline grid with three bullets each; agents render as an editorial two-column table so they read as capabilities rather than tiles.",
+      palette: [
+        { hex: "#0A1728", name: "Deck ink" },
+        { hex: "#163F6E", name: "Mid navy" },
+        { hex: "#4FA3E3", name: "Azure" },
+        { hex: "#9BDBFB", name: "Sky highlight" },
+        { hex: "#FFFFFF", name: "Paper" },
+        { hex: "#E4E4EC", name: "Hairline" },
+      ],
+      type: "Shares Source Serif 4 / Inter Tight / Chivo Mono with the parent draft.",
+      layout:
+        "Bloom subpage hero (72vh) → applications grid (3 cards with hairline bullets) → agents table (kind + description) → case-study strip → shared closing CTA.",
+    },
+    load: async () => {
+      const { LandingPartnerDeckProduct } = await import(
+        "@/features/lab/drafts/landing-partner-deck-product"
+      );
+      return { Component: LandingPartnerDeckProduct };
+    },
+  },
+  {
+    slug: "landing-partner-deck-security",
+    title: "Partner Deck · Security",
+    description:
+      "Security subpage in the deck-bloom system. Four numbered pillars, an editorial controls table, and a compliance band above a compliance-team-focused closing CTA.",
+    notes: {
+      thesis:
+        "Security page that survives LP diligence. Every headline is declarative; every pillar leads with a number/tag so a compliance reader can index directly to what matters. Closing CTA is written for a compliance team, not a founder.",
+      palette: [
+        { hex: "#0A1728", name: "Deck ink" },
+        { hex: "#163F6E", name: "Mid navy" },
+        { hex: "#4FA3E3", name: "Azure" },
+        { hex: "#9BDBFB", name: "Sky highlight" },
+        { hex: "#FFFFFF", name: "Paper" },
+        { hex: "#E4E4EC", name: "Hairline" },
+      ],
+      type: "Shares the parent draft's type system.",
+      layout:
+        "Bloom subpage hero → four numbered pillars (auto-fit grid) → controls table (kind + body) → compliance band (SOC 2 · GDPR · pen-test) → compliance-team-focused closing CTA.",
+    },
+    load: async () => {
+      const { LandingPartnerDeckSecurity } = await import(
+        "@/features/lab/drafts/landing-partner-deck-security"
+      );
+      return { Component: LandingPartnerDeckSecurity };
+    },
+  },
+  {
+    slug: "landing-partner-deck-company",
+    title: "Partner Deck · Company",
+    description:
+      "Company subpage in the deck-bloom system. Mission two-col, founder bios with deck-derived credentials, team pedigree logos, investors/angels grid, hiring-focused closing CTA.",
+    notes: {
+      thesis:
+        "The company page from the deck, ported to web. Founder bios lead with the specific credential ('Founding Engineer at Maybern', '$70B investment manager') because those are the highest-credibility signals we have and they weren't anywhere on the previous site.",
+      palette: [
+        { hex: "#0A1728", name: "Deck ink" },
+        { hex: "#163F6E", name: "Mid navy" },
+        { hex: "#4FA3E3", name: "Azure" },
+        { hex: "#9BDBFB", name: "Sky highlight" },
+        { hex: "#FFFFFF", name: "Paper" },
+        { hex: "#E4E4EC", name: "Hairline" },
+      ],
+      type: "Shares the parent draft's type system.",
+      layout:
+        "Bloom subpage hero → mission two-col (deck's 'Your data is your alpha' eyebrow) → founder bios in a two-tile hairline grid → team-pedigree logo band → investors/angels grid → hiring-focused closing CTA.",
+    },
+    load: async () => {
+      const { LandingPartnerDeckCompany } = await import(
+        "@/features/lab/drafts/landing-partner-deck-company"
+      );
+      return { Component: LandingPartnerDeckCompany };
+    },
+  },
+  {
     slug: "landing-hero-v2",
     title: "The Atlas",
     description:
