@@ -51,6 +51,7 @@ export function AgentCapabilitiesSection() {
         py={{ base: "60px", md: "80px", lg: "120px" }}
         display="flex" flexDir="column"
         gap={{ base: "32px", lg: "60px" }}
+        borderWidth="1px" borderColor={C.grey30}
       >
         {/* Section heading */}
         <V2Heading

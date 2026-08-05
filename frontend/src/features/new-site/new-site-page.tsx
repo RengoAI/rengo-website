@@ -17,7 +17,9 @@ import { NewSiteProvider } from "./new-site-provider";
 function HeroSection() {
   return (
     <Box as="section" bg={C.grey10} w="full">
-      <Box maxW={PAGE_MAX_W} mx="auto" px={sectionPx} py={{ base: "75px", md: "100px", lg: "125px" }}>
+      <Box maxW={PAGE_MAX_W} mx="auto" px={sectionPx} py={{ base: "75px", md: "100px", lg: "125px" }}
+        borderWidth="1px" borderColor={C.grey30}
+      >
         <Flex
           flexDir="column"
           gap={{ base: "20px", md: "24px", lg: "28px" }}
@@ -146,6 +148,7 @@ function SolutionsSection() {
         py={sectionPy}
         display="flex" flexDir="column"
         gap={{ base: "32px", lg: "60px" }}
+        borderWidth="1px" borderColor={C.grey30}
       >
         <V2Heading
           variant="h2Regular"
@@ -258,7 +261,9 @@ function ThreeAgentsSection() {
 
   return (
     <Box as="section" w="full">
-      <Box maxW={PAGE_MAX_W} mx="auto" px={sectionPx} py={sectionPy} display="flex" flexDir="column">
+      <Box maxW={PAGE_MAX_W} mx="auto" px={sectionPx} py={sectionPy} display="flex" flexDir="column"
+        borderWidth="1px" borderColor={C.grey30}
+      >
         <Box
           w="full"
           display="flex"
@@ -307,7 +312,9 @@ const CASE_STEPS = [
 function TestimonialSection() {
   return (
     <Box as="section" w="full" bg={C.grey10}>
-      <Box maxW={PAGE_MAX_W} mx="auto" px={sectionPx} py={sectionPy}>
+      <Box maxW={PAGE_MAX_W} mx="auto" px={sectionPx} py={sectionPy}
+        borderWidth="1px" borderColor={C.grey30}
+      >
         <Box
           borderRadius={{ base: "12px", lg: "16px" }}
           overflow="hidden"
@@ -429,6 +436,7 @@ function SecuritySection() {
         alignItems={{ base: "stretch", md: "center" }}
         minH={{ base: "auto", md: "160px" }}
         py={{ base: "32px", md: "0" }}
+        borderWidth="1px" borderColor={C.grey30}
       >
         {BADGES.map((badge, i) => (
           <Box
