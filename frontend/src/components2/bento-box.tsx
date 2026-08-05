@@ -1,7 +1,7 @@
 import { Box, Grid } from "@chakra-ui/react";
 
 import { C, PAGE_MAX_W, sectionPx, serifAxes, V2Heading } from "./new-site-tokens";
-import bentoItems from "./agent-capabilities.json";
+import bentoItems from "@/data/agent-capabilities.json";
 
 // ─── BentoCardBody ────────────────────────────────────────────────────────────
 function BentoCardBody({ label }: { label: string }) {
