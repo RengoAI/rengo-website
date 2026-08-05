@@ -1,0 +1,7 @@
+/*
+ * Google Fonts — loaded once by the new-site provider.
+ *
+ * Noto Serif  — variable weight 100–900 (used for h1–h3, weight 300 & 350)
+ * Geist       — variable weight 100–900 (used for h4–h5, weight 300 & 400)
+ */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Geist:wght@100..900&display=swap");

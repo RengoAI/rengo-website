@@ -5,6 +5,7 @@ import { careersRoutes } from "@/features/careers/careers-routes";
 import { companyRoute } from "@/features/company/company-routes";
 import { landingRoutes } from "@/features/landing/landing-routes";
 import { legalRoutes, securityRoute } from "@/features/legal/legal-routes";
+import { newSiteRoutes } from "@/features/new-site/new-site-routes";
 import { solutionsRoutes } from "@/features/solutions/solutions-routes";
 import { createBrowserRouter, RouteObject } from "react-router-dom";
 
@@ -24,6 +25,8 @@ export const appRouter = createBrowserRouter([
     element: <AppRoot />,
     children: [...ALL_ROUTES],
   },
+  // New site build — isolated from existing layout/nav
+  newSiteRoutes,
   {
     id: "notFound",
     path: "*",
