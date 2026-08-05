@@ -41,7 +41,7 @@ export const headingRecipe = defineRecipe({
       h1Light: {
         fontFamily: "var(--v2-fonts-serif)",
         fontSize: "44px",
-        fontWeight: 300,
+        fontWeight: 200,
         letterSpacing: "-3px",
         lineHeight: "110%",
       },
@@ -51,14 +51,14 @@ export const headingRecipe = defineRecipe({
         fontFamily: "var(--v2-fonts-serif)",
         fontSize: "32px",
         fontWeight: 350,
-        letterSpacing: "-3px",
+        letterSpacing: "-1px",
         lineHeight: "110%",
       },
       h2Light: {
         fontFamily: "var(--v2-fonts-serif)",
         fontSize: "32px",
-        fontWeight: 300,
-        letterSpacing: "-3px",
+        fontWeight: 200,
+        letterSpacing: "-1px",
         lineHeight: "110%",
       },
 
@@ -67,14 +67,14 @@ export const headingRecipe = defineRecipe({
         fontFamily: "var(--v2-fonts-serif)",
         fontSize: "24px",
         fontWeight: 350,
-        letterSpacing: "-3px",
+        letterSpacing: "-1px",
         lineHeight: "110%",
       },
       h3Light: {
         fontFamily: "var(--v2-fonts-serif)",
         fontSize: "24px",
         fontWeight: 300,
-        letterSpacing: "-3px",
+        letterSpacing: "-1px",
         lineHeight: "110%",
       },
 

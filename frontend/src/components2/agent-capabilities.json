@@ -1,0 +1,32 @@
+[
+  {
+    "label": "Built on top of your existing tools and systems",
+    "gridColumn": "1 / span 3",
+    "gridRow": "1 / span 2"
+  },
+  {
+    "label": "Single source of truth",
+    "gridColumn": "4 / span 2",
+    "gridRow": "1 / span 2"
+  },
+  {
+    "label": "Control access & permissions",
+    "gridColumn": "6 / span 2",
+    "gridRow": "1 / span 2"
+  },
+  {
+    "label": "Govern the ontology of your data",
+    "gridColumn": "1 / span 2",
+    "gridRow": "3 / span 2"
+  },
+  {
+    "label": "Wire directly into Claude, Copilot, or your own tools",
+    "gridColumn": "3 / span 3",
+    "gridRow": "3 / span 2"
+  },
+  {
+    "label": "Run agents",
+    "gridColumn": "6 / span 2",
+    "gridRow": "3 / span 2"
+  }
+]

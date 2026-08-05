@@ -1,142 +1,36 @@
 import "@/theme2/fonts.css";
 
-import { Box, Flex, Grid, Heading, HeadingProps, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { BookOpenText, NotebookPen, UsersRound } from "lucide-react";
+
+import { NavBar }                   from "@/components2/nav-bar";
+import { AgentCapabilitiesSection } from "@/components2/agent-capabilities";
+import { SiteFooter }               from "@/components2/site-footer";
+import {
+  C, F, PAGE_MAX_W, serifAxes,
+  sectionPx, sectionPy, V2Heading,
+} from "@/components2/new-site-tokens";
 
 import { NewSiteProvider } from "./new-site-provider";
 
-// ─── Typed heading wrapper ────────────────────────────────────────────────────
-// HeadingProps doesn't include our custom recipe variant names without running
-// `chakra typegen` against theme2/system.ts. This alias adds the union so
-// all usages below are fully type-safe.
-type V2HeadingVariant =
-  | "h1Regular" | "h1Light"
-  | "h2Regular" | "h2Light"
-  | "h3Regular" | "h3Light"
-  | "h4Regular" | "h4Light"
-  | "h5Regular" | "h5Light";
-
-const V2Heading = Heading as React.ComponentType<
-  HeadingProps & { variant?: V2HeadingVariant }
->;
-
-// ─── Token shorthands ────────────────────────────────────────────────────────
-// All resolve to CSS vars emitted by the v2 Chakra system (--v2-colors-*, --v2-fonts-*)
-const C = {
-  grey10: "var(--v2-colors-grey10)",
-  grey20: "var(--v2-colors-grey20)",
-  grey40: "var(--v2-colors-grey40)",
-  grey50: "var(--v2-colors-grey50)",
-  grey60: "var(--v2-colors-grey60)",
-  concrete: "var(--v2-colors-concrete)",
-  concrete2: "var(--v2-colors-concrete2)",
-  indigo1: "var(--v2-colors-indigo1)",
-  indigo2: "var(--v2-colors-indigo2)",
-  indigo4: "var(--v2-colors-indigo4)",
-} as const;
-
-const F = {
-  serif: "var(--v2-fonts-serif)",
-  sans: "var(--v2-fonts-sans)",
-} as const;
-
-// Noto Serif variable-font axes — needed for correct optical rendering
-const serifAxes = { fontVariationSettings: '"CTGR" 0, "wdth" 100' } as const;
-
-// ─── 1. NavBar ────────────────────────────────────────────────────────────────
-function NavBar() {
-  return (
-    <Box
-      as="nav"
-      position="sticky"
-      top="0"
-      zIndex="100"
-      w="full"
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-      px="100px"
-      pt="12px"
-      pb="9px"
-      borderBottomWidth="1px"
-      borderBottomColor={C.grey20}
-      bg={C.grey10}
-      backdropFilter="blur(2px)"
-    >
-      {/* Logo */}
-      <Text
-        fontFamily={F.sans}
-        fontSize="14px"
-        fontWeight="600"
-        color="#2a3c6d"
-        letterSpacing="-1px"
-        lineHeight="1"
-      >
-        Rengo AI
-      </Text>
-
-      {/* Nav links */}
-      <Flex gap="20px" alignItems="center">
-        {(["Solutions", "Security", "Team"] as const).map((label) => (
-          <Text
-            key={label}
-            as="a"
-            fontFamily={F.sans}
-            fontSize="12px"
-            fontWeight="500"
-            color={C.indigo1}
-            textTransform="capitalize"
-            cursor="pointer"
-            _hover={{ opacity: 0.6 }}
-          >
-            {label}
-          </Text>
-        ))}
-      </Flex>
-
-      {/* CTA */}
-      <Box
-        as="a"
-        bg={C.indigo1}
-        borderRadius="2px"
-        px="8px"
-        cursor="pointer"
-        _hover={{ opacity: 0.85 }}
-      >
-        <Text
-          fontFamily={F.sans}
-          fontSize="12px"
-          lineHeight="19.5px"
-          color="white"
-        >
-          Request Access →
-        </Text>
-      </Box>
-    </Box>
-  );
-}
-
-// ─── 2. Hero ──────────────────────────────────────────────────────────────────
+// ─── 1. Hero ──────────────────────────────────────────────────────────────────
 function HeroSection() {
   return (
-    <Box as="section" bg={C.grey10} w="full" h="672px" py="100px">
-      <Flex w="full" alignItems="flex-start">
+    <Box as="section" bg={C.grey10} w="full">
+      <Box maxW={PAGE_MAX_W} mx="auto" px={sectionPx} py={{ base: "75px", md: "100px", lg: "125px" }}>
         <Flex
           flexDir="column"
-          gap="28px"
-          h="337px"
+          gap={{ base: "20px", md: "24px", lg: "28px" }}
           alignItems="flex-start"
-          justifyContent="flex-end"
-          px="100px"
-          maxW="798px"
         >
-          {/* h1Regular: 44px Noto Serif, weight 350, -3px tracking, 110% lh */}
           <V2Heading
             variant="h1Regular"
             as="h1"
             color={C.indigo1}
-            w="480px"
+            maxW={{ base: "full", lg: "520px" }}
             whiteSpace="pre-wrap"
+            fontSize={{ base: "32px", sm: "36px", md: "40px", lg: "44px" }}
+            letterSpacing={{ base: "-1.5px", md: "-2px", lg: "-3px" }}
             style={serifAxes}
           >
             {"One foundation. \nEvery application."}
@@ -144,10 +38,10 @@ function HeroSection() {
 
           <Text
             fontFamily={F.sans}
-            fontSize="16px"
+            fontSize={{ base: "14px", md: "15px", lg: "16px" }}
             color={C.indigo1}
-            lineHeight="1.2"
-            maxW="537px"
+            lineHeight="1.4"
+            maxW={{ base: "full", lg: "537px" }}
           >
             Applications and agents deployed on a shared, governed data
             foundation — so every workflow builds on the last instead of
@@ -159,24 +53,26 @@ function HeroSection() {
             bg={C.indigo1}
             borderRadius="2px"
             px="16px"
-            py="4px"
+            py={{ base: "12px", lg: "6px" }}
             display="inline-flex"
             alignItems="center"
             justifyContent="center"
             cursor="pointer"
+            minH="44px"
             _hover={{ opacity: 0.85 }}
+            w={{ base: "full", sm: "auto" }}
           >
             <Text fontFamily={F.sans} fontSize="14px" color="#fbfbf6" lineHeight="21px">
               Request Access
             </Text>
           </Box>
         </Flex>
-      </Flex>
+      </Box>
     </Box>
   );
 }
 
-// ─── 3. Solutions ─────────────────────────────────────────────────────────────
+// ─── 2. Solutions ─────────────────────────────────────────────────────────────
 interface SolutionCardProps {
   icon: React.ReactNode;
   title: string;
@@ -186,37 +82,34 @@ interface SolutionCardProps {
 function SolutionCard({ icon, title, description }: SolutionCardProps) {
   return (
     <Box
-      flex="1 0 0"
+      flex={{ base: "none", md: "1 0 0" }}
+      w={{ base: "full", md: "auto" }}
       bg={C.concrete}
-      borderRightWidth="1px"
+      borderRightWidth={{ base: "0", md: "1px" }}
       borderRightColor={C.concrete2}
+      borderBottomWidth={{ base: "1px", md: "0" }}
+      borderBottomColor={C.concrete2}
+      _last={{ borderRightWidth: "0", borderBottomWidth: "0" }}
       boxShadow="0px 4px 8px rgba(12,29,52,0.04)"
-      p="36px"
+      p={{ base: "24px", md: "28px", lg: "36px" }}
       display="flex"
       flexDir="column"
       gap="8px"
       justifyContent="center"
-      minH="209px"
-      _last={{ borderRightWidth: 0 }}
+      minH={{ base: "auto", md: "209px" }}
     >
-      <Box w="24px" h="24px" color={C.indigo1} flexShrink="0">
+      <Box w="24px" h="24px" color={C.indigo1} flexShrink={0}>
         {icon}
       </Box>
-      {/* h4Regular: 24px Geist, weight 400, -0.8px tracking, 120% lh */}
-      <V2Heading
-        variant="h4Regular"
-        as="h3"
-        color="#20283d"
-        whiteSpace="nowrap"
-      >
+      <V2Heading variant="h5Regular" as="h3" color="#20283d">
         {title}
       </V2Heading>
       <Text
         fontFamily={F.sans}
-        fontSize="16px"
+        fontSize={{ base: "14px", md: "15px", lg: "16px" }}
         color={C.grey60}
         lineHeight="1.4"
-        maxW="346px"
+        maxW={{ base: "full", lg: "346px" }}
       >
         {description}
       </Text>
@@ -247,157 +140,46 @@ function SolutionsSection() {
   ];
 
   return (
-    <Box
-      as="section"
-      w="full"
-      maxW="1424px"
-      mx="auto"
-      px="80px"
-      py="100px"
-      display="flex"
-      flexDir="column"
-      gap="60px"
-    >
-      {/* h2Regular: 32px Noto Serif, weight 350, -3px tracking, 110% lh */}
-      <V2Heading
-        variant="h2Regular"
-        as="h2"
-        color="#20283d"
-        maxW="553px"
-        style={serifAxes}
-      >
-        Ready-to-deploy applications. Tailored to{" "}
-        <Box as="span" color={C.indigo4}>
-          how your firm operates.
-        </Box>
-      </V2Heading>
-
+    <Box as="section" w="full">
       <Box
-        display="flex"
-        borderWidth="1px"
-        borderColor={C.concrete2}
-        borderRadius="8px"
-        overflow="hidden"
+        maxW={PAGE_MAX_W} mx="auto" px={sectionPx}
+        py={sectionPy}
+        display="flex" flexDir="column"
+        gap={{ base: "32px", lg: "60px" }}
       >
-        {cards.map((card) => (
-          <SolutionCard key={card.title} {...card} />
-        ))}
-      </Box>
-    </Box>
-  );
-}
-
-// ─── 4. Agent Capabilities (Bento grid) ──────────────────────────────────────
-interface BentoCardProps {
-  children: React.ReactNode;
-  gridColumn: string;
-  gridRow: string;
-}
-
-function BentoCard({ children, gridColumn, gridRow }: BentoCardProps) {
-  return (
-    <Box
-      bg={C.concrete}
-      borderWidth="1px"
-      borderColor="#e1e1e6"
-      borderRadius="8px"
-      boxShadow="0px 2px 4px rgba(12,29,52,0.04)"
-      p="28px"
-      display="flex"
-      flexDir="column"
-      justifyContent="space-between"
-      overflow="hidden"
-      style={{ gridColumn, gridRow }}
-    >
-      {/* Illustration placeholder (mix-blend-color-burn in Figma) */}
-      <Box h="120px" w="160px" bg={C.grey40} opacity={0.12} borderRadius="4px" />
-
-      {/* h5Regular: 20px Geist, weight 400, -0.8px tracking, 120% lh */}
-      <V2Heading
-        variant="h5Regular"
-        as="h3"
-        color={C.indigo1}
-        letterSpacing="-0.4px"
-      >
-        {children}
-      </V2Heading>
-    </Box>
-  );
-}
-
-function AgentCapabilitiesSection() {
-  return (
-    <Box
-      as="section"
-      bg={C.grey10}
-      w="full"
-      maxW="1424px"
-      mx="auto"
-      px="80px"
-      py="120px"
-      display="flex"
-      flexDir="column"
-      gap="60px"
-      minH="800px"
-    >
-      {/* 36px serif — no recipe variant; use Chakra primitives */}
-      <Box maxW="730px" fontFamily={F.serif} fontWeight="350" fontSize="36px" letterSpacing="-2px" style={serifAxes}>
-        <Text
-          as="p"
-          fontFamily="inherit"
-          fontSize="inherit"
-          fontWeight="inherit"
-          letterSpacing="inherit"
-          lineHeight="1.2"
+        <V2Heading
+          variant="h2Regular"
+          as="h2"
           color="#20283d"
-          maxW="553px"
+          maxW={{ base: "full", lg: "553px" }}
+          fontSize={{ base: "24px", md: "28px", lg: "32px" }}
+          letterSpacing={{ base: "-0.5px", lg: "-1px" }}
+          style={serifAxes}
         >
-          Work moves off the team&rsquo;s desk.
-        </Text>
-        <Text
-          as="p"
-          fontFamily="inherit"
-          fontSize="inherit"
-          fontWeight="inherit"
-          letterSpacing="inherit"
-          lineHeight="1.2"
-        >
-          <Box as="span" color={C.indigo4}>Let agents execute </Box>
-          <Box as="span" color="#20283d">recurring workflows.</Box>
-        </Text>
-      </Box>
+          Ready-to-deploy applications. Tailored to{" "}
+          <Box as="span" color={C.indigo4}>
+            how your firm operates.
+          </Box>
+        </V2Heading>
 
-      <Grid
-        gridTemplateColumns="repeat(7, 1fr)"
-        gridTemplateRows="repeat(4, 1fr)"
-        h="769px"
-        gap="12px"
-        w="full"
-      >
-        <BentoCard gridColumn="1 / span 3" gridRow="1 / span 2">
-          Built on top of your existing tools and systems
-        </BentoCard>
-        <BentoCard gridColumn="4 / span 2" gridRow="1 / span 2">
-          Single source of truth
-        </BentoCard>
-        <BentoCard gridColumn="6 / span 2" gridRow="1 / span 2">
-          Control access &amp; permissions
-        </BentoCard>
-        <BentoCard gridColumn="1 / span 2" gridRow="3 / span 2">
-          Govern the ontology of your data
-        </BentoCard>
-        <BentoCard gridColumn="3 / span 3" gridRow="3 / span 2">
-          Wire directly into Claude, Copilot, or your own tools
-        </BentoCard>
-        <BentoCard gridColumn="6 / span 2" gridRow="3 / span 2">
-          Run agents
-        </BentoCard>
-      </Grid>
+        <Box
+          display="flex"
+          flexDir={{ base: "column", md: "row" }}
+          borderWidth="1px"
+          borderColor={C.concrete2}
+          borderRadius="8px"
+          overflow="hidden"
+        >
+          {cards.map((card) => (
+            <SolutionCard key={card.title} {...card} />
+          ))}
+        </Box>
+      </Box>
     </Box>
   );
 }
 
-// ─── 5. Three Agents (Feature Detail) ────────────────────────────────────────
+// ─── 3. Three Agents (Feature Detail) ────────────────────────────────────────
 interface AgentRowProps {
   title: string;
   subtext: string;
@@ -408,25 +190,25 @@ function AgentRow({ title, subtext, description }: AgentRowProps) {
   return (
     <Flex
       w="full"
+      flexDir={{ base: "column", md: "row" }}
       alignItems="flex-start"
       borderBottomWidth="1px"
       borderBottomColor="#b7ccd6"
-      py="28px"
-      minH="115.5px"
-      gap="0"
+      py={{ base: "20px", md: "24px", lg: "28px" }}
+      gap={{ base: "8px", md: "0" }}
     >
-      {/* Left: title + subtext — fixed 260px column */}
-      <Box minW="260px" flexShrink={0}>
-        <Text
-          fontFamily={F.sans}
-          fontSize="24px"
-          fontWeight="500"
+      <Box minW={{ base: "auto", md: "220px", lg: "260px" }} flexShrink={0}>
+        <V2Heading
+          variant="h5Regular"
+          as="h3"
           color={C.indigo2}
+          fontSize={{ base: "18px", md: "20px", lg: "24px" }}
+          fontWeight="500"
           letterSpacing="-0.48px"
-          lineHeight="36px"
+          lineHeight="1.5"
         >
           {title}
-        </Text>
+        </V2Heading>
         <Text
           fontFamily={F.sans}
           fontSize="12px"
@@ -438,14 +220,13 @@ function AgentRow({ title, subtext, description }: AgentRowProps) {
         </Text>
       </Box>
 
-      {/* Right: description */}
       <Text
         fontFamily={F.sans}
-        fontSize="15px"
+        fontSize={{ base: "14px", md: "14px", lg: "15px" }}
         color={C.grey60}
-        lineHeight="24.75px"
-        maxW="720px"
-        pt="6px"
+        lineHeight={{ base: "1.5", lg: "24.75px" }}
+        maxW={{ base: "full", lg: "720px" }}
+        pt={{ base: "0", md: "6px" }}
       >
         {description}
       </Text>
@@ -476,182 +257,155 @@ function ThreeAgentsSection() {
   ];
 
   return (
-    <Box as="section" w="full" px="80px" py="100px" display="flex" flexDir="column">
-      {/* Heading — right-aligned, 36px serif, no recipe variant */}
-      <Box w="full" display="flex" justifyContent="flex-end" pb="20px" minH="241px" alignItems="center">
+    <Box as="section" w="full">
+      <Box maxW={PAGE_MAX_W} mx="auto" px={sectionPx} py={sectionPy} display="flex" flexDir="column">
         <Box
-          maxW="681px"
-          fontFamily={F.serif}
-          fontWeight="350"
-          fontSize="36px"
-          letterSpacing="-2px"
-          color="#232a41"
-          style={serifAxes}
+          w="full"
+          display="flex"
+          justifyContent={{ base: "flex-start", lg: "flex-end" }}
+          pb={{ base: "16px", lg: "20px" }}
+          minH={{ base: "auto", lg: "200px" }}
+          alignItems="center"
         >
-          <Text
-            as="p"
-            fontFamily="inherit"
-            fontSize="inherit"
-            fontWeight="inherit"
-            letterSpacing="inherit"
+          <V2Heading
+            variant="h2Regular"
+            as="h2"
+            color="#232a41"
+            maxW={{ base: "full", lg: "681px" }}
+            fontSize={{ base: "24px", md: "28px", lg: "36px" }}
+            letterSpacing={{ base: "-0.5px", md: "-1px", lg: "-2px" }}
             lineHeight="1.2"
-            mb="0"
+            style={serifAxes}
           >
             <Box as="span">Three agents.</Box>
             <Box as="span" color={C.indigo4}> One coordinated system.</Box>
-          </Text>
-          <Text
-            as="p"
-            fontFamily="inherit"
-            fontSize="inherit"
-            fontWeight="inherit"
-            letterSpacing="inherit"
-            lineHeight="1.2"
-          >
+            <br />
             Simplify the systems your firm already uses — email, ledger,
             portals, files.
-          </Text>
+          </V2Heading>
         </Box>
-      </Box>
 
-      {/* Rows */}
-      <Box w="full">
-        {agents.map((agent) => (
-          <AgentRow key={agent.title} {...agent} />
-        ))}
+        <Box w="full">
+          {agents.map((agent) => (
+            <AgentRow key={agent.title} {...agent} />
+          ))}
+        </Box>
       </Box>
     </Box>
   );
 }
 
-// ─── 6. Testimonial / Case Study ──────────────────────────────────────────────
+// ─── 4. Testimonial / Case Study ──────────────────────────────────────────────
 const CASE_STEPS = [
-  {
-    num: "01",
-    title: "Migrate",
-    body: "Moved the firm off its existing portfolio-monitoring software.",
-  },
-  {
-    num: "02",
-    title: "Unify",
-    body: "Built a governed data lake of all historical portfolio financials.",
-  },
-  {
-    num: "03",
-    title: "Automate",
-    body: "Ingested native files without templates or manual review.",
-  },
-  {
-    num: "04",
-    title: "Deploy",
-    body: "Permissioned the data and made it available to AI tools through MCP.",
-  },
-  {
-    num: "05",
-    title: "Operate",
-    body: "Maintain and extend applications on the shared foundation.",
-  },
+  { num: "01", title: "Migrate",  body: "Moved the firm off its existing portfolio-monitoring software." },
+  { num: "02", title: "Unify",    body: "Built a governed data lake of all historical portfolio financials." },
+  { num: "03", title: "Automate", body: "Ingested native files without templates or manual review." },
+  { num: "04", title: "Deploy",   body: "Permissioned the data and made it available to AI tools through MCP." },
+  { num: "05", title: "Operate",  body: "Maintain and extend applications on the shared foundation." },
 ];
 
 function TestimonialSection() {
   return (
-    <Box as="section" w="full" px="60px" py="0" bg={C.grey10}>
-      <Box
-        borderRadius="16px"
-        overflow="hidden"
-        style={{
-          background:
-            "radial-gradient(ellipse at 50% 50%, rgba(22,54,85,1) 0%, rgba(16,33,55,1) 100%)",
-        }}
-      >
+    <Box as="section" w="full" bg={C.grey10}>
+      <Box maxW={PAGE_MAX_W} mx="auto" px={sectionPx} py={sectionPy}>
         <Box
-          borderTopWidth="1px"
-          borderTopColor="#4c5268"
-          pt="97px"
-          pb="96px"
-          px="60px"
-          w="full"
+          borderRadius={{ base: "12px", lg: "16px" }}
+          overflow="hidden"
+          style={{
+            background:
+              "radial-gradient(ellipse at 50% 50%, rgba(22,54,85,1) 0%, rgba(16,33,55,1) 100%)",
+          }}
         >
-          {/* Quote — 36px serif, no recipe variant */}
-          <Box maxW="820px" mb="20px">
-            <Box
+          <Box
+            borderTopWidth="1px"
+            borderTopColor="#4c5268"
+            pt={{ base: "48px", md: "64px", lg: "97px" }}
+            pb={{ base: "48px", md: "64px", lg: "96px" }}
+            px={{ base: "24px", md: "40px", lg: "60px" }}
+            w="full"
+          >
+            <V2Heading
+              variant="h1Light"
               as="p"
-              fontFamily={F.serif}
-              fontWeight="300"
-              fontSize="36px"
-              letterSpacing="-2px"
               color="#e5e6e7"
+              maxW={{ base: "full", lg: "820px" }}
+              mb="20px"
+              fontSize={{ base: "22px", md: "28px", lg: "36px" }}
+              letterSpacing={{ base: "-0.5px", md: "-1px", lg: "-2px" }}
               lineHeight="1.2"
               style={serifAxes}
             >
               <Box as="span">Rengo delivered </Box>
               <Box as="span" color="#3298eb">more in a month</Box>
               <Box as="span"> than previous vendors did in over a year.</Box>
-            </Box>
-          </Box>
-          <Text
-            fontFamily={F.sans}
-            fontWeight="300"
-            fontSize="15px"
-            color="white"
-            textDecoration="underline"
-            lineHeight="24.75px"
-            mb="56px"
-            cursor="pointer"
-            _hover={{ opacity: 0.8 }}
-            display="block"
-          >
-            Read more →
-          </Text>
+            </V2Heading>
+            <Text
+              fontFamily={F.sans}
+              fontWeight="300"
+              fontSize="15px"
+              color="white"
+              textDecoration="underline"
+              lineHeight="24.75px"
+              mb={{ base: "32px", lg: "56px" }}
+              cursor="pointer"
+              _hover={{ opacity: 0.8 }}
+              display="block"
+            >
+              Read more →
+            </Text>
 
-          {/* Steps timeline */}
-          <Box
-            display="grid"
-            gridTemplateColumns="repeat(5, 1fr)"
-            borderWidth="1px"
-            borderColor="#474a67"
-            borderRadius="4px"
-            w="full"
-          >
-            {CASE_STEPS.map((step, i) => (
-              <Box
-                key={step.num}
-                borderRightWidth={i < 4 ? "1px" : "0"}
-                borderRightColor="#474a67"
-                p="28px"
-                display="flex"
-                flexDir="column"
-              >
-                <Text
-                  fontFamily={F.sans}
-                  fontSize="11px"
-                  color="#8999ac"
-                  letterSpacing="1.54px"
-                  lineHeight="16.5px"
-                  mb="4px"
+            <Box
+              display="grid"
+              gridTemplateColumns={{ base: "repeat(2, 1fr)", md: "repeat(3, 1fr)", lg: "repeat(5, 1fr)" }}
+              borderWidth="1px"
+              borderColor="#474a67"
+              borderRadius="4px"
+              overflow="hidden"
+              w="full"
+            >
+              {CASE_STEPS.map((step) => (
+                <Box
+                  key={step.num}
+                  borderRightWidth="1px"
+                  borderRightColor="#474a67"
+                  borderBottomWidth="1px"
+                  borderBottomColor="#474a67"
+                  p={{ base: "20px", lg: "28px" }}
+                  display="flex"
+                  flexDir="column"
                 >
-                  {step.num}
-                </Text>
-                <Text
-                  fontFamily={F.sans}
-                  fontSize="22px"
-                  color="#e5e6e7"
-                  letterSpacing="-0.44px"
-                  lineHeight="33px"
-                  mb="8px"
-                >
-                  {step.title}
-                </Text>
-                <Text
-                  fontFamily={F.sans}
-                  fontSize="13px"
-                  color="#97aec8"
-                  lineHeight="20.8px"
-                >
-                  {step.body}
-                </Text>
-              </Box>
-            ))}
+                  <Text
+                    fontFamily={F.sans}
+                    fontSize="11px"
+                    color="#8999ac"
+                    letterSpacing="1.54px"
+                    lineHeight="16.5px"
+                    mb="4px"
+                  >
+                    {step.num}
+                  </Text>
+                  <V2Heading
+                    variant="h5Regular"
+                    as="h3"
+                    color="#e5e6e7"
+                    fontSize={{ base: "18px", lg: "22px" }}
+                    letterSpacing="-0.44px"
+                    lineHeight="1.5"
+                    mb="8px"
+                  >
+                    {step.title}
+                  </V2Heading>
+                  <Text
+                    fontFamily={F.sans}
+                    fontSize={{ base: "12px", lg: "13px" }}
+                    color="#97aec8"
+                    lineHeight="1.6"
+                  >
+                    {step.body}
+                  </Text>
+                </Box>
+              ))}
+            </Box>
           </Box>
         </Box>
       </Box>
@@ -659,211 +413,125 @@ function TestimonialSection() {
   );
 }
 
-// ─── 7. Security Badges ───────────────────────────────────────────────────────
+// ─── 5. Security Badges ───────────────────────────────────────────────────────
 const BADGES = [
-  {
-    title: "SOC2 TypeII",
-    sub: "Continuous — report available under NDA",
-    borderRight: true,
-  },
-  {
-    title: "GDPR-Ready",
-    sub: "EU data residency available",
-    borderRight: true,
-  },
-  {
-    title: "Pen-tested",
-    sub: "Independent third-party, annually",
-    borderRight: false,
-  },
+  { title: "SOC2 TypeII", sub: "Continuous — report available under NDA" },
+  { title: "GDPR-Ready",  sub: "EU data residency available" },
+  { title: "Pen-tested",  sub: "Independent third-party, annually" },
 ];
 
 function SecuritySection() {
   return (
-    <Box
-      as="section"
-      w="full"
-      h="160px"
-      display="flex"
-      alignItems="center"
-      px="86px"
-    >
-      {BADGES.map((badge) => (
-        <Box
-          key={badge.title}
-          flex="1 0 0"
-          borderRightWidth={badge.borderRight ? "1px" : "0"}
-          borderRightColor="#bcc4da"
-          px="40px"
-          py="20px"
-          display="flex"
-          flexDir="column"
-          alignItems="center"
-        >
-          {/* h3Regular: 24px Noto Serif, weight 350, -3px tracking, 110% lh */}
-          <V2Heading
-            variant="h3Regular"
-            as="h3"
-            color="#303e62"
-            textAlign="center"
-            style={serifAxes}
+    <Box as="section" w="full">
+      <Flex
+        maxW={PAGE_MAX_W} mx="auto" px={sectionPx}
+        flexDir={{ base: "column", md: "row" }}
+        alignItems={{ base: "stretch", md: "center" }}
+        minH={{ base: "auto", md: "160px" }}
+        py={{ base: "32px", md: "0" }}
+      >
+        {BADGES.map((badge, i) => (
+          <Box
+            key={badge.title}
+            flex="1 0 0"
+            borderRightWidth={{ base: "0", md: i < BADGES.length - 1 ? "1px" : "0" }}
+            borderRightColor="#bcc4da"
+            borderBottomWidth={{ base: i < BADGES.length - 1 ? "1px" : "0", md: "0" }}
+            borderBottomColor="#bcc4da"
+            px={{ base: "0", md: "32px", lg: "40px" }}
+            py={{ base: "20px", md: "20px" }}
+            display="flex"
+            flexDir="column"
+            alignItems={{ base: "flex-start", md: "center" }}
           >
-            {badge.title}
-          </V2Heading>
-          <Text
-            fontFamily={F.sans}
-            fontSize="14px"
-            color="#303e62"
-            lineHeight="24.75px"
-            textAlign="center"
-          >
-            {badge.sub}
-          </Text>
-        </Box>
-      ))}
+            <V2Heading
+              variant="h3Regular"
+              as="h3"
+              color="#303e62"
+              textAlign={{ base: "left", md: "center" } as any}
+              style={serifAxes}
+              fontSize={{ base: "20px", lg: "24px" }}
+            >
+              {badge.title}
+            </V2Heading>
+            <Text
+              fontFamily={F.sans}
+              fontSize={{ base: "13px", lg: "14px" }}
+              color="#303e62"
+              lineHeight="24.75px"
+              textAlign={{ base: "left", md: "center" } as any}
+            >
+              {badge.sub}
+            </Text>
+          </Box>
+        ))}
+      </Flex>
     </Box>
   );
 }
 
-// ─── 8. Final CTA ─────────────────────────────────────────────────────────────
+// ─── 6. Final CTA ─────────────────────────────────────────────────────────────
 function FinalCTASection() {
   return (
     <Box
       as="section"
       w="full"
-      maxW="1424px"
-      mx="auto"
       borderTopWidth="1px"
       borderTopColor="#4c5268"
-      pt="111px"
-      pb="110px"
-      px="20px"
       style={{
         backgroundImage:
           "radial-gradient(ellipse at 12% 11%, rgba(27,51,73,1) 0%, rgba(13,28,44,1) 100%)",
       }}
     >
-      <Box display="flex" flexDir="column" alignItems="flex-end">
-        {/* 60px serif — no recipe variant; use Chakra primitives */}
-        <Box maxW="960px" pt="24px" mb="48px">
-          <Box
-            as="p"
-            fontFamily={F.serif}
-            fontWeight="300"
-            fontSize="60px"
-            color="#e0e3ed"
-            letterSpacing="-2px"
-            lineHeight="1"
-            textAlign="right"
-            style={serifAxes}
-          >
-            Rengo is the AI deployment company for investment firms.
-          </Box>
-        </Box>
-
-        <Flex gap="14px">
-          <Box
-            as="button"
-            bg="white"
-            px="32px"
-            py="13px"
-            cursor="pointer"
-            _hover={{ opacity: 0.9 }}
-          >
-            <Text
-              fontFamily={F.sans}
-              fontWeight="500"
-              fontSize="14px"
-              color="#0d1d2c"
-              lineHeight="21px"
-            >
-              Request Access
-            </Text>
-          </Box>
-          <Box
-            as="button"
-            borderWidth="1px"
-            borderColor="#949aac"
-            px="33px"
-            py="14px"
-            cursor="pointer"
-            _hover={{ opacity: 0.9 }}
-          >
-            <Text
-              fontFamily={F.sans}
-              fontSize="14px"
-              color="white"
-              lineHeight="21px"
-            >
-              Talk to Sales →
-            </Text>
-          </Box>
-        </Flex>
-      </Box>
-    </Box>
-  );
-}
-
-// ─── 9. Footer ────────────────────────────────────────────────────────────────
-const FOOTER_LINKS = ["Product", "Solutions", "Team", "Privacy", "Terms"] as const;
-
-function Footer() {
-  return (
-    <Box
-      as="footer"
-      w="full"
-      bg="#0d1d2c"
-      borderTopWidth="1px"
-      borderTopColor="#223857"
-      h="192px"
-      display="flex"
-      alignItems="center"
-      px="20px"
-    >
-      <Flex
-        w="full"
-        maxW="1320px"
-        mx="auto"
-        alignItems="center"
-        justifyContent="space-between"
+      <Box
+        maxW={PAGE_MAX_W} mx="auto" px={sectionPx}
+        pt={{ base: "60px", md: "80px", lg: "111px" }}
+        pb={{ base: "60px", md: "80px", lg: "110px" }}
       >
-        <Text
-          fontFamily={`"Geist Mono", monospace`}
-          fontSize="13px"
-          color="#dadada"
-          letterSpacing="0.7px"
-          textTransform="uppercase"
-          lineHeight="19.5px"
-        >
-          Rengo AI
-        </Text>
-
-        <Flex gap="24px">
-          {FOOTER_LINKS.map((label) => (
-            <Text
-              key={label}
-              as="a"
-              fontFamily={F.sans}
-              fontSize="13px"
-              color="#5a6a8a"
-              lineHeight="19.5px"
-              cursor="pointer"
-              _hover={{ color: "#97aec8" }}
+        <Box display="flex" flexDir="column" alignItems={{ base: "flex-start", lg: "flex-end" }}>
+          <Box w="60%" pt={{ base: "0", lg: "24px" }} mb={{ base: "32px", lg: "48px" }}>
+            <V2Heading
+              variant="h1Light"
+              as="p"
+              color="#e0e3ed"
+              textAlign={{ base: "left", lg: "right" } as any}
+              style={serifAxes}
             >
-              {label}
-            </Text>
-          ))}
-        </Flex>
+              Rengo is the AI deployment company for investment firms.
+            </V2Heading>
+          </Box>
 
-        <Text
-          fontFamily={`"Geist Mono", monospace`}
-          fontSize="11px"
-          color="#3a4a6a"
-          lineHeight="16.5px"
-        >
-          © 2026 Rengo AI
-        </Text>
-      </Flex>
+          <Flex gap="12px" flexDir={{ base: "column", sm: "row" }} w={{ base: "full", sm: "auto" }}>
+            <Box
+              as="button"
+              bg="white"
+              px="32px" py="13px"
+              cursor="pointer"
+              minH="44px"
+              w={{ base: "full", sm: "auto" }}
+              _hover={{ opacity: 0.9 }}
+            >
+              <Text fontFamily={F.sans} fontWeight="500" fontSize="14px" color="#0d1d2c" lineHeight="21px">
+                Request Access
+              </Text>
+            </Box>
+            <Box
+              as="button"
+              borderWidth="1px"
+              borderColor="#949aac"
+              px="33px" py="13px"
+              cursor="pointer"
+              minH="44px"
+              w={{ base: "full", sm: "auto" }}
+              _hover={{ opacity: 0.9 }}
+            >
+              <Text fontFamily={F.sans} fontSize="14px" color="white" lineHeight="21px">
+                Talk to Sales →
+              </Text>
+            </Box>
+          </Flex>
+        </Box>
+      </Box>
     </Box>
   );
 }
@@ -871,16 +539,9 @@ function Footer() {
 // ─── Page Assembly ────────────────────────────────────────────────────────────
 function LandingPage() {
   return (
-    <Box
-      display="flex"
-      flexDir="column"
-      alignItems="center"
-      w="full"
-      minH="100vh"
-      bg={C.grey10}
-      overflowX="hidden"
-    >
+    <Box display="flex" flexDir="column" w="full" minH="100vh" bg={C.grey10}>
       <NavBar />
+      <Box flexShrink={0} h="35px" w="full" aria-hidden />
       <HeroSection />
       <SolutionsSection />
       <AgentCapabilitiesSection />
@@ -888,7 +549,7 @@ function LandingPage() {
       <TestimonialSection />
       <SecuritySection />
       <FinalCTASection />
-      <Footer />
+      <SiteFooter />
     </Box>
   );
 }
