@@ -41,7 +41,7 @@ export const headingRecipe = defineRecipe({
       h1Light: {
         fontFamily: "var(--v2-fonts-serif)",
         fontSize: "44px",
-        fontWeight: 200,
+        fontWeight: 300,
         letterSpacing: "-3px",
         lineHeight: "110%",
       },

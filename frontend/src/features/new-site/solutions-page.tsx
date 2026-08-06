@@ -57,7 +57,7 @@ const bentoCardStyle = {
   p: { base: "20px", lg: "28px" } as any,
   display: "flex" as const,
   flexDir: "column" as const,
-  justifyContent: "space-between" as const,
+  justifyContent: "flex-end" as const,
   overflow: "hidden" as const,
 };
 
@@ -65,12 +65,12 @@ const bentoCardStyle = {
 function SolutionsHeroSection() {
   return (
     <SectionLayout
-      bg={C.grey30}
+      bg={C.grey20}
       showTopBorder={false}
       py={{ base: "16px", md: "20px" }}
     >
       <Box
-        bg={C.grey30}
+        bg={C.grey20}
         borderRadius={{ base: "8px", lg: "12px" }}
         overflow="hidden"
         p={{ base: "28px", md: "40px", lg: "60px" }}
@@ -200,7 +200,6 @@ function SolutionsBentoSection() {
         <Box display={{ base: "flex", lg: "none" }} flexDir="column" gap="8px">
           {SOLUTIONS_BENTO.map((item) => (
             <Box key={item.label} {...bentoCardStyle} minH="120px">
-              <Box />
               <V2Heading
                 variant="h5Regular"
                 as="h3"
@@ -230,14 +229,6 @@ function SolutionsBentoSection() {
               {...bentoCardStyle}
               style={{ gridColumn: item.gridColumn, gridRow: item.gridRow }}
             >
-              <Box
-                h={{ base: "80px", lg: "140px" }}
-                w="160px"
-                bg={C.grey40}
-                opacity={0.12}
-                borderRadius="4px"
-                flexShrink={0}
-              />
               <V2Heading
                 variant="h5Regular"
                 as="h3"

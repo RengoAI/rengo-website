@@ -7,25 +7,15 @@ import bentoItems from "@/data/agent-capabilities.json";
 // ─── BentoCardBody ────────────────────────────────────────────────────────────
 function BentoCardBody({ label }: { label: string }) {
   return (
-    <>
-      <Box
-        h={{ base: "80px", md: "100px", lg: "120px" }}
-        w="160px"
-        bg={C.grey40}
-        opacity={0.12}
-        borderRadius="4px"
-        flexShrink={0}
-      />
-      <V2Heading
-        variant="h5Regular"
-        as="h3"
-        color={C.indigo1}
-        letterSpacing="-0.4px"
-        fontSize={{ base: "16px", md: "18px", lg: "20px" }}
-      >
-        {label}
-      </V2Heading>
-    </>
+    <V2Heading
+      variant="h5Regular"
+      as="h3"
+      color={C.indigo1}
+      letterSpacing="-0.4px"
+      fontSize={{ base: "16px", md: "18px", lg: "20px" }}
+    >
+      {label}
+    </V2Heading>
   );
 }
 
@@ -36,10 +26,10 @@ const cardBase = {
   borderColor: "#e1e1e6",
   borderRadius: "8px",
   boxShadow: "0px 2px 4px rgba(12,29,52,0.04)",
-  p: { base: "20px", lg: "28px" } as any,
+  p: { base: "16px" } as any,
   display: "flex" as const,
   flexDir: "column" as const,
-  justifyContent: "space-between" as const,
+  justifyContent: "flex-end" as const,
   overflow: "hidden" as const,
 };
 
