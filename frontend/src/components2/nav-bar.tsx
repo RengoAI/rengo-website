@@ -1,19 +1,32 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 
 import { C, F, PAGE_MAX_W, sectionPx, V2Heading } from "./new-site-tokens";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type NavItem = "Solutions" | "Security" | "Team";
-const NAV_ITEMS: NavItem[] = ["Solutions", "Security", "Team"];
+
+/** Each nav item may optionally route to a path instead of toggling local state */
+type NavItemConfig = { label: NavItem; to?: string };
+
+const NAV_ITEMS: NavItemConfig[] = [
+  { label: "Solutions" },
+  { label: "Security", to: "/next/security" },
+  { label: "Team" },
+];
 
 // ─── NavLink ──────────────────────────────────────────────────────────────────
 function NavLink({
-  label, active, onClick,
+  label, active, darkNav, onClick,
 }: {
-  label: NavItem; active: boolean; onClick: () => void;
+  label: NavItem; active: boolean; darkNav: boolean; onClick: () => void;
 }) {
+  const idleColor   = darkNav ? C.grey30   : C.grey60;
+  const activeColor = darkNav ? "white"    : C.indigo2;
+  const hoverColor  = darkNav ? "white"    : C.indigo1;
+
   return (
     <Box
       as="button"
@@ -29,13 +42,13 @@ function NavLink({
       p="0"
       minH="44px"
       justifyContent="center"
-      color={active ? C.indigo2 : C.grey60}
-      _hover={{ color: C.indigo1 }}
+      color={active ? activeColor : idleColor}
+      _hover={{ color: hoverColor }}
       transition="color 120ms ease"
     >
       <Text
         fontFamily={F.sans}
-        fontSize="14px"
+        fontSize="12px"
         fontWeight={active ? "600" : "500"}
         color="inherit"
         lineHeight="1"
@@ -56,10 +69,13 @@ function NavLink({
 }
 
 // ─── NavBar ───────────────────────────────────────────────────────────────────
-export function NavBar() {
-  const [active, setActive]     = useState<NavItem | null>(null);
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+export function NavBar({ darkNav = false }: { darkNav?: boolean }) {
+  const [localActive, setLocalActive] = useState<NavItem | null>(null);
+  const [scrolled, setScrolled]       = useState(false);
+  const [menuOpen, setMenuOpen]       = useState(false);
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const onScroll = () => {
@@ -70,8 +86,30 @@ export function NavBar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const navBg   = scrolled ? "rgba(245, 245, 246, 0.92)" : C.grey10;
-  const navBlur = scrolled ? "blur(12px)" : "blur(2px)";
+  // Derive active item from route — Security is active on /next/security
+  const routeActive: NavItem | null =
+    location.pathname.startsWith("/next/security") ? "Security" : null;
+  const active = routeActive ?? localActive;
+
+  // Bg: dark indigo when darkNav+unscrolled, blurred when scrolled
+  const navBg = scrolled
+    ? (darkNav ? "rgba(33, 48, 68, 0.92)" : "rgba(245, 245, 246, 0.92)")
+    : (darkNav ? C.indigo1 : C.grey10);
+  const navBlur   = scrolled ? "blur(12px)" : "blur(2px)";
+  const borderCol = scrolled
+    ? C.grey30
+    : (darkNav ? "rgba(255,255,255,0.08)" : C.grey20);
+  const logoColor      = darkNav ? C.grey30  : C.indigo1;
+  const hamburgerColor = darkNav ? C.grey30  : C.indigo1;
+
+  const handleNavClick = (cfg: NavItemConfig) => {
+    if (cfg.to) {
+      navigate(cfg.to);
+    } else {
+      setLocalActive(localActive === cfg.label ? null : cfg.label);
+    }
+    setMenuOpen(false);
+  };
 
   return (
     <>
@@ -83,7 +121,7 @@ export function NavBar() {
         zIndex="100"
         w="full"
         borderBottomWidth="1px"
-        borderBottomColor={scrolled ? C.grey30 : C.grey20}
+        borderBottomColor={borderCol}
         bg={navBg}
         backdropFilter={navBlur}
         boxShadow={scrolled ? "0 1px 12px rgba(36,49,85,0.07)" : "none"}
@@ -99,18 +137,19 @@ export function NavBar() {
           justifyContent="space-between"
         >
           {/* Logo */}
-          <V2Heading as="p" variant="h5Regular" color={C.indigo1}>
+          <V2Heading as="p" variant="h5Regular" color={logoColor}>
             Rengo AI
           </V2Heading>
 
           {/* Desktop nav links */}
           <Flex gap="20px" alignItems="center" display={{ base: "none", md: "flex" }}>
-            {NAV_ITEMS.map((label) => (
+            {NAV_ITEMS.map((cfg) => (
               <NavLink
-                key={label}
-                label={label}
-                active={active === label}
-                onClick={() => setActive(active === label ? null : label)}
+                key={cfg.label}
+                label={cfg.label}
+                active={active === cfg.label}
+                darkNav={darkNav}
+                onClick={() => handleNavClick(cfg)}
               />
             ))}
           </Flex>
@@ -141,7 +180,7 @@ export function NavBar() {
             cursor="pointer"
             bg="transparent"
             border="none"
-            color={C.indigo1}
+            color={hamburgerColor}
             onClick={() => setMenuOpen((o) => !o)}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
           >
@@ -160,14 +199,14 @@ export function NavBar() {
           bg={navBg}
           backdropFilter={navBlur}
           borderBottomWidth="1px"
-          borderBottomColor={C.grey20}
+          borderBottomColor={darkNav ? "rgba(255,255,255,0.1)" : C.grey20}
           boxShadow="0 4px 16px rgba(36,49,85,0.1)"
         >
           {/* Inner: same constrained column */}
           <Box maxW={PAGE_MAX_W} mx="auto" px={sectionPx} pb="20px" display="flex" flexDir="column">
-            {NAV_ITEMS.map((label) => (
+            {NAV_ITEMS.map((cfg) => (
               <Box
-                key={label}
+                key={cfg.label}
                 as="button"
                 textAlign="left"
                 minH="44px"
@@ -175,20 +214,19 @@ export function NavBar() {
                 bg="transparent"
                 border="none"
                 borderBottomWidth="1px"
-                borderBottomColor={C.grey20}
+                borderBottomColor={darkNav ? "rgba(255,255,255,0.08)" : C.grey20}
                 cursor="pointer"
-                onClick={() => {
-                  setActive(active === label ? null : label);
-                  setMenuOpen(false);
-                }}
+                onClick={() => handleNavClick(cfg)}
               >
                 <Text
                   fontFamily={F.sans}
                   fontSize="14px"
-                  fontWeight={active === label ? "600" : "500"}
-                  color={active === label ? C.indigo2 : C.grey60}
+                  fontWeight={active === cfg.label ? "600" : "500"}
+                  color={active === cfg.label
+                    ? (darkNav ? "white" : C.indigo2)
+                    : (darkNav ? C.grey30 : C.grey60)}
                 >
-                  {label}
+                  {cfg.label}
                 </Text>
               </Box>
             ))}
