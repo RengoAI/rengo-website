@@ -25,6 +25,8 @@ export const colors = defineTokens.colors({
   indigo2: { value: "#124476" },
   // Use for accents
   indigo4: { value: "#0071E3" },
+// Use for darkest shades of indigo
+  indigo5: { value: "#1A2738" },
 
   // ─── Accents ─────────────────────────────────────────────────────────────
   // Use for accents

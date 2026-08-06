@@ -105,12 +105,12 @@ function SecurityHeroSection() {
 // ─── 2. Four Things ───────────────────────────────────────────────────────────
 function FourThingsSection() {
   return (
-    <SectionLayout bg={C.grey10} py={{ base: "80px", md: "100px", lg: "120px" }}>
+    <SectionLayout py={{ base: "80px", md: "100px", lg: "120px" }}>
       <Box display="flex" flexDir="column" gap={{ base: "32px", lg: "56px" }}>
         <V2Heading
           variant="h2Regular"
           as="h2"
-          color={C.indigo1}
+  
           maxW={{ base: "full", lg: "620px" }}
           fontSize={{ base: "24px", md: "28px", lg: "32px" }}
           letterSpacing={{ base: "-0.5px", lg: "-1px" }}
@@ -125,19 +125,18 @@ function FourThingsSection() {
           display="flex"
           flexDir={{ base: "column", md: "row" }}
           borderWidth="1px"
-          borderColor={C.grey40}
-          borderRadius="6px"
+          borderColor={C.grey30}
+          borderRadius="4px"
           overflow="hidden"
         >
           {FOUR_THINGS.map((item, i) => (
             <Box
               key={item.num}
               flex="1 0 0"
-              bg={C.grey30}
               borderRightWidth={{ base: "0", md: i < FOUR_THINGS.length - 1 ? "1px" : "0" }}
-              borderRightColor={C.grey40}
+              borderRightColor={C.grey30}
               borderBottomWidth={{ base: i < FOUR_THINGS.length - 1 ? "1px" : "0", md: "0" }}
-              borderBottomColor={C.grey40}
+              borderBottomColor={C.grey30}
               p={{ base: "24px", md: "28px", lg: "36px" }}
               display="flex"
               flexDir="column"
@@ -226,7 +225,7 @@ function GovernanceSection() {
           bg="white"
           borderWidth="1px"
           borderColor={C.grey30}
-          borderRadius="6px"
+          borderRadius="8px"
           overflow="hidden"
           boxShadow="0px 2px 8px rgba(12,29,52,0.05)"
         >
@@ -282,7 +281,7 @@ function FinalCTASection() {
     <SectionLayout
       showRails={false}
       railColor="#4c5268"
-      py={{ base: "60px", md: "80px", lg: "111px" }}
+      py={{ base: "60px", md: "80px", lg: "112px" }}
       outerProps={{
         style: {
           backgroundImage:
@@ -307,7 +306,7 @@ function FinalCTASection() {
           <Button
             unstyled
             bg="white"
-            px="32px" py="13px"
+            px="32px" py="12px"
             cursor="pointer"
             minH="44px"
             w={{ base: "full", sm: "auto" }}
@@ -321,7 +320,7 @@ function FinalCTASection() {
             unstyled
             borderWidth="1px"
             borderColor="#949aac"
-            px="33px" py="13px"
+            px="32px" py="12px"
             cursor="pointer"
             minH="44px"
             w={{ base: "full", sm: "auto" }}
@@ -343,7 +342,7 @@ function SecurityPageContent() {
     <Box display="flex" flexDir="column" w="full" minH="100vh" bg={C.grey10}>
       <NavBar darkNav={true} />
       {/* Nav height offset — dark hero sits flush behind the transparent nav */}
-      <Box flexShrink={0} h="76px" w="full" aria-hidden />
+      <Box flexShrink={0} h="76px" w="full" bg={C.indigo1} aria-hidden />
       <SecurityHeroSection />
       <FourThingsSection />
       <GovernanceSection />

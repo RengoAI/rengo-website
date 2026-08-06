@@ -34,6 +34,7 @@ export const C = {
   indigo1:   "var(--v2-colors-indigo1)",
   indigo2:   "var(--v2-colors-indigo2)",
   indigo4:   "var(--v2-colors-indigo4)",
+  indigo5:   "var(--v2-colors-indigo5)",
 } as const;
 
 // ─── Font token shorthands ────────────────────────────────────────────────────

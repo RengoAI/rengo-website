@@ -17,7 +17,7 @@ import { NewSiteProvider } from "./new-site-provider";
 // ─── 1. Hero ──────────────────────────────────────────────────────────────────
 function HeroSection() {
   return (
-    <SectionLayout bg={C.grey10} showTopBorder={false} py={{ base: "135px", md: "160px", lg: "185px" }}>
+    <SectionLayout bg={C.grey10} showTopBorder={false} py={{ base: "136px", md: "160px", lg: "184px" }}>
       <Flex
           flexDir="column"
           gap={{ base: "20px", md: "24px", lg: "28px" }}
@@ -51,9 +51,9 @@ function HeroSection() {
           <Button
             unstyled
             bg={C.indigo1}
-            borderRadius="2px"
+            borderRadius="4px"
             px="16px"
-            py={{ base: "12px", lg: "6px" }}
+            py={{ base: "12px", lg: "8px" }}
             display="inline-flex"
             alignItems="center"
             justifyContent="center"
@@ -95,7 +95,7 @@ function SolutionCard({ icon, title, description }: SolutionCardProps) {
       flexDir="column"
       gap="8px"
       justifyContent="center"
-      minH={{ base: "auto", md: "209px" }}
+      minH={{ base: "auto", md: "208px" }}
     >
       <Box w="24px" h="24px" color={C.indigo1} flexShrink={0}>
         {icon}
@@ -208,7 +208,7 @@ function AgentRow({ title, subtext, description }: AgentRowProps) {
           fontSize="12px"
           color="#8999ac"
           lineHeight="18px"
-          mt="2px"
+          mt="0"
         >
           {subtext}
         </Text>
@@ -312,7 +312,7 @@ function TestimonialSection() {
           <Box
             borderTopWidth="1px"
             borderTopColor="#4c5268"
-            pt={{ base: "48px", md: "64px", lg: "97px" }}
+            pt={{ base: "48px", md: "64px", lg: "96px" }}
             pb={{ base: "48px", md: "64px", lg: "96px" }}
             px={{ base: "24px", md: "40px", lg: "60px" }}
             w="full"
@@ -467,7 +467,7 @@ function FinalCTASection() {
     <SectionLayout
       showRails={false}
       railColor="#4c5268"
-      py={{ base: "60px", md: "80px", lg: "111px" }}
+      py={{ base: "60px", md: "80px", lg: "112px" }}
       outerProps={{
         style: {
           backgroundImage:
@@ -506,7 +506,7 @@ function FinalCTASection() {
               unstyled
               borderWidth="1px"
               borderColor="#949aac"
-              px="33px" py="12px"
+              px="32px" py="12px"
               cursor="pointer"
               minH="44px"
               w={{ base: "full", sm: "auto" }}
@@ -526,7 +526,7 @@ function FinalCTASection() {
 function LandingPage() {
   return (
     <Box display="flex" flexDir="column" w="full" minH="100vh" bg={C.grey10}>
-      <NavBar />
+      <NavBar darkNav={true} />
       <Box flexShrink={0} h="76px" w="full" aria-hidden />
       <HeroSection />
       <SolutionsSection />

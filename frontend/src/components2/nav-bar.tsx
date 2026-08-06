@@ -44,7 +44,7 @@ function NavLink({
       display="flex"
       flexDir="column"
       alignItems="center"
-      gap="3px"
+      gap="4px"
       onClick={onClick}
       cursor="pointer"
       p="0"
@@ -57,7 +57,7 @@ function NavLink({
       <Text
         fontFamily={F.sans}
         fontSize="14px"
-        fontWeight={active ? "600" : "500"}
+        fontWeight={darkNav ? (active ? "400" : "300") : (active ? "600" : "500")}
         color="inherit"
         lineHeight="1"
         textTransform="capitalize"
@@ -66,7 +66,7 @@ function NavLink({
         {label}
       </Text>
       <Box
-        w="3px" h="3px"
+        w="4px" h="4px"
         borderRadius="full"
         bg={C.indigo4}
         opacity={active ? 1 : 0}
@@ -101,7 +101,7 @@ export function NavBar({ darkNav = false }: { darkNav?: boolean }) {
   const active = routeActive ?? localActive;
 
   // Frosted-glass colours — always applied, no scroll transition on bg
-  const navBg     = darkNav ? "rgba(33,48,68,0.92)"    : "rgba(255,255,255,0.9)";
+  const navBg     = darkNav ? C.indigo5                 : "rgba(255,255,255,0.9)";
   const borderCol = darkNav ? "rgba(255,255,255,0.12)" : C.grey30;
   const logoColor = darkNav ? C.grey30 : C.indigo1;
 
@@ -123,7 +123,7 @@ export function NavBar({ darkNav = false }: { darkNav?: boolean }) {
         top="8px" left="8px" right="8px"
         zIndex={1000}
         bg={navBg}
-        backdropFilter="blur(2px)"
+        backdropFilter="blur(16px)"
         borderWidth="1px"
         borderColor={borderCol}
         borderRadius="6px"
@@ -134,7 +134,7 @@ export function NavBar({ darkNav = false }: { darkNav?: boolean }) {
           maxW={PAGE_MAX_W}
           mx="auto"
           px="20px"
-          pt="2px"
+          pt="4px"
           alignItems="center"
           justifyContent="space-between"
         >
@@ -142,7 +142,7 @@ export function NavBar({ darkNav = false }: { darkNav?: boolean }) {
           <Button
             unstyled
             display="flex"
-            gap="2px"
+            gap="4px"
             alignItems="center"
             cursor="pointer"
             p="0"
@@ -225,7 +225,7 @@ export function NavBar({ darkNav = false }: { darkNav?: boolean }) {
           backdropFilter="blur(12px)"
           borderWidth="1px"
           borderColor={borderCol}
-          borderRadius="6px"
+          borderRadius="8px"
           boxShadow="0 4px 16px rgba(36,49,85,0.1)"
         >
           <Box maxW={PAGE_MAX_W} mx="auto" px={sectionPx} py="8px" display="flex" flexDir="column">

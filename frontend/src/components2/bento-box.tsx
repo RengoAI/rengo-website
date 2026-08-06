@@ -74,7 +74,7 @@ export function AgentCapabilitiesSection() {
           display={{ base: "none", lg: "grid" }}
           gridTemplateColumns="repeat(7, 1fr)"
           gridTemplateRows="repeat(4, 1fr)"
-          h="769px"
+          h="768px"
           gap="12px"
           w="full"
         >

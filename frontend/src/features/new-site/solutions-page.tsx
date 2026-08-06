@@ -5,7 +5,6 @@ import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { NavBar }                   from "@/components2/nav-bar";
 import { SiteFooter }               from "@/components2/site-footer";
 import { SectionLayout }            from "@/components2/section-layout";
-import { AgentCapabilitiesSection } from "@/components2/agent-capabilities";
 import {
   C, F, serifAxes, sectionPy,
   V2Heading,
@@ -47,41 +46,29 @@ function SolutionsHeroSection() {
       showTopBorder={false}
     
     >
-      <Box
-        bg={C.grey20}
-        borderRadius={{ base: "8px", lg: "12px" }}
-        overflow="hidden"
-        p={{ base: "28px", md: "40px", lg: "60px" }}
-        minH={{ base: "240px", md: "400px", lg: "480px" }}
-        display="flex"
-        flexDir="column"
-        justifyContent="flex-end"
-        gap={{ base: "12px", lg: "16px" }}
+      <V2Heading
+        variant="h1Light"
+        as="h1"
+        color={C.indigo1}
+        fontSize={{ base: "36px", md: "44px", lg: "52px" }}
+        letterSpacing={{ base: "-2px", lg: "-3px" }}
+        lineHeight="1.1"
+        style={serifAxes}
       >
-        <V2Heading
-          variant="h1Light"
-          as="h1"
-          color={C.indigo1}
-          fontSize={{ base: "36px", md: "44px", lg: "52px" }}
-          letterSpacing={{ base: "-2px", lg: "-3px" }}
-          lineHeight="1.1"
-          style={serifAxes}
-        >
-          Portfolio monitoring
-        </V2Heading>
+        Portfolio monitoring
+      </V2Heading>
 
-        <Text
-          fontFamily={F.sans}
-          fontSize={{ base: "14px", md: "15px", lg: "16px" }}
-          color={C.indigo1}
-          lineHeight="1.4"
-          maxW={{ base: "full", lg: "690px" }}
-        >
-          Governance, isolation, and audit are foundational — not a settings
-          panel. Institutional firms deploy Rengo because it holds up to the
-          diligence their LPs demand.
-        </Text>
-      </Box>
+      <Text
+        fontFamily={F.sans}
+        fontSize={{ base: "14px", md: "15px", lg: "16px" }}
+        color={C.indigo1}
+        lineHeight="1.4"
+        maxW={{ base: "full", lg: "690px" }}
+      >
+        Governance, isolation, and audit are foundational — not a settings
+        panel. Institutional firms deploy Rengo because it holds up to the
+        diligence their LPs demand.
+      </Text>
     </SectionLayout>
   );
 }
@@ -101,7 +88,7 @@ function RhythmSection() {
           variant="h2Regular"
           as="h2"
           color={C.indigo1}
-          fontSize={{ base: "24px", md: "28px", lg: "35px" }}
+          fontSize={{ base: "24px", md: "28px", lg: "36px" }}
           letterSpacing={{ base: "-1px", lg: "-2px" }}
           lineHeight="1.2"
           style={serifAxes}
@@ -123,7 +110,7 @@ function RhythmSection() {
         </Text>
 
         {/* Arrow list */}
-        <Box display="flex" flexDir="column" gap="10px">
+        <Box display="flex" flexDir="column" gap="8px">
           {RHYTHM_ITEMS.map((item) => (
             <Flex key={item} gap="12px" alignItems="flex-start">
               <Text
@@ -133,7 +120,7 @@ function RhythmSection() {
                 lineHeight="22.4px"
                 flexShrink={0}
                 w="12px"
-                pt="1px"
+                pt="0"
               >
                 →
               </Text>
@@ -250,7 +237,7 @@ function FinalCTASection() {
     <SectionLayout
       showRails={false}
       railColor="#4c5268"
-      py={{ base: "60px", md: "80px", lg: "111px" }}
+      py={{ base: "60px", md: "80px", lg: "112px" }}
       outerProps={{
         style: {
           backgroundImage:
@@ -275,7 +262,7 @@ function FinalCTASection() {
           <Button
             unstyled
             bg="white"
-            px="32px" py="13px"
+            px="32px" py="12px"
             cursor="pointer"
             minH="44px"
             w={{ base: "full", sm: "auto" }}
@@ -289,7 +276,7 @@ function FinalCTASection() {
             unstyled
             borderWidth="1px"
             borderColor="#949aac"
-            px="33px" py="13px"
+            px="32px" py="12px"
             cursor="pointer"
             minH="44px"
             w={{ base: "full", sm: "auto" }}
@@ -313,7 +300,6 @@ function SolutionsPageContent() {
       <Box flexShrink={0} h="76px" w="full" bg={C.grey20} aria-hidden />
       <SolutionsHeroSection />
       <RhythmSection />
-      <AgentCapabilitiesSection />
       <GovernanceSection />
       <FinalCTASection />
       <SiteFooter />
