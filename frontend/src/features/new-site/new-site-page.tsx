@@ -6,9 +6,10 @@ import { BookOpenText, NotebookPen, UsersRound } from "lucide-react";
 import { NavBar }                   from "@/components2/nav-bar";
 import { AgentCapabilitiesSection } from "@/components2/agent-capabilities";
 import { SiteFooter }               from "@/components2/site-footer";
+import { SectionLayout }            from "@/components2/section-layout";
 import {
-  C, F, PAGE_MAX_W, serifAxes,
-  sectionPx, sectionPy, V2Heading,
+  C, F, serifAxes,
+  sectionPy, V2Heading,
 } from "@/components2/new-site-tokens";
 
 import { NewSiteProvider } from "./new-site-provider";
@@ -16,9 +17,8 @@ import { NewSiteProvider } from "./new-site-provider";
 // ─── 1. Hero ──────────────────────────────────────────────────────────────────
 function HeroSection() {
   return (
-    <Box as="section" bg={C.grey10} w="full">
-      <Box maxW={PAGE_MAX_W} mx="auto" px={sectionPx} py={{ base: "75px", md: "100px", lg: "125px" }}>
-        <Flex
+    <SectionLayout bg={C.grey10} showTopBorder={false} py={{ base: "75px", md: "100px", lg: "125px" }}>
+      <Flex
           flexDir="column"
           gap={{ base: "20px", md: "24px", lg: "28px" }}
           alignItems="flex-start"
@@ -67,8 +67,7 @@ function HeroSection() {
             </Text>
           </Box>
         </Flex>
-      </Box>
-    </Box>
+    </SectionLayout>
   );
 }
 
@@ -140,13 +139,8 @@ function SolutionsSection() {
   ];
 
   return (
-    <Box as="section" w="full">
-      <Box
-        maxW={PAGE_MAX_W} mx="auto" px={sectionPx}
-        py={sectionPy}
-        display="flex" flexDir="column"
-        gap={{ base: "32px", lg: "60px" }}
-      >
+    <SectionLayout py={sectionPy}>
+      <Box display="flex" flexDir="column" gap={{ base: "32px", lg: "60px" }}>
         <V2Heading
           variant="h2Regular"
           as="h2"
@@ -175,7 +169,7 @@ function SolutionsSection() {
           ))}
         </Box>
       </Box>
-    </Box>
+    </SectionLayout>
   );
 }
 
@@ -257,8 +251,8 @@ function ThreeAgentsSection() {
   ];
 
   return (
-    <Box as="section" w="full">
-      <Box maxW={PAGE_MAX_W} mx="auto" px={sectionPx} py={sectionPy} display="flex" flexDir="column">
+    <SectionLayout py={sectionPy}>
+      <Box display="flex" flexDir="column">
         <Box
           w="full"
           display="flex"
@@ -291,7 +285,7 @@ function ThreeAgentsSection() {
           ))}
         </Box>
       </Box>
-    </Box>
+    </SectionLayout>
   );
 }
 
@@ -306,9 +300,8 @@ const CASE_STEPS = [
 
 function TestimonialSection() {
   return (
-    <Box as="section" w="full" bg={C.grey10}>
-      <Box maxW={PAGE_MAX_W} mx="auto" px={sectionPx} py={sectionPy}>
-        <Box
+    <SectionLayout bg={C.grey10} py={sectionPy}>
+      <Box
           borderRadius={{ base: "12px", lg: "16px" }}
           overflow="hidden"
           style={{
@@ -408,8 +401,7 @@ function TestimonialSection() {
             </Box>
           </Box>
         </Box>
-      </Box>
-    </Box>
+    </SectionLayout>
   );
 }
 
@@ -422,13 +414,12 @@ const BADGES = [
 
 function SecuritySection() {
   return (
-    <Box as="section" w="full">
+    <SectionLayout showRails={false} py={{ base: "32px", md: "0" }}>
       <Flex
-        maxW={PAGE_MAX_W} mx="auto" px={sectionPx}
+        w="full"
         flexDir={{ base: "column", md: "row" }}
         alignItems={{ base: "stretch", md: "center" }}
         minH={{ base: "auto", md: "160px" }}
-        py={{ base: "32px", md: "0" }}
       >
         {BADGES.map((badge, i) => (
           <Box
@@ -466,28 +457,24 @@ function SecuritySection() {
           </Box>
         ))}
       </Flex>
-    </Box>
+    </SectionLayout>
   );
 }
 
 // ─── 6. Final CTA ─────────────────────────────────────────────────────────────
 function FinalCTASection() {
   return (
-    <Box
-      as="section"
-      w="full"
-      borderTopWidth="1px"
-      borderTopColor="#4c5268"
-      style={{
-        backgroundImage:
-          "radial-gradient(ellipse at 12% 11%, rgba(27,51,73,1) 0%, rgba(13,28,44,1) 100%)",
+    <SectionLayout
+      showRails={false}
+      railColor="#4c5268"
+      py={{ base: "60px", md: "80px", lg: "111px" }}
+      outerProps={{
+        style: {
+          backgroundImage:
+            "radial-gradient(ellipse at 12% 11%, rgba(27,51,73,1) 0%, rgba(13,28,44,1) 100%)",
+        },
       }}
     >
-      <Box
-        maxW={PAGE_MAX_W} mx="auto" px={sectionPx}
-        pt={{ base: "60px", md: "80px", lg: "111px" }}
-        pb={{ base: "60px", md: "80px", lg: "110px" }}
-      >
         <Box display="flex" flexDir="column" alignItems={{ base: "flex-start", lg: "flex-end" }}>
           <Box w="60%" pt={{ base: "0", lg: "24px" }} mb={{ base: "32px", lg: "48px" }}>
             <V2Heading
@@ -531,8 +518,7 @@ function FinalCTASection() {
             </Box>
           </Flex>
         </Box>
-      </Box>
-    </Box>
+    </SectionLayout>
   );
 }
 

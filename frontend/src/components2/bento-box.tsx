@@ -1,6 +1,7 @@
 import { Box, Grid } from "@chakra-ui/react";
 
-import { C, PAGE_MAX_W, sectionPx, serifAxes, V2Heading } from "./new-site-tokens";
+import { C, serifAxes, V2Heading } from "./new-site-tokens";
+import { SectionLayout } from "./section-layout";
 import bentoItems from "@/data/agent-capabilities.json";
 
 // ─── BentoCardBody ────────────────────────────────────────────────────────────
@@ -45,13 +46,8 @@ const cardBase = {
 // ─── AgentCapabilitiesSection ─────────────────────────────────────────────────
 export function AgentCapabilitiesSection() {
   return (
-    <Box as="section" bg={C.grey10} w="full">
-      <Box
-        maxW={PAGE_MAX_W} mx="auto" px={sectionPx}
-        py={{ base: "60px", md: "80px", lg: "120px" }}
-        display="flex" flexDir="column"
-        gap={{ base: "32px", lg: "60px" }}
-      >
+    <SectionLayout bg={C.grey10} py={{ base: "60px", md: "80px", lg: "120px" }}>
+      <Box display="flex" flexDir="column" gap={{ base: "32px", lg: "60px" }}>
         {/* Section heading */}
         <V2Heading
           variant="h2Regular"
@@ -103,6 +99,6 @@ export function AgentCapabilitiesSection() {
           ))}
         </Grid>
       </Box>
-    </Box>
+    </SectionLayout>
   );
 }
