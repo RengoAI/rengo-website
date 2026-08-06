@@ -527,7 +527,7 @@ function LandingPage() {
   return (
     <Box display="flex" flexDir="column" w="full" minH="100vh" bg={C.grey10}>
       <NavBar />
-      <Box flexShrink={0} h="35px" w="full" aria-hidden />
+      <Box flexShrink={0} h="76px" w="full" aria-hidden />
       <HeroSection />
       <SolutionsSection />
       <AgentCapabilitiesSection />

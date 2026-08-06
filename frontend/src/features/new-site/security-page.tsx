@@ -343,7 +343,7 @@ function SecurityPageContent() {
     <Box display="flex" flexDir="column" w="full" minH="100vh" bg={C.grey10}>
       <NavBar darkNav={true} />
       {/* Nav height offset — dark hero sits flush behind the transparent nav */}
-      <Box flexShrink={0} h="35px" w="full" aria-hidden />
+      <Box flexShrink={0} h="76px" w="full" aria-hidden />
       <SecurityHeroSection />
       <FourThingsSection />
       <GovernanceSection />

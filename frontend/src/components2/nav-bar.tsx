@@ -1,9 +1,9 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, Sun, X } from "lucide-react";
 
-import { C, F, PAGE_MAX_W, sectionPx, V2Heading } from "./new-site-tokens";
+import { C, F, PAGE_MAX_W, sectionPx } from "./new-site-tokens";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type NavItem = "Solutions" | "Security" | "Team";
@@ -17,15 +17,26 @@ const NAV_ITEMS: NavItemConfig[] = [
   { label: "Team" },
 ];
 
-// ─── NavLink ──────────────────────────────────────────────────────────────────
+/**
+ * Height of the floating nav pill + its top offset.
+ * Import this in page files to set the correct spacer height.
+ *   Nav pill:    ~60px  (py=8 × 2 + NavLink minH=44)
+ *   Top offset:   8px
+ *   Breathing:    8px
+ *   ──────────────────
+ *   Total:        76px
+ */
+export const NAV_SPACER_H = "76px";
+
+// ─── NavLink — untouched ──────────────────────────────────────────────────────
 function NavLink({
   label, active, darkNav, onClick,
 }: {
   label: NavItem; active: boolean; darkNav: boolean; onClick: () => void;
 }) {
-  const idleColor   = darkNav ? C.grey30   : C.grey60;
-  const activeColor = darkNav ? "white"    : C.indigo2;
-  const hoverColor  = darkNav ? "white"    : C.indigo1;
+  const idleColor   = darkNav ? C.grey30 : C.grey60;
+  const activeColor = darkNav ? "white"  : C.indigo2;
+  const hoverColor  = darkNav ? "white"  : C.indigo1;
 
   return (
     <Box
@@ -92,16 +103,10 @@ export function NavBar({ darkNav = false }: { darkNav?: boolean }) {
     location.pathname.startsWith("/next/security")  ? "Security"  : null;
   const active = routeActive ?? localActive;
 
-  // Bg: dark indigo when darkNav+unscrolled, blurred when scrolled
-  const navBg = scrolled
-    ? (darkNav ? "rgba(33, 48, 68, 0.92)" : "rgba(245, 245, 246, 0.92)")
-    : (darkNav ? C.indigo1 : C.grey10);
-  const navBlur   = scrolled ? "blur(12px)" : "blur(2px)";
-  const borderCol = scrolled
-    ? C.grey30
-    : (darkNav ? "rgba(255,255,255,0.08)" : C.grey20);
-  const logoColor      = darkNav ? C.grey30  : C.indigo1;
-  const hamburgerColor = darkNav ? C.grey30  : C.indigo1;
+  // Frosted-glass colours — always applied, no scroll transition on bg
+  const navBg     = darkNav ? "rgba(33,48,68,0.92)"    : "rgba(255,255,255,0.9)";
+  const borderCol = darkNav ? "rgba(255,255,255,0.12)" : C.grey30;
+  const logoColor = darkNav ? C.grey30 : C.indigo1;
 
   const handleNavClick = (cfg: NavItemConfig) => {
     if (cfg.to) {
@@ -114,44 +119,56 @@ export function NavBar({ darkNav = false }: { darkNav?: boolean }) {
 
   return (
     <>
-      {/* Outer: full-bleed background + chrome */}
+      {/* ── Floating pill ── fixed, 8px from all edges so rounded corners show */}
       <Box
         as="nav"
         position="fixed"
-        top="0" left="0" right="0"
-        zIndex="100"
-        w="full"
-        borderBottomWidth="1px"
-        borderBottomColor={borderCol}
+        top="8px" left="8px" right="8px"
+        zIndex={1000}
         bg={navBg}
-        backdropFilter={navBlur}
-        boxShadow={scrolled ? "0 1px 12px rgba(36,49,85,0.07)" : "none"}
-        transition="background 200ms ease, box-shadow 200ms ease, border-color 200ms ease"
+        backdropFilter="blur(2px)"
+        borderWidth="1px"
+        borderColor={borderCol}
+        borderRadius="6px"
+        boxShadow={scrolled ? "0 4px 20px rgba(36,49,85,0.08)" : "none"}
+        transition="box-shadow 200ms ease"
       >
-        {/* Inner: constrained column — aligns with all section content */}
         <Flex
           maxW={PAGE_MAX_W}
           mx="auto"
           px={sectionPx}
-          pt="12px" pb="9px"
+          py="8px"
           alignItems="center"
           justifyContent="space-between"
         >
-          {/* Logo — navigates home */}
-          <V2Heading
+          {/* Logo: sun icon + "rengo" lowercase */}
+          <Flex
             as="button"
-            variant="h5Regular"
-            color={logoColor}
+            gap="4px"
+            alignItems="center"
             cursor="pointer"
             bg="transparent"
             border="none"
             p="0"
+            color={logoColor}
             _hover={{ opacity: 0.8 }}
             transition="opacity 120ms ease"
             onClick={() => navigate("/next")}
           >
-            Rengo AI
-          </V2Heading>
+            <Box w="10px" h="10px" display="flex" alignItems="center" justifyContent="center" flexShrink={0}>
+              <Sun size={10} />
+            </Box>
+            <Text
+              fontFamily={F.sans}
+              fontWeight="500"
+              fontSize="16px"
+              letterSpacing="-0.8px"
+              lineHeight="1"
+              color="inherit"
+            >
+              rengo
+            </Text>
+          </Flex>
 
           {/* Desktop nav links */}
           <Flex gap="20px" alignItems="center" display={{ base: "none", md: "flex" }}>
@@ -170,14 +187,16 @@ export function NavBar({ darkNav = false }: { darkNav?: boolean }) {
           <Box
             as="a"
             bg={C.indigo1}
-            borderRadius="2px"
+            borderRadius="4px"
+            h="24px"
             px="8px"
             cursor="pointer"
-            display={{ base: "none", md: "block" }}
+            display={{ base: "none", md: "flex" }}
+            alignItems="center"
             _hover={{ opacity: 0.85 }}
             transition="opacity 120ms ease"
           >
-            <Text fontFamily={F.sans} fontSize="12px" lineHeight="19.5px" color="white">
+            <Text fontFamily={F.sans} fontSize="14px" lineHeight="1" color="white" whiteSpace="nowrap">
               Request Access →
             </Text>
           </Box>
@@ -192,7 +211,7 @@ export function NavBar({ darkNav = false }: { darkNav?: boolean }) {
             cursor="pointer"
             bg="transparent"
             border="none"
-            color={hamburgerColor}
+            color={logoColor}
             onClick={() => setMenuOpen((o) => !o)}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
           >
@@ -201,21 +220,21 @@ export function NavBar({ darkNav = false }: { darkNav?: boolean }) {
         </Flex>
       </Box>
 
-      {/* Mobile slide-down menu */}
+      {/* Mobile slide-down menu — starts just below the floating pill */}
       {menuOpen && (
         <Box
           position="fixed"
-          top="35px" left="0" right="0"
-          zIndex="99"
+          top="72px" left="8px" right="8px"
+          zIndex={999}
           display={{ base: "block", md: "none" }}
           bg={navBg}
-          backdropFilter={navBlur}
-          borderBottomWidth="1px"
-          borderBottomColor={darkNav ? "rgba(255,255,255,0.1)" : C.grey20}
+          backdropFilter="blur(12px)"
+          borderWidth="1px"
+          borderColor={borderCol}
+          borderRadius="6px"
           boxShadow="0 4px 16px rgba(36,49,85,0.1)"
         >
-          {/* Inner: same constrained column */}
-          <Box maxW={PAGE_MAX_W} mx="auto" px={sectionPx} pb="20px" display="flex" flexDir="column">
+          <Box maxW={PAGE_MAX_W} mx="auto" px={sectionPx} py="8px" display="flex" flexDir="column">
             {NAV_ITEMS.map((cfg) => (
               <Box
                 key={cfg.label}
@@ -235,7 +254,7 @@ export function NavBar({ darkNav = false }: { darkNav?: boolean }) {
                   fontSize="14px"
                   fontWeight={active === cfg.label ? "600" : "500"}
                   color={active === cfg.label
-                    ? (darkNav ? "white" : C.indigo2)
+                    ? (darkNav ? "white"  : C.indigo2)
                     : (darkNav ? C.grey30 : C.grey60)}
                 >
                   {cfg.label}
@@ -246,7 +265,7 @@ export function NavBar({ darkNav = false }: { darkNav?: boolean }) {
               as="a"
               mt="16px"
               bg={C.indigo1}
-              borderRadius="2px"
+              borderRadius="4px"
               px="16px" py="12px"
               cursor="pointer"
               textAlign="center"
