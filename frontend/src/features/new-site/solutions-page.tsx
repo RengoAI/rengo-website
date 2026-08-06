@@ -45,7 +45,7 @@ function SolutionsHeroSection() {
     <SectionLayout
       bg={C.grey20}
       showTopBorder={false}
-      py={{ base: "16px", md: "20px" }}
+    
     >
       <Box
         bg={C.grey20}
@@ -310,7 +310,7 @@ function SolutionsPageContent() {
   return (
     <Box display="flex" flexDir="column" w="full" minH="100vh" bg={C.grey10}>
       <NavBar />
-      <Box flexShrink={0} h="76px" w="full" aria-hidden />
+      <Box flexShrink={0} h="76px" w="full" bg={C.grey20} aria-hidden />
       <SolutionsHeroSection />
       <RhythmSection />
       <AgentCapabilitiesSection />
