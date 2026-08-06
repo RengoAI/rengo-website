@@ -74,7 +74,7 @@ function SecurityHeroSection() {
       >
         <Box display="flex" flexDir="column" gap={{ base: "16px", md: "20px" }}>
           <V2Heading
-            variant="h1Regular"
+            variant="h1Light"
             as="h1"
             maxW={{ base: "full", lg: "680px" }}
             fontSize={{ base: "32px", sm: "36px", md: "40px", lg: "48px" }}

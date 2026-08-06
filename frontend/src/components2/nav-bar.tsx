@@ -48,7 +48,7 @@ function NavLink({
     >
       <Text
         fontFamily={F.sans}
-        fontSize="12px"
+        fontSize="14px"
         fontWeight={active ? "600" : "500"}
         color="inherit"
         lineHeight="1"
@@ -136,8 +136,19 @@ export function NavBar({ darkNav = false }: { darkNav?: boolean }) {
           alignItems="center"
           justifyContent="space-between"
         >
-          {/* Logo */}
-          <V2Heading as="p" variant="h5Regular" color={logoColor}>
+          {/* Logo — navigates home */}
+          <V2Heading
+            as="button"
+            variant="h5Regular"
+            color={logoColor}
+            cursor="pointer"
+            bg="transparent"
+            border="none"
+            p="0"
+            _hover={{ opacity: 0.8 }}
+            transition="opacity 120ms ease"
+            onClick={() => navigate("/next")}
+          >
             Rengo AI
           </V2Heading>
 
