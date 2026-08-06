@@ -82,7 +82,9 @@ export function SectionLayout({
           {...(!showRails ? { px: sectionPx } : {})}
           {...contentProps}
         >
-          {children}
+          <Box p="1.25rem">
+            {children}
+          </Box>
         </Box>
 
         {/* Right spacer — carries the vertical right rail */}

@@ -35,7 +35,7 @@ function NavLink({
     >
       <Text
         fontFamily={F.sans}
-        fontSize="12px"
+        fontSize="14px"
         fontWeight={active ? "600" : "500"}
         color="inherit"
         lineHeight="1"

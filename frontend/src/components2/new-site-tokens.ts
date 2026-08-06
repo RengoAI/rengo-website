@@ -50,7 +50,7 @@ export const serifAxes = { fontVariationSettings: '"CTGR" 0, "wdth" 100' } as co
 export const sectionPx = { base: "20px", md: "40px", lg: "100px" };
 
 /** Vertical padding used by most content sections. */
-export const sectionPy = { base: "60px", md: "80px", lg: "100px" };
+export const sectionPy = { base: "120px", md: "140px", lg: "160px" };
 
 /**
  * Max width of the inner content column.

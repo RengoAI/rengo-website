@@ -46,7 +46,7 @@ const cardBase = {
 // ─── AgentCapabilitiesSection ─────────────────────────────────────────────────
 export function AgentCapabilitiesSection() {
   return (
-    <SectionLayout bg={C.grey10} py={{ base: "60px", md: "80px", lg: "120px" }}>
+    <SectionLayout bg={C.grey10} py={{ base: "120px", md: "140px", lg: "180px" }}>
       <Box display="flex" flexDir="column" gap={{ base: "32px", lg: "60px" }}>
         {/* Section heading */}
         <V2Heading

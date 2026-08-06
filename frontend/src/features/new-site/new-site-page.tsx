@@ -17,7 +17,7 @@ import { NewSiteProvider } from "./new-site-provider";
 // ─── 1. Hero ──────────────────────────────────────────────────────────────────
 function HeroSection() {
   return (
-    <SectionLayout bg={C.grey10} showTopBorder={false} py={{ base: "75px", md: "100px", lg: "125px" }}>
+    <SectionLayout bg={C.grey10} showTopBorder={false} py={{ base: "135px", md: "160px", lg: "185px" }}>
       <Flex
           flexDir="column"
           gap={{ base: "20px", md: "24px", lg: "28px" }}
