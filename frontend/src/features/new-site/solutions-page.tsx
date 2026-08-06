@@ -1,10 +1,11 @@
 import "@/theme2/fonts.css";
 
-import { Box, Flex, Grid, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 
-import { NavBar }        from "@/components2/nav-bar";
-import { SiteFooter }    from "@/components2/site-footer";
-import { SectionLayout } from "@/components2/section-layout";
+import { NavBar }                   from "@/components2/nav-bar";
+import { SiteFooter }               from "@/components2/site-footer";
+import { SectionLayout }            from "@/components2/section-layout";
+import { AgentCapabilitiesSection } from "@/components2/agent-capabilities";
 import {
   C, F, serifAxes, sectionPy,
   V2Heading,
@@ -17,15 +18,6 @@ const RHYTHM_ITEMS = [
   "Deal pipeline tracking with full context history per company",
   "Portfolio company monitoring and relationship intelligence",
   "LP relationship management with complete communication history",
-];
-
-const SOLUTIONS_BENTO = [
-  { label: "Ingest native files without templates",                  gridColumn: "1 / span 2", gridRow: "1 / span 2" },
-  { label: "Auto-drafted quarterly letters",                         gridColumn: "3 / span 2", gridRow: "1 / span 2" },
-  { label: "Precedent-linked deal memos",                            gridColumn: "5 / span 4", gridRow: "1 / span 2" },
-  { label: "Preserved context across the full deal history",         gridColumn: "1 / span 3", gridRow: "3 / span 2" },
-  { label: "Wire directly into Claude, Copilot, or your own tools",  gridColumn: "4 / span 2", gridRow: "3 / span 2" },
-  { label: "Query across the full portfolio history",                gridColumn: "6 / span 3", gridRow: "3 / span 2" },
 ];
 
 const GOVERNANCE_ROWS = [
@@ -46,20 +38,6 @@ const GOVERNANCE_ROWS = [
     body: "Draft memos, letters, and briefs on demand — grounded in current portfolio state, permissioned to the requester.",
   },
 ];
-
-// ─── Shared card style — matches bento-box.tsx cardBase ───────────────────────
-const bentoCardStyle = {
-  bg: C.concrete,
-  borderWidth: "1px",
-  borderColor: "#e1e1e6",
-  borderRadius: "8px",
-  boxShadow: "0px 2px 4px rgba(12,29,52,0.04)",
-  p: { base: "20px", lg: "28px" } as any,
-  display: "flex" as const,
-  flexDir: "column" as const,
-  justifyContent: "flex-end" as const,
-  overflow: "hidden" as const,
-};
 
 // ─── 1. Hero ──────────────────────────────────────────────────────────────────
 function SolutionsHeroSection() {
@@ -170,78 +148,6 @@ function RhythmSection() {
             </Flex>
           ))}
         </Box>
-      </Box>
-    </SectionLayout>
-  );
-}
-
-// ─── 3. Solutions bento ───────────────────────────────────────────────────────
-function SolutionsBentoSection() {
-  return (
-    <SectionLayout bg={C.grey10} py={{ base: "80px", md: "100px", lg: "120px" }}>
-      <Box display="flex" flexDir="column" gap={{ base: "32px", lg: "40px" }}>
-        {/* Heading */}
-        <V2Heading
-          variant="h2Regular"
-          as="h2"
-          color={C.indigo1}
-          maxW={{ base: "full", lg: "730px" }}
-          fontSize={{ base: "24px", md: "28px", lg: "36px" }}
-          letterSpacing={{ base: "-1px", lg: "-2px" }}
-          lineHeight="1.2"
-          style={serifAxes}
-        >
-          Work moves off the team&rsquo;s desk.{" "}
-          <Box as="span" color={C.indigo4}>Let agents execute </Box>
-          <Box as="span" color={C.indigo1}>recurring workflows.</Box>
-        </V2Heading>
-
-        {/* Mobile: single-column list */}
-        <Box display={{ base: "flex", lg: "none" }} flexDir="column" gap="8px">
-          {SOLUTIONS_BENTO.map((item) => (
-            <Box key={item.label} {...bentoCardStyle} minH="120px">
-              <V2Heading
-                variant="h5Regular"
-                as="h3"
-                color={C.indigo1}
-                fontSize={{ base: "16px", md: "18px" }}
-                letterSpacing="-0.4px"
-                lineHeight="1.44"
-              >
-                {item.label}
-              </V2Heading>
-            </Box>
-          ))}
-        </Box>
-
-        {/* Desktop: 8-column bento */}
-        <Grid
-          display={{ base: "none", lg: "grid" }}
-          gridTemplateColumns="repeat(8, 1fr)"
-          gridTemplateRows="repeat(4, 1fr)"
-          h="627px"
-          gap="8px"
-          w="full"
-        >
-          {SOLUTIONS_BENTO.map((item) => (
-            <Box
-              key={item.label}
-              {...bentoCardStyle}
-              style={{ gridColumn: item.gridColumn, gridRow: item.gridRow }}
-            >
-              <V2Heading
-                variant="h5Regular"
-                as="h3"
-                color={C.indigo1}
-                fontSize={{ base: "16px", lg: "20px" }}
-                letterSpacing="-0.4px"
-                lineHeight="1.44"
-              >
-                {item.label}
-              </V2Heading>
-            </Box>
-          ))}
-        </Grid>
       </Box>
     </SectionLayout>
   );
@@ -407,7 +313,7 @@ function SolutionsPageContent() {
       <Box flexShrink={0} h="35px" w="full" aria-hidden />
       <SolutionsHeroSection />
       <RhythmSection />
-      <SolutionsBentoSection />
+      <AgentCapabilitiesSection />
       <GovernanceSection />
       <FinalCTASection />
       <SiteFooter />

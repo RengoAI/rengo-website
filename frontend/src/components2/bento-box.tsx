@@ -12,7 +12,7 @@ function BentoCardBody({ label }: { label: string }) {
       as="h3"
       color={C.indigo1}
       letterSpacing="-0.4px"
-      fontSize={{ base: "16px", md: "18px", lg: "20px" }}
+      fontSize={{ base: "18px"}}
     >
       {label}
     </V2Heading>
@@ -24,7 +24,7 @@ const cardBase = {
   bg: C.concrete,
   borderWidth: "1px",
   borderColor: "#e1e1e6",
-  borderRadius: "8px",
+  borderRadius: "4px",
   boxShadow: "0px 2px 4px rgba(12,29,52,0.04)",
   p: { base: "16px" } as any,
   display: "flex" as const,
