@@ -12,8 +12,8 @@ type NavItem = "Solutions" | "Security" | "Team";
 type NavItemConfig = { label: NavItem; to?: string };
 
 const NAV_ITEMS: NavItemConfig[] = [
-  { label: "Solutions" },
-  { label: "Security", to: "/next/security" },
+  { label: "Solutions", to: "/next/solutions" },
+  { label: "Security",  to: "/next/security" },
   { label: "Team" },
 ];
 
@@ -86,9 +86,10 @@ export function NavBar({ darkNav = false }: { darkNav?: boolean }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Derive active item from route — Security is active on /next/security
+  // Derive active item from route
   const routeActive: NavItem | null =
-    location.pathname.startsWith("/next/security") ? "Security" : null;
+    location.pathname.startsWith("/next/solutions") ? "Solutions" :
+    location.pathname.startsWith("/next/security")  ? "Security"  : null;
   const active = routeActive ?? localActive;
 
   // Bg: dark indigo when darkNav+unscrolled, blurred when scrolled
