@@ -1,6 +1,6 @@
 import "@/theme2/fonts.css";
 
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 
 import { NavBar }                   from "@/components2/nav-bar";
 import { SiteFooter }               from "@/components2/site-footer";
@@ -272,8 +272,8 @@ function FinalCTASection() {
         </Box>
 
         <Flex gap="12px" flexDir={{ base: "column", sm: "row" }} w={{ base: "full", sm: "auto" }}>
-          <Box
-            as="button"
+          <Button
+            unstyled
             bg="white"
             px="32px" py="13px"
             cursor="pointer"
@@ -284,9 +284,9 @@ function FinalCTASection() {
             <Text fontFamily={F.sans} fontWeight="500" fontSize="14px" color="#0d1d2c" lineHeight="21px">
               Request Access
             </Text>
-          </Box>
-          <Box
-            as="button"
+          </Button>
+          <Button
+            unstyled
             borderWidth="1px"
             borderColor="#949aac"
             px="33px" py="13px"
@@ -298,7 +298,7 @@ function FinalCTASection() {
             <Text fontFamily={F.sans} fontSize="14px" color="white" lineHeight="21px">
               Talk to Sales →
             </Text>
-          </Box>
+          </Button>
         </Flex>
       </Box>
     </SectionLayout>

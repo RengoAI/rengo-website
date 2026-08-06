@@ -21,7 +21,7 @@ function BentoCardBody({ label }: { label: string }) {
 
 // ─── Shared card styles ───────────────────────────────────────────────────────
 const cardBase = {
-  bg: C.concrete,
+  bg: C.grey20,
   borderWidth: "1px",
   borderColor: "#e1e1e6",
   borderRadius: "4px",
