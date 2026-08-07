@@ -27,9 +27,17 @@ export const FoundersSection: React.FC = () => (
         >
           We&apos;re a team of builders
         </Box>
-        <Text fontSize="md" lineHeight={1.65} color="slate.50" maxW="560px" m={0}>
-          Our team brings experience across asset-management workflows and
-          infrastructure.
+        <Text
+          fontFamily="heading"
+          fontWeight={300}
+          fontSize={{ base: "26px", md: "32px" }}
+          lineHeight={1.2}
+          letterSpacing="-2px"
+          color="slate.50"
+          maxW="648px"
+          m={0}
+        >
+          From world class engineering teams
         </Text>
       </Box>
 
