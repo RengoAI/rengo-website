@@ -1,92 +1,16 @@
+import { AccessRolesArt } from "@/features/landing/sections/access-roles-art";
+import { BentoIsoImage } from "@/features/landing/sections/bento-iso-image";
 import { ConnectSystemsArt } from "@/features/landing/sections/connect-systems-art";
-import { Box, Grid, GridItem, Image, Text } from "@chakra-ui/react";
+import { ExistingToolsArt } from "@/features/landing/sections/existing-tools-art";
+import { Box, Grid, GridItem, Text } from "@chakra-ui/react";
 import React from "react";
 import { SectionShell } from "./section-shell";
-
-/**
- * Access / roles illustration — centered in tile; role labels right-aligned.
- */
-const ACCESS_ROLES = [
-  { role: "Viewer" },
-  { role: "Admin", outlined: true },
-  { role: "Editor" },
-] as const;
-
-const TILE_PAD_PX = 28;
-/** Extends past tile padding so rows clip at the card edge / radius. */
-const ROLES_BLEED_PX = TILE_PAD_PX + 6;
-
-const AccessRolesArt: React.FC = () => (
-  <Box
-    w={`calc(100% + ${ROLES_BLEED_PX}px)`}
-    mr={`-${ROLES_BLEED_PX}px`}
-    display="flex"
-    flexDirection="column"
-    gap={2}
-    justifyContent="center"
-    flex="1"
-    minH={0}
-    aria-hidden
-  >
-    {ACCESS_ROLES.map((person) => {
-      const isAdmin = "outlined" in person && person.outlined;
-      return (
-        <Box
-          key={person.role}
-          display="flex"
-          alignItems="center"
-          gap={2.5}
-          ml="auto"
-          w={isAdmin ? "92%" : "76%"}
-          minH={isAdmin ? "44px" : "38px"}
-          pl={3}
-          pr={4}
-          bg="white"
-          border="1px solid"
-          borderColor="slate.30"
-          borderRight="none"
-          borderRadius="8px 0 0 8px"
-          boxShadow="0 8px 24px rgba(33, 48, 68, 0.08)"
-        >
-          <Box
-            w="16px"
-            h="16px"
-            borderRadius="full"
-            flexShrink={0}
-            bg="slate.40"
-          />
-          <Box
-            h="6px"
-            flex="1"
-            minW={0}
-            maxW={isAdmin ? "96px" : "72px"}
-            bg="slate.40"
-            opacity={0.85}
-          />
-          <Text
-            fontFamily="body"
-            fontSize="11px"
-            fontWeight="medium"
-            lineHeight="14px"
-            letterSpacing="-0.2px"
-            color="indigo.700"
-            m={0}
-            ml="auto"
-            flexShrink={0}
-            textAlign="right"
-          >
-            {person.role}
-          </Text>
-        </Box>
-      );
-    })}
-  </Box>
-);
 
 type TileArt =
   | { kind: "image"; src: string }
   | { kind: "roles" }
-  | { kind: "systems" };
+  | { kind: "systems" }
+  | { kind: "existingTools" };
 
 const TILES: {
   label: string;
@@ -96,7 +20,7 @@ const TILES: {
 }[] = [
   {
     label: "Built on top of your existing tools and systems",
-    art: { kind: "image", src: "/landing/bento-iso-a.svg" },
+    art: { kind: "existingTools" },
     col: "1 / span 8",
     row: "1",
   },
@@ -182,18 +106,10 @@ export const AgentsBentoSection: React.FC = () => (
                 <AccessRolesArt />
               ) : tile.art.kind === "systems" ? (
                 <ConnectSystemsArt />
+              ) : tile.art.kind === "existingTools" ? (
+                <ExistingToolsArt />
               ) : (
-                <Image
-                  src={tile.art.src}
-                  alt=""
-                  aria-hidden
-                  maxH="217px"
-                  maxW="240px"
-                  w="auto"
-                  h="auto"
-                  objectFit="contain"
-                  css={{ mixBlendMode: "color-burn" }}
-                />
+                <BentoIsoImage src={tile.art.src} />
               )}
             </Box>
             <Text

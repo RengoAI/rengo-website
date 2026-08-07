@@ -12,15 +12,25 @@ const VENDOR_TILES = [
   { id: "openai", label: "OpenAI", src: "/logos/open-ai.png", maxH: "24px" },
 ] as const;
 
+type ConnectSystemsArtProps = {
+  variant?: "tile" | "compact";
+};
+
 /** Vendor logo row for the “Connect with your systems” bento tile. */
-export const ConnectSystemsArt: React.FC = () => (
-  <Box w="full" maxW="280px" mx="auto" aria-hidden>
-    <Flex align="center" justify="center" gap={2.5}>
+export const ConnectSystemsArt: React.FC<ConnectSystemsArtProps> = ({
+  variant = "tile",
+}) => {
+  const tileSize = variant === "compact" ? "44px" : "54px";
+  const gap = variant === "compact" ? 2 : 2.5;
+
+  return (
+  <Box w="full" maxW={variant === "compact" ? "220px" : "280px"} mx="auto" aria-hidden>
+    <Flex align="center" justify="center" gap={gap}>
       {VENDOR_TILES.map((vendor) => (
         <Box
           key={vendor.id}
-          w="54px"
-          h="54px"
+          w={tileSize}
+          h={tileSize}
           flexShrink={0}
           display="flex"
           alignItems="center"
@@ -44,4 +54,5 @@ export const ConnectSystemsArt: React.FC = () => (
       ))}
     </Flex>
   </Box>
-);
+  );
+};

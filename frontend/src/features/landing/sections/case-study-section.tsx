@@ -4,28 +4,18 @@ import React from "react";
 const STEPS = [
   {
     index: "01",
-    title: "Migrate",
-    body: "Moved the firm off its existing portfolio-monitoring software.",
+    title: "Dedicated infrastructure",
+    body: "We run and operate the platform so your team can focus on the work, not the stack.",
   },
   {
     index: "02",
-    title: "Unify",
-    body: "Built a governed data lake of all historical portfolio financials.",
+    title: "Applied AI",
+    body: "We turn frontier models into production systems that fit how your firm actually works.",
   },
   {
     index: "03",
-    title: "Automate",
-    body: "Ingested native files without templates or manual review.",
-  },
-  {
-    index: "04",
-    title: "Deploy",
-    body: "Permissioned the data and made it available to AI tools through MCP.",
-  },
-  {
-    index: "05",
-    title: "Operate",
-    body: "Maintain and extend applications on the shared foundation.",
+    title: "Own your code",
+    body: "Applications and integrations built just for you in your own repository.",
   },
 ] as const;
 
@@ -58,11 +48,7 @@ export const CaseStudySection: React.FC = () => (
             maxW="820px"
             m={0}
           >
-            We provide a{" "}
-            <Box as="span" color="accent.onDark">
-              fast path
-            </Box>{" "}
-            to deployment.
+            Deployment with Rengo AI
           </Box>
         </Flex>
 
@@ -70,8 +56,7 @@ export const CaseStudySection: React.FC = () => (
           <Grid
             templateColumns={{
               base: "1fr",
-              sm: "repeat(2, minmax(0, 1fr))",
-              lg: "repeat(5, minmax(0, 1fr))",
+              md: "repeat(3, minmax(0, 1fr))",
             }}
             border="1px solid"
             borderColor="panel.border"
@@ -81,11 +66,11 @@ export const CaseStudySection: React.FC = () => (
                 key={step.index}
                 borderRight={{
                   base: "none",
-                  lg: i === STEPS.length - 1 ? "none" : "1px solid",
+                  md: i === STEPS.length - 1 ? "none" : "1px solid",
                 }}
                 borderBottom={{
                   base: i === STEPS.length - 1 ? "none" : "1px solid",
-                  lg: "none",
+                  md: "none",
                 }}
                 borderColor="panel.border"
                 minH="200px"
