@@ -1,4 +1,5 @@
 import { Logo } from "@/components/logo/logo";
+import { marketingContentPaddingX } from "@/components/layout/marketing-frame";
 import { Box, Button, Flex, Text, VStack } from "@chakra-ui/react";
 import { type LucideIcon, X } from "lucide-react";
 import React, { useEffect } from "react";
@@ -71,13 +72,14 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
       >
         {/* Header row with logo and close button */}
         <Box
-          px={4}
-          py={1}
-          borderBottom="1px solid"
-          borderColor="gray.100"
+          px={marketingContentPaddingX}
+          minH="64px"
+          h="64px"
           display="flex"
           alignItems="center"
           justifyContent="space-between"
+          borderBottom="1px solid"
+          borderColor="gray.100"
         >
           <Logo color="primary.700" homeLink />
           <Button

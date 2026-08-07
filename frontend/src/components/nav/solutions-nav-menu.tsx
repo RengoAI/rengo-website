@@ -1,3 +1,4 @@
+import { topNavLinkStyles } from "@/components/nav/nav-styles";
 import { SOLUTIONS } from "@/features/solutions/solutions";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { ChevronDown } from "lucide-react";
@@ -75,11 +76,6 @@ export const SolutionsNavMenu: React.FC<SolutionsNavMenuProps> = ({
         display="inline-flex"
         alignItems="center"
         gap={1}
-        h="40px"
-        px={3}
-        fontFamily="body"
-        fontSize="14px"
-        fontWeight="normal"
         color={navColor}
         bg="transparent"
         border="none"
@@ -88,6 +84,7 @@ export const SolutionsNavMenu: React.FC<SolutionsNavMenuProps> = ({
         aria-expanded={open}
         aria-haspopup="menu"
         onClick={() => setOpen((value) => !value)}
+        {...topNavLinkStyles}
       >
         Solutions
         <Box

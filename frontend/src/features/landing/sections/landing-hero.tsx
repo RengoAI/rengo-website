@@ -1,3 +1,11 @@
+import {
+  buttonArrowHoverProps,
+  ButtonArrowLabel,
+} from "@/components/ui/button-arrow-label";
+import {
+  MARKETING_GUTTER_WIDTH,
+  marketingContentPaddingX,
+} from "@/components/layout/marketing-frame";
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import React from "react";
 
@@ -81,7 +89,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
     {/* Left rule — the 80px gutter spacer from the design */}
     <Box
       display={{ base: "none", md: "block" }}
-      w="80px"
+      w={MARKETING_GUTTER_WIDTH}
       flexShrink={0}
       borderRight="1px solid"
       borderColor="slate.30"
@@ -94,20 +102,20 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
       direction="column"
       justify={{ base: "center", lg: "flex-end" }}
       gap={7}
-      px={{ base: 6, md: 10 }}
+      px={marketingContentPaddingX}
       pt={{ base: 32, lg: 0 }}
       pb={{ base: 20, lg: "223px" }}
     >
-      <Flex direction="column" gap={2}>
+      <Flex direction="column" gap={3}>
         <Box
           as="h1"
           fontFamily="heading"
           fontWeight={350}
-          fontSize={{ base: "34px", md: "44px" }}
-          lineHeight={1.1}
-          letterSpacing="-3px"
+          fontSize={{ base: "40px", lg: "50px" }}
+          lineHeight={{ base: "44px", lg: "52px" }}
+          letterSpacing={{ base: "-2px", lg: "-2px" }}
           color="indigo.900"
-          maxW="480px"
+          maxW={{ base: "100%", lg: "560px" }}
           m={0}
         >
           Your data is{" "}
@@ -119,10 +127,10 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
         <Text
           fontFamily="heading"
           fontWeight={300}
-          fontSize="16px"
-          lineHeight={1.4}
+          fontSize="18px"
+          lineHeight="24px"
           color="slate.50"
-          maxW="420px"
+          maxW="480px"
           m={0}
         >
           Deploy AI to put your data to work
@@ -141,16 +149,16 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
         fontSize="14px"
         fontWeight="normal"
         lineHeight="21px"
-        _hover={{ bg: "indigo.700" }}
+        _hover={{ bg: "indigo.700", ...buttonArrowHoverProps._hover }}
         onClick={onCtaClick}
       >
-        Get Started →
+        <ButtonArrowLabel>Get Started</ButtonArrowLabel>
       </Button>
     </Flex>
 
     <Box
       display={{ base: "none", md: "block" }}
-      w="80px"
+      w={MARKETING_GUTTER_WIDTH}
       flexShrink={0}
       borderLeft="1px solid"
       borderColor="slate.30"

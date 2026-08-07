@@ -1,3 +1,7 @@
+import {
+  buttonArrowHoverProps,
+  ButtonArrowLabel,
+} from "@/components/ui/button-arrow-label";
 import { Box, Button, Flex } from "@chakra-ui/react";
 import React from "react";
 
@@ -81,10 +85,13 @@ export const CtaSection: React.FC<CtaSectionProps> = ({
             fontSize="14px"
             fontWeight="normal"
             lineHeight="21px"
-            _hover={{ bg: "whiteAlpha.100" }}
+            _hover={{
+              bg: "whiteAlpha.100",
+              ...buttonArrowHoverProps._hover,
+            }}
             onClick={onTalkToSales}
           >
-            Talk to Sales →
+            <ButtonArrowLabel>Talk to Sales</ButtonArrowLabel>
           </Button>
         </Flex>
       </Flex>

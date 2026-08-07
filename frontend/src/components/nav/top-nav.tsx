@@ -1,6 +1,16 @@
 import { rootRoute } from "@/app/app-routes";
 import { Logo } from "@/components/logo/logo";
 import { MobileNavDrawer } from "@/components/nav/mobile-nav-drawer";
+import {
+  MARKETING_GUTTER_WIDTH,
+  marketingContentPaddingX,
+} from "@/components/layout/marketing-frame";
+import {
+  TOP_NAV_HEIGHT,
+  topNavCtaStyles,
+  topNavLinkStyles,
+  topNavRowProps,
+} from "@/components/nav/nav-styles";
 import { SolutionsNavMenu } from "@/components/nav/solutions-nav-menu";
 import { SOLUTIONS } from "@/features/solutions/solutions";
 import { Box, Button, Flex, IconButton } from "@chakra-ui/react";
@@ -8,7 +18,7 @@ import { Menu } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-export const TOP_NAV_HEIGHT = 64;
+export { TOP_NAV_HEIGHT };
 
 // The landing hero is light under the marketing refresh, so `/` is
 // deliberately absent here — it uses the light nav treatment instead.
@@ -29,7 +39,7 @@ export const AppTopNav: React.FC = () => {
     setOverHero(isDarkHero);
     if (!isDarkHero) return;
     const onScroll = () =>
-      setOverHero(window.scrollY < window.innerHeight - 64);
+      setOverHero(window.scrollY < window.innerHeight - TOP_NAV_HEIGHT);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [isDarkHero]);
@@ -69,84 +79,92 @@ export const AppTopNav: React.FC = () => {
         bg={overHero ? "primary.800" : "slate.10"}
         style={{ transition: "background 200ms ease, border-color 200ms ease" }}
       >
-        <Box
-          maxW="1440px"
-          mx="auto"
-          px={{ base: 4, md: 20 }}
-          py={1}
-          display="flex"
-          alignItems="center"
-          justifyContent="space-between"
-          w="full"
-        >
-          <Logo color={overHero ? "white" : "indigo.900"} homeLink />
-
-          {/* Desktop nav */}
-          <Flex as="nav" gap={1} display={{ base: "none", md: "flex" }} align="center">
-            <SolutionsNavMenu
-              overHero={overHero}
-              navColor={navColor}
-              navHoverColor={navHoverColor}
-            />
-            <Button
-              variant="ghost"
-              size="sm"
-              color={navColor}
-              _hover={{ bg: "transparent", color: navHoverColor }}
-              onClick={() => navigate(rootRoute({}).company({}).$)}
-            >
-              Company
-            </Button>
-          </Flex>
-
-          {/* Desktop CTAs */}
+        <Flex w="full" align="stretch" {...topNavRowProps}>
+          <Box
+            display={{ base: "none", md: "block" }}
+            w={MARKETING_GUTTER_WIDTH}
+            flexShrink={0}
+          />
           <Flex
-            gap={2}
+            flex="1"
+            minW={0}
+            px={marketingContentPaddingX}
             alignItems="center"
-            display={{ base: "none", md: "flex" }}
+            justifyContent="space-between"
           >
-            <Button
+            <Logo color={overHero ? "white" : "indigo.900"} homeLink />
+
+            {/* Desktop nav */}
+            <Flex
+              as="nav"
+              gap="6px"
+              display={{ base: "none", md: "flex" }}
+              align="center"
+            >
+              <SolutionsNavMenu
+                overHero={overHero}
+                navColor={navColor}
+                navHoverColor={navHoverColor}
+              />
+              <Button
+                variant="ghost"
+                color={navColor}
+                _hover={{ bg: "transparent", color: navHoverColor }}
+                onClick={() => navigate(rootRoute({}).company({}).$)}
+                {...topNavLinkStyles}
+              >
+                Company
+              </Button>
+            </Flex>
+
+            {/* Desktop CTAs */}
+            <Flex
+              gap="6px"
+              alignItems="center"
+              display={{ base: "none", md: "flex" }}
+            >
+              <Button
+                variant="ghost"
+                color={navColor}
+                _hover={{ bg: "transparent", color: navHoverColor }}
+                onClick={() => window.open("https://app.rengoai.com/", "_blank")}
+                {...topNavCtaStyles}
+                h="34px"
+                minH="34px"
+              >
+                Log in
+              </Button>
+              <Button
+                bg={overHero ? "white" : "indigo.900"}
+                color={overHero ? "primary.800" : "slate.10"}
+                _hover={{ bg: overHero ? "gray.100" : "indigo.700" }}
+                onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
+                {...topNavCtaStyles}
+                borderRadius={0}
+              >
+                Get Started
+              </Button>
+            </Flex>
+
+            {/* Mobile hamburger */}
+            <IconButton
+              display={{ base: "flex", md: "none" }}
+              aria-label="Open menu"
               variant="ghost"
               size="sm"
-              color={navColor}
-              _hover={{ bg: "transparent", color: navHoverColor }}
-              onClick={() => window.open("https://app.rengoai.com/", "_blank")}
+              color={overHero ? "white" : "gray.700"}
+              _hover={{ bg: "transparent" }}
+              onClick={() => setDrawerOpen(true)}
             >
-              Log in
-            </Button>
-            <Button
-              size="xs"
-              bg={overHero ? "white" : "indigo.900"}
-              color={overHero ? "primary.800" : "slate.10"}
-              borderRadius={0}
-              px={3.5}
-              py={1.5}
-              h="auto"
-              minH="36px"
-              fontFamily="body"
-              fontSize="14px"
-              fontWeight="normal"
-              lineHeight="20px"
-              _hover={{ bg: overHero ? "gray.100" : "indigo.700" }}
-              onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
-            >
-              Get Started
-            </Button>
+              <Menu size={22} />
+            </IconButton>
           </Flex>
-
-          {/* Mobile hamburger */}
-          <IconButton
-            display={{ base: "flex", md: "none" }}
-            aria-label="Open menu"
-            variant="ghost"
-            size="sm"
-            color={overHero ? "white" : "gray.700"}
-            _hover={{ bg: "transparent" }}
-            onClick={() => setDrawerOpen(true)}
-          >
-            <Menu size={22} />
-          </IconButton>
-        </Box>
+          <Box
+            display={{ base: "none", md: "block" }}
+            w={MARKETING_GUTTER_WIDTH}
+            flexShrink={0}
+          />
+        </Flex>
       </Box>
 
       <MobileNavDrawer

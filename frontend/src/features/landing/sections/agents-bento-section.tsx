@@ -8,83 +8,70 @@ import { SectionShell } from "./section-shell";
  * highlighted Admin row.
  */
 const ACCESS_ROLES = [
-  { name: "Alex Chen", role: "Analyst", active: false },
-  { name: "Sam Rivera", role: "Admin", active: true },
-  { name: "Jordan Lee", role: "Partner", active: false },
+  { role: "Viewer", active: false, offsetX: 0 },
+  { role: "Admin", active: true, offsetX: 4 },
+  { role: "Editor", active: false, offsetX: 8 },
 ] as const;
 
 const AccessRolesArt: React.FC = () => (
   <Box
-    position="relative"
     w="full"
-    maxW="260px"
-    bg="white"
-    border="1px solid"
-    borderColor="slate.40"
-    boxShadow="0 4px 24px rgba(33, 48, 68, 0.08)"
-    px={3}
-    py={3}
+    maxW="240px"
+    mx="auto"
+    px={1}
+    py={2}
     aria-hidden
   >
-    <Text
-      fontFamily="mono"
-      fontSize="9px"
-      letterSpacing="1px"
-      textTransform="uppercase"
-      color="indigo.700"
-      mb={3}
-      m={0}
-    >
-      Access
-    </Text>
     <Box display="flex" flexDirection="column" gap={2}>
       {ACCESS_ROLES.map((person) => (
         <Box
-          key={person.name}
+          key={person.role}
           display="flex"
           alignItems="center"
           justifyContent="space-between"
           gap={2}
-          px={2.5}
-          py={2}
+          w="full"
+          maxW={`calc(100% - ${person.offsetX}px)`}
+          ml={`${person.offsetX}px`}
+          px={person.active ? 3 : 2.5}
+          py={person.active ? 2.5 : 2}
+          borderRadius="6px"
           border="1px solid"
           borderColor={person.active ? "indigo.700" : "slate.30"}
-          bg={person.active ? "slate.10" : "transparent"}
-          opacity={person.active ? 1 : 0.65}
+          bg={person.active ? "white" : "slate.10"}
+          boxShadow={
+            person.active ? "0 6px 20px rgba(33, 48, 68, 0.08)" : "none"
+          }
         >
-          <Box display="flex" alignItems="center" gap={2.5} minW={0}>
+          <Box display="flex" alignItems="center" gap={2.5} minW={0} flex="1">
             <Box
-              w="18px"
-              h="18px"
+              w={person.active ? "18px" : "16px"}
+              h={person.active ? "18px" : "16px"}
               borderRadius="full"
               flexShrink={0}
               bg={person.active ? "indigo.700" : "slate.40"}
             />
-            <Text
-              fontFamily="body"
-              fontSize="11px"
-              fontWeight={person.active ? "medium" : "normal"}
-              color="indigo.900"
-              lineHeight={1.2}
-              m={0}
-              noOfLines={1}
-            >
-              {person.name}
-            </Text>
+            <Box
+              h="6px"
+              flex="1"
+              maxW={person.active ? "80px" : "56px"}
+              bg={person.active ? "indigo.700" : "slate.40"}
+              opacity={person.active ? 0.4 : 0.85}
+            />
           </Box>
           <Box display="flex" alignItems="center" gap={1.5} flexShrink={0}>
             <Box
-              w="5px"
-              h="5px"
+              w="4px"
+              h="4px"
               borderRadius="full"
-              bg={person.active ? "indigo.700" : "slate.40"}
+              bg={person.active ? "indigo.700" : "slate.50"}
             />
             <Text
               fontFamily="mono"
-              fontSize="9px"
-              letterSpacing="0.5px"
+              fontSize="8px"
+              letterSpacing="0.6px"
               textTransform="uppercase"
-              color={person.active ? "indigo.700" : "slate.50"}
+              color={person.active ? "indigo.700" : "ink.body"}
               m={0}
             >
               {person.role}

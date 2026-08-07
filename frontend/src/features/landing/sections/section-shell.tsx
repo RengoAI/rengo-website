@@ -1,3 +1,7 @@
+import {
+  MARKETING_GUTTER_WIDTH,
+  marketingContentPaddingX,
+} from "@/components/layout/marketing-frame";
 import { Box, Flex } from "@chakra-ui/react";
 import React from "react";
 
@@ -21,18 +25,18 @@ export const SectionShell: React.FC<SectionShellProps> = ({
   <Flex as="section" w="full" bg={bg} align="stretch">
     <Box
       display={{ base: "none", md: "block" }}
-      w="80px"
+      w={MARKETING_GUTTER_WIDTH}
       flexShrink={0}
       borderRight="1px solid"
       borderColor="slate.30"
       borderTop={borderTop ? "1px solid" : undefined}
     />
-    <Box flex="1" minW={0} px={{ base: 6, md: 10 }} py={py}>
+    <Box flex="1" minW={0} px={marketingContentPaddingX} py={py}>
       {children}
     </Box>
     <Box
       display={{ base: "none", md: "block" }}
-      w="80px"
+      w={MARKETING_GUTTER_WIDTH}
       flexShrink={0}
       borderLeft="1px solid"
       borderColor="slate.30"
