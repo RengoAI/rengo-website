@@ -26,7 +26,7 @@ export const solutionsRoutes: RouteObject = {
       id: "customAiApplications",
       path: "custom-ai-applications",
       handle: {
-        pageTitle: "Custom AI Applications",
+        pageTitle: "Forward-deployed engineering",
       },
       lazy: async () => {
         const { CustomAiApplicationsPage } = await import(

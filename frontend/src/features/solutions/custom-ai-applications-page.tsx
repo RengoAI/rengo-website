@@ -5,8 +5,8 @@ import React from "react";
 export const CustomAiApplicationsPage: React.FC = () => (
   <Box fontFamily="body">
     <PageHero
-      headline="Custom AI Applications"
-      subtext="Purpose-built software and workflows, deployed with your team."
+      headline="Forward-deployed engineering"
+      subtext="Custom software and workflows built alongside your team."
       ctaLabel="Get Started"
       onCtaClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
     />

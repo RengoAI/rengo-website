@@ -10,7 +10,8 @@ import {
   topNavCtaStyles,
   topNavRowProps,
 } from "@/components/nav/nav-styles";
-import { NavDropdownMenu } from "@/components/nav/nav-dropdown-menu";
+import { ResourcesNavMenu } from "@/components/nav/resources-nav-menu";
+import { SolutionsNavMenu } from "@/components/nav/solutions-nav-menu";
 import { COMPANY_LINKS } from "@/features/company/company-links";
 import { SOLUTIONS } from "@/features/solutions/solutions";
 import { Box, Button, Flex, IconButton } from "@chakra-ui/react";
@@ -92,15 +93,11 @@ export const AppTopNav: React.FC = () => {
               display={{ base: "none", md: "flex" }}
               align="center"
             >
-              <NavDropdownMenu
-                label="Solutions"
-                items={SOLUTIONS}
+              <SolutionsNavMenu
                 navColor={navColor}
                 navHoverColor={navHoverColor}
               />
-              <NavDropdownMenu
-                label="Resources"
-                items={COMPANY_LINKS}
+              <ResourcesNavMenu
                 navColor={navColor}
                 navHoverColor={navHoverColor}
               />
