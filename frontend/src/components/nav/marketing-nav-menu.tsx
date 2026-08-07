@@ -135,14 +135,18 @@ export const MarketingNavMenu: React.FC<MarketingNavMenuProps> = ({
           onMouseLeave={scheduleClose}
           overflow="hidden"
         >
-          <Box px={6} py={3} borderBottom="1px solid" borderColor="slate.30">
+          <Box
+            px={6}
+            py={3}
+            bg="slate.10"
+            borderBottom="1px solid"
+            borderColor="slate.30"
+          >
             <Text
               fontFamily="body"
-              fontSize="12px"
+              fontSize="14px"
               fontWeight="medium"
               lineHeight="16px"
-              letterSpacing="0.04em"
-              textTransform="uppercase"
               color="slate.50"
               m={0}
             >

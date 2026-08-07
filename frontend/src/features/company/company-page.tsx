@@ -19,7 +19,7 @@ const EDICT = '"Space Mono", SFMono-Regular, ui-monospace, monospace';
 const MissionSection: React.FC = () => (
   <Box
     as="section"
-    bg="white"
+    bg="slate.10"
     py={24}
     borderBottom="1px solid"
     borderColor="slate.30"
@@ -95,7 +95,7 @@ const BuiltBySection: React.FC = () => (
 const InvestorsSection: React.FC = () => (
   <Box
     as="section"
-    bg="white"
+    bg="slate.10"
     py={24}
     borderBottom="1px solid"
     borderColor="slate.30"
@@ -176,7 +176,7 @@ export const CompanyPage: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <Box fontFamily='"Inter Tight", Inter, sans-serif'>
+    <Box fontFamily='"Inter Tight", Inter, sans-serif' bg="slate.10">
       <PageHero
         headline="Private markets need a new infrastructure layer"
         ctaLabel="See a demo"
