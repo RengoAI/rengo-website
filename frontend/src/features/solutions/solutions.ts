@@ -20,7 +20,8 @@ export const SOLUTIONS: readonly {
     id: "ai-data-platform",
     category: "infrastructure",
     title: "Enterprise",
-    description: "Unify, permission, and activate your company’s data for AI.",
+    description:
+      "Build your firm's data on one AI-ready foundation. Integrated, permissioned, and built for production.",
     tags: "Data warehouse/lake · Integrations · Permissions · APIs · AI-ready context",
     path: "/solutions/ai-data-platform",
     icon: Layers,
@@ -29,7 +30,8 @@ export const SOLUTIONS: readonly {
     id: "custom-ai-applications",
     category: "delivery",
     title: "Private Equity",
-    description: "Custom software and workflows built alongside your team.",
+    description:
+      "Turn your collective intelligence into an asset that compounds with every workflow, investment, and decision.",
     tags: "CRM · AI note-taking · Agents · Workflows · AI transformation",
     path: "/solutions/custom-ai-applications",
     icon: Users,

@@ -8,7 +8,6 @@ export const CareersPage: React.FC = () => (
   <Box fontFamily="body" bg="slate.10">
     <PageHero
       headline="Join Us"
-      subtext="Bring frontier AI into practice"
       ctaLabel="Get in touch"
       onCtaClick={() => window.open("mailto:careers@rengoai.com", "_blank")}
     />
