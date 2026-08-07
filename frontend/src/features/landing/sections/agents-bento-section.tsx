@@ -12,24 +12,41 @@ const ACCESS_ROLES = [
   { role: "Editor" },
 ] as const;
 
+const TILE_PAD_PX = 28;
+/** Extends past tile padding so rows clip at the card edge / radius. */
+const ROLES_BLEED_PX = TILE_PAD_PX + 6;
+
 const AccessRolesArt: React.FC = () => (
-  <Box w="full" maxW="240px" mx="auto" px={1} py={2} aria-hidden>
-    <Box display="flex" flexDirection="column" gap={2} alignItems="stretch">
-      {ACCESS_ROLES.map((person) => (
+  <Box
+    w={`calc(100% + ${ROLES_BLEED_PX}px)`}
+    mr={`-${ROLES_BLEED_PX}px`}
+    display="flex"
+    flexDirection="column"
+    gap={2}
+    justifyContent="center"
+    flex="1"
+    minH={0}
+    aria-hidden
+  >
+    {ACCESS_ROLES.map((person) => {
+      const isAdmin = "outlined" in person && person.outlined;
+      return (
         <Box
           key={person.role}
           display="flex"
           alignItems="center"
           gap={2.5}
-          w="full"
-          px={3}
-          py={2.5}
-          borderRadius="6px"
-          border="1px solid"
-          borderColor={
-            "outlined" in person && person.outlined ? "indigo.700" : "slate.30"
-          }
+          ml="auto"
+          w={isAdmin ? "92%" : "76%"}
+          minH={isAdmin ? "44px" : "38px"}
+          pl={3}
+          pr={4}
           bg="white"
+          border="1px solid"
+          borderColor="slate.30"
+          borderRight="none"
+          borderRadius="8px 0 0 8px"
+          boxShadow="0 8px 24px rgba(33, 48, 68, 0.08)"
         >
           <Box
             w="16px"
@@ -42,7 +59,7 @@ const AccessRolesArt: React.FC = () => (
             h="6px"
             flex="1"
             minW={0}
-            maxW="72px"
+            maxW={isAdmin ? "96px" : "72px"}
             bg="slate.40"
             opacity={0.85}
           />
@@ -61,8 +78,8 @@ const AccessRolesArt: React.FC = () => (
             {person.role}
           </Text>
         </Box>
-      ))}
-    </Box>
+      );
+    })}
   </Box>
 );
 
@@ -157,7 +174,9 @@ export const AgentsBentoSection: React.FC = () => (
               flex="1"
               display="flex"
               alignItems="center"
-              justifyContent="center"
+              justifyContent={
+                tile.art.kind === "roles" ? "stretch" : "center"
+              }
               minH={0}
               w="full"
             >
