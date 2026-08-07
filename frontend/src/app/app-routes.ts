@@ -19,7 +19,6 @@ export const rootRoute = route(
         privacyPolicy: route("/privacy-policy", {}, {}),
       },
     ),
-    security: route("/security", {}, {}),
     careers: route(
       "/careers",
       {},
@@ -28,11 +27,12 @@ export const rootRoute = route(
       },
     ),
     company: route("/company", {}, {}),
-    product: route(
-      "/product",
+    solutions: route(
+      "/solutions",
       {},
       {
-        portfolioMonitoring: route("/portfolio-monitoring", {}, {}),
+        aiDataPlatform: route("/ai-data-platform", {}, {}),
+        customAiApplications: route("/custom-ai-applications", {}, {}),
       },
     ),
     blog: route(

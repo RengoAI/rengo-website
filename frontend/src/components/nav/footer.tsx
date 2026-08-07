@@ -1,6 +1,7 @@
 import { rootRoute } from "@/app/app-routes";
 import { PageContainer } from "@/components/layout/page-container";
 import { Logo } from "@/components/logo/logo";
+import { SOLUTIONS } from "@/features/solutions/solutions";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -74,13 +75,12 @@ export const AppFooter: React.FC = () => (
           gapY={10}
           minW={{ base: "min(100%, 280px)", lg: 0 }}
         >
-          <FooterCol title="Platform">
-            <FooterLink
-              to={rootRoute({}).product({}).portfolioMonitoring({}).$}
-            >
-              Product
-            </FooterLink>
-            <FooterLink to={rootRoute({}).security({}).$}>Security</FooterLink>
+          <FooterCol title="Solutions">
+            {SOLUTIONS.map((solution) => (
+              <FooterLink key={solution.id} to={solution.path}>
+                {solution.title}
+              </FooterLink>
+            ))}
           </FooterCol>
 
           <FooterCol title="Company">

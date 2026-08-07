@@ -20,6 +20,8 @@ const config = defineConfig({
     // Global typography settings
     "html, body": {
       fontVariantNumeric: "lining-nums tabular-nums",
+      // Match the marketing canvas so the scrollbar gutter isn't pure white
+      bg: "slate.10",
     },
     body: {
       WebkitFontSmoothing: "auto",
@@ -30,7 +32,7 @@ const config = defineConfig({
       height: "10px",
     },
     "*::-webkit-scrollbar-track": {
-      background: "transparent",
+      background: "var(--rengo-colors-slate-10)",
     },
     "*::-webkit-scrollbar-thumb": {
       background: "rgba(0, 0, 0, .5)",
@@ -41,6 +43,13 @@ const config = defineConfig({
     "*::-webkit-scrollbar-thumb:hover": {
       background: "rgba(0, 0, 0, .6)",
       backgroundClip: "padding-box",
+    },
+    "*::-webkit-scrollbar-corner": {
+      background: "var(--rengo-colors-slate-10)",
+    },
+    // Firefox
+    html: {
+      scrollbarColor: "rgba(0, 0, 0, 0.5) var(--rengo-colors-slate-10)",
     },
     // Add top border to scrollbar track for tables only
     ".data-table-scroll-container::-webkit-scrollbar-track": {

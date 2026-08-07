@@ -58,11 +58,11 @@ export const CaseStudySection: React.FC = () => (
             maxW="820px"
             m={0}
           >
-            Rengo delivered{" "}
+            We provide a{" "}
             <Box as="span" color="accent.onDark">
-              more in a month
+              fast path
             </Box>{" "}
-            than previous vendors did in over a year.
+            to deployment.
           </Box>
         </Flex>
 
@@ -131,59 +131,34 @@ export const CaseStudySection: React.FC = () => (
   </Box>
 );
 
-const TRUST_ITEMS = [
-  { title: "SOC2 TypeII", body: "Continuous — report available under NDA" },
-  { title: "GDPR-Ready", body: "EU data residency available" },
-  { title: "Pen-tested", body: "Independent third-party, annually" },
-] as const;
+const TRUST_ITEMS = [{ title: "SOC2 TypeII" }] as const;
 
 export const TrustStrip: React.FC = () => (
   <Flex
     as="section"
     w="full"
     align="center"
-    justify="space-between"
-    direction={{ base: "column", md: "row" }}
+    justify="center"
     borderTop="1px solid"
     borderBottom="1px solid"
     borderColor="slate.30"
     px={{ base: 6, md: "60px" }}
-    py={{ base: 10, md: 0 }}
-    minH={{ base: "auto", md: "251px" }}
+    py={{ base: 10, md: 14 }}
   >
     {TRUST_ITEMS.map((item) => (
-      <Flex
+      <Text
         key={item.title}
-        direction="column"
-        align="center"
-        flex="1"
-        minW={0}
-        px={{ base: 0, md: 10 }}
-        py={5}
+        fontFamily="heading"
+        fontWeight={350}
+        fontSize="24px"
+        lineHeight={1.1}
+        letterSpacing="-1px"
+        textAlign="center"
+        color="ink.muted"
+        m={0}
       >
-        <Text
-          fontFamily="heading"
-          fontWeight={350}
-          fontSize="24px"
-          lineHeight={1.1}
-          letterSpacing="-1px"
-          textAlign="center"
-          color="ink.muted"
-          m={0}
-        >
-          {item.title}
-        </Text>
-        <Text
-          fontFamily="body"
-          fontSize="14px"
-          lineHeight="24.75px"
-          textAlign="center"
-          color="ink.muted"
-          m={0}
-        >
-          {item.body}
-        </Text>
-      </Flex>
+        {item.title}
+      </Text>
     ))}
   </Flex>
 );

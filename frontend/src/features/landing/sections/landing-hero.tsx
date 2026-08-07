@@ -23,14 +23,6 @@ const HERO_FRAMES = [
   { left: "61%", top: "70%", w: "468px", h: "105px" },
 ] as const;
 
-/** Small monospace field labels scattered across the composition. */
-const HERO_LABELS = [
-  { text: "ebitda_203", left: "59%", top: "59%" },
-  { text: "gross rev.", left: "57%", top: "67%" },
-  { text: "gross rev.", left: "67%", top: "86%" },
-  { text: "gross rev.", left: "82%", top: "86%" },
-] as const;
-
 const HeroArtwork: React.FC = () => (
   <Box
     position="absolute"
@@ -66,24 +58,6 @@ const HeroArtwork: React.FC = () => (
         borderColor="slate.40"
         borderRadius="2px"
       />
-    ))}
-
-    {HERO_LABELS.map((label, i) => (
-      <Text
-        key={`label-${i}`}
-        position="absolute"
-        left={label.left}
-        top={label.top}
-        fontFamily="mono"
-        fontSize="8px"
-        fontWeight="medium"
-        letterSpacing="1px"
-        textTransform="uppercase"
-        color="slate.40"
-        m={0}
-      >
-        {label.text}
-      </Text>
     ))}
   </Box>
 );
@@ -124,41 +98,43 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
       pt={{ base: 32, lg: 0 }}
       pb={{ base: 20, lg: "223px" }}
     >
-      <Box
-        as="h1"
-        fontFamily="heading"
-        fontWeight={350}
-        fontSize={{ base: "34px", md: "44px" }}
-        lineHeight={1.1}
-        letterSpacing="-3px"
-        color="indigo.900"
-        maxW="480px"
-        m={0}
-      >
-        One foundation.
-        <br />
-        Every application.
-      </Box>
+      <Flex direction="column" gap={2}>
+        <Box
+          as="h1"
+          fontFamily="heading"
+          fontWeight={350}
+          fontSize={{ base: "34px", md: "44px" }}
+          lineHeight={1.1}
+          letterSpacing="-3px"
+          color="indigo.900"
+          maxW="480px"
+          m={0}
+        >
+          Your data is{" "}
+          <Box as="span" color="accent.link">
+            your alpha
+          </Box>
+        </Box>
 
-      <Text
-        fontFamily="body"
-        fontSize="16px"
-        lineHeight={1.4}
-        color="indigo.700"
-        maxW="420px"
-        m={0}
-      >
-        Applications and agents deployed on a shared, governed data foundation —
-        so every workflow builds on the last.
-      </Text>
+        <Text
+          fontFamily="body"
+          fontSize="16px"
+          lineHeight={1.4}
+          color="indigo.700"
+          maxW="420px"
+          m={0}
+        >
+          Rengo AI will help you put your data to work
+        </Text>
+      </Flex>
 
       <Button
         alignSelf="flex-start"
         bg="indigo.900"
         color="slate.10"
-        borderRadius="4px"
-        px={3}
-        py={1.5}
+        borderRadius={0}
+        px={8}
+        py={3.5}
         h="auto"
         fontFamily="body"
         fontSize="14px"
@@ -167,7 +143,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
         _hover={{ bg: "indigo.700" }}
         onClick={onCtaClick}
       >
-        Request Access →
+        Get Started →
       </Button>
     </Flex>
 

@@ -135,12 +135,13 @@ export const AgentsBentoSection: React.FC = () => (
         maxW="648px"
         m={0}
       >
-        Work moves off the team&rsquo;s desk.
-        <br />
+        Build your{" "}
         <Box as="span" color="accent.link">
-          Let agents execute
-        </Box>{" "}
-        recurring workflows.
+          AI Advantage
+        </Box>
+        .
+        <br />
+        Let agents execute recurring workflows.
       </Box>
 
       <Grid

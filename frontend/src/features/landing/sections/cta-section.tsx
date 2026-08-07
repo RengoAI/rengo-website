@@ -66,7 +66,7 @@ export const CtaSection: React.FC<CtaSectionProps> = ({
             _hover={{ bg: "slate.20" }}
             onClick={onRequestAccess}
           >
-            Request Access
+            Get Started
           </Button>
           <Button
             variant="outline"

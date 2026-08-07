@@ -1,6 +1,4 @@
-import { AgentDetailSection } from "@/features/landing/sections/agent-detail-section";
 import { AgentsBentoSection } from "@/features/landing/sections/agents-bento-section";
-import { ApplicationsSection } from "@/features/landing/sections/applications-section";
 import {
   CaseStudySection,
   TrustStrip,
@@ -16,9 +14,7 @@ const openSalesMail = () =>
 export const LandingPage: React.FC = () => (
   <Box fontFamily="body" bg="slate.10">
     <LandingHero onCtaClick={openSalesMail} />
-    <ApplicationsSection />
     <AgentsBentoSection />
-    <AgentDetailSection />
     <CaseStudySection />
     <TrustStrip />
     <CtaSection onRequestAccess={openSalesMail} onTalkToSales={openSalesMail} />

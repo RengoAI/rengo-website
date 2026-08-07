@@ -1,6 +1,8 @@
 import { rootRoute } from "@/app/app-routes";
 import { Logo } from "@/components/logo/logo";
 import { MobileNavDrawer } from "@/components/nav/mobile-nav-drawer";
+import { SolutionsNavMenu } from "@/components/nav/solutions-nav-menu";
+import { SOLUTIONS } from "@/features/solutions/solutions";
 import { Box, Button, Flex, IconButton } from "@chakra-ui/react";
 import { Menu } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -11,10 +13,9 @@ export const TOP_NAV_HEIGHT = 64;
 // The landing hero is light under the marketing refresh, so `/` is
 // deliberately absent here — it uses the light nav treatment instead.
 const DARK_HERO_PATHS = [
-  rootRoute({}).security({}).$,
   rootRoute({}).careers({}).$,
   rootRoute({}).company({}).$,
-  rootRoute({}).product({}).portfolioMonitoring({}).$,
+  ...SOLUTIONS.map((solution) => solution.path),
 ];
 
 export const AppTopNav: React.FC = () => {
@@ -43,10 +44,14 @@ export const AppTopNav: React.FC = () => {
 
   const navItems = [
     {
-      label: "Product",
-      path: rootRoute({}).product({}).portfolioMonitoring({}).$,
+      label: "Solutions",
+      children: SOLUTIONS.map((solution) => ({
+        label: solution.title,
+        path: solution.path,
+        description: solution.description,
+        icon: solution.icon,
+      })),
     },
-    { label: "Security", path: rootRoute({}).security({}).$ },
     { label: "Company", path: rootRoute({}).company({}).$ },
   ];
 
@@ -77,19 +82,21 @@ export const AppTopNav: React.FC = () => {
           <Logo color={overHero ? "white" : "indigo.900"} homeLink />
 
           {/* Desktop nav */}
-          <Flex as="nav" gap={1} display={{ base: "none", md: "flex" }}>
-            {navItems.map((item) => (
-              <Button
-                key={item.path}
-                variant="ghost"
-                size="sm"
-                color={navColor}
-                _hover={{ bg: "transparent", color: navHoverColor }}
-                onClick={() => navigate(item.path)}
-              >
-                {item.label}
-              </Button>
-            ))}
+          <Flex as="nav" gap={1} display={{ base: "none", md: "flex" }} align="center">
+            <SolutionsNavMenu
+              overHero={overHero}
+              navColor={navColor}
+              navHoverColor={navHoverColor}
+            />
+            <Button
+              variant="ghost"
+              size="sm"
+              color={navColor}
+              _hover={{ bg: "transparent", color: navHoverColor }}
+              onClick={() => navigate(rootRoute({}).company({}).$)}
+            >
+              Company
+            </Button>
           </Flex>
 
           {/* Desktop CTAs */}
@@ -108,15 +115,22 @@ export const AppTopNav: React.FC = () => {
               Log in
             </Button>
             <Button
-              borderRadius="4px"
+              size="xs"
               bg={overHero ? "white" : "indigo.900"}
               color={overHero ? "primary.800" : "slate.10"}
-              size="xs"
+              borderRadius={0}
+              px={3.5}
+              py={1.5}
+              h="auto"
+              minH="36px"
+              fontFamily="body"
+              fontSize="14px"
               fontWeight="normal"
+              lineHeight="20px"
               _hover={{ bg: overHero ? "gray.100" : "indigo.700" }}
               onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
             >
-              Request Access
+              Get Started
             </Button>
           </Flex>
 

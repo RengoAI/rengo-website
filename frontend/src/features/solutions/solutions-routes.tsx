@@ -2,24 +2,37 @@ import { SolutionsLayout } from "@/features/solutions/solutions-layout";
 import { RouteObject } from "react-router-dom";
 
 export const solutionsRoutes: RouteObject = {
-  id: "product",
-  path: "product",
+  id: "solutions",
+  path: "solutions",
   handle: {
-    pageTitle: "Product",
+    pageTitle: "Solutions",
   },
   element: <SolutionsLayout />,
   children: [
     {
-      id: "portfolioMonitoring",
-      path: "portfolio-monitoring",
+      id: "aiDataPlatform",
+      path: "ai-data-platform",
       handle: {
-        pageTitle: "Portfolio Monitoring",
+        pageTitle: "AI Data Platform",
       },
       lazy: async () => {
-        const { PortfolioMonitoringPage } = await import(
-          "@/features/solutions/portfolio-monitoring-page"
+        const { AiDataPlatformPage } = await import(
+          "@/features/solutions/ai-data-platform-page"
         );
-        return { Component: PortfolioMonitoringPage };
+        return { Component: AiDataPlatformPage };
+      },
+    },
+    {
+      id: "customAiApplications",
+      path: "custom-ai-applications",
+      handle: {
+        pageTitle: "Custom AI Applications",
+      },
+      lazy: async () => {
+        const { CustomAiApplicationsPage } = await import(
+          "@/features/solutions/custom-ai-applications-page"
+        );
+        return { Component: CustomAiApplicationsPage };
       },
     },
   ],
