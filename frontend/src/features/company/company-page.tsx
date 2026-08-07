@@ -14,8 +14,6 @@ const ANGELS = [
   "Maybern",
 ] as const;
 
-const EDICT = '"Space Mono", SFMono-Regular, ui-monospace, monospace';
-
 const MissionSection: React.FC = () => (
   <Box
     as="section"
@@ -36,7 +34,7 @@ const MissionSection: React.FC = () => (
             as="h2"
             fontFamily="heading"
             fontSize={{ base: "36px", md: "52px" }}
-            fontWeight="normal"
+            fontWeight={350}
             lineHeight={1.04}
             letterSpacing="-0.035em"
             color="indigo.900"
@@ -72,7 +70,7 @@ const BuiltBySection: React.FC = () => (
           as="h2"
           fontFamily="heading"
           fontSize={{ base: "34px", md: "48px" }}
-          fontWeight="normal"
+          fontWeight={350}
           lineHeight={1.06}
           letterSpacing="-0.03em"
           color="indigo.900"
@@ -106,7 +104,7 @@ const InvestorsSection: React.FC = () => (
           as="h2"
           fontFamily="heading"
           fontSize={{ base: "34px", md: "48px" }}
-          fontWeight="normal"
+          fontWeight={350}
           lineHeight={1.06}
           letterSpacing="-0.03em"
           color="indigo.900"
@@ -141,7 +139,7 @@ const InvestorsSection: React.FC = () => (
             p={8}
           >
             <Text
-              fontFamily={EDICT}
+              fontFamily="mono"
               fontSize="xs"
               color="slate.40"
               letterSpacing="0.12em"
@@ -176,7 +174,7 @@ export const CompanyPage: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <Box fontFamily='"Inter Tight", Inter, sans-serif' bg="slate.10">
+    <Box fontFamily="body" bg="slate.10">
       <PageHero
         headline="Private markets need a new infrastructure layer"
         ctaLabel="See a demo"

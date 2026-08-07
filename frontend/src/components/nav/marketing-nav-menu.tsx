@@ -147,7 +147,7 @@ export const MarketingNavMenu: React.FC<MarketingNavMenuProps> = ({
               fontSize="14px"
               fontWeight="medium"
               lineHeight="16px"
-              color="slate.50"
+              color="ink.body"
               m={0}
             >
               {label}

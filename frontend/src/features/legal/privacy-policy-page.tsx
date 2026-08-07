@@ -10,7 +10,7 @@ export const PrivacyPolicyPage: React.FC = () => (
           {/* Header */}
           <VStack gap={3} align="flex-start">
             <Text
-              fontFamily='"Space Mono", SFMono-Regular, ui-monospace, monospace'
+              fontFamily="mono"
               fontSize="xs"
               letterSpacing="0.18em"
               textTransform="uppercase"
@@ -21,7 +21,7 @@ export const PrivacyPolicyPage: React.FC = () => (
             <Text
               fontFamily="heading"
               fontSize={{ base: "3xl", md: "48px" }}
-              fontWeight="normal"
+              fontWeight={350}
               letterSpacing="-0.025em"
               lineHeight={1.06}
               color="indigo.900"
@@ -75,7 +75,7 @@ export const PrivacyPolicyPage: React.FC = () => (
             <Text
               fontFamily="heading"
               fontSize="xl"
-              fontWeight="normal"
+              fontWeight={350}
               letterSpacing="-0.01em"
               color="indigo.900"
               mt={10}
@@ -96,7 +96,7 @@ export const PrivacyPolicyPage: React.FC = () => (
             <Text
               fontFamily="heading"
               fontSize="lg"
-              fontWeight="normal"
+              fontWeight={350}
               letterSpacing="-0.01em"
               color="indigo.900"
               mt={8}
@@ -121,7 +121,7 @@ export const PrivacyPolicyPage: React.FC = () => (
             <Text
               fontFamily="heading"
               fontSize="lg"
-              fontWeight="normal"
+              fontWeight={350}
               letterSpacing="-0.01em"
               color="indigo.900"
               mt={8}
@@ -176,7 +176,7 @@ export const PrivacyPolicyPage: React.FC = () => (
             <Text
               fontFamily="heading"
               fontSize="lg"
-              fontWeight="normal"
+              fontWeight={350}
               letterSpacing="-0.01em"
               color="indigo.900"
               mt={8}
@@ -200,7 +200,7 @@ export const PrivacyPolicyPage: React.FC = () => (
             <Text
               fontFamily="heading"
               fontSize="lg"
-              fontWeight="normal"
+              fontWeight={350}
               letterSpacing="-0.01em"
               color="indigo.900"
               mt={8}
@@ -224,7 +224,7 @@ export const PrivacyPolicyPage: React.FC = () => (
             <Text
               fontFamily="heading"
               fontSize="lg"
-              fontWeight="normal"
+              fontWeight={350}
               letterSpacing="-0.01em"
               color="indigo.900"
               mt={8}
@@ -275,7 +275,7 @@ export const PrivacyPolicyPage: React.FC = () => (
             <Text
               fontFamily="heading"
               fontSize="lg"
-              fontWeight="normal"
+              fontWeight={350}
               letterSpacing="-0.01em"
               color="indigo.900"
               mt={8}
@@ -310,7 +310,7 @@ export const PrivacyPolicyPage: React.FC = () => (
             <Text
               fontFamily="heading"
               fontSize="xl"
-              fontWeight="normal"
+              fontWeight={350}
               letterSpacing="-0.01em"
               color="indigo.900"
               mt={10}
@@ -428,7 +428,7 @@ export const PrivacyPolicyPage: React.FC = () => (
             <Text
               fontFamily="heading"
               fontSize="xl"
-              fontWeight="normal"
+              fontWeight={350}
               letterSpacing="-0.01em"
               color="indigo.900"
               mt={10}
@@ -461,7 +461,7 @@ export const PrivacyPolicyPage: React.FC = () => (
             <Text
               fontFamily="heading"
               fontSize="xl"
-              fontWeight="normal"
+              fontWeight={350}
               letterSpacing="-0.01em"
               color="indigo.900"
               mt={10}
@@ -484,7 +484,7 @@ export const PrivacyPolicyPage: React.FC = () => (
             <Text
               fontFamily="heading"
               fontSize="xl"
-              fontWeight="normal"
+              fontWeight={350}
               letterSpacing="-0.01em"
               color="indigo.900"
               mt={10}
@@ -507,7 +507,7 @@ export const PrivacyPolicyPage: React.FC = () => (
             <Text
               fontFamily="heading"
               fontSize="xl"
-              fontWeight="normal"
+              fontWeight={350}
               letterSpacing="-0.01em"
               color="indigo.900"
               mt={10}
@@ -531,7 +531,7 @@ export const PrivacyPolicyPage: React.FC = () => (
             <Text
               fontFamily="heading"
               fontSize="xl"
-              fontWeight="normal"
+              fontWeight={350}
               letterSpacing="-0.01em"
               color="indigo.900"
               mt={10}
@@ -554,7 +554,7 @@ export const PrivacyPolicyPage: React.FC = () => (
             <Text
               fontFamily="heading"
               fontSize="xl"
-              fontWeight="normal"
+              fontWeight={350}
               letterSpacing="-0.01em"
               color="indigo.900"
               mt={10}
@@ -647,7 +647,7 @@ export const PrivacyPolicyPage: React.FC = () => (
             <Text
               fontFamily="heading"
               fontSize="xl"
-              fontWeight="normal"
+              fontWeight={350}
               letterSpacing="-0.01em"
               color="indigo.900"
               mt={10}
@@ -671,7 +671,7 @@ export const PrivacyPolicyPage: React.FC = () => (
             <Text
               fontFamily="heading"
               fontSize="xl"
-              fontWeight="normal"
+              fontWeight={350}
               letterSpacing="-0.01em"
               color="indigo.900"
               mt={10}
@@ -694,7 +694,7 @@ export const PrivacyPolicyPage: React.FC = () => (
             <Text
               fontFamily="heading"
               fontSize="xl"
-              fontWeight="normal"
+              fontWeight={350}
               letterSpacing="-0.01em"
               color="indigo.900"
               mt={10}
@@ -715,7 +715,7 @@ export const PrivacyPolicyPage: React.FC = () => (
             <Text
               fontFamily="heading"
               fontSize="xl"
-              fontWeight="normal"
+              fontWeight={350}
               letterSpacing="-0.01em"
               color="indigo.900"
               mt={10}

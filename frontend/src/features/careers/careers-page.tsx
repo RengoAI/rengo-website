@@ -18,7 +18,7 @@ const BuiltBySection: React.FC = () => (
           as="h2"
           fontFamily="heading"
           fontSize={{ base: "34px", md: "48px" }}
-          fontWeight="normal"
+          fontWeight={350}
           lineHeight={1.06}
           letterSpacing="-0.03em"
           color="indigo.900"
@@ -40,7 +40,7 @@ const BuiltBySection: React.FC = () => (
 );
 
 export const CareersPage: React.FC = () => (
-  <Box fontFamily='"Inter Tight", Inter, sans-serif'>
+  <Box fontFamily="body">
     <PageHero
       headline="Help us reimagine private markets infrastructure"
       subtext="We're hiring across engineering and product"

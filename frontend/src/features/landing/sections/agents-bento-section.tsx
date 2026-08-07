@@ -126,7 +126,7 @@ export const AgentsBentoSection: React.FC = () => (
         Build your AI Advantage
         <br />
         <Box as="span" color="slate.50" fontWeight={300}>
-          Turn proprietary knowledge into operating leverage
+          Applications and agents tailored to your team
         </Box>
       </Box>
 

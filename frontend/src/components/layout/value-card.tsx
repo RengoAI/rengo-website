@@ -1,8 +1,6 @@
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 
-const EDICT = '"Space Mono", SFMono-Regular, ui-monospace, monospace';
-
 interface ValueCardProps {
   number: string;
   title: string;
@@ -17,7 +15,7 @@ export const ValueCard: React.FC<ValueCardProps> = ({
   <Box borderTop="1px solid" borderColor="slate.30" pt={5}>
     <Text
       as="span"
-      fontFamily={EDICT}
+      fontFamily="mono"
       fontSize="xs"
       color="slate.50"
       letterSpacing="0.08em"
@@ -30,7 +28,7 @@ export const ValueCard: React.FC<ValueCardProps> = ({
       mb={3}
       fontFamily="heading"
       fontSize="2xl"
-      fontWeight="normal"
+      fontWeight={350}
       color="indigo.900"
     >
       {title}

@@ -2,8 +2,6 @@ import { PageContainer } from "@/components/layout/page-container";
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 
-const EDICT = '"Space Mono", SFMono-Regular, ui-monospace, monospace';
-
 interface SectionBlockProps {
   eyebrow?: string;
   heading: React.ReactNode;
@@ -30,7 +28,7 @@ export const SectionBlock: React.FC<SectionBlockProps> = ({
         <Box>
           {eyebrow && (
             <Text
-              fontFamily={EDICT}
+              fontFamily="mono"
               fontSize="xs"
               letterSpacing="0.15em"
               textTransform="uppercase"

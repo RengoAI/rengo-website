@@ -29,8 +29,7 @@ export const SOLUTIONS: readonly {
     id: "custom-ai-applications",
     category: "delivery",
     title: "Forward-deployed engineering",
-    description:
-      "Custom software and workflows built alongside your team.",
+    description: "Custom software and workflows built alongside your team.",
     tags: "CRM · AI note-taking · Agents · Workflows · Forward-deployed engineering",
     path: "/solutions/custom-ai-applications",
     icon: Users,

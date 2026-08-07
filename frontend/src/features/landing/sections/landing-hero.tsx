@@ -133,7 +133,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
           maxW="480px"
           m={0}
         >
-          Deploy AI to put your data to work
+          Turn proprietary knowledge into operating leverage
         </Text>
       </Flex>
 
