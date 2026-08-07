@@ -1,3 +1,4 @@
+import { ctaButtonHoverProps } from "@/components/ui/button-arrow-label";
 import { rootRoute } from "@/app/app-routes";
 import { Logo } from "@/components/logo/logo";
 import { MobileNavDrawer } from "@/components/nav/mobile-nav-drawer";
@@ -137,10 +138,10 @@ export const AppTopNav: React.FC = () => {
               <Button
                 bg={overHero ? "white" : "indigo.900"}
                 color={overHero ? "primary.800" : "slate.10"}
-                _hover={{ bg: overHero ? "gray.100" : "indigo.700" }}
                 onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
                 {...topNavCtaStyles}
                 borderRadius={0}
+                {...ctaButtonHoverProps}
               >
                 Get Started
               </Button>

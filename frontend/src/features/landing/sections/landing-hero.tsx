@@ -1,5 +1,5 @@
 import {
-  buttonArrowHoverProps,
+  ctaButtonHoverWithArrowProps,
   ButtonArrowLabel,
 } from "@/components/ui/button-arrow-label";
 import {
@@ -149,8 +149,8 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
         fontSize="14px"
         fontWeight="normal"
         lineHeight="21px"
-        _hover={{ bg: "indigo.700", ...buttonArrowHoverProps._hover }}
         onClick={onCtaClick}
+        {...ctaButtonHoverWithArrowProps}
       >
         <ButtonArrowLabel>Get Started</ButtonArrowLabel>
       </Button>

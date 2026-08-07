@@ -13,7 +13,7 @@ interface FooterColProps {
 
 const FooterCol: React.FC<FooterColProps> = ({ title, children }) => (
   <Flex direction="column" gap={2} minW={{ base: "auto", sm: "128px" }}>
-    <Text fontSize="sm" color="whiteAlpha.900" lineHeight="short" mb={1}>
+    <Text fontSize="sm" color="indigo.900" lineHeight="short" mb={1}>
       {title}
     </Text>
     {children}
@@ -46,12 +46,10 @@ const FooterLink: React.FC<{
 export const AppFooter: React.FC = () => (
   <Box
     as="footer"
-    bg="panel.900"
-    color="white"
+    bg="slate.10"
+    color="indigo.900"
     pt={16}
     pb={10}
-    borderTopWidth="1px"
-    borderTopColor="panel.footerBorder"
   >
     <PageContainer>
       <Flex
@@ -63,7 +61,7 @@ export const AppFooter: React.FC = () => (
         gapY={12}
       >
         <Box flexShrink={0}>
-          <Logo color="white" isCollapsed />
+          <Logo color="indigo.900" homeLink />
         </Box>
 
         <Flex
@@ -115,7 +113,7 @@ export const AppFooter: React.FC = () => (
       >
         <Text
           fontSize="xs"
-          color="whiteAlpha.450"
+          color="slate.50"
           lineHeight="short"
           m={0}
           textAlign="right"

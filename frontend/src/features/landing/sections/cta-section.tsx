@@ -1,100 +1,58 @@
 import {
-  buttonArrowHoverProps,
+  ctaButtonHoverWithArrowProps,
   ButtonArrowLabel,
 } from "@/components/ui/button-arrow-label";
 import { Box, Button, Flex } from "@chakra-ui/react";
 import React from "react";
+import { SectionShell } from "./section-shell";
 
 interface CtaSectionProps {
-  onRequestAccess: () => void;
   onTalkToSales: () => void;
 }
 
-export const CtaSection: React.FC<CtaSectionProps> = ({
-  onRequestAccess,
-  onTalkToSales,
-}) => (
-  <Box
-    as="section"
-    w="full"
-    borderTop="1px solid"
-    borderColor="panel.hairline"
-    px={{ base: 6, md: 5 }}
-    py={{ base: 20, md: "110px" }}
-    css={{
-      background:
-        "radial-gradient(ellipse at 12% 11%, #1b3349 0%, #0d1c2c 100%)",
-    }}
-  >
-    <Flex direction="column" align="center" w="full">
-      <Flex
-        direction="column"
-        align={{ base: "flex-start", md: "flex-end" }}
-        maxW="960px"
-        w="full"
+export const CtaSection: React.FC<CtaSectionProps> = ({ onTalkToSales }) => (
+  <SectionShell borderY bg="slate.10" py={{ base: 16, md: "80px" }}>
+    <Flex
+      direction={{ base: "column", md: "row" }}
+      align={{ base: "flex-start", md: "center" }}
+      justify="space-between"
+      gap={{ base: 8, md: 10 }}
+      w="full"
+    >
+      <Box
+        as="h2"
+        fontFamily="heading"
+        fontWeight={350}
+        fontSize={{ base: "26px", md: "36px" }}
+        lineHeight={1.2}
+        letterSpacing="-2px"
+        color="indigo.900"
+        maxW="640px"
+        m={0}
+        flex="1"
+        minW={0}
       >
-        <Box
-          as="h2"
-          fontFamily="heading"
-          fontWeight={300}
-          fontSize={{ base: "34px", md: "60px" }}
-          lineHeight={1}
-          letterSpacing="-2px"
-          textAlign={{ base: "left", md: "right" }}
-          color="#e0e3ed"
-          maxW="934px"
-          m={0}
-          pt={6}
-        >
-          Rengo is the AI deployment company for investment firms.
-        </Box>
+        The AI deployment company for investment firms
+      </Box>
 
-        <Flex
-          gap={3.5}
-          pt={12}
-          justify={{ base: "flex-start", md: "flex-end" }}
-          direction={{ base: "column", sm: "row" }}
-          w="full"
-        >
-          <Button
-            bg="white"
-            color="panel.900"
-            borderRadius={0}
-            px={8}
-            py={3.5}
-            h="auto"
-            fontFamily="body"
-            fontSize="14px"
-            fontWeight="medium"
-            lineHeight="21px"
-            _hover={{ bg: "slate.20" }}
-            onClick={onRequestAccess}
-          >
-            Get Started
-          </Button>
-          <Button
-            variant="outline"
-            bg="transparent"
-            color="white"
-            borderColor="#949aac"
-            borderRadius={0}
-            px={8}
-            py={3.5}
-            h="auto"
-            fontFamily="body"
-            fontSize="14px"
-            fontWeight="normal"
-            lineHeight="21px"
-            _hover={{
-              bg: "whiteAlpha.100",
-              ...buttonArrowHoverProps._hover,
-            }}
-            onClick={onTalkToSales}
-          >
-            <ButtonArrowLabel>Talk to Sales</ButtonArrowLabel>
-          </Button>
-        </Flex>
-      </Flex>
+      <Button
+        flexShrink={0}
+        alignSelf={{ base: "flex-start", md: "center" }}
+        bg="indigo.900"
+        color="slate.10"
+        borderRadius={0}
+        px={8}
+        py={3.5}
+        h="auto"
+        fontFamily="body"
+        fontSize="14px"
+        fontWeight="normal"
+        lineHeight="21px"
+        onClick={onTalkToSales}
+        {...ctaButtonHoverWithArrowProps}
+      >
+        <ButtonArrowLabel>Talk to Sales</ButtonArrowLabel>
+      </Button>
     </Flex>
-  </Box>
+  </SectionShell>
 );
