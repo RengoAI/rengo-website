@@ -14,7 +14,7 @@ export const TermsOfServicePage: React.FC = () => (
               fontSize="xs"
               letterSpacing="0.18em"
               textTransform="uppercase"
-              color="primary.400"
+              color="slate.50"
             >
               Legal
             </Text>
@@ -24,11 +24,11 @@ export const TermsOfServicePage: React.FC = () => (
               fontWeight="normal"
               letterSpacing="-0.025em"
               lineHeight={1.06}
-              color="gray.900"
+              color="indigo.900"
             >
               Terms of Use
             </Text>
-            <Text fontSize="sm" color="gray.400">
+            <Text fontSize="sm" color="slate.40">
               Effective: July 24, 2025
             </Text>
           </VStack>
@@ -39,7 +39,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               Rengo AI, Inc. ("Rengo AI," "we," "us," or "our") welcomes you. We
               invite you to access our website, available at www.rengoai.com
@@ -54,7 +54,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               By browsing, accessing, or using the Website, you acknowledge that
               you have read, understood, and agree to be legally bound by the
@@ -69,7 +69,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               <Text as="span" fontWeight="bold">
                 THE SECTIONS BELOW TITLED "BINDING ARBITRATION" AND "CLASS
@@ -82,7 +82,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               We reserve the right, at our sole discretion, to modify,
               discontinue, or terminate the availability of the Website, or to
@@ -100,7 +100,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               We provide access to and use of our proprietary alternative
               investment management platform (the "Platform") on a subscription
@@ -117,7 +117,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               If you accept or agree to the Agreement on behalf of a company or
               other legal entity, you represent and warrant that you have the
@@ -130,7 +130,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               Capitalized terms not defined in these Terms of Use shall have the
               meaning set forth in our Privacy Policy.
@@ -141,7 +141,7 @@ export const TermsOfServicePage: React.FC = () => (
               fontSize="xl"
               fontWeight="normal"
               letterSpacing="-0.01em"
-              color="gray.900"
+              color="indigo.900"
               mt={10}
             >
               1. GUIDELINES
@@ -150,7 +150,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               By using the Website, you agree to comply with these user
               guidelines (the "Guidelines") and you agree that:
@@ -162,7 +162,7 @@ export const TermsOfServicePage: React.FC = () => (
                   textStyle="body"
                   fontSize="md"
                   lineHeight="1.7"
-                  color="gray.700"
+                  color="ink.body"
                 >
                   • You will comply with all applicable laws in your use of the
                   Website and will not use the Website for any unlawful purpose;
@@ -171,7 +171,7 @@ export const TermsOfServicePage: React.FC = () => (
                   textStyle="body"
                   fontSize="md"
                   lineHeight="1.7"
-                  color="gray.700"
+                  color="ink.body"
                 >
                   • You will not access or use the Website to collect any market
                   research for a competing business;
@@ -180,7 +180,7 @@ export const TermsOfServicePage: React.FC = () => (
                   textStyle="body"
                   fontSize="md"
                   lineHeight="1.7"
-                  color="gray.700"
+                  color="ink.body"
                 >
                   • You will not impersonate any person or entity or falsely
                   state or otherwise misrepresent your affiliation with a person
@@ -190,7 +190,7 @@ export const TermsOfServicePage: React.FC = () => (
                   textStyle="body"
                   fontSize="md"
                   lineHeight="1.7"
-                  color="gray.700"
+                  color="ink.body"
                 >
                   • You will not interfere with, or attempt to interrupt the
                   proper operation of, the Website through the use of any virus,
@@ -203,7 +203,7 @@ export const TermsOfServicePage: React.FC = () => (
                   textStyle="body"
                   fontSize="md"
                   lineHeight="1.7"
-                  color="gray.700"
+                  color="ink.body"
                 >
                   • You will not decompile, reverse engineer, or disassemble any
                   software or other products or processes accessible through the
@@ -213,7 +213,7 @@ export const TermsOfServicePage: React.FC = () => (
                   textStyle="body"
                   fontSize="md"
                   lineHeight="1.7"
-                  color="gray.700"
+                  color="ink.body"
                 >
                   • You will not cover, obscure, block, or in any way interfere
                   with any advertisements and/or safety features on the Website;
@@ -222,7 +222,7 @@ export const TermsOfServicePage: React.FC = () => (
                   textStyle="body"
                   fontSize="md"
                   lineHeight="1.7"
-                  color="gray.700"
+                  color="ink.body"
                 >
                   • You will not use any robot, spider, scraper, or other
                   automated means to access the Website for any purpose without
@@ -232,7 +232,7 @@ export const TermsOfServicePage: React.FC = () => (
                   textStyle="body"
                   fontSize="md"
                   lineHeight="1.7"
-                  color="gray.700"
+                  color="ink.body"
                 >
                   • You will not take any action that imposes or may impose (in
                   our sole discretion) an unreasonable or disproportionately
@@ -242,7 +242,7 @@ export const TermsOfServicePage: React.FC = () => (
                   textStyle="body"
                   fontSize="md"
                   lineHeight="1.7"
-                  color="gray.700"
+                  color="ink.body"
                 >
                   • You will not allow anyone other than your employees and
                   authorized representatives to access and use your account;
@@ -251,7 +251,7 @@ export const TermsOfServicePage: React.FC = () => (
                   textStyle="body"
                   fontSize="md"
                   lineHeight="1.7"
-                  color="gray.700"
+                  color="ink.body"
                 >
                   • You will not resell, distribute, or sublicense the Website
                   or use it for the benefit of anyone other than you or your
@@ -261,7 +261,7 @@ export const TermsOfServicePage: React.FC = () => (
                   textStyle="body"
                   fontSize="md"
                   lineHeight="1.7"
-                  color="gray.700"
+                  color="ink.body"
                 >
                   • You will not remove or modify any proprietary markings or
                   restrictive legends placed on the Website; and
@@ -270,7 +270,7 @@ export const TermsOfServicePage: React.FC = () => (
                   textStyle="body"
                   fontSize="md"
                   lineHeight="1.7"
-                  color="gray.700"
+                  color="ink.body"
                 >
                   • You will not introduce, post, or upload to the Website any
                   Harmful Code.
@@ -282,7 +282,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               As used herein, "Harmful Code" means computer code, programs, or
               programming devices that are intentionally designed to disrupt,
@@ -304,7 +304,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               Rengo AI reserves the right, at any time, to modify, suspend, or
               discontinue the Website or any part thereof with or without
@@ -319,7 +319,7 @@ export const TermsOfServicePage: React.FC = () => (
               fontSize="xl"
               fontWeight="normal"
               letterSpacing="-0.01em"
-              color="gray.900"
+              color="indigo.900"
               mt={10}
             >
               2. INTELLECTUAL PROPERTY
@@ -328,7 +328,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               The Website is protected by copyright, trademark, and other laws
               of the United States and foreign countries. Except as expressly
@@ -344,7 +344,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               You may view all content on the Website (the "Content") solely for
               your own personal use and not for any commercial use. We, and our
@@ -362,7 +362,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               If you violate any part of this Agreement, your permission to
               access and/or use the Content automatically terminates and you
@@ -373,7 +373,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               The trademarks, service marks, and logos of Rengo AI (the "Rengo
               AI Trademarks") used and displayed on the Website are registered
@@ -396,7 +396,7 @@ export const TermsOfServicePage: React.FC = () => (
               fontSize="xl"
               fontWeight="normal"
               letterSpacing="-0.01em"
-              color="gray.900"
+              color="indigo.900"
               mt={10}
             >
               3. NO WARRANTIES; LIMITATION OF LIABILITY
@@ -405,7 +405,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               <Text as="span" fontWeight="bold">
                 YOU ACKNOWLEDGE THAT THE WEBSITE, THE CONTENT AND ANY OTHER DATA
@@ -427,7 +427,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               <Text as="span" fontWeight="bold">
                 WE DISCLAIM ALL WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
@@ -449,7 +449,7 @@ export const TermsOfServicePage: React.FC = () => (
               fontSize="xl"
               fontWeight="normal"
               letterSpacing="-0.01em"
-              color="gray.900"
+              color="indigo.900"
               mt={10}
             >
               4. FEEDBACK
@@ -458,7 +458,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               Although we encourage you to e-mail us, we do not want you to, and
               you should not, e-mail us any content that contains confidential
@@ -477,7 +477,7 @@ export const TermsOfServicePage: React.FC = () => (
               fontSize="xl"
               fontWeight="normal"
               letterSpacing="-0.01em"
-              color="gray.900"
+              color="indigo.900"
               mt={10}
             >
               5. EXTERNAL SITES
@@ -486,7 +486,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               The Website contain links to third-party websites ("External
               Sites"). These links are provided solely as a convenience to you
@@ -509,7 +509,7 @@ export const TermsOfServicePage: React.FC = () => (
               fontSize="xl"
               fontWeight="normal"
               letterSpacing="-0.01em"
-              color="gray.900"
+              color="indigo.900"
               mt={10}
             >
               6. INDEMNIFICATION
@@ -518,7 +518,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               You agree to defend, indemnify, and hold us and our officers,
               directors, employees, successors, licensees and assigns harmless
@@ -535,7 +535,7 @@ export const TermsOfServicePage: React.FC = () => (
               fontSize="xl"
               fontWeight="normal"
               letterSpacing="-0.01em"
-              color="gray.900"
+              color="indigo.900"
               mt={10}
             >
               7. COMPLIANCE WITH APPLICABLE LAWS
@@ -544,7 +544,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               The Website is based in the United States. We make no claims
               concerning whether the Website may be viewed or be appropriate for
@@ -560,7 +560,7 @@ export const TermsOfServicePage: React.FC = () => (
               fontSize="xl"
               fontWeight="normal"
               letterSpacing="-0.01em"
-              color="gray.900"
+              color="indigo.900"
               mt={10}
             >
               8. CHANGES TO THESE TERMS
@@ -569,7 +569,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               These Terms of Use are effective as of the date stated at the top
               of the Terms of Use. We may change these Terms of Use from time to
@@ -584,7 +584,7 @@ export const TermsOfServicePage: React.FC = () => (
               fontSize="xl"
               fontWeight="normal"
               letterSpacing="-0.01em"
-              color="gray.900"
+              color="indigo.900"
               mt={10}
             >
               9. BINDING ARBITRATION
@@ -593,7 +593,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               In the event of a dispute arising under or relating to this
               Agreement or any other products or services provided by us (each,
@@ -621,7 +621,7 @@ export const TermsOfServicePage: React.FC = () => (
               fontSize="xl"
               fontWeight="normal"
               letterSpacing="-0.01em"
-              color="gray.900"
+              color="indigo.900"
               mt={10}
             >
               10. CLASS ACTION WAIVER
@@ -630,7 +630,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               You agree that any arbitration or proceeding shall be limited to
               the Dispute between us and you individually. To the full extent
@@ -653,7 +653,7 @@ export const TermsOfServicePage: React.FC = () => (
               fontSize="xl"
               fontWeight="normal"
               letterSpacing="-0.01em"
-              color="gray.900"
+              color="indigo.900"
               mt={10}
             >
               11. EQUITABLE RELIEF
@@ -662,7 +662,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               You acknowledge and agree that in the event of a breach or
               threatened violation of our intellectual property rights and
@@ -680,7 +680,7 @@ export const TermsOfServicePage: React.FC = () => (
               fontSize="xl"
               fontWeight="normal"
               letterSpacing="-0.01em"
-              color="gray.900"
+              color="indigo.900"
               mt={10}
             >
               12. CONTROLLING LAW; EXCLUSIVE FORUM
@@ -689,7 +689,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               The Agreement and any action related thereto will be governed by
               the laws of the State of Delaware, without regard to its conflict
@@ -704,7 +704,7 @@ export const TermsOfServicePage: React.FC = () => (
               fontSize="xl"
               fontWeight="normal"
               letterSpacing="-0.01em"
-              color="gray.900"
+              color="indigo.900"
               mt={10}
             >
               13. MISCELLANEOUS
@@ -713,7 +713,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               If these Terms of Use are modified or Agreement is terminated in
               accordance with the Agreement, the following provisions of this
@@ -728,7 +728,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               Our failure to act on or enforce any provision of the Agreement
               shall not be construed as a waiver of that provision or any other
@@ -746,7 +746,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
             >
               <Text as="span" fontWeight="bold">
                 Contact Information:
@@ -760,7 +760,7 @@ export const TermsOfServicePage: React.FC = () => (
               textStyle="body"
               fontSize="md"
               lineHeight="1.7"
-              color="gray.700"
+              color="ink.body"
               fontWeight="bold"
               mt={6}
             >

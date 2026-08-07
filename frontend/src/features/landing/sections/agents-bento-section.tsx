@@ -66,7 +66,10 @@ const AccessRolesArt: React.FC = () => (
   </Box>
 );
 
-type TileArt = { kind: "image"; src: string } | { kind: "roles" } | { kind: "systems" };
+type TileArt =
+  | { kind: "image"; src: string }
+  | { kind: "roles" }
+  | { kind: "systems" };
 
 const TILES: {
   label: string;

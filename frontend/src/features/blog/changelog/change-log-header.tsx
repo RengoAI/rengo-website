@@ -22,12 +22,12 @@ const FilterSection: React.FC<{
     const isActive = selectedType === filterType;
     return {
       variant: isActive ? "solid" : ("ghost" as const),
-      color: "gray.600",
-      bg: isActive ? "white" : "gray.50",
+      color: "ink.body",
+      bg: isActive ? "white" : "slate.10",
       _hover: {
         bg: "white",
         border: "1px solid",
-        borderColor: "primary.700",
+        borderColor: "indigo.700",
       },
     };
   };
@@ -92,20 +92,20 @@ export const ChangeLogHeader: React.FC<{
   selectedType: ChangelogEntryType | null;
   setSelectedType: (type: ChangelogEntryType | null) => void;
 }> = ({ selectedType, setSelectedType }) => (
-  <Box px={8} py={4} borderColor="gray.200">
+  <Box px={8} py={4} borderColor="slate.30">
     <Container maxW="6xl" px={8} py={8}>
       <VStack gap={8} align="stretch">
         <HStack
           justify="space-between"
           align="flex-start"
           borderBottom="1px solid"
-          borderColor="gray.200"
+          borderColor="slate.30"
           pb={8}
         >
           <Text
             fontSize={{ base: "3xl", md: "4xl" }}
             fontWeight="bold"
-            color="gray.900"
+            color="indigo.900"
           >
             Changelog
           </Text>

@@ -40,7 +40,7 @@ export const Page: React.FC<React.PropsWithChildren<PageProps>> = ({
               </Text>
             </Flex>
             {header.description && (
-              <Text fontSize="sm" color="fg.muted">
+              <Text fontSize="sm" color="ink.body">
                 {header.description}
               </Text>
             )}

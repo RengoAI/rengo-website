@@ -7,10 +7,10 @@ import React from "react";
 const BuiltBySection: React.FC = () => (
   <Box
     as="section"
-    bg="gray.25"
+    bg="slate.10"
     py={24}
     borderBottom="1px solid"
-    borderColor="border.muted"
+    borderColor="slate.30"
   >
     <PageContainer>
       <Box maxW="700px" mb={16}>
@@ -21,13 +21,13 @@ const BuiltBySection: React.FC = () => (
           fontWeight="normal"
           lineHeight={1.06}
           letterSpacing="-0.03em"
-          color="primary.800"
+          color="indigo.900"
           m={0}
           mb={4}
         >
           Join a world class team
         </Box>
-        <Text fontSize="md" lineHeight={1.65} color="gray.500" maxW="580px">
+        <Text fontSize="md" lineHeight={1.65} color="slate.50" maxW="580px">
           We are a small team bringing together experience from enterprise
           software, lending infrastructure, hedge funds, and private markets
           systems.

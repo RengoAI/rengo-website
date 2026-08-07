@@ -3,12 +3,12 @@ import { Flex, Text } from "@chakra-ui/react";
 import { Sun } from "lucide-react";
 import { Link } from "react-router-dom";
 
-type LogoColor = "white" | "primary.700" | "indigo.900";
+type LogoColor = "white" | "indigo.700" | "indigo.900";
 
 /** CSS custom property backing each supported wordmark color. */
 const LOGO_ICON_COLOR: Record<LogoColor, string> = {
   white: "white",
-  "primary.700": "var(--rengo-colors-primary-700)",
+  "indigo.700": "var(--rengo-colors-indigo-700)",
   "indigo.900": "var(--rengo-colors-indigo-900)",
 };
 

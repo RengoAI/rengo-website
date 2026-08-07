@@ -6,13 +6,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 interface SolutionsNavMenuProps {
-  overHero: boolean;
   navColor: string;
   navHoverColor: string;
 }
 
 export const SolutionsNavMenu: React.FC<SolutionsNavMenuProps> = ({
-  overHero,
   navColor,
   navHoverColor,
 }) => {
@@ -57,11 +55,11 @@ export const SolutionsNavMenu: React.FC<SolutionsNavMenuProps> = ({
     };
   }, [open]);
 
-  const panelBg = overHero ? "panel.800" : "white";
-  const panelBorder = overHero ? "panel.border" : "slate.30";
-  const titleColor = overHero ? "panel.fg" : "indigo.900";
-  const bodyColor = overHero ? "panel.fgMuted" : "ink.body";
-  const itemHoverBg = overHero ? "whiteAlpha.100" : "slate.20";
+  const panelBg = "white";
+  const panelBorder = "slate.30";
+  const titleColor = "indigo.900";
+  const bodyColor = "ink.body";
+  const itemHoverBg = "slate.20";
 
   return (
     <Box
@@ -72,7 +70,6 @@ export const SolutionsNavMenu: React.FC<SolutionsNavMenuProps> = ({
     >
       <Box
         as="button"
-        type="button"
         display="inline-flex"
         alignItems="center"
         gap={1}
@@ -121,50 +118,53 @@ export const SolutionsNavMenu: React.FC<SolutionsNavMenuProps> = ({
               return (
                 <Box
                   key={solution.id}
-                  as={Link}
-                  to={solution.path}
-                  role="menuitem"
+                  asChild
                   w="full"
                   textAlign="left"
                   px={4}
                   py={4}
                   textDecoration="none"
                   _hover={{ bg: itemHoverBg, textDecoration: "none" }}
-                  onClick={() => setOpen(false)}
                 >
-                  <Flex gap={3} align="flex-start">
-                    <Box
-                      color={titleColor}
-                      mt="2px"
-                      flexShrink={0}
-                      aria-hidden
-                    >
-                      <Icon size={18} strokeWidth={1.75} />
-                    </Box>
-                    <Box minW={0}>
-                      <Text
-                        fontFamily="body"
-                        fontWeight="medium"
-                        fontSize="15px"
-                        lineHeight={1.3}
+                  <Link
+                    to={solution.path}
+                    role="menuitem"
+                    onClick={() => setOpen(false)}
+                  >
+                    <Flex gap={3} align="flex-start">
+                      <Box
                         color={titleColor}
-                        m={0}
+                        mt="2px"
+                        flexShrink={0}
+                        aria-hidden
                       >
-                        {solution.title}
-                      </Text>
-                      <Text
-                        fontFamily="body"
-                        fontSize="13px"
-                        lineHeight={1.45}
-                        color={bodyColor}
-                        mt={1.5}
-                        mb={0}
-                        mx={0}
-                      >
-                        {solution.description}
-                      </Text>
-                    </Box>
-                  </Flex>
+                        <Icon size={18} strokeWidth={1.75} />
+                      </Box>
+                      <Box minW={0}>
+                        <Text
+                          fontFamily="body"
+                          fontWeight="medium"
+                          fontSize="15px"
+                          lineHeight={1.3}
+                          color={titleColor}
+                          m={0}
+                        >
+                          {solution.title}
+                        </Text>
+                        <Text
+                          fontFamily="body"
+                          fontSize="13px"
+                          lineHeight={1.45}
+                          color={bodyColor}
+                          mt={1.5}
+                          mb={0}
+                          mx={0}
+                        >
+                          {solution.description}
+                        </Text>
+                      </Box>
+                    </Flex>
+                  </Link>
                 </Box>
               );
             })}

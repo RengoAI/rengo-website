@@ -21,37 +21,20 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 export { TOP_NAV_HEIGHT };
 
-// The landing hero is light under the marketing refresh, so `/` is
-// deliberately absent here — it uses the light nav treatment instead.
-const DARK_HERO_PATHS = [
-  rootRoute({}).careers({}).$,
-  rootRoute({}).company({}).$,
-  ...SOLUTIONS.map((solution) => solution.path),
-];
-
 export const AppTopNav: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const isDarkHero = DARK_HERO_PATHS.includes(location.pathname);
-  const [overHero, setOverHero] = useState(isDarkHero);
   const [drawerOpen, setDrawerOpen] = useState(false);
-
-  useEffect(() => {
-    setOverHero(isDarkHero);
-    if (!isDarkHero) return;
-    const onScroll = () =>
-      setOverHero(window.scrollY < window.innerHeight - TOP_NAV_HEIGHT);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [isDarkHero]);
 
   // Close drawer on route change
   useEffect(() => {
     setDrawerOpen(false);
   }, [location.pathname]);
 
-  const navColor = overHero ? "whiteAlpha.900" : "indigo.900";
-  const navHoverColor = overHero ? "whiteAlpha.500" : "indigo.700";
+  // Every marketing hero is light under the refresh, so the nav no longer
+  // swaps treatments per route.
+  const navColor = "indigo.900";
+  const navHoverColor = "indigo.700";
 
   const navItems = [
     {
@@ -76,8 +59,8 @@ export const AppTopNav: React.FC = () => {
         right={0}
         zIndex={100}
         borderBottom="1px solid"
-        borderColor={overHero ? "whiteAlpha.100" : "slate.30"}
-        bg={overHero ? "primary.800" : "slate.10"}
+        borderColor="slate.30"
+        bg="slate.10"
         style={{ transition: "background 200ms ease, border-color 200ms ease" }}
       >
         <Flex w="full" align="stretch" {...topNavRowProps}>
@@ -93,7 +76,7 @@ export const AppTopNav: React.FC = () => {
             alignItems="center"
             justifyContent="space-between"
           >
-            <Logo color={overHero ? "white" : "indigo.900"} homeLink />
+            <Logo color="indigo.900" homeLink />
 
             {/* Desktop nav */}
             <Flex
@@ -103,7 +86,6 @@ export const AppTopNav: React.FC = () => {
               align="center"
             >
               <SolutionsNavMenu
-                overHero={overHero}
                 navColor={navColor}
                 navHoverColor={navHoverColor}
               />
@@ -128,7 +110,9 @@ export const AppTopNav: React.FC = () => {
                 variant="ghost"
                 color={navColor}
                 _hover={{ bg: "transparent", color: navHoverColor }}
-                onClick={() => window.open("https://app.rengoai.com/", "_blank")}
+                onClick={() =>
+                  window.open("https://app.rengoai.com/", "_blank")
+                }
                 {...topNavCtaStyles}
                 h="34px"
                 minH="34px"
@@ -136,9 +120,11 @@ export const AppTopNav: React.FC = () => {
                 Log in
               </Button>
               <Button
-                bg={overHero ? "white" : "indigo.900"}
-                color={overHero ? "primary.800" : "slate.10"}
-                onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
+                bg="indigo.900"
+                color="slate.10"
+                onClick={() =>
+                  window.open("mailto:sales@rengoai.com", "_blank")
+                }
                 {...topNavCtaStyles}
                 borderRadius={0}
                 {...ctaButtonHoverProps}
@@ -153,7 +139,7 @@ export const AppTopNav: React.FC = () => {
               aria-label="Open menu"
               variant="ghost"
               size="sm"
-              color={overHero ? "white" : "gray.700"}
+              color="indigo.900"
               _hover={{ bg: "transparent" }}
               onClick={() => setDrawerOpen(true)}
             >

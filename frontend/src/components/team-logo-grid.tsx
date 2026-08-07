@@ -37,7 +37,7 @@ export const TeamLogoGrid: React.FC = () => (
     }}
     borderTop="1px solid"
     borderLeft="1px solid"
-    borderColor="border.muted"
+    borderColor="slate.30"
   >
     {TEAM_LOGOS.map((logo) => (
       <Box
@@ -48,7 +48,7 @@ export const TeamLogoGrid: React.FC = () => (
         justifyContent="center"
         borderRight="1px solid"
         borderBottom="1px solid"
-        borderColor="border.muted"
+        borderColor="slate.30"
         px={6}
       >
         {logo.framed ? (

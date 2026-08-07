@@ -44,13 +44,7 @@ const FooterLink: React.FC<{
 };
 
 export const AppFooter: React.FC = () => (
-  <Box
-    as="footer"
-    bg="slate.10"
-    color="indigo.900"
-    pt={16}
-    pb={10}
-  >
+  <Box as="footer" bg="slate.10" color="indigo.900" pt={16} pb={10}>
     <PageContainer>
       <Flex
         justify="space-between"

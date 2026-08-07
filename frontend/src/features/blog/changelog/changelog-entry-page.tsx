@@ -21,7 +21,7 @@ export const ChangelogEntryPage: React.FC = () => {
     return (
       <Page sizeProps={{ fullHeight: true }}>
         <Container maxW="4xl" py={16} px={8}>
-          <Text fontSize="xl" color="gray.600">
+          <Text fontSize="xl" color="ink.body">
             Changelog entry not found.
           </Text>
         </Container>
@@ -46,17 +46,17 @@ export const ChangelogEntryPage: React.FC = () => {
     <Page sizeProps={{ fullHeight: true }}>
       {/* Breadcrumb */}
       <Box
-        bg="gray.50"
+        bg="slate.10"
         py={4}
         borderBottom="1px solid"
-        borderColor="gray.200"
+        borderColor="slate.30"
         px={8}
       >
         <Link href={rootRoute({}).blog({}).changelog({}).$}>
           <Text
             fontSize="sm"
-            color="primary.600"
-            _hover={{ color: "primary.800" }}
+            color="indigo.700"
+            _hover={{ color: "indigo.900" }}
             cursor="pointer"
           >
             ← Back to changelog
@@ -79,7 +79,7 @@ export const ChangelogEntryPage: React.FC = () => {
               >
                 {entry.type}
               </Badge>
-              <Text fontSize="sm" color="gray.600">
+              <Text fontSize="sm" color="ink.body">
                 {entry.date.day} {entry.date.month} {entry.date.year} •{" "}
                 {entry.readTime}
               </Text>
@@ -88,7 +88,7 @@ export const ChangelogEntryPage: React.FC = () => {
             <Text
               fontSize={{ base: "2xl", md: "3xl" }}
               fontWeight="bold"
-              color="gray.900"
+              color="indigo.900"
               lineHeight="1.2"
             >
               {entry.title}
@@ -101,9 +101,9 @@ export const ChangelogEntryPage: React.FC = () => {
             bg="white"
             borderRadius="md"
             border="1px solid"
-            borderColor="gray.200"
+            borderColor="slate.30"
           >
-            <Text fontSize="lg" fontWeight="semibold" color="gray.900" mb={4}>
+            <Text fontSize="lg" fontWeight="semibold" color="indigo.900" mb={4}>
               Table of Contents
             </Text>
             <VStack gap={2} align="stretch">
@@ -111,8 +111,8 @@ export const ChangelogEntryPage: React.FC = () => {
                 <Box key={section.id}>
                   <Text
                     fontSize="sm"
-                    color="primary.600"
-                    _hover={{ color: "primary.800" }}
+                    color="indigo.700"
+                    _hover={{ color: "indigo.900" }}
                     cursor="pointer"
                     textDecoration="none"
                   >
@@ -130,7 +130,7 @@ export const ChangelogEntryPage: React.FC = () => {
                 <Text
                   fontSize="xl"
                   fontWeight="semibold"
-                  color="gray.900"
+                  color="indigo.900"
                   mb={6}
                 >
                   {section.title}
@@ -141,21 +141,21 @@ export const ChangelogEntryPage: React.FC = () => {
                       key={idx}
                       fontSize="md"
                       lineHeight="1.7"
-                      color="gray.700"
+                      color="ink.body"
                     >
                       {paragraph}
                     </Text>
                   ))}
                 </VStack>
                 {index < entry.sections.length - 1 && (
-                  <Box mt={8} h="1px" bg="gray.200" />
+                  <Box mt={8} h="1px" bg="slate.30" />
                 )}
               </Box>
             ))}
           </VStack>
 
           {/* Tags and Share */}
-          <Box pt={8} borderTop="1px solid" borderColor="gray.200">
+          <Box pt={8} borderTop="1px solid" borderColor="slate.30">
             <HStack
               justify="space-between"
               align="center"

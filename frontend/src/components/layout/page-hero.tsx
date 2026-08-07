@@ -13,7 +13,6 @@ interface PageHeroProps {
   align?: "left" | "center";
   subtextMaxW?: string;
   background?: React.ReactNode;
-  tone?: "dark" | "light";
   minH?: string;
   contentPt?: string | number;
   contentPb?: string | number;
@@ -28,20 +27,18 @@ export const PageHero: React.FC<PageHeroProps> = ({
   align = "center",
   subtextMaxW = "480px",
   background,
-  tone = "dark",
   minH = "100vh",
   contentPt = 20,
   contentPb = 12,
 }) => {
   const isLeft = align === "left";
-  const isLight = tone === "light";
 
   return (
     <Box
       as="section"
       position="relative"
-      bg={isLight ? "white" : "primary.800"}
-      color={isLight ? "primary.800" : "white"}
+      bg="slate.10"
+      color="indigo.900"
       minH={minH}
       display="flex"
       flexDirection="column"
@@ -80,7 +77,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
                 fontSize="xs"
                 letterSpacing="0.18em"
                 textTransform="uppercase"
-                color={isLight ? "primary.700" : "primary.400"}
+                color="slate.50"
                 mb={6}
               >
                 {eyebrow}
@@ -91,10 +88,10 @@ export const PageHero: React.FC<PageHeroProps> = ({
               as="h1"
               fontFamily="heading"
               fontSize="clamp(52px, 6vw, 84px)"
-              fontWeight="normal"
+              fontWeight={350}
               lineHeight={1.04}
               letterSpacing="-0.025em"
-              color={isLight ? "primary.800" : "white"}
+              color="indigo.900"
               maxW="880px"
               m={0}
               mb={7}
@@ -102,20 +99,13 @@ export const PageHero: React.FC<PageHeroProps> = ({
               {headline}
             </Box>
 
-            {isLeft && (
-              <Box
-                h="1px"
-                bg={isLight ? "gray.300" : "whiteAlpha.500"}
-                w="72px"
-                mb={7}
-              />
-            )}
+            {isLeft && <Box h="1px" bg="slate.30" w="72px" mb={7} />}
 
             {subtext && (
               <Box
                 fontSize="lg"
                 lineHeight={1.45}
-                color={isLight ? "gray.500" : "whiteAlpha.800"}
+                color="slate.50"
                 maxW={subtextMaxW}
                 mb={9}
               >
@@ -124,14 +114,15 @@ export const PageHero: React.FC<PageHeroProps> = ({
             )}
 
             <Button
-              borderRadius="md"
-              bg={isLight ? "primary.700" : "white"}
-              color={isLight ? "white" : "primary.800"}
+              borderRadius={0}
+              bg="indigo.900"
+              color="slate.10"
               h={{ base: "44px", md: "42px" }}
-              px={6}
+              px={8}
+              fontFamily="body"
               fontSize="sm"
-              fontWeight="medium"
-              _hover={{ bg: isLight ? "primary.800" : "gray.50" }}
+              fontWeight="normal"
+              _hover={{ bg: "indigo.700" }}
               onClick={onCtaClick}
             >
               {ctaLabel}

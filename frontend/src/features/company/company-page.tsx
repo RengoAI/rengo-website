@@ -22,7 +22,7 @@ const MissionSection: React.FC = () => (
     bg="white"
     py={24}
     borderBottom="1px solid"
-    borderColor="border.muted"
+    borderColor="slate.30"
   >
     <PageContainer>
       <Box
@@ -39,7 +39,7 @@ const MissionSection: React.FC = () => (
             fontWeight="normal"
             lineHeight={1.04}
             letterSpacing="-0.035em"
-            color="primary.800"
+            color="indigo.900"
             maxW="620px"
             m={0}
           >
@@ -47,7 +47,7 @@ const MissionSection: React.FC = () => (
           </Box>
         </Box>
 
-        <Text fontSize="lg" lineHeight={1.75} color="gray.600" maxW="720px">
+        <Text fontSize="lg" lineHeight={1.75} color="ink.body" maxW="720px">
           Private markets have expanded into a mainstream part of global capital
           allocation, but the infrastructure supporting them has not kept pace.
           Rengo AI deploys AI agents that continuously transform raw investment
@@ -61,10 +61,10 @@ const MissionSection: React.FC = () => (
 const BuiltBySection: React.FC = () => (
   <Box
     as="section"
-    bg="gray.25"
+    bg="slate.10"
     py={24}
     borderBottom="1px solid"
-    borderColor="border.muted"
+    borderColor="slate.30"
   >
     <PageContainer>
       <Box maxW="680px" mb={16}>
@@ -75,13 +75,13 @@ const BuiltBySection: React.FC = () => (
           fontWeight="normal"
           lineHeight={1.06}
           letterSpacing="-0.03em"
-          color="primary.800"
+          color="indigo.900"
           m={0}
           mb={4}
         >
           From people behind leading products
         </Box>
-        <Text fontSize="md" lineHeight={1.65} color="gray.500" maxW="560px">
+        <Text fontSize="md" lineHeight={1.65} color="slate.50" maxW="560px">
           Experience from category-defining technology, financial services, and
           private markets companies.
         </Text>
@@ -98,7 +98,7 @@ const InvestorsSection: React.FC = () => (
     bg="white"
     py={24}
     borderBottom="1px solid"
-    borderColor="border.muted"
+    borderColor="slate.30"
   >
     <PageContainer>
       <Box maxW="680px" mb={16}>
@@ -109,13 +109,13 @@ const InvestorsSection: React.FC = () => (
           fontWeight="normal"
           lineHeight={1.06}
           letterSpacing="-0.03em"
-          color="primary.800"
+          color="indigo.900"
           m={0}
           mb={4}
         >
           Backed by investors
         </Box>
-        <Text fontSize="md" lineHeight={1.65} color="gray.500" maxW="560px">
+        <Text fontSize="md" lineHeight={1.65} color="slate.50" maxW="560px">
           Supported by venture investors and angels with experience across
           public markets, private markets, and financial data infrastructure.
         </Text>
@@ -126,7 +126,7 @@ const InvestorsSection: React.FC = () => (
         gridTemplateColumns={{ base: "1fr", lg: "repeat(2, 1fr)" }}
         borderTop="1px solid"
         borderLeft="1px solid"
-        borderColor="border.muted"
+        borderColor="slate.30"
       >
         {[
           ["Investors", INVESTORS],
@@ -137,13 +137,13 @@ const InvestorsSection: React.FC = () => (
             minH="156px"
             borderRight="1px solid"
             borderBottom="1px solid"
-            borderColor="border.muted"
+            borderColor="slate.30"
             p={8}
           >
             <Text
               fontFamily={EDICT}
               fontSize="xs"
-              color="gray.400"
+              color="slate.40"
               letterSpacing="0.12em"
               textTransform="uppercase"
               mb={3}
@@ -156,7 +156,7 @@ const InvestorsSection: React.FC = () => (
                   key={name}
                   as="span"
                   fontSize="lg"
-                  color="primary.700"
+                  color="indigo.700"
                   opacity={0.58}
                   fontWeight="normal"
                   letterSpacing="-0.01em"
@@ -194,7 +194,6 @@ export const CompanyPage: React.FC = () => {
         subtext="We're hiring across engineering and product."
         ctaLabel="View careers"
         onCtaClick={() => navigate(rootRoute({}).careers({}).$)}
-        tone="light"
         minH="auto"
         contentPt={24}
         contentPb={24}

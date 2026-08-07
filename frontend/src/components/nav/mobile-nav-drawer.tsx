@@ -65,7 +65,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
         right={0}
         zIndex={9999}
         bg="white"
-        color="primary.800"
+        color="indigo.900"
         borderBottomRadius="18px"
         overflow="hidden"
         boxShadow="overlay"
@@ -79,21 +79,21 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
           alignItems="center"
           justifyContent="space-between"
           borderBottom="1px solid"
-          borderColor="gray.100"
+          borderColor="slate.20"
         >
-          <Logo color="primary.700" homeLink />
+          <Logo color="indigo.700" homeLink />
           <Button
             variant="ghost"
             size="sm"
             aria-label="Close menu"
-            color="primary.800"
-            bg="gray.50"
+            color="indigo.900"
+            bg="slate.10"
             borderRadius="8px"
             w="44px"
             h="44px"
             minW="44px"
             p={0}
-            _hover={{ bg: "gray.100" }}
+            _hover={{ bg: "slate.20" }}
             onClick={() => onOpenChange(false)}
           >
             <X size={20} />
@@ -102,7 +102,11 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
         <VStack gap={0} alignItems="stretch">
           {navItems.map((item) =>
             item.children ? (
-              <Box key={item.label} borderBottom="1px solid" borderColor="gray.100">
+              <Box
+                key={item.label}
+                borderBottom="1px solid"
+                borderColor="slate.20"
+              >
                 <Text
                   px={5}
                   pt={4}
@@ -111,7 +115,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
                   fontWeight="medium"
                   letterSpacing="0.04em"
                   textTransform="uppercase"
-                  color="gray.500"
+                  color="slate.50"
                   m={0}
                 >
                   {item.label}
@@ -127,11 +131,11 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
                       px={5}
                       w="full"
                       borderRadius={0}
-                      color="primary.800"
+                      color="indigo.900"
                       fontSize="sm"
                       fontWeight="normal"
                       justifyContent="flex-start"
-                      _hover={{ bg: "gray.50" }}
+                      _hover={{ bg: "slate.10" }}
                       onClick={() => onNavigate(child.path)}
                     >
                       <Flex gap={3} align="flex-start" textAlign="left">
@@ -147,7 +151,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
                           {child.description && (
                             <Text
                               fontSize="12px"
-                              color="gray.500"
+                              color="slate.50"
                               lineHeight={1.4}
                               mt={1}
                               mb={0}
@@ -167,7 +171,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
               <Box
                 key={item.path}
                 borderBottom="1px solid"
-                borderColor="gray.100"
+                borderColor="slate.20"
               >
                 <Button
                   variant="ghost"
@@ -175,11 +179,11 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
                   px={5}
                   w="full"
                   borderRadius={0}
-                  color="primary.800"
+                  color="indigo.900"
                   fontSize="sm"
                   fontWeight="normal"
                   justifyContent="space-between"
-                  _hover={{ bg: "gray.50" }}
+                  _hover={{ bg: "slate.10" }}
                   onClick={() => item.path && onNavigate(item.path)}
                 >
                   {item.label}
@@ -192,11 +196,11 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
               w="full"
               h="44px"
               borderRadius="8px"
-              bg="primary.700"
+              bg="indigo.700"
               color="white"
               fontSize="sm"
               fontWeight="normal"
-              _hover={{ bg: "primary.800" }}
+              _hover={{ bg: "indigo.900" }}
               onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
             >
               See a demo

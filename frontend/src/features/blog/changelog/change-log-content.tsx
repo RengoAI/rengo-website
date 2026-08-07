@@ -34,7 +34,7 @@ const ChangeMonthSection: React.FC<{
     >
       <Accordion.Item value={month + year}>
         <Accordion.ItemTrigger>
-          <Text fontSize="2xl" fontWeight="bold" color="gray.900">
+          <Text fontSize="2xl" fontWeight="bold" color="indigo.900">
             {month} {year}
           </Text>
           <Accordion.ItemIndicator />
@@ -58,7 +58,7 @@ const ChangeMonthSection: React.FC<{
                     bg: "white",
                     cursor: "pointer",
                     borderBottom: "1px solid",
-                    borderColor: "primary.200",
+                    borderColor: "slate.40",
                   }}
                   transition="background 0.2s"
                   borderBottom={
@@ -66,14 +66,14 @@ const ChangeMonthSection: React.FC<{
                       ? "none"
                       : "1px solid"
                   }
-                  borderColor="gray.200"
+                  borderColor="slate.30"
                   p={4}
                 >
                   <HStack gap={4} align="flex-start" mb={3}>
                     <Text
                       fontSize="sm"
                       fontWeight="medium"
-                      color="gray.600"
+                      color="ink.body"
                       minW="50px"
                     >
                       {entry.date.day} {entry.date.month} {entry.date.year}
@@ -95,7 +95,7 @@ const ChangeMonthSection: React.FC<{
                     <Text
                       fontSize="lg"
                       fontWeight="medium"
-                      color="gray.900"
+                      color="indigo.900"
                       display="block"
                       mb={3}
                       lineHeight="1.4"
