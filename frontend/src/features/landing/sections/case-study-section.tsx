@@ -130,35 +130,3 @@ export const CaseStudySection: React.FC = () => (
     </Box>
   </Box>
 );
-
-const TRUST_ITEMS = [{ title: "SOC2 TypeII" }] as const;
-
-export const TrustStrip: React.FC = () => (
-  <Flex
-    as="section"
-    w="full"
-    align="center"
-    justify="center"
-    borderTop="1px solid"
-    borderBottom="1px solid"
-    borderColor="slate.30"
-    px={{ base: 6, md: "60px" }}
-    py={{ base: 10, md: 14 }}
-  >
-    {TRUST_ITEMS.map((item) => (
-      <Text
-        key={item.title}
-        fontFamily="heading"
-        fontWeight={350}
-        fontSize="24px"
-        lineHeight={1.1}
-        letterSpacing="-1px"
-        textAlign="center"
-        color="ink.muted"
-        m={0}
-      >
-        {item.title}
-      </Text>
-    ))}
-  </Flex>
-);

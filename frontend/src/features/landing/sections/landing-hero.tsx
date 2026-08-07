@@ -117,14 +117,15 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
         </Box>
 
         <Text
-          fontFamily="body"
+          fontFamily="heading"
+          fontWeight={300}
           fontSize="16px"
           lineHeight={1.4}
-          color="indigo.700"
+          color="slate.50"
           maxW="420px"
           m={0}
         >
-          Rengo AI will help you put your data to work
+          Deploy AI to put your data to work
         </Text>
       </Flex>
 

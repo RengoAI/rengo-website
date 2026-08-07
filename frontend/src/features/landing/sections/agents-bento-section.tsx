@@ -135,13 +135,11 @@ export const AgentsBentoSection: React.FC = () => (
         maxW="648px"
         m={0}
       >
-        Build your{" "}
-        <Box as="span" color="accent.link">
-          AI Advantage
-        </Box>
-        .
+        Build your AI Advantage
         <br />
-        Let agents execute recurring workflows.
+        <Box as="span" color="slate.50" fontWeight={300}>
+          Turn proprietary knowledge into operating leverage
+        </Box>
       </Box>
 
       <Grid
