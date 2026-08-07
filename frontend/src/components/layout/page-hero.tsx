@@ -1,8 +1,13 @@
-import { PageContainer } from "@/components/layout/page-container";
+import {
+  ctaButtonHoverWithArrowProps,
+  ButtonArrowLabel,
+} from "@/components/ui/button-arrow-label";
+import {
+  MARKETING_GUTTER_WIDTH,
+  marketingContentPaddingX,
+} from "@/components/layout/marketing-frame";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import React from "react";
-
-const EDICT = '"Space Mono", SFMono-Regular, ui-monospace, monospace';
 
 interface PageHeroProps {
   headline: React.ReactNode;
@@ -10,12 +15,18 @@ interface PageHeroProps {
   ctaLabel: string;
   onCtaClick: () => void;
   eyebrow?: string;
-  align?: "left" | "center";
   subtextMaxW?: string;
   background?: React.ReactNode;
-  minH?: string;
-  contentPt?: string | number;
-  contentPb?: string | number;
+  /** Default matches landing hero; use `"auto"` for compact bands. */
+  minH?: string | { base?: string; md?: string; lg?: string };
+  contentPt?:
+    | string
+    | number
+    | { base?: string | number; lg?: string | number };
+  contentPb?:
+    | string
+    | number
+    | { base?: string | number; lg?: string | number };
 }
 
 export const PageHero: React.FC<PageHeroProps> = ({
@@ -24,14 +35,13 @@ export const PageHero: React.FC<PageHeroProps> = ({
   ctaLabel,
   onCtaClick,
   eyebrow,
-  align = "center",
   subtextMaxW = "480px",
   background,
-  minH = "100vh",
-  contentPt = 20,
-  contentPb = 12,
+  minH = { base: "auto", lg: "702px" },
+  contentPt = { base: 32, lg: 0 },
+  contentPb = { base: 20, lg: "223px" },
 }) => {
-  const isLeft = align === "left";
+  const isCompact = minH === "auto";
 
   return (
     <Box
@@ -41,7 +51,8 @@ export const PageHero: React.FC<PageHeroProps> = ({
       color="indigo.900"
       minH={minH}
       display="flex"
-      flexDirection="column"
+      alignItems="stretch"
+      overflow="hidden"
     >
       {background && (
         <Box
@@ -54,82 +65,96 @@ export const PageHero: React.FC<PageHeroProps> = ({
         </Box>
       )}
 
+      <Box
+        display={{ base: "none", md: "block" }}
+        w={MARKETING_GUTTER_WIDTH}
+        flexShrink={0}
+        borderRight="1px solid"
+        borderColor="slate.30"
+      />
+
       <Flex
         position="relative"
-        zIndex={2}
-        flex={1}
+        zIndex={1}
+        flex="1"
         direction="column"
-        justify="center"
-        align="stretch"
+        justify={isCompact ? "center" : { base: "center", lg: "flex-end" }}
+        gap={7}
+        px={marketingContentPaddingX}
         pt={contentPt}
         pb={contentPb}
       >
-        <PageContainer>
-          <Box
-            display="flex"
-            flexDirection="column"
-            textAlign={isLeft ? "left" : "center"}
-            alignItems={isLeft ? "flex-start" : "center"}
-          >
-            {eyebrow && (
-              <Text
-                fontFamily={EDICT}
-                fontSize="xs"
-                letterSpacing="0.18em"
-                textTransform="uppercase"
-                color="slate.50"
-                mb={6}
-              >
-                {eyebrow}
-              </Text>
-            )}
-
-            <Box
-              as="h1"
-              fontFamily="heading"
-              fontSize="clamp(52px, 6vw, 84px)"
-              fontWeight={350}
-              lineHeight={1.04}
-              letterSpacing="-0.025em"
-              color="indigo.900"
-              maxW="880px"
+        <Flex direction="column" gap={3} align="flex-start" w="full">
+          {eyebrow && (
+            <Text
+              fontFamily="mono"
+              fontSize="xs"
+              letterSpacing="0.18em"
+              textTransform="uppercase"
+              color="slate.50"
               m={0}
-              mb={7}
             >
-              {headline}
-            </Box>
+              {eyebrow}
+            </Text>
+          )}
 
-            {isLeft && <Box h="1px" bg="slate.30" w="72px" mb={7} />}
-
-            {subtext && (
-              <Box
-                fontSize="lg"
-                lineHeight={1.45}
-                color="slate.50"
-                maxW={subtextMaxW}
-                mb={9}
-              >
-                {subtext}
-              </Box>
-            )}
-
-            <Button
-              borderRadius={0}
-              bg="indigo.900"
-              color="slate.10"
-              h={{ base: "44px", md: "42px" }}
-              px={8}
-              fontFamily="body"
-              fontSize="sm"
-              fontWeight="normal"
-              _hover={{ bg: "indigo.700" }}
-              onClick={onCtaClick}
-            >
-              {ctaLabel}
-            </Button>
+          <Box
+            as="h1"
+            fontFamily="heading"
+            fontWeight={350}
+            fontSize={{ base: "40px", lg: "50px" }}
+            lineHeight={{ base: "44px", lg: "52px" }}
+            letterSpacing="-2px"
+            color="indigo.900"
+            maxW={{ base: "100%", lg: "560px" }}
+            m={0}
+            textAlign="left"
+          >
+            {headline}
           </Box>
-        </PageContainer>
+
+          {subtext && (
+            <Text
+              fontFamily="heading"
+              fontWeight={300}
+              fontSize="18px"
+              lineHeight="24px"
+              color="slate.50"
+              maxW={subtextMaxW}
+              m={0}
+              textAlign="left"
+            >
+              {subtext}
+            </Text>
+          )}
+        </Flex>
+
+        <Button
+          alignSelf="flex-start"
+          bg="indigo.900"
+          color="slate.10"
+          borderRadius={0}
+          px={8}
+          py={3.5}
+          h="auto"
+          fontFamily="body"
+          fontSize="14px"
+          fontWeight="normal"
+          lineHeight="21px"
+          onClick={onCtaClick}
+          {...ctaButtonHoverWithArrowProps}
+        >
+          <ButtonArrowLabel>{ctaLabel}</ButtonArrowLabel>
+        </Button>
       </Flex>
+
+      <Box
+        display={{ base: "none", md: "block" }}
+        w={MARKETING_GUTTER_WIDTH}
+        flexShrink={0}
+        borderLeft="1px solid"
+        borderColor="slate.30"
+      />
     </Box>
   );
 };

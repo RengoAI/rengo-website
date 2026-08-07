@@ -1,5 +1,4 @@
 import { ctaButtonHoverProps } from "@/components/ui/button-arrow-label";
-import { rootRoute } from "@/app/app-routes";
 import { Logo } from "@/components/logo/logo";
 import { MobileNavDrawer } from "@/components/nav/mobile-nav-drawer";
 import {
@@ -9,10 +8,10 @@ import {
 import {
   TOP_NAV_HEIGHT,
   topNavCtaStyles,
-  topNavLinkStyles,
   topNavRowProps,
 } from "@/components/nav/nav-styles";
-import { SolutionsNavMenu } from "@/components/nav/solutions-nav-menu";
+import { NavDropdownMenu } from "@/components/nav/nav-dropdown-menu";
+import { COMPANY_LINKS } from "@/features/company/company-links";
 import { SOLUTIONS } from "@/features/solutions/solutions";
 import { Box, Button, Flex, IconButton } from "@chakra-ui/react";
 import { Menu } from "lucide-react";
@@ -46,7 +45,15 @@ export const AppTopNav: React.FC = () => {
         icon: solution.icon,
       })),
     },
-    { label: "Company", path: rootRoute({}).company({}).$ },
+    {
+      label: "Resources",
+      children: COMPANY_LINKS.map((link) => ({
+        label: link.title,
+        path: link.path,
+        description: link.description,
+        icon: link.icon,
+      })),
+    },
   ];
 
   return (
@@ -85,19 +92,18 @@ export const AppTopNav: React.FC = () => {
               display={{ base: "none", md: "flex" }}
               align="center"
             >
-              <SolutionsNavMenu
+              <NavDropdownMenu
+                label="Solutions"
+                items={SOLUTIONS}
                 navColor={navColor}
                 navHoverColor={navHoverColor}
               />
-              <Button
-                variant="ghost"
-                color={navColor}
-                _hover={{ bg: "transparent", color: navHoverColor }}
-                onClick={() => navigate(rootRoute({}).company({}).$)}
-                {...topNavLinkStyles}
-              >
-                Company
-              </Button>
+              <NavDropdownMenu
+                label="Resources"
+                items={COMPANY_LINKS}
+                navColor={navColor}
+                navHoverColor={navHoverColor}
+              />
             </Flex>
 
             {/* Desktop CTAs */}

@@ -1,5 +1,8 @@
+import {
+  MARKETING_GUTTER_WIDTH,
+  marketingContentPaddingX,
+} from "@/components/layout/marketing-frame";
 import { rootRoute } from "@/app/app-routes";
-import { PageContainer } from "@/components/layout/page-container";
 import { Logo } from "@/components/logo/logo";
 import { SOLUTIONS } from "@/features/solutions/solutions";
 import { Box, Flex, Text } from "@chakra-ui/react";
@@ -44,77 +47,97 @@ const FooterLink: React.FC<{
 };
 
 export const AppFooter: React.FC = () => (
-  <Box as="footer" bg="slate.10" color="indigo.900" pt={16} pb={10}>
-    <PageContainer>
-      <Flex
-        justify="space-between"
-        align="flex-start"
-        w="full"
-        flexWrap="wrap"
-        gapX={16}
-        gapY={12}
-      >
-        <Box flexShrink={0}>
-          <Logo color="indigo.900" homeLink />
-        </Box>
+  <Box
+    as="footer"
+    bg="slate.10"
+    color="indigo.900"
+    borderTop="1px solid"
+    borderColor="slate.30"
+    pt={16}
+    pb={10}
+  >
+    <Flex w="full" align="stretch">
+      <Box
+        display={{ base: "none", md: "block" }}
+        w={MARKETING_GUTTER_WIDTH}
+        flexShrink={0}
+      />
+      <Box flex="1" minW={0} px={marketingContentPaddingX}>
+        <Flex
+          justify="space-between"
+          align="flex-start"
+          w="full"
+          flexWrap="wrap"
+          gapX={16}
+          gapY={12}
+        >
+          <Box flexShrink={0}>
+            <Logo color="indigo.900" homeLink />
+          </Box>
+
+          <Flex
+            flex="1"
+            justify={{ base: "flex-start", lg: "flex-end" }}
+            align="flex-start"
+            flexWrap="wrap"
+            gapX={{ base: 14, md: 24 }}
+            gapY={10}
+            minW={{ base: "min(100%, 280px)", lg: 0 }}
+          >
+            <FooterCol title="Solutions">
+              {SOLUTIONS.map((solution) => (
+                <FooterLink key={solution.id} to={solution.path}>
+                  {solution.title}
+                </FooterLink>
+              ))}
+            </FooterCol>
+
+            <FooterCol title="Company">
+              <FooterLink to={rootRoute({}).company({}).$}>About</FooterLink>
+              <FooterLink to={rootRoute({}).careers({}).$}>Careers</FooterLink>
+            </FooterCol>
+
+            <FooterCol title="Legal">
+              <FooterLink to={rootRoute({}).legal({}).privacyPolicy({}).$}>
+                Privacy Policy
+              </FooterLink>
+              <FooterLink to={rootRoute({}).legal({}).termsOfService({}).$}>
+                Terms of Service
+              </FooterLink>
+            </FooterCol>
+
+            <FooterCol title="Contact">
+              <FooterLink href="https://www.linkedin.com/company/106703002">
+                LinkedIn
+              </FooterLink>
+              <FooterLink href="mailto:sales@rengoai.com">Sales</FooterLink>
+            </FooterCol>
+          </Flex>
+        </Flex>
 
         <Flex
-          flex="1"
-          justify={{ base: "flex-start", lg: "flex-end" }}
-          align="flex-start"
+          mt={24}
+          align={{ base: "flex-start", sm: "center" }}
+          justify="flex-end"
           flexWrap="wrap"
-          gapX={{ base: 14, md: 24 }}
-          gapY={10}
-          minW={{ base: "min(100%, 280px)", lg: 0 }}
+          gapY={4}
         >
-          <FooterCol title="Solutions">
-            {SOLUTIONS.map((solution) => (
-              <FooterLink key={solution.id} to={solution.path}>
-                {solution.title}
-              </FooterLink>
-            ))}
-          </FooterCol>
-
-          <FooterCol title="Company">
-            <FooterLink to={rootRoute({}).company({}).$}>About</FooterLink>
-            <FooterLink to={rootRoute({}).careers({}).$}>Careers</FooterLink>
-          </FooterCol>
-
-          <FooterCol title="Legal">
-            <FooterLink to={rootRoute({}).legal({}).privacyPolicy({}).$}>
-              Privacy Policy
-            </FooterLink>
-            <FooterLink to={rootRoute({}).legal({}).termsOfService({}).$}>
-              Terms of Service
-            </FooterLink>
-          </FooterCol>
-
-          <FooterCol title="Contact">
-            <FooterLink href="https://www.linkedin.com/company/106703002">
-              LinkedIn
-            </FooterLink>
-            <FooterLink href="mailto:sales@rengoai.com">Sales</FooterLink>
-          </FooterCol>
+          <Text
+            fontSize="xs"
+            color="slate.50"
+            lineHeight="short"
+            m={0}
+            textAlign="right"
+          >
+            © 2026 Rengo AI, Inc. All rights reserved.
+          </Text>
         </Flex>
-      </Flex>
-
-      <Flex
-        mt={24}
-        align={{ base: "flex-start", sm: "center" }}
-        justify="flex-end"
-        flexWrap="wrap"
-        gapY={4}
-      >
-        <Text
-          fontSize="xs"
-          color="slate.50"
-          lineHeight="short"
-          m={0}
-          textAlign="right"
-        >
-          © 2026 Rengo AI, Inc. All rights reserved.
-        </Text>
-      </Flex>
-    </PageContainer>
+      </Box>
+      <Box
+        display={{ base: "none", md: "block" }}
+        w={MARKETING_GUTTER_WIDTH}
+        flexShrink={0}
+      />
+    </Flex>
   </Box>
 );

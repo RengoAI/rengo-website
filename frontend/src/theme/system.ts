@@ -60,7 +60,7 @@ const config = defineConfig({
     },
     // Footer link styles using token CSS variables
     ".footer-link": {
-      color: "var(--rengo-colors-indigo-700)",
+      color: "var(--rengo-colors-slate-50)",
       textDecoration: "none",
       fontSize: "14px",
       lineHeight: "20px",
@@ -69,7 +69,7 @@ const config = defineConfig({
       display: "block",
     },
     ".footer-link:hover": {
-      color: "var(--rengo-colors-indigo-900)",
+      color: "var(--rengo-colors-ink-body)",
     },
     // React-PDF styling to match provided HTML/CSS example
     ".react-pdf__Document": {

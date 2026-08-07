@@ -1,16 +1,27 @@
 import { topNavLinkStyles } from "@/components/nav/nav-styles";
-import { SOLUTIONS } from "@/features/solutions/solutions";
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, type LucideIcon } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-interface SolutionsNavMenuProps {
+export interface NavDropdownItem {
+  id: string;
+  title: string;
+  description: string;
+  path: string;
+  icon: LucideIcon;
+}
+
+interface NavDropdownMenuProps {
+  label: string;
+  items: readonly NavDropdownItem[];
   navColor: string;
   navHoverColor: string;
 }
 
-export const SolutionsNavMenu: React.FC<SolutionsNavMenuProps> = ({
+export const NavDropdownMenu: React.FC<NavDropdownMenuProps> = ({
+  label,
+  items,
   navColor,
   navHoverColor,
 }) => {
@@ -83,7 +94,7 @@ export const SolutionsNavMenu: React.FC<SolutionsNavMenuProps> = ({
         onClick={() => setOpen((value) => !value)}
         {...topNavLinkStyles}
       >
-        Solutions
+        {label}
         <Box
           as="span"
           display="inline-flex"
@@ -113,11 +124,11 @@ export const SolutionsNavMenu: React.FC<SolutionsNavMenuProps> = ({
           onMouseLeave={scheduleClose}
         >
           <Flex direction="column" gap={1}>
-            {SOLUTIONS.map((solution) => {
-              const Icon = solution.icon;
+            {items.map((item) => {
+              const Icon = item.icon;
               return (
                 <Box
-                  key={solution.id}
+                  key={item.id}
                   asChild
                   w="full"
                   textAlign="left"
@@ -127,7 +138,7 @@ export const SolutionsNavMenu: React.FC<SolutionsNavMenuProps> = ({
                   _hover={{ bg: itemHoverBg, textDecoration: "none" }}
                 >
                   <Link
-                    to={solution.path}
+                    to={item.path}
                     role="menuitem"
                     onClick={() => setOpen(false)}
                   >
@@ -149,7 +160,7 @@ export const SolutionsNavMenu: React.FC<SolutionsNavMenuProps> = ({
                           color={titleColor}
                           m={0}
                         >
-                          {solution.title}
+                          {item.title}
                         </Text>
                         <Text
                           fontFamily="body"
@@ -160,7 +171,7 @@ export const SolutionsNavMenu: React.FC<SolutionsNavMenuProps> = ({
                           mb={0}
                           mx={0}
                         >
-                          {solution.description}
+                          {item.description}
                         </Text>
                       </Box>
                     </Flex>

@@ -11,7 +11,7 @@ interface CtaSectionProps {
 }
 
 export const CtaSection: React.FC<CtaSectionProps> = ({ onTalkToSales }) => (
-  <SectionShell borderY bg="slate.10" py={{ base: 16, md: "80px" }}>
+  <SectionShell borderTop bg="slate.10" py={{ base: 16, md: "80px" }}>
     <Flex
       direction={{ base: "column", md: "row" }}
       align={{ base: "flex-start", md: "center" }}
