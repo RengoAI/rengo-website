@@ -1,89 +1,72 @@
+import { ConnectSystemsArt } from "@/features/landing/sections/connect-systems-art";
 import { Box, Grid, GridItem, Image, Text } from "@chakra-ui/react";
 import React from "react";
 import { SectionShell } from "./section-shell";
 
 /**
- * Access / roles illustration — same chrome as Review Bot (slate panel, mono
- * label, indigo accent), with a Mintlify-style role list: dimmed peers and a
- * highlighted Admin row.
+ * Access / roles illustration — centered in tile; role labels right-aligned.
  */
 const ACCESS_ROLES = [
-  { role: "Viewer", active: false, offsetX: 0 },
-  { role: "Admin", active: true, offsetX: 4 },
-  { role: "Editor", active: false, offsetX: 8 },
+  { role: "Viewer" },
+  { role: "Admin", outlined: true },
+  { role: "Editor" },
 ] as const;
 
 const AccessRolesArt: React.FC = () => (
-  <Box
-    w="full"
-    maxW="240px"
-    mx="auto"
-    px={1}
-    py={2}
-    aria-hidden
-  >
-    <Box display="flex" flexDirection="column" gap={2}>
+  <Box w="full" maxW="240px" mx="auto" px={1} py={2} aria-hidden>
+    <Box display="flex" flexDirection="column" gap={2} alignItems="stretch">
       {ACCESS_ROLES.map((person) => (
         <Box
           key={person.role}
           display="flex"
           alignItems="center"
-          justifyContent="space-between"
-          gap={2}
+          gap={2.5}
           w="full"
-          maxW={`calc(100% - ${person.offsetX}px)`}
-          ml={`${person.offsetX}px`}
-          px={person.active ? 3 : 2.5}
-          py={person.active ? 2.5 : 2}
+          px={3}
+          py={2.5}
           borderRadius="6px"
           border="1px solid"
-          borderColor={person.active ? "indigo.700" : "slate.30"}
-          bg={person.active ? "white" : "slate.10"}
-          boxShadow={
-            person.active ? "0 6px 20px rgba(33, 48, 68, 0.08)" : "none"
+          borderColor={
+            "outlined" in person && person.outlined ? "indigo.700" : "slate.30"
           }
+          bg="white"
         >
-          <Box display="flex" alignItems="center" gap={2.5} minW={0} flex="1">
-            <Box
-              w={person.active ? "18px" : "16px"}
-              h={person.active ? "18px" : "16px"}
-              borderRadius="full"
-              flexShrink={0}
-              bg={person.active ? "indigo.700" : "slate.40"}
-            />
-            <Box
-              h="6px"
-              flex="1"
-              maxW={person.active ? "80px" : "56px"}
-              bg={person.active ? "indigo.700" : "slate.40"}
-              opacity={person.active ? 0.4 : 0.85}
-            />
-          </Box>
-          <Box display="flex" alignItems="center" gap={1.5} flexShrink={0}>
-            <Box
-              w="4px"
-              h="4px"
-              borderRadius="full"
-              bg={person.active ? "indigo.700" : "slate.50"}
-            />
-            <Text
-              fontFamily="mono"
-              fontSize="8px"
-              letterSpacing="0.6px"
-              textTransform="uppercase"
-              color={person.active ? "indigo.700" : "ink.body"}
-              m={0}
-            >
-              {person.role}
-            </Text>
-          </Box>
+          <Box
+            w="16px"
+            h="16px"
+            borderRadius="full"
+            flexShrink={0}
+            bg="slate.40"
+          />
+          <Box
+            h="6px"
+            flex="1"
+            minW={0}
+            maxW="72px"
+            bg="slate.40"
+            opacity={0.85}
+          />
+          <Text
+            fontFamily="body"
+            fontSize="11px"
+            fontWeight="medium"
+            lineHeight="14px"
+            letterSpacing="-0.2px"
+            color="indigo.700"
+            m={0}
+            ml="auto"
+            flexShrink={0}
+            textAlign="right"
+          >
+            {person.role}
+          </Text>
         </Box>
       ))}
     </Box>
   </Box>
 );
 
-type TileArt = { kind: "image"; src: string } | { kind: "roles" };
+type TileArt = { kind: "image"; src: string } | { kind: "roles" } | { kind: "systems" };
 
 const TILES: {
   label: string;
@@ -110,8 +93,8 @@ const TILES: {
     row: "2",
   },
   {
-    label: "Wire directly into Claude, Copilot, or your own tools",
-    art: { kind: "image", src: "/landing/bento-iso-d.svg" },
+    label: "Connect with your systems",
+    art: { kind: "systems" },
     col: "5 / span 4",
     row: "2",
   },
@@ -173,9 +156,12 @@ export const AgentsBentoSection: React.FC = () => (
               alignItems="center"
               justifyContent="center"
               minH={0}
+              w="full"
             >
               {tile.art.kind === "roles" ? (
                 <AccessRolesArt />
+              ) : tile.art.kind === "systems" ? (
+                <ConnectSystemsArt />
               ) : (
                 <Image
                   src={tile.art.src}
