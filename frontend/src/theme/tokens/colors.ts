@@ -232,6 +232,45 @@ export const colors = defineTokens.colors({
   brand: {
     highlight: { value: "#3B8BE0" },
   },
+  // Marketing site palette (Figma: Rengo Marketing Site)
+  indigo: {
+    // Indigo1 — primary headline / ink
+    900: { value: "#213044" },
+    // Indigo2 — secondary body / accent ink
+    700: { value: "#124476" },
+  },
+  // Neutral ramp for marketing surfaces (Figma greys)
+  slate: {
+    10: { value: "#f5f5f6" },
+    20: { value: "#eaedee" },
+    30: { value: "#d3dde1" },
+    40: { value: "#a9b7c6" },
+    50: { value: "#768ca6" },
+  },
+  // Accent used for emphasized phrases in headlines
+  accent: {
+    link: { value: "#0071e3" },
+    onDark: { value: "#3298eb" },
+  },
+  // Muted ink used by the trust/compliance strip
+  ink: {
+    muted: { value: "#303e62" },
+    body: { value: "#425366" },
+  },
+  // Dark panel surfaces (case study + CTA sections)
+  panel: {
+    900: { value: "#0d1d2c" },
+    800: { value: "#102137" },
+    700: { value: "#163655" },
+    border: { value: "#384771" },
+    hairline: { value: "#4c5268" },
+    footerBorder: { value: "#223857" },
+    fg: { value: "#e5e6e7" },
+    fgMuted: { value: "#97aec8" },
+    fgSubtle: { value: "#8999ac" },
+    link: { value: "#5a6a8a" },
+    copyright: { value: "#3a4a6a" },
+  },
   drawerOverlay: { value: rgba(0, 0, 0, 0.05) },
   // Modern gradients using existing color palette
   gradients: {

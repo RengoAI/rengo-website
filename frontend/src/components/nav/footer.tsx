@@ -45,12 +45,12 @@ const FooterLink: React.FC<{
 export const AppFooter: React.FC = () => (
   <Box
     as="footer"
-    bg="primary.800"
+    bg="panel.900"
     color="white"
     pt={16}
     pb={10}
     borderTopWidth="1px"
-    borderTopColor="whiteAlpha.200"
+    borderTopColor="panel.footerBorder"
   >
     <PageContainer>
       <Flex

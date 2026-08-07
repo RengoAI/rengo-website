@@ -8,8 +8,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 export const TOP_NAV_HEIGHT = 64;
 
+// The landing hero is light under the marketing refresh, so `/` is
+// deliberately absent here — it uses the light nav treatment instead.
 const DARK_HERO_PATHS = [
-  rootRoute({}).$,
   rootRoute({}).security({}).$,
   rootRoute({}).careers({}).$,
   rootRoute({}).company({}).$,
@@ -37,8 +38,8 @@ export const AppTopNav: React.FC = () => {
     setDrawerOpen(false);
   }, [location.pathname]);
 
-  const navColor = overHero ? "whiteAlpha.900" : "gray.700";
-  const navHoverColor = overHero ? "whiteAlpha.500" : "primary.800";
+  const navColor = overHero ? "whiteAlpha.900" : "indigo.900";
+  const navHoverColor = overHero ? "whiteAlpha.500" : "indigo.700";
 
   const navItems = [
     {
@@ -59,8 +60,8 @@ export const AppTopNav: React.FC = () => {
         right={0}
         zIndex={100}
         borderBottom="1px solid"
-        borderColor={overHero ? "whiteAlpha.100" : "border.muted"}
-        bg={overHero ? "primary.800" : "white"}
+        borderColor={overHero ? "whiteAlpha.100" : "slate.30"}
+        bg={overHero ? "primary.800" : "slate.10"}
         style={{ transition: "background 200ms ease, border-color 200ms ease" }}
       >
         <Box
@@ -73,7 +74,7 @@ export const AppTopNav: React.FC = () => {
           justifyContent="space-between"
           w="full"
         >
-          <Logo color={overHero ? "white" : "primary.700"} homeLink />
+          <Logo color={overHero ? "white" : "indigo.900"} homeLink />
 
           {/* Desktop nav */}
           <Flex as="nav" gap={1} display={{ base: "none", md: "flex" }}>
@@ -107,14 +108,15 @@ export const AppTopNav: React.FC = () => {
               Log in
             </Button>
             <Button
-              borderRadius="md"
-              bg={overHero ? "white" : "primary.700"}
-              color={overHero ? "primary.800" : "white"}
+              borderRadius="4px"
+              bg={overHero ? "white" : "indigo.900"}
+              color={overHero ? "primary.800" : "slate.10"}
               size="xs"
-              _hover={{ bg: overHero ? "gray.100" : "primary.800" }}
+              fontWeight="normal"
+              _hover={{ bg: overHero ? "gray.100" : "indigo.700" }}
               onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
             >
-              See a demo
+              Request Access
             </Button>
           </Flex>
 
