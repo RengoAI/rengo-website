@@ -10,6 +10,8 @@ interface SectionShellProps extends React.PropsWithChildren {
   borderTop?: boolean;
   /** Full-width top + bottom rules (Mintlify-style CTA frame). */
   borderY?: boolean;
+  /** Horizontal padding on the content column. Defaults to marketing gutters. */
+  px?: false | typeof marketingContentPaddingX | Record<string, number | string> | number | string;
   bg?: string;
   py?: Record<string, number | string> | number | string;
 }
@@ -22,6 +24,7 @@ export const SectionShell: React.FC<SectionShellProps> = ({
   children,
   borderTop = false,
   borderY = false,
+  px = marketingContentPaddingX,
   bg,
   py = { base: 16, md: 20 },
 }) => {
@@ -48,7 +51,7 @@ export const SectionShell: React.FC<SectionShellProps> = ({
       <Box
         flex="1"
         minW={0}
-        px={marketingContentPaddingX}
+        px={px === false ? 0 : px}
         py={py}
         borderLeft={{ base: "1px solid", md: "none" }}
         borderRight={{ base: "1px solid", md: "none" }}

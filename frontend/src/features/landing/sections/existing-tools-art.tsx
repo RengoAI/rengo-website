@@ -1,7 +1,5 @@
-import { AccessRolesArt } from "@/features/landing/sections/access-roles-art";
 import { BentoIsoImage } from "@/features/landing/sections/bento-iso-image";
-import { ConnectSystemsArt } from "@/features/landing/sections/connect-systems-art";
-import { Box, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import React from "react";
 
 type ExistingToolsArtProps = {
@@ -10,8 +8,8 @@ type ExistingToolsArtProps = {
 };
 
 /**
- * Mosaic of the same visual blocks used across the landing bento grid —
- * iso blocks, vendor connectors, and access roles — instead of a one-off illustration.
+ * Mosaic of the visual blocks used across the landing bento grid —
+ * iso product illustrations instead of a one-off graphic.
  */
 export const ExistingToolsArt: React.FC<ExistingToolsArtProps> = ({
   size = "tile",
@@ -33,49 +31,24 @@ export const ExistingToolsArt: React.FC<ExistingToolsArtProps> = ({
       alignItems="center"
       justifyContent="center"
     >
-      <Grid
-        templateColumns="repeat(2, minmax(0, 1fr))"
-        templateRows="repeat(2, minmax(0, 1fr))"
-        gap={isSpotlight ? 4 : 3}
+      <Flex
+        align="center"
+        justify="center"
+        gap={isSpotlight ? 8 : 6}
         w="full"
         maxW={isSpotlight ? "380px" : "320px"}
-        alignItems="center"
-        justifyItems="center"
       >
-        <GridItem
-          w="full"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <BentoIsoImage
-            src="/landing/bento-iso-b.svg"
-            maxH={isoMaxH}
-            maxW={isoMaxW}
-          />
-        </GridItem>
-
-        <GridItem w="full">
-          <ConnectSystemsArt variant={isSpotlight ? "tile" : "compact"} />
-        </GridItem>
-
-        <GridItem w="full" display="flex" justifyContent="center">
-          <AccessRolesArt variant={isSpotlight ? "tile" : "compact"} />
-        </GridItem>
-
-        <GridItem
-          w="full"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <BentoIsoImage
-            src="/landing/bento-iso-a.svg"
-            maxH={isoMaxH}
-            maxW={isoMaxW}
-          />
-        </GridItem>
-      </Grid>
+        <BentoIsoImage
+          src="/landing/bento-iso-b.svg"
+          maxH={isoMaxH}
+          maxW={isoMaxW}
+        />
+        <BentoIsoImage
+          src="/landing/bento-iso-a.svg"
+          maxH={isoMaxH}
+          maxW={isoMaxW}
+        />
+      </Flex>
     </Box>
   );
 };
