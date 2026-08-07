@@ -25,7 +25,7 @@ export const FoundersSection: React.FC = () => (
           m={0}
           mb={4}
         >
-          We know the work
+          We&apos;re a team of builders
         </Box>
         <Text fontSize="md" lineHeight={1.65} color="slate.50" maxW="560px" m={0}>
           Our team brings experience across asset-management workflows and

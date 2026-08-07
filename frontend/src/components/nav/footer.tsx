@@ -93,7 +93,6 @@ export const AppFooter: React.FC = () => (
             </FooterCol>
 
             <FooterCol title="Company">
-              <FooterLink to={rootRoute({}).company({}).$}>About</FooterLink>
               <FooterLink to={rootRoute({}).careers({}).$}>Careers</FooterLink>
             </FooterCol>
 
