@@ -174,9 +174,7 @@ export const AgentsBentoSection: React.FC = () => (
               flex="1"
               display="flex"
               alignItems="center"
-              justifyContent={
-                tile.art.kind === "roles" ? "stretch" : "center"
-              }
+              justifyContent={tile.art.kind === "roles" ? "stretch" : "center"}
               minH={0}
               w="full"
             >

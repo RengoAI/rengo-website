@@ -1,10 +1,9 @@
 import { PageContainer } from "@/components/layout/page-container";
-import { PageHero } from "@/components/layout/page-hero";
 import { TeamLogoGrid } from "@/components/team-logo-grid";
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 
-const BuiltBySection: React.FC = () => (
+export const FoundersSection: React.FC = () => (
   <Box
     as="section"
     bg="slate.10"
@@ -14,7 +13,7 @@ const BuiltBySection: React.FC = () => (
     borderColor="slate.30"
   >
     <PageContainer>
-      <Box maxW="700px" mb={16}>
+      <Box maxW="720px" mb={16}>
         <Box
           as="h2"
           fontFamily="heading"
@@ -26,27 +25,15 @@ const BuiltBySection: React.FC = () => (
           m={0}
           mb={4}
         >
-          Join a world class team
+          We know the work
         </Box>
-        <Text fontSize="md" lineHeight={1.65} color="slate.50" maxW="580px">
-          We are a small team bringing together experience from enterprise
-          software, lending infrastructure, hedge funds, and private markets
-          systems.
+        <Text fontSize="md" lineHeight={1.65} color="slate.50" maxW="560px" m={0}>
+          Our team brings experience across asset-management workflows and
+          infrastructure.
         </Text>
       </Box>
 
       <TeamLogoGrid />
     </PageContainer>
-  </Box>
-);
-
-export const CareersPage: React.FC = () => (
-  <Box fontFamily="body">
-    <PageHero
-      headline="Join Us"
-      ctaLabel="Get in touch"
-      onCtaClick={() => window.open("mailto:careers@rengoai.com", "_blank")}
-    />
-    <BuiltBySection />
   </Box>
 );

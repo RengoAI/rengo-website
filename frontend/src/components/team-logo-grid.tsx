@@ -4,27 +4,17 @@ import React from "react";
 interface TeamLogo {
   name: string;
   logo: string;
-  framed?: boolean;
-  width?: number;
-  frameWidth?: number;
-  frameHeight?: number;
-  imageWidth?: number;
-  objectPosition?: string;
+  /** Rendered width in px; tuned per-logo so optical weight stays even. */
+  width: number;
 }
 
+/** Broader-team pedigree, matching the "We know the work" deck slide. */
 const TEAM_LOGOS: readonly TeamLogo[] = [
-  { name: "Microsoft", logo: "/logos/microsoft.png", framed: true },
+  { name: "Microsoft", logo: "/logos/microsoft.png", width: 124 },
+  { name: "Marshall Wace", logo: "/logos/marshall-wace.png", width: 148 },
+  { name: "Goldman Sachs", logo: "/logos/goldman_sachs.png", width: 116 },
+  { name: "Maybern", logo: "/logos/maybern.png", width: 132 },
   { name: "Blend", logo: "/logos/blend.png", width: 92 },
-  { name: "Marshall Wace", logo: "/logos/marshall-wace.png", width: 158 },
-  {
-    name: "Maybern",
-    logo: "/logos/maybern.png",
-    framed: true,
-    frameWidth: 150,
-    frameHeight: 42,
-    imageWidth: 220,
-    objectPosition: "top left",
-  },
 ] as const;
 
 export const TeamLogoGrid: React.FC = () => (
@@ -33,11 +23,10 @@ export const TeamLogoGrid: React.FC = () => (
     gridTemplateColumns={{
       base: "1fr",
       sm: "repeat(2, 1fr)",
-      lg: "repeat(4, 1fr)",
+      md: "repeat(3, 1fr)",
+      lg: "repeat(5, 1fr)",
     }}
-    borderTop="1px solid"
-    borderLeft="1px solid"
-    borderColor="slate.30"
+    gap={{ base: 8, md: 10 }}
   >
     {TEAM_LOGOS.map((logo) => (
       <Box
@@ -46,48 +35,24 @@ export const TeamLogoGrid: React.FC = () => (
         display="flex"
         alignItems="center"
         justifyContent="center"
-        borderRight="1px solid"
-        borderBottom="1px solid"
-        borderColor="slate.30"
         px={6}
       >
-        {logo.framed ? (
-          <Box
-            w={`${logo.frameWidth ?? 170}px`}
-            h={`${logo.frameHeight ?? 58}px`}
-            overflow="hidden"
-            position="relative"
-            opacity={0.66}
-          >
-            <img
-              src={logo.logo}
-              alt={logo.name}
-              loading="lazy"
-              decoding="async"
-              style={{
-                width: `${logo.imageWidth ?? 170}px`,
-                height: `${logo.imageWidth ?? 170}px`,
-                objectFit: "cover",
-                objectPosition: logo.objectPosition ?? "top center",
-                display: "block",
-              }}
-            />
-          </Box>
-        ) : (
-          <img
-            src={logo.logo}
-            alt={logo.name}
-            loading="lazy"
-            decoding="async"
-            width={logo.width}
-            style={{
-              width: logo.width ? `${logo.width}px` : "auto",
-              height: "auto",
-              opacity: 0.8,
-              display: "block",
-            }}
-          />
-        )}
+        <img
+          src={logo.logo}
+          alt={logo.name}
+          loading="lazy"
+          decoding="async"
+          style={{
+            width: `${logo.width}px`,
+            height: "auto",
+            maxWidth: "100%",
+            // Grayscale keeps the rail neutral against the marketing palette,
+            // matching the deck's treatment of the same logos.
+            filter: "grayscale(1)",
+            opacity: 0.72,
+            display: "block",
+          }}
+        />
       </Box>
     ))}
   </Box>
