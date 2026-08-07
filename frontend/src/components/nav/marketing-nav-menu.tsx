@@ -123,6 +123,7 @@ export const MarketingNavMenu: React.FC<MarketingNavMenuProps> = ({
           top="calc(100% + 4px)"
           left={0}
           w="max-content"
+          minW="210px"
           maxW="calc(100vw - 48px)"
           bg="white"
           border="1px solid"
@@ -136,7 +137,7 @@ export const MarketingNavMenu: React.FC<MarketingNavMenuProps> = ({
           overflow="hidden"
         >
           <Box
-            px={6}
+            px={7}
             py={3}
             bg="slate.10"
             borderBottom="1px solid"
@@ -159,7 +160,7 @@ export const MarketingNavMenu: React.FC<MarketingNavMenuProps> = ({
                 key={item.id}
                 asChild
                 display="block"
-                px={6}
+                px={7}
                 py={3}
                 textDecoration="none"
                 _hover={{ bg: "slate.10", textDecoration: "none" }}

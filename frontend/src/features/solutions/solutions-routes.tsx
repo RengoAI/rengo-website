@@ -13,7 +13,7 @@ export const solutionsRoutes: RouteObject = {
       id: "aiDataPlatform",
       path: "ai-data-platform",
       handle: {
-        pageTitle: "AI Data Platform",
+        pageTitle: "Enterprise",
       },
       lazy: async () => {
         const { AiDataPlatformPage } = await import(
@@ -26,7 +26,7 @@ export const solutionsRoutes: RouteObject = {
       id: "customAiApplications",
       path: "custom-ai-applications",
       handle: {
-        pageTitle: "Forward-deployed engineering",
+        pageTitle: "Private Equity",
       },
       lazy: async () => {
         const { CustomAiApplicationsPage } = await import(
