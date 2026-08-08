@@ -156,7 +156,7 @@ const CARDS: DeploymentCard[] = [
         <path
           d="M18 16 L10 24 L18 32"
           fill="none"
-          stroke={GLYPH_SLATE_30}
+          stroke={GLYPH_WHITE}
           strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -164,7 +164,7 @@ const CARDS: DeploymentCard[] = [
         <path
           d="M30 16 L38 24 L30 32"
           fill="none"
-          stroke={GLYPH_WHITE}
+          stroke={GLYPH_SLATE_30}
           strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"

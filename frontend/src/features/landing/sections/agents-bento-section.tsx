@@ -40,7 +40,7 @@ const TILES: {
     row: "1",
   },
   {
-    label: "Query on demand",
+    label: "Unlock collective intelligence",
     art: { kind: "systems" },
     col: "5 / span 4",
     row: "2",
