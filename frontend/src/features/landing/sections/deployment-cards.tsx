@@ -31,7 +31,7 @@ interface DeploymentCard {
 const CARDS: DeploymentCard[] = [
   {
     id: "infrastructure",
-    title: "Dedicated infrastructure",
+    title: "Shared foundation",
     caption:
       "We run and operate the platform so your team can focus on the work, not the stack.",
     from: "#0d2440",
@@ -42,31 +42,6 @@ const CARDS: DeploymentCard[] = [
         <rect x="10" y="12" width="28" height="7" rx="1.5" fill={INK} />
         <rect x="10" y="22" width="28" height="7" rx="1.5" fill={INK} />
         <rect x="10" y="32" width="28" height="7" rx="1.5" fill={ACCENT} />
-      </>
-    ),
-  },
-  {
-    id: "applied-ai",
-    title: "Applied AI",
-    caption:
-      "We turn frontier models into production systems that fit how your firm actually works.",
-    from: "#0a2440",
-    to: "#0071e3",
-    line: "rgba(150,205,255,0.5)",
-    glyph: (
-      <>
-        <circle cx="24" cy="24" r="6" fill={ACCENT} />
-        <circle
-          cx="24"
-          cy="24"
-          r="13"
-          fill="none"
-          stroke={INK}
-          strokeWidth="2"
-        />
-        <circle cx="24" cy="11" r="3" fill={INK} />
-        <circle cx="37" cy="30" r="3" fill={INK} />
-        <circle cx="11" cy="30" r="3" fill={INK} />
       </>
     ),
   },
@@ -96,6 +71,31 @@ const CARDS: DeploymentCard[] = [
           strokeLinecap="round"
           strokeLinejoin="round"
         />
+      </>
+    ),
+  },
+  {
+    id: "applied-ai",
+    title: "Apply learnings",
+    caption:
+      "We turn frontier models into production systems that fit how your firm actually works.",
+    from: "#0a2440",
+    to: "#0071e3",
+    line: "rgba(150,205,255,0.5)",
+    glyph: (
+      <>
+        <circle cx="24" cy="24" r="6" fill={ACCENT} />
+        <circle
+          cx="24"
+          cy="24"
+          r="13"
+          fill="none"
+          stroke={INK}
+          strokeWidth="2"
+        />
+        <circle cx="24" cy="11" r="3" fill={INK} />
+        <circle cx="37" cy="30" r="3" fill={INK} />
+        <circle cx="11" cy="30" r="3" fill={INK} />
       </>
     ),
   },

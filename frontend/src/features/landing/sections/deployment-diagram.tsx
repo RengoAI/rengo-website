@@ -119,26 +119,41 @@ const Cube: React.FC<{ cx: number; cy: number; r: number; tone: Tone }> = ({
 };
 
 /** Rounded elbow from a satellite edge to the hub edge, as in the source. */
+/**
+ * A cube's drawing origin (cy) sits at the top rhombus's waist, so its visual
+ * centre is half a body-drop lower. Connectors aim at that centre.
+ */
+const cubeCentreY = (cy: number, r: number) => cy + (r * BODY_RATIO) / 2;
+
 const connectorPath = (sat: (typeof SATELLITES)[number]) => {
   const isLeft = sat.x < HUB.x;
   const from = isLeft ? sat.x + SAT_R : sat.x - SAT_R;
   const to = isLeft ? HUB.x - HUB_R * 0.62 : HUB.x + HUB_R * 0.62;
   const mid = from + (to - from) * 0.28;
   const dir = isLeft ? 1 : -1;
-  const vdir = sat.y < HUB.y ? 1 : -1;
+
+  const satY = cubeCentreY(sat.y, SAT_R);
+  const hubY = cubeCentreY(HUB.y, HUB_R);
+  const vdir = satY < hubY ? 1 : -1;
   const R = 10;
 
-  if (Math.abs(sat.y - HUB.y) < 2) return `M${from} ${sat.y} H${to}`;
+  if (Math.abs(satY - hubY) < 2) return `M${from} ${satY} H${to}`;
 
   return [
-    `M${from} ${sat.y}`,
+    `M${from} ${satY}`,
     `H${mid - R * dir}`,
-    `Q${mid} ${sat.y} ${mid} ${sat.y + R * vdir}`,
-    `V${HUB.y - R * vdir}`,
-    `Q${mid} ${HUB.y} ${mid + R * dir} ${HUB.y}`,
+    `Q${mid} ${satY} ${mid} ${satY + R * vdir}`,
+    `V${hubY - R * vdir}`,
+    `Q${mid} ${hubY} ${mid + R * dir} ${hubY}`,
     `H${to}`,
   ].join(" ");
 };
+
+/**
+ * Tile mode widens the viewBox around the same geometry, scaling the diagram
+ * down inside a bento cell and leaving margin so nothing clips.
+ */
+const TILE_VIEWBOX = { x: 34, y: 40, w: 692, h: 280 };
 
 /** Hub drawn in its own overlay so the float can animate on an HTML wrapper —
  *  CSS transforms do not reliably animate on SVG <g> elements. */
@@ -153,16 +168,15 @@ const HubOverlay: React.FC<{ compact?: boolean }> = ({ compact = false }) => (
     }}
   >
     <svg
-      viewBox={`0 0 ${VB_W} ${VB_H}`}
+      viewBox={
+        compact
+          ? `${TILE_VIEWBOX.x} ${TILE_VIEWBOX.y} ${TILE_VIEWBOX.w} ${TILE_VIEWBOX.h}`
+          : `0 0 ${VB_W} ${VB_H}`
+      }
       preserveAspectRatio="xMidYMid meet"
       style={{ display: "block", width: "100%", height: "100%" }}
     >
-      <Cube
-        cx={HUB.x}
-        cy={HUB.y}
-        r={compact ? HUB_R * 0.86 : HUB_R}
-        tone="hub"
-      />
+      <Cube cx={HUB.x} cy={HUB.y} r={HUB_R} tone="hub" />
     </svg>
   </div>
 );
@@ -175,7 +189,14 @@ interface DeploymentDiagramProps {
 export const DeploymentDiagram: React.FC<DeploymentDiagramProps> = ({
   size = "band",
 }) => (
-  <div style={{ position: "relative", width: "100%", height: "100%" }}>
+  <div
+    style={{
+      position: "relative",
+      width: "100%",
+      height: size === "tile" ? "180px" : "100%",
+      maxHeight: size === "tile" ? "180px" : undefined,
+    }}
+  >
     <style>{`
       @keyframes rengo-hub-float {
         0%, 100% { transform: translateY(0); }
@@ -186,7 +207,11 @@ export const DeploymentDiagram: React.FC<DeploymentDiagramProps> = ({
       }
     `}</style>
     <svg
-      viewBox={`0 0 ${VB_W} ${VB_H}`}
+      viewBox={
+        size === "tile"
+          ? `${TILE_VIEWBOX.x} ${TILE_VIEWBOX.y} ${TILE_VIEWBOX.w} ${TILE_VIEWBOX.h}`
+          : `0 0 ${VB_W} ${VB_H}`
+      }
       preserveAspectRatio="xMidYMid meet"
       role="img"
       aria-label="Connected systems feeding a central Rengo deployment."

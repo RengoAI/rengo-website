@@ -24,7 +24,7 @@ export const CaseStudySection: React.FC = () => (
             color="indigo.900"
             m={0}
           >
-            Approach to deploying AI
+            Principles to deploying AI
           </Box>
         </Box>
 
