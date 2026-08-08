@@ -1,10 +1,8 @@
-import { Page } from "@/components/layout/page";
 import { Box, Container, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 
 export const TermsOfServicePage: React.FC = () => (
-  <Page>
-    <Box w="full">
+  <Box w="full">
       <Container maxW="3xl" pt={40} pb={28} px={8}>
         <VStack gap={12} align="stretch">
           {/* Header */}
@@ -770,5 +768,4 @@ export const TermsOfServicePage: React.FC = () => (
         </VStack>
       </Container>
     </Box>
-  </Page>
 );

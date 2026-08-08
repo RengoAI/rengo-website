@@ -1,10 +1,8 @@
-import { Page } from "@/components/layout/page";
 import { Box, Container, Link, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 
 export const PrivacyPolicyPage: React.FC = () => (
-  <Page>
-    <Box w="full">
+  <Box w="full">
       <Container maxW="3xl" pt={40} pb={28} px={8}>
         <VStack gap={12} align="stretch">
           {/* Header */}
@@ -747,5 +745,4 @@ export const PrivacyPolicyPage: React.FC = () => (
         </VStack>
       </Container>
     </Box>
-  </Page>
 );

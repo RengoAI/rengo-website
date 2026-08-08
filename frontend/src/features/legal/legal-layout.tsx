@@ -3,7 +3,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 
 export const LegalLayout: React.FC = () => (
-  <Box>
+  <Box fontFamily="body" bg="slate.10" minH="100vh">
     <Outlet />
   </Box>
 );
