@@ -32,7 +32,7 @@ export const CtaSection: React.FC<CtaSectionProps> = ({ onTalkToSales }) => (
         whiteSpace="nowrap"
         m={0}
       >
-        The AI deployment company for financial services
+        Put your data to work with AI
       </Box>
 
       <Button

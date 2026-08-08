@@ -1,7 +1,7 @@
-import { marketingContentPaddingX } from "@/components/layout/marketing-frame";
+import { PageContainer } from "@/components/layout/page-container";
+import { DeploymentDiagram } from "@/features/landing/sections/deployment-diagram";
 import { Box, Flex, Grid, Text } from "@chakra-ui/react";
 import React from "react";
-import { SectionShell } from "./section-shell";
 
 const PILLARS = [
   {
@@ -19,106 +19,85 @@ const PILLARS = [
 ] as const;
 
 export const CaseStudySection: React.FC = () => (
-  <SectionShell borderTop bg="slate.10" px={false} py={{ base: 12, md: 16 }}>
-    <Flex direction="column" gap={{ base: 10, md: 12 }} w="full">
-      <Box px={marketingContentPaddingX}>
-        <Box
-          as="h2"
-          fontFamily="heading"
-          fontWeight={350}
-          fontSize={{ base: "28px", md: "36px" }}
-          lineHeight={1.2}
-          letterSpacing="-2px"
-          color="indigo.900"
-          maxW="820px"
-          m={0}
-        >
-          Deployment with Rengo AI
+  <Box
+    as="section"
+    bg="slate.10"
+    py={{ base: 16, md: 24 }}
+    borderTop="1px solid"
+    borderColor="slate.30"
+  >
+    <PageContainer>
+      <Flex direction="column" gap={{ base: 10, md: 12 }} w="full">
+        <Box maxW="820px">
+          <Box
+            as="h2"
+            fontFamily="heading"
+            fontWeight={350}
+            fontSize={{ base: "28px", md: "36px" }}
+            lineHeight={1.2}
+            letterSpacing="-2px"
+            color="indigo.900"
+            m={0}
+          >
+            Deployment with Rengo AI
+          </Box>
         </Box>
-      </Box>
 
-      <Box px={marketingContentPaddingX}>
         <Flex
           align="center"
           justify="center"
           w="full"
           h={{ base: "220px", md: "304px" }}
-          border="1px dashed"
-          borderColor="slate.40"
-          borderRadius="2px"
-          bg="slate.20"
-          aria-hidden
+          overflow="hidden"
         >
-          <Text
-            fontFamily="body"
-            fontSize="13px"
-            lineHeight="20px"
-            letterSpacing="0.04em"
-            textTransform="uppercase"
-            color="slate.50"
-            m={0}
-          >
-            Graphic placeholder
-          </Text>
+          <DeploymentDiagram />
         </Flex>
-      </Box>
 
-      <Box w="full" borderTop="1px solid" borderColor="slate.30">
         <Grid
           templateColumns={{
             base: "1fr",
-            sm: "repeat(3, minmax(0, 1fr))",
+            md: "repeat(3, minmax(0, 1fr))",
           }}
-          gap={0}
+          gap={3}
+          w="full"
         >
-          {PILLARS.map((pillar, i) => {
-            const isFirst = i === 0;
-            const isLast = i === PILLARS.length - 1;
-
-            return (
-              <Box
-                key={pillar.title}
-                borderLeftWidth={{
-                  base: 0,
-                  sm: isFirst ? 0 : "1px",
-                }}
-                borderBottomWidth={{
-                  base: isLast ? 0 : "1px",
-                  sm: 0,
-                }}
-                borderStyle="solid"
-                borderColor="slate.30"
-                px={marketingContentPaddingX}
-                py={{ base: 8, md: 10 }}
-                display="flex"
-                flexDirection="column"
-                gap={3}
+          {PILLARS.map((pillar) => (
+            <Box
+              key={pillar.title}
+              border="1px solid"
+              borderColor="slate.30"
+              borderRadius={0}
+              px={7}
+              py={6}
+              display="flex"
+              flexDirection="column"
+              gap={3}
+              minH={{ base: "auto", md: "100px" }}
+            >
+              <Text
+                fontFamily="heading"
+                fontWeight={350}
+                fontSize={{ base: "18px", md: "22px" }}
+                lineHeight={1.2}
+                letterSpacing="-0.72px"
+                color="indigo.900"
+                m={0}
               >
-                <Text
-                  fontFamily="heading"
-                  fontWeight={350}
-                  fontSize={{ base: "18px", md: "22px" }}
-                  lineHeight={1.2}
-                  letterSpacing="-0.72px"
-                  color="indigo.900"
-                  m={0}
-                >
-                  {pillar.title}
-                </Text>
-                <Text
-                  fontFamily="body"
-                  fontSize="16px"
-                  lineHeight="24px"
-                  color="slate.50"
-                  m={0}
-                >
-                  {pillar.body}
-                </Text>
-              </Box>
-            );
-          })}
+                {pillar.title}
+              </Text>
+              <Text
+                fontFamily="body"
+                fontSize="16px"
+                lineHeight="24px"
+                color="slate.50"
+                m={0}
+              >
+                {pillar.body}
+              </Text>
+            </Box>
+          ))}
         </Grid>
-      </Box>
-    </Flex>
-  </SectionShell>
+      </Flex>
+    </PageContainer>
+  </Box>
 );
