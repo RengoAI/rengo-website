@@ -47,9 +47,22 @@ const config = defineConfig({
     "*::-webkit-scrollbar-corner": {
       background: "var(--rengo-colors-slate-10)",
     },
-    // Firefox
+    // Firefox + reserve scrollbar space so the rim line stays aligned
     html: {
+      scrollbarGutter: "stable",
       scrollbarColor: "rgba(0, 0, 0, 0.5) var(--rengo-colors-slate-10)",
+    },
+    // Hairline on the left edge of the scrollbar gutter
+    "html::after": {
+      content: '""',
+      position: "fixed",
+      top: 0,
+      right: 0,
+      bottom: 0,
+      width: "1px",
+      background: "var(--rengo-colors-slate-30)",
+      pointerEvents: "none",
+      zIndex: 9999,
     },
     // Add top border to scrollbar track for tables only
     ".data-table-scroll-container::-webkit-scrollbar-track": {

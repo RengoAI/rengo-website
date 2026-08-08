@@ -2,6 +2,7 @@ import { AccessRolesArt } from "@/features/landing/sections/access-roles-art";
 import { BentoIsoImage } from "@/features/landing/sections/bento-iso-image";
 import { ConnectSystemsArt } from "@/features/landing/sections/connect-systems-art";
 import { ExistingToolsArt } from "@/features/landing/sections/existing-tools-art";
+import { SectionHeading } from "@/features/landing/sections/section-heading";
 import { Box, Grid, GridItem, Text } from "@chakra-ui/react";
 import React from "react";
 import { SectionShell } from "./section-shell";
@@ -53,23 +54,13 @@ const TILES: {
 export const AgentsBentoSection: React.FC = () => (
   <SectionShell borderTop bg="slate.10" py={{ base: 16, md: "80px" }}>
     <Box display="flex" flexDirection="column" gap={{ base: 10, md: "60px" }}>
-      <Box
-        as="h2"
-        fontFamily="heading"
-        fontWeight={350}
-        fontSize={{ base: "26px", md: "32px" }}
-        lineHeight={1.2}
-        letterSpacing="-2px"
-        color="indigo.900"
-        maxW="648px"
-        m={0}
-      >
+      <SectionHeading>
         Build your AI Advantage
         <br />
         <Box as="span" color="slate.50" fontWeight={300}>
           Applications and agents tailored to your team
         </Box>
-      </Box>
+      </SectionHeading>
 
       <Grid
         templateColumns={{ base: "1fr", md: "repeat(12, minmax(0, 1fr))" }}

@@ -6,7 +6,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import React from "react";
 
 interface SectionShellProps extends React.PropsWithChildren {
-  /** Draws the hairline rule along the top of the gutter columns. */
+  /** Full-width hairline rule along the top of the section. */
   borderTop?: boolean;
   /** Full-width top + bottom rules (Mintlify-style CTA frame). */
   borderY?: boolean;
@@ -27,46 +27,45 @@ export const SectionShell: React.FC<SectionShellProps> = ({
   px = marketingContentPaddingX,
   bg,
   py = { base: 16, md: 20 },
-}) => {
-  const showTopRule = borderTop || borderY;
-
-  return (
-    <Flex
-      as="section"
-      w="full"
-      bg={bg}
-      align="stretch"
-      borderTop={borderY ? "1px solid" : undefined}
-      borderBottom={borderY ? "1px solid" : undefined}
-      borderColor={borderY ? "slate.30" : undefined}
+}) => (
+  <Flex
+    as="section"
+    w="full"
+    bg={bg}
+    align="stretch"
+    borderTop={borderTop || borderY ? "1px solid" : undefined}
+    borderBottom={borderY ? "1px solid" : undefined}
+    borderColor={borderTop || borderY ? "slate.30" : undefined}
+  >
+    <Box
+      display={{ base: "none", md: "block" }}
+      w={MARKETING_GUTTER_WIDTH}
+      flexShrink={0}
+      borderRightWidth="1px"
+      borderRightStyle="solid"
+      borderRightColor="slate.30"
+    />
+    <Box
+      flex="1"
+      minW={0}
+      px={px === false ? 0 : px}
+      py={py}
+      borderLeftWidth={{ base: "1px", md: 0 }}
+      borderRightWidth={{ base: "1px", md: 0 }}
+      borderLeftStyle="solid"
+      borderRightStyle="solid"
+      borderLeftColor="slate.30"
+      borderRightColor="slate.30"
     >
-      <Box
-        display={{ base: "none", md: "block" }}
-        w={MARKETING_GUTTER_WIDTH}
-        flexShrink={0}
-        borderRight="1px solid"
-        borderColor="slate.30"
-        borderTop={showTopRule && !borderY ? "1px solid" : undefined}
-      />
-      <Box
-        flex="1"
-        minW={0}
-        px={px === false ? 0 : px}
-        py={py}
-        borderLeft={{ base: "1px solid", md: "none" }}
-        borderRight={{ base: "1px solid", md: "none" }}
-        borderColor="slate.30"
-      >
-        {children}
-      </Box>
-      <Box
-        display={{ base: "none", md: "block" }}
-        w={MARKETING_GUTTER_WIDTH}
-        flexShrink={0}
-        borderLeft="1px solid"
-        borderColor="slate.30"
-        borderTop={showTopRule && !borderY ? "1px solid" : undefined}
-      />
-    </Flex>
-  );
-};
+      {children}
+    </Box>
+    <Box
+      display={{ base: "none", md: "block" }}
+      w={MARKETING_GUTTER_WIDTH}
+      flexShrink={0}
+      borderLeftWidth="1px"
+      borderLeftStyle="solid"
+      borderLeftColor="slate.30"
+    />
+  </Flex>
+);

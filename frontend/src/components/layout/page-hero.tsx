@@ -2,10 +2,7 @@ import {
   ctaButtonHoverWithArrowProps,
   ButtonArrowLabel,
 } from "@/components/ui/button-arrow-label";
-import {
-  MARKETING_GUTTER_WIDTH,
-  marketingContentPaddingX,
-} from "@/components/layout/marketing-frame";
+import { PageContainer } from "@/components/layout/page-container";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 
@@ -65,96 +62,81 @@ export const PageHero: React.FC<PageHeroProps> = ({
         </Box>
       )}
 
-      <Box
-        display={{ base: "none", md: "block" }}
-        w={MARKETING_GUTTER_WIDTH}
-        flexShrink={0}
-        borderRight="1px solid"
-        borderColor="slate.30"
-      />
+      <PageContainer>
+        <Flex
+          position="relative"
+          zIndex={1}
+          direction="column"
+          justify={isCompact ? "center" : { base: "center", lg: "flex-end" }}
+          gap={7}
+          minH={minH}
+          pt={contentPt}
+          pb={contentPb}
+        >
+          <Flex direction="column" gap={3} align="flex-start" w="full">
+            {eyebrow && (
+              <Text
+                fontFamily="mono"
+                fontSize="xs"
+                letterSpacing="0.18em"
+                textTransform="uppercase"
+                color="slate.50"
+                m={0}
+              >
+                {eyebrow}
+              </Text>
+            )}
 
-      <Flex
-        position="relative"
-        zIndex={1}
-        flex="1"
-        direction="column"
-        justify={isCompact ? "center" : { base: "center", lg: "flex-end" }}
-        gap={7}
-        px={marketingContentPaddingX}
-        pt={contentPt}
-        pb={contentPb}
-      >
-        <Flex direction="column" gap={3} align="flex-start" w="full">
-          {eyebrow && (
-            <Text
-              fontFamily="mono"
-              fontSize="xs"
-              letterSpacing="0.18em"
-              textTransform="uppercase"
-              color="slate.50"
-              m={0}
-            >
-              {eyebrow}
-            </Text>
-          )}
-
-          <Box
-            as="h1"
-            fontFamily="heading"
-            fontWeight={350}
-            fontSize={{ base: "40px", lg: "50px" }}
-            lineHeight={{ base: "44px", lg: "52px" }}
-            letterSpacing="-2px"
-            color="indigo.900"
-            maxW={{ base: "100%", lg: "560px" }}
-            m={0}
-            textAlign="left"
-          >
-            {headline}
-          </Box>
-
-          {subtext && (
-            <Text
+            <Box
+              as="h1"
               fontFamily="heading"
-              fontWeight={300}
-              fontSize="18px"
-              lineHeight="24px"
-              color="slate.50"
-              maxW={subtextMaxW}
+              fontWeight={350}
+              fontSize={{ base: "40px", lg: "50px" }}
+              lineHeight={{ base: "44px", lg: "52px" }}
+              letterSpacing="-2px"
+              color="indigo.900"
+              maxW={{ base: "100%", lg: "560px" }}
               m={0}
               textAlign="left"
             >
-              {subtext}
-            </Text>
-          )}
+              {headline}
+            </Box>
+
+            {subtext && (
+              <Text
+                fontFamily="heading"
+                fontWeight={300}
+                fontSize="18px"
+                lineHeight="24px"
+                color="slate.50"
+                maxW={subtextMaxW}
+                m={0}
+                textAlign="left"
+              >
+                {subtext}
+              </Text>
+            )}
+          </Flex>
+
+          <Button
+            alignSelf="flex-start"
+            bg="indigo.900"
+            color="slate.10"
+            borderRadius={0}
+            px={8}
+            py={3.5}
+            h="auto"
+            fontFamily="body"
+            fontSize="14px"
+            fontWeight="normal"
+            lineHeight="21px"
+            onClick={onCtaClick}
+            {...ctaButtonHoverWithArrowProps}
+          >
+            <ButtonArrowLabel>{ctaLabel}</ButtonArrowLabel>
+          </Button>
         </Flex>
-
-        <Button
-          alignSelf="flex-start"
-          bg="indigo.900"
-          color="slate.10"
-          borderRadius={0}
-          px={8}
-          py={3.5}
-          h="auto"
-          fontFamily="body"
-          fontSize="14px"
-          fontWeight="normal"
-          lineHeight="21px"
-          onClick={onCtaClick}
-          {...ctaButtonHoverWithArrowProps}
-        >
-          <ButtonArrowLabel>{ctaLabel}</ButtonArrowLabel>
-        </Button>
-      </Flex>
-
-      <Box
-        display={{ base: "none", md: "block" }}
-        w={MARKETING_GUTTER_WIDTH}
-        flexShrink={0}
-        borderLeft="1px solid"
-        borderColor="slate.30"
-      />
+      </PageContainer>
     </Box>
   );
 };
