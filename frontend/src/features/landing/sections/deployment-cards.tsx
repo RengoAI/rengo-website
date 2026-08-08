@@ -10,7 +10,6 @@ import React from "react";
  * Rengo palette rather than their per-brand hues.
  */
 
-const RULE = "#d3dde1";
 
 /** Card field gradients — lighter primary ramp on slate.10 section. */
 const FIELD_INDIGO_700 = "#124476";
@@ -222,10 +221,10 @@ export const DeploymentCards: React.FC = () => (
           position="relative"
           w="full"
           h={{ base: "300px", md: "380px" }}
-          borderRadius="6px"
+          borderRadius="3px"
           overflow="hidden"
           border="1px solid"
-          borderColor={RULE}
+          borderColor="slate.30"
         >
           <CardField from={card.from} to={card.to} />
 
