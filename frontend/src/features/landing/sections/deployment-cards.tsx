@@ -14,59 +14,68 @@ const INK = "#213044";
 const SLATE_GLYPH = "#768ca6"; // slate.50 — muted bars on the foundation glyph
 const RULE = "#d3dde1";
 
-/** Three-segment clockwise loop on a full circle (Apply learnings plate). */
+/**
+ * Apply-learnings plate: the AGM deck's learning-loop mark reduced to logo scale.
+ *
+ * Ported from rengo/sales `slides-agm/act-04-rengo-ai/learning-loop.jsx` — four
+ * gapped clockwise legs (ingest → draft → decide → learn), each ending in an
+ * arrowhead that hands off to the next, so the ring reads as a loop rather than
+ * a circle. The deck's four beats become four legs only: labels and ring nodes
+ * drop away, and the value ramp collapses to the palette here, with the return
+ * leg lightest so the eye closes the circle without the hand-back competing
+ * with the work.
+ */
+const LOOP = { cx: 24, cy: 24, r: 15 };
+/** Leg start angles in SVG degrees, clockwise from the top (deck: NODE_DEG). */
+const LOOP_NODE_DEG = [-90, 0, 90, 180];
+/** Each leg stops this far short of the next one. With the deck's ring nodes
+ *  dropped, the gap has nothing to clear and only has to keep an arrowhead from
+ *  touching the tail behind it — so it runs tighter than the deck's 8°. */
+const LOOP_GAP_DEG = 7;
+
+const loopPoint = (deg: number) => {
+  const rad = (deg * Math.PI) / 180;
+  return {
+    x: LOOP.cx + LOOP.r * Math.cos(rad),
+    y: LOOP.cy + LOOP.r * Math.sin(rad),
+  };
+};
+
 const ApplyLearningsLoopGlyph: React.FC = () => {
-  const chevron = (
-    x: number,
-    y: number,
-    rotateDeg: number,
-    color: string,
-  ) => (
-    <path
-      d="M -3.5 2.5 L 0 -2.5 L 3.5 2.5"
-      transform={`translate(${x} ${y}) rotate(${rotateDeg})`}
-      fill="none"
-      stroke={color}
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  );
+  // Value ramp: three active hand-offs in ink, the return leg muted.
+  const legs = LOOP_NODE_DEG.map((deg, i) => {
+    const from = loopPoint(deg + LOOP_GAP_DEG);
+    const toDeg = deg + 90 - LOOP_GAP_DEG;
+    const to = loopPoint(toDeg);
+    return {
+      key: i,
+      color: i === 3 ? SLATE_GLYPH : INK,
+      d: `M${from.x.toFixed(2)},${from.y.toFixed(2)} A${LOOP.r},${LOOP.r} 0 0 1 ${to.x.toFixed(2)},${to.y.toFixed(2)}`,
+      // the head sits at the leg's end, turned to the clockwise tangent
+      arrow: `translate(${to.x.toFixed(2)},${to.y.toFixed(2)}) rotate(${toDeg + 90})`,
+    };
+  });
 
   return (
     <>
-      <circle
-        cx={24}
-        cy={24}
-        r={10}
-        fill="none"
-        stroke={RULE}
-        strokeWidth="1.5"
-      />
-      <path
-        d="M 24 14 A 10 10 0 0 1 15.34 29"
-        fill="none"
-        stroke={INK}
-        strokeWidth="2.5"
-        strokeLinecap="round"
-      />
-      {chevron(32.66, 19, 60, INK)}
-      <path
-        d="M 15.34 29 A 10 10 0 0 1 32.66 29"
-        fill="none"
-        stroke={SLATE_GLYPH}
-        strokeWidth="2.5"
-        strokeLinecap="round"
-      />
-      {chevron(24, 34, 180, SLATE_GLYPH)}
-      <path
-        d="M 32.66 29 A 10 10 0 0 1 24 14"
-        fill="none"
-        stroke={INK}
-        strokeWidth="2.5"
-        strokeLinecap="round"
-      />
-      {chevron(34, 24, -90, INK)}
+      {legs.map(({ key, d, color }) => (
+        <path
+          key={`leg-${key}`}
+          d={d}
+          fill="none"
+          stroke={color}
+          strokeWidth="2.2"
+          strokeLinecap="round"
+        />
+      ))}
+      {legs.map(({ key, arrow, color }) => (
+        <polygon
+          key={`arrow-${key}`}
+          points="-3.4,-2.4 2.6,0 -3.4,2.4"
+          transform={arrow}
+          fill={color}
+        />
+      ))}
     </>
   );
 };
@@ -186,18 +195,18 @@ export const DeploymentCards: React.FC = () => (
           {/* Centre plate, as on Mintlify's cards */}
           <Flex position="absolute" inset={0} align="center" justify="center">
             <Flex
-              w="96px"
-              h="96px"
-              borderRadius="14px"
+              w="72px"
+              h="72px"
+              borderRadius="11px"
               bg="white"
               align="center"
               justify="center"
-              boxShadow="0 8px 28px rgba(9,20,36,0.28)"
+              boxShadow="0 6px 20px rgba(9,20,36,0.22)"
             >
               <Box
                 as="svg"
-                width="48px"
-                height="48px"
+                width="36px"
+                height="36px"
                 viewBox="0 0 48 48"
                 aria-hidden
               >
