@@ -12,12 +12,19 @@ import React from "react";
 
 const RULE = "#d3dde1";
 
-/** Glyph strokes/fills — one step darker on the slate/blue ramps for white plates. */
-const GLYPH_SLATE_LIGHT = "#d3dde1"; // slate.30
-const GLYPH_SLATE_MID = "#a9b7c6"; // slate.40
-const GLYPH_SLATE_DARK = "#768ca6"; // slate.50
-const GLYPH_HUB_MID = "#8aabcf"; // blue.400
-const GLYPH_ACCENT = "#0066cc";
+/** Card field gradients — lighter primary ramp on slate.10 section. */
+const FIELD_INDIGO_700 = "#124476";
+const FIELD_PRIMARY_500 = "#1a4f8a";
+const FIELD_PRIMARY_300 = "#5585be";
+const FIELD_PRIMARY_400 = "#3169a8";
+const FIELD_PRIMARY_200 = "#88aad4";
+const FIELD_PRIMARY_100 = "#c3d4eb";
+
+/** Glyph colors — slate / white ramp (matches bento tiles and marketing neutrals). */
+const GLYPH_WHITE = "#ffffff";
+const GLYPH_SLATE_20 = "#eaedee";
+const GLYPH_SLATE_30 = "#d3dde1";
+const GLYPH_SLATE_40 = "#a9b7c6";
 
 /**
  * Apply-learnings plate: the AGM deck's learning-loop mark reduced to logo scale.
@@ -48,10 +55,10 @@ const loopPoint = (deg: number) => {
 
 const ApplyLearningsLoopGlyph: React.FC = () => {
   const legColors = [
-    GLYPH_SLATE_DARK,
-    GLYPH_SLATE_MID,
-    GLYPH_ACCENT,
-    GLYPH_HUB_MID,
+    GLYPH_SLATE_20,
+    GLYPH_SLATE_30,
+    GLYPH_WHITE,
+    GLYPH_SLATE_20,
   ];
   const legs = LOOP_NODE_DEG.map((deg, i) => {
     const from = loopPoint(deg + LOOP_GAP_DEG);
@@ -106,8 +113,8 @@ const CARDS: DeploymentCard[] = [
     title: "Shared foundation",
     caption:
       "Connect your data, systems, and workflows to a governed foundation that every application and agent can build on.",
-    from: "#0d2440",
-    to: "#12325a",
+    from: FIELD_INDIGO_700,
+    to: FIELD_PRIMARY_400,
     glyph: (
       <>
         <rect
@@ -116,7 +123,7 @@ const CARDS: DeploymentCard[] = [
           width="28"
           height="7"
           rx="1.5"
-          fill={GLYPH_SLATE_LIGHT}
+          fill={GLYPH_SLATE_40}
         />
         <rect
           x="10"
@@ -124,7 +131,7 @@ const CARDS: DeploymentCard[] = [
           width="28"
           height="7"
           rx="1.5"
-          fill={GLYPH_SLATE_MID}
+          fill={GLYPH_SLATE_20}
         />
         <rect
           x="10"
@@ -132,7 +139,7 @@ const CARDS: DeploymentCard[] = [
           width="28"
           height="7"
           rx="1.5"
-          fill={GLYPH_SLATE_DARK}
+          fill={GLYPH_WHITE}
         />
       </>
     ),
@@ -142,14 +149,14 @@ const CARDS: DeploymentCard[] = [
     title: "Own what you build",
     caption:
       "Applications and integrations tailored to your workflows, owned in your repository and built to evolve with you.",
-    from: "#132a44",
-    to: "#1d4f7c",
+    from: FIELD_PRIMARY_500,
+    to: FIELD_PRIMARY_200,
     glyph: (
       <>
         <path
           d="M18 16 L10 24 L18 32"
           fill="none"
-          stroke={GLYPH_SLATE_MID}
+          stroke={GLYPH_SLATE_30}
           strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -157,7 +164,7 @@ const CARDS: DeploymentCard[] = [
         <path
           d="M30 16 L38 24 L30 32"
           fill="none"
-          stroke={GLYPH_SLATE_DARK}
+          stroke={GLYPH_WHITE}
           strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -170,8 +177,8 @@ const CARDS: DeploymentCard[] = [
     title: "Compound knowledge",
     caption:
       "Work shouldn’t start from scratch. Capture the context behind every decision so the next workflow benefits from the last.",
-    from: "#0a2440",
-    to: "#0071e3",
+    from: FIELD_PRIMARY_300,
+    to: FIELD_PRIMARY_100,
     glyph: <ApplyLearningsLoopGlyph />,
   },
 ];
@@ -223,27 +230,15 @@ export const DeploymentCards: React.FC = () => (
           <CardField from={card.from} to={card.to} />
 
           <Flex position="absolute" inset={0} align="center" justify="center">
-            <Flex
-              w="56px"
-              h="56px"
-              borderRadius="9px"
-              bg="white"
-              border="1px solid"
-              borderColor="slate.30"
-              align="center"
-              justify="center"
-              boxShadow="0 4px 16px rgba(9, 20, 36, 0.12)"
+            <Box
+              as="svg"
+              width={{ base: "64px", md: "72px" }}
+              height={{ base: "64px", md: "72px" }}
+              viewBox="0 0 48 48"
+              aria-hidden
             >
-              <Box
-                as="svg"
-                width="34px"
-                height="34px"
-                viewBox="0 0 48 48"
-                aria-hidden
-              >
-                {card.glyph}
-              </Box>
-            </Flex>
+              {card.glyph}
+            </Box>
           </Flex>
         </Box>
 
