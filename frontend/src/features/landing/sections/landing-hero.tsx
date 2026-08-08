@@ -6,6 +6,7 @@ import {
   MARKETING_GUTTER_WIDTH,
   marketingContentPaddingX,
 } from "@/components/layout/marketing-frame";
+import { TOP_NAV_HEIGHT } from "@/components/nav/nav-styles";
 import { HeroGridCanvas } from "@/features/landing/sections/hero-grid-canvas";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import React from "react";
@@ -19,7 +20,9 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
     as="section"
     position="relative"
     bg="slate.10"
-    minH={{ base: "auto", lg: "702px" }}
+    // Fills the first screen. `svh` tracks the *small* viewport height, so
+    // mobile browsers with a retracting URL bar don't clip the CTA on load.
+    minH={{ base: "100svh", lg: "100vh" }}
     display="flex"
     alignItems="stretch"
     overflow="hidden"
@@ -32,7 +35,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
         w={MARKETING_GUTTER_WIDTH}
         flexShrink={0}
       />
-      <Box flex="1" minW={0} px={marketingContentPaddingX}>
+      <Box flex="1" minW={0} px={marketingContentPaddingX} display="flex">
         <Flex
           position="relative"
           zIndex={1}
@@ -41,8 +44,11 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
           justify="center"
           textAlign="left"
           gap={{ base: 8, md: 10 }}
-          minH={{ base: "auto", lg: "702px" }}
-          py={{ base: 28, md: 32 }}
+          flex="1"
+          // The header is fixed and overlays this section, so offset the top
+          // padding by its height to keep the copy optically centred.
+          pt={`calc(${TOP_NAV_HEIGHT}px + var(--chakra-spacing-10))`}
+          pb={10}
         >
           <Flex direction="column" align="flex-start" gap={{ base: 5, md: 7 }}>
             <Box

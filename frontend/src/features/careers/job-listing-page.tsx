@@ -128,7 +128,7 @@ export const JobListingPage: React.FC = () => {
             px={0}
             py={0}
             border="none"
-            color="indigo.700"
+            color="slate.100"
             fontFamily="body"
             fontSize="14px"
             fontWeight="normal"

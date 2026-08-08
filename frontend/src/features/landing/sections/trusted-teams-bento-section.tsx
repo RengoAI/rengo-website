@@ -4,7 +4,6 @@ import React from "react";
 import { SectionShell } from "./section-shell";
 
 type Testimonial = {
-  initials: string;
   role: string;
   organization: string;
   quote: string;
@@ -12,21 +11,18 @@ type Testimonial = {
 
 const TESTIMONIALS: readonly Testimonial[] = [
   {
-    initials: "SA",
-    role: "Senior Associate",
-    organization: "Growth Equity Firm",
-    quote:
-      "Rengo has evolved tremendously in just a few months. Being able to centralize our portfolio data, recall every deal we've evaluated, and make that knowledge instantly accessible across the team is incredibly powerful and something we're genuinely excited about.",
-  },
-  {
-    initials: "VD",
     role: "Vice President - Data",
     organization: "Real Estate Asset Manager",
     quote:
       "It was really impressive how quickly you were able to adapt and add new features within the system. Once I gave you access to some of our high-level data, you could turn around, understand it, and funnel it in pretty quickly.",
   },
   {
-    initials: "IR",
+    role: "Senior Associate",
+    organization: "Growth Equity Firm",
+    quote:
+      "Rengo has evolved tremendously in just a few months. Being able to centralize our portfolio data, recall every deal we've evaluated, and make that knowledge instantly accessible across the team is incredibly powerful and something we're genuinely excited about.",
+  },
+  {
     role: "Vice President - Investor Relations",
     organization: "Real Estate Asset Manager",
     quote:
@@ -93,49 +89,29 @@ const TestimonialCard: React.FC<{
     }}
   >
     <Box display="flex" flexDirection="column" gap={8} flex="1" minH={0}>
-      <Box display="flex" alignItems="center" gap={3}>
-        <Box
-          flexShrink={0}
-          w="48px"
-          h="48px"
-          borderRadius="4px"
-          bg="slate.10"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          overflow="hidden"
-          fontFamily="heading"
-          fontSize="13px"
+      <Box display="flex" flexDirection="column" gap={1} minW={0}>
+        <Text
+          as="figcaption"
+          fontSize="14px"
+          lineHeight="20px"
           fontWeight={500}
-          letterSpacing="-0.5px"
+          letterSpacing="-0.1px"
           color="indigo.900"
+          m={0}
+          truncate
         >
-          {item.initials}
-        </Box>
-        <Box flex="1" minW={0} display="flex" flexDirection="column" gap={1}>
-          <Text
-            as="figcaption"
-            fontSize="14px"
-            lineHeight="20px"
-            fontWeight={500}
-            letterSpacing="-0.1px"
-            color="indigo.900"
-            m={0}
-            truncate
-          >
-            {item.role}
-          </Text>
-          <Text
-            fontSize="14px"
-            lineHeight="20px"
-            fontWeight="normal"
-            color="slate.50"
-            m={0}
-            truncate
-          >
-            {item.organization}
-          </Text>
-        </Box>
+          {item.role}
+        </Text>
+        <Text
+          fontSize="14px"
+          lineHeight="20px"
+          fontWeight="normal"
+          color="slate.50"
+          m={0}
+          truncate
+        >
+          {item.organization}
+        </Text>
       </Box>
       <Text
         as="blockquote"
@@ -180,7 +156,7 @@ export const TrustedTeamsBentoSection: React.FC = () => {
         >
           {TESTIMONIALS.map((item, index) => (
             <TestimonialCard
-              key={item.initials}
+              key={`${item.role}-${item.organization}`}
               item={item}
               index={index}
               revealed={revealed}

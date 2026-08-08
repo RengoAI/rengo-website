@@ -2,7 +2,7 @@ import {
   ctaButtonHoverWithArrowProps,
   ButtonArrowLabel,
 } from "@/components/ui/button-arrow-label";
-import { PageContainer } from "@/components/layout/page-container";
+import { TOP_NAV_HEIGHT } from "@/components/nav/nav-styles";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 
@@ -34,109 +34,114 @@ export const PageHero: React.FC<PageHeroProps> = ({
   eyebrow,
   subtextMaxW = "480px",
   background,
-  minH = { base: "auto", lg: "702px" },
-  contentPt = { base: 32, lg: 0 },
-  contentPb = { base: 20, lg: "223px" },
-}) => {
-  const isCompact = minH === "auto";
+  // Fills the first screen. `svh` tracks the *small* viewport height so
+  // mobile browsers with a retracting URL bar don't clip the CTA on load.
+  minH = { base: "100svh", lg: "100vh" },
+  // The header is fixed and overlays this section, so the top offset covers
+  // its height to keep the copy optically centred.
+  contentPt = `calc(${TOP_NAV_HEIGHT}px + var(--chakra-spacing-10))`,
+  contentPb = 10,
+}) => (
+  <Box
+    as="section"
+    position="relative"
+    bg="slate.10"
+    color="indigo.900"
+    minH={minH}
+    display="flex"
+    alignItems="stretch"
+    overflow="hidden"
+  >
+    {background && (
+      <Box position="absolute" inset={0} overflow="hidden" pointerEvents="none">
+        {background}
+      </Box>
+    )}
 
-  return (
+    {/* Laid out directly rather than via PageContainer: the column must be
+          a flex child of the full-height section for justify="center" to
+          centre against the viewport instead of the content box. */}
     <Box
-      as="section"
-      position="relative"
-      bg="slate.10"
-      color="indigo.900"
-      minH={minH}
+      maxW="1440px"
+      mx="auto"
+      px={{ base: 4, md: 20 }}
+      w="full"
       display="flex"
-      alignItems="stretch"
-      overflow="hidden"
+      flexDirection="column"
     >
-      {background && (
-        <Box
-          position="absolute"
-          inset={0}
-          overflow="hidden"
-          pointerEvents="none"
-        >
-          {background}
-        </Box>
-      )}
+      <Flex
+        position="relative"
+        zIndex={1}
+        direction="column"
+        justify="center"
+        gap={7}
+        flex="1"
+        pt={contentPt}
+        pb={contentPb}
+      >
+        <Flex direction="column" gap={3} align="flex-start" w="full">
+          {eyebrow && (
+            <Text
+              fontFamily="mono"
+              fontSize="xs"
+              letterSpacing="0.18em"
+              textTransform="uppercase"
+              color="slate.50"
+              m={0}
+            >
+              {eyebrow}
+            </Text>
+          )}
 
-      <PageContainer>
-        <Flex
-          position="relative"
-          zIndex={1}
-          direction="column"
-          justify={isCompact ? "center" : { base: "center", lg: "flex-end" }}
-          gap={7}
-          minH={minH}
-          pt={contentPt}
-          pb={contentPb}
-        >
-          <Flex direction="column" gap={3} align="flex-start" w="full">
-            {eyebrow && (
-              <Text
-                fontFamily="mono"
-                fontSize="xs"
-                letterSpacing="0.18em"
-                textTransform="uppercase"
-                color="slate.50"
-                m={0}
-              >
-                {eyebrow}
-              </Text>
-            )}
+          <Box
+            as="h1"
+            fontFamily="heading"
+            fontWeight={350}
+            fontSize={{ base: "40px", lg: "50px" }}
+            lineHeight={{ base: "44px", lg: "52px" }}
+            letterSpacing="-2px"
+            color="indigo.900"
+            maxW={{ base: "100%", lg: "560px" }}
+            m={0}
+            textAlign="left"
+          >
+            {headline}
+          </Box>
 
-            <Box
-              as="h1"
+          {subtext && (
+            <Text
               fontFamily="heading"
-              fontWeight={350}
-              fontSize={{ base: "40px", lg: "50px" }}
-              lineHeight={{ base: "44px", lg: "52px" }}
-              letterSpacing="-2px"
-              color="indigo.900"
-              maxW={{ base: "100%", lg: "560px" }}
+              fontWeight={300}
+              fontSize="18px"
+              lineHeight="24px"
+              color="slate.50"
+              maxW={subtextMaxW}
               m={0}
               textAlign="left"
             >
-              {headline}
-            </Box>
-
-            {subtext && (
-              <Text
-                fontFamily="heading"
-                fontWeight={300}
-                fontSize="18px"
-                lineHeight="24px"
-                color="slate.50"
-                maxW={subtextMaxW}
-                m={0}
-                textAlign="left"
-              >
-                {subtext}
-              </Text>
-            )}
-          </Flex>
-
-          <Button
-            alignSelf="flex-start"
-            bg="indigo.900"
-            color="slate.10"
-            borderRadius={0}
-            px={8}
-            py={3.5}
-            h="auto"
-            fontFamily="body"
-            fontSize="14px"
-            fontWeight="normal"
-            lineHeight="21px"
-            onClick={onCtaClick}
-            {...ctaButtonHoverWithArrowProps}
-          >
-            <ButtonArrowLabel>{ctaLabel}</ButtonArrowLabel>
-          </Button>
+              {subtext}
+            </Text>
+          )}
         </Flex>
-      </PageContainer>
+
+        <Button
+          alignSelf="flex-start"
+          bg="indigo.900"
+          color="slate.10"
+          borderRadius={0}
+          px={8}
+          py={3.5}
+          h="auto"
+          fontFamily="body"
+          fontSize="14px"
+          fontWeight="normal"
+          lineHeight="21px"
+          onClick={onCtaClick}
+          {...ctaButtonHoverWithArrowProps}
+        >
+          <ButtonArrowLabel>{ctaLabel}</ButtonArrowLabel>
+        </Button>
+      </Flex>
     </Box>
-  );
-};
+  </Box>
+);

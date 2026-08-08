@@ -246,6 +246,7 @@ export const colors = defineTokens.colors({
     30: { value: "#d3dde1" },
     40: { value: "#a9b7c6" },
     50: { value: "#768ca6" },
+    100: { value: "#425366" },
   },
   // Accent used for emphasized phrases in headlines
   accent: {
