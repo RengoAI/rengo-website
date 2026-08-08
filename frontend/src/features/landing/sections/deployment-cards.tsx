@@ -228,9 +228,11 @@ export const DeploymentCards: React.FC = () => (
               h="56px"
               borderRadius="9px"
               bg="white"
+              border="1px solid"
+              borderColor="slate.30"
               align="center"
               justify="center"
-              boxShadow="0 6px 20px rgba(9,20,36,0.22)"
+              boxShadow="0 4px 16px rgba(9, 20, 36, 0.12)"
             >
               <Box
                 as="svg"
