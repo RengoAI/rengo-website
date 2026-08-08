@@ -1,4 +1,6 @@
 import { AccessRolesArt } from "@/features/landing/sections/access-roles-art";
+import { AgentsActArt } from "@/features/landing/sections/agents-act-art";
+import { AgentsLearnArt } from "@/features/landing/sections/agents-learn-art";
 import { BentoIsoImage } from "@/features/landing/sections/bento-iso-image";
 import { ConnectSystemsArt } from "@/features/landing/sections/connect-systems-art";
 import { DeploymentDiagram } from "@/features/landing/sections/deployment-diagram";
@@ -13,7 +15,9 @@ type TileArt =
   | { kind: "roles" }
   | { kind: "systems" }
   | { kind: "existingTools" }
-  | { kind: "deployment" };
+  | { kind: "deployment" }
+  | { kind: "agentsAct" }
+  | { kind: "agentsLearn" };
 
 const TILES: {
   label: string;
@@ -28,8 +32,8 @@ const TILES: {
     row: "1",
   },
   {
-    label: "Single source of truth",
-    art: { kind: "image", src: "/landing/bento-iso-b.svg" },
+    label: "Agents act",
+    art: { kind: "agentsAct" },
     col: "1 / span 4",
     row: "2",
   },
@@ -46,8 +50,8 @@ const TILES: {
     row: "2",
   },
   {
-    label: "Run agents",
-    art: { kind: "image", src: "/landing/bento-iso-a.svg" },
+    label: "Agents learn",
+    art: { kind: "agentsLearn" },
     col: "9 / span 4",
     row: "2",
   },
@@ -103,6 +107,10 @@ export const AgentsBentoSection: React.FC = () => (
                 <ExistingToolsArt />
               ) : tile.art.kind === "deployment" ? (
                 <DeploymentDiagram size="tile" />
+              ) : tile.art.kind === "agentsAct" ? (
+                <AgentsActArt />
+              ) : tile.art.kind === "agentsLearn" ? (
+                <AgentsLearnArt />
               ) : (
                 <BentoIsoImage src={tile.art.src} />
               )}
