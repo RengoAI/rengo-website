@@ -22,7 +22,7 @@ const TILES: {
   row: string;
 }[] = [
   {
-    label: "Built on top of your existing tools and systems",
+    label: "Connect with your systems",
     art: { kind: "deployment" },
     col: "1 / span 8",
     row: "1",
@@ -40,7 +40,7 @@ const TILES: {
     row: "2",
   },
   {
-    label: "Connect with your systems",
+    label: "Use your tools",
     art: { kind: "systems" },
     col: "5 / span 4",
     row: "2",
@@ -72,7 +72,7 @@ export const AgentsBentoSection: React.FC = () => (
       >
         {TILES.map((tile) => (
           <GridItem
-            key={tile.label}
+            key={`${tile.col}-${tile.row}`}
             gridColumn={{ base: "auto", md: tile.col }}
             gridRow={{ base: "auto", md: tile.row }}
             bg="slate.20"

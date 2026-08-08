@@ -4,9 +4,9 @@ import React from "react";
 const VENDOR_TILES = [
   { id: "claude", label: "Claude", src: "/logos/claude.png", maxH: "22px" },
   {
-    id: "microsoft",
-    label: "Microsoft",
-    src: "/logos/microsoft-small.png",
+    id: "copilot",
+    label: "Copilot",
+    src: "/logos/copilot.png",
     maxH: "22px",
   },
   { id: "openai", label: "OpenAI", src: "/logos/open-ai.png", maxH: "24px" },

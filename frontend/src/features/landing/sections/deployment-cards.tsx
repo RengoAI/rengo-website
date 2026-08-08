@@ -3,17 +3,73 @@ import React from "react";
 
 /**
  * Deployment pillars as Mintlify-style feature cards: a tall tile with a
- * tinted gradient field and flowing line art, a centred white logo plate, and
- * a caption underneath.
+ * tinted gradient field, a centred white logo plate, and a caption underneath.
  *
  * Card metrics follow Mintlify's "Enabling the next generation of startups"
  * row — ~341×390 tiles, 6px radius, overflow hidden — recoloured onto the
  * Rengo palette rather than their per-brand hues.
  */
 
-const ACCENT = "#0071e3";
 const INK = "#213044";
+const SLATE_GLYPH = "#768ca6"; // slate.50 — muted bars on the foundation glyph
 const RULE = "#d3dde1";
+
+/** Three-segment clockwise loop on a full circle (Apply learnings plate). */
+const ApplyLearningsLoopGlyph: React.FC = () => {
+  const chevron = (
+    x: number,
+    y: number,
+    rotateDeg: number,
+    color: string,
+  ) => (
+    <path
+      d="M -3.5 2.5 L 0 -2.5 L 3.5 2.5"
+      transform={`translate(${x} ${y}) rotate(${rotateDeg})`}
+      fill="none"
+      stroke={color}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  );
+
+  return (
+    <>
+      <circle
+        cx={24}
+        cy={24}
+        r={10}
+        fill="none"
+        stroke={RULE}
+        strokeWidth="1.5"
+      />
+      <path
+        d="M 24 14 A 10 10 0 0 1 15.34 29"
+        fill="none"
+        stroke={INK}
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+      {chevron(32.66, 19, 60, INK)}
+      <path
+        d="M 15.34 29 A 10 10 0 0 1 32.66 29"
+        fill="none"
+        stroke={SLATE_GLYPH}
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+      {chevron(24, 34, 180, SLATE_GLYPH)}
+      <path
+        d="M 32.66 29 A 10 10 0 0 1 24 14"
+        fill="none"
+        stroke={INK}
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+      {chevron(34, 24, -90, INK)}
+    </>
+  );
+};
 
 interface DeploymentCard {
   id: string;
@@ -22,8 +78,6 @@ interface DeploymentCard {
   /** Gradient stops for the card field. */
   from: string;
   to: string;
-  /** Stroke colour for the flowing line art. */
-  line: string;
   /** Simple glyph drawn on the centre plate. */
   glyph: React.ReactNode;
 }
@@ -36,12 +90,11 @@ const CARDS: DeploymentCard[] = [
       "We run and operate the platform so your team can focus on the work, not the stack.",
     from: "#0d2440",
     to: "#12325a",
-    line: "rgba(120,180,255,0.55)",
     glyph: (
       <>
-        <rect x="10" y="12" width="28" height="7" rx="1.5" fill={INK} />
-        <rect x="10" y="22" width="28" height="7" rx="1.5" fill={INK} />
-        <rect x="10" y="32" width="28" height="7" rx="1.5" fill={ACCENT} />
+        <rect x="10" y="12" width="28" height="7" rx="1.5" fill={SLATE_GLYPH} />
+        <rect x="10" y="22" width="28" height="7" rx="1.5" fill={SLATE_GLYPH} />
+        <rect x="10" y="32" width="28" height="7" rx="1.5" fill={INK} />
       </>
     ),
   },
@@ -52,13 +105,12 @@ const CARDS: DeploymentCard[] = [
       "Applications and integrations built just for you, in your own repository.",
     from: "#132a44",
     to: "#1d4f7c",
-    line: "rgba(130,190,245,0.5)",
     glyph: (
       <>
         <path
           d="M18 16 L10 24 L18 32"
           fill="none"
-          stroke={INK}
+          stroke={SLATE_GLYPH}
           strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -66,7 +118,7 @@ const CARDS: DeploymentCard[] = [
         <path
           d="M30 16 L38 24 L30 32"
           fill="none"
-          stroke={ACCENT}
+          stroke={INK}
           strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -81,32 +133,12 @@ const CARDS: DeploymentCard[] = [
       "We turn frontier models into production systems that fit how your firm actually works.",
     from: "#0a2440",
     to: "#0071e3",
-    line: "rgba(150,205,255,0.5)",
-    glyph: (
-      <>
-        <circle cx="24" cy="24" r="6" fill={ACCENT} />
-        <circle
-          cx="24"
-          cy="24"
-          r="13"
-          fill="none"
-          stroke={INK}
-          strokeWidth="2"
-        />
-        <circle cx="24" cy="11" r="3" fill={INK} />
-        <circle cx="37" cy="30" r="3" fill={INK} />
-        <circle cx="11" cy="30" r="3" fill={INK} />
-      </>
-    ),
+    glyph: <ApplyLearningsLoopGlyph />,
   },
 ];
 
-/** Flowing line field, echoing Mintlify's swept-curve card art. */
-const CardField: React.FC<{ from: string; to: string; line: string }> = ({
-  from,
-  to,
-  line,
-}) => {
+/** Flat gradient field behind the centre plate. */
+const CardField: React.FC<{ from: string; to: string }> = ({ from, to }) => {
   const id = React.useId();
   return (
     <Box
@@ -127,16 +159,6 @@ const CardField: React.FC<{ from: string; to: string; line: string }> = ({
         </linearGradient>
       </defs>
       <rect width="340" height="300" fill={`url(#g-${id})`} />
-      {Array.from({ length: 14 }).map((_, i) => (
-        <path
-          key={i}
-          d={`M${-40 + i * 14} 300 C ${60 + i * 12} ${210 - i * 6}, ${180 + i * 10} ${150 - i * 4}, ${330 + i * 6} ${-30 + i * 10}`}
-          fill="none"
-          stroke={line}
-          strokeWidth="1"
-          opacity={0.28 + (i % 5) * 0.1}
-        />
-      ))}
     </Box>
   );
 };
@@ -153,13 +175,13 @@ export const DeploymentCards: React.FC = () => (
         <Box
           position="relative"
           w="full"
-          h={{ base: "260px", md: "300px" }}
+          h={{ base: "300px", md: "380px" }}
           borderRadius="6px"
           overflow="hidden"
           border="1px solid"
           borderColor={RULE}
         >
-          <CardField from={card.from} to={card.to} line={card.line} />
+          <CardField from={card.from} to={card.to} />
 
           {/* Centre plate, as on Mintlify's cards */}
           <Flex position="absolute" inset={0} align="center" justify="center">
@@ -172,7 +194,13 @@ export const DeploymentCards: React.FC = () => (
               justify="center"
               boxShadow="0 8px 28px rgba(9,20,36,0.28)"
             >
-              <Box as="svg" width="48px" height="48px" aria-hidden>
+              <Box
+                as="svg"
+                width="48px"
+                height="48px"
+                viewBox="0 0 48 48"
+                aria-hidden
+              >
                 {card.glyph}
               </Box>
             </Flex>
