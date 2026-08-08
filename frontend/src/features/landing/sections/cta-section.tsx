@@ -29,10 +29,10 @@ export const CtaSection: React.FC<CtaSectionProps> = ({ onTalkToSales }) => (
         letterSpacing="-2px"
         color="indigo.900"
         maxW="none"
-        whiteSpace="nowrap"
+        whiteSpace={{ base: "normal", md: "nowrap" }}
         m={0}
       >
-        Put your data to work with AI
+        Ready to put your data to work with AI?
       </Box>
 
       <Button
