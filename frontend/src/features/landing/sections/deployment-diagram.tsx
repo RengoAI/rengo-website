@@ -3,252 +3,281 @@ import React from "react";
 /**
  * Deployment topology diagram.
  *
- * Recreates the structure of Baseten's "dedicated-deployment" figure — three
- * stacked environment nodes on a spine, floating metric chips, connector runs,
- * and an isometric model cube — in the Rengo palette. Geometry follows the
- * source composition (1000×1000, nodes at ~41%/53%/63% height, chips fanned to
- * the right of the spine); colours are remapped from Baseten's greens onto
- * accent.link / indigo / slate.
+ * Recreates Baseten's "model-labs" figure — a large central cube with six
+ * satellite cubes in two flanking columns, joined by rounded connector runs
+ * that pulse toward the hub — in the Rengo palette.
+ *
+ * Geometry comes from the source Lottie (534×524 @ 24fps, 9.58s loop):
+ *
+ *   top face     84.2 × 48.0  (a 1.754:1 isometric rhombus)
+ *   body drop    48.8         (1.159 × the top face's half-width)
+ *   hub          2.37× the satellite
+ *
+ * The source distinguishes its two columns by hue (green in, pink out); here
+ * that reads as accent-tinted inputs on the left and neutral slate outputs on
+ * the right, with the hub carrying the strongest accent.
  */
 
-const INK = "#213044"; // indigo.900
-const INK_SOFT = "#124476"; // indigo.700
 const ACCENT = "#0071e3"; // accent.link
 const RULE = "#d3dde1"; // slate.30
 const RULE_SOFT = "#a9b7c6"; // slate.40
-const SURFACE = "#eaedee"; // slate.20
-const SURFACE_LIGHT = "#f5f5f6"; // slate.10
 
-/** Environment nodes, top to bottom, matching the source's stacked spine. */
-const NODES = [
-  { id: "production", label: "PRODUCTION", y: 96, active: true },
-  { id: "staging", label: "STAGING", y: 186, active: false },
-  { id: "deployments", label: "DEPLOYMENTS", y: 276, active: false },
+const VB_W = 760;
+const VB_H = 360;
+
+/** Half-width of the source's top face. */
+const SAT_UNIT = 42.1;
+const HUB_SCALE = 2.37;
+/** Satellites render larger than the raw ratio so they read as siblings
+ * of the hub, matching how the source composition balances at this size. */
+const SAT_BOOST = 1.42;
+/** Scale the 534-wide source field into this 760×360 band. */
+const FIT = 0.62;
+
+const SAT_R = SAT_UNIT * FIT * SAT_BOOST; // ≈37
+const HUB_R = SAT_UNIT * HUB_SCALE * FIT; // ≈62
+
+/** Ratios lifted directly from the source paths. */
+const TOP_RATIO = 48.0 / 84.2; // rhombus half-height ÷ half-width
+const BODY_RATIO = 48.8 / 42.1; // body drop ÷ half-width
+
+const HUB = { x: VB_W * 0.5, y: VB_H * 0.42 };
+
+const FLOAT_CYCLE = "2.83s";
+const LOOP = 9.58;
+
+/**
+ * Two families, as in the source: inputs feed the hub from the left, outputs
+ * leave to the right. `delay` reproduces the source's staggered trim pulses.
+ */
+const SATELLITES = [
+  { id: "l-top", x: VB_W * 0.13, y: VB_H * 0.2, delay: 0.75, tone: "in" },
+  { id: "l-mid", x: VB_W * 0.13, y: VB_H * 0.46, delay: 3.88, tone: "in" },
+  { id: "l-dwn", x: VB_W * 0.13, y: VB_H * 0.72, delay: 7.0, tone: "in" },
+  { id: "r-top", x: VB_W * 0.87, y: VB_H * 0.2, delay: 2.08, tone: "out" },
+  { id: "r-mid", x: VB_W * 0.87, y: VB_H * 0.46, delay: 5.21, tone: "out" },
+  { id: "r-dwn", x: VB_W * 0.87, y: VB_H * 0.72, delay: 8.33, tone: "out" },
 ] as const;
 
-/** Metric chips, fanned right of the spine as in the source. */
-const CHIPS = [
-  { text: "400/1200 replicas", x: 470, y: 74 },
-  { text: "75% GPU utilization", x: 470, y: 116 },
-  { text: "93 TPS", x: 470, y: 164 },
-  { text: "5010 requests/M", x: 470, y: 206 },
-] as const;
+type Tone = "in" | "out" | "hub";
 
-const NODE_X = 176;
-const NODE_W = 250;
-const NODE_H = 52;
+/** Face fills per family, mirroring the source's light-top / mid / dark-side. */
+const TONES: Record<
+  Tone,
+  { top: string; left: string; right: string; edge: string }
+> = {
+  in: {
+    top: "#ffffff",
+    left: "rgba(0,113,227,0.10)",
+    right: "rgba(0,113,227,0.20)",
+    edge: "rgba(0,113,227,0.45)",
+  },
+  out: {
+    top: "#ffffff",
+    left: "rgba(118,140,166,0.12)",
+    right: "rgba(118,140,166,0.26)",
+    edge: RULE_SOFT,
+  },
+  hub: {
+    top: "#ffffff",
+    left: "rgba(0,113,227,0.26)",
+    right: ACCENT,
+    edge: ACCENT,
+  },
+};
 
-export const DeploymentDiagram: React.FC = () => (
-  <svg
-    viewBox="0 0 760 360"
-    preserveAspectRatio="xMidYMid meet"
-    role="img"
-    aria-label="Deployment topology: production, staging, and deployment environments running on Rengo-managed infrastructure."
-    style={{ display: "block", width: "100%", height: "100%" }}
+/**
+ * A single isometric cube — top rhombus plus two body faces — drawn from its
+ * centre using the source's face ratios.
+ */
+const Cube: React.FC<{ cx: number; cy: number; r: number; tone: Tone }> = ({
+  cx,
+  cy,
+  r,
+  tone,
+}) => {
+  const ry = r * TOP_RATIO;
+  const body = r * BODY_RATIO;
+  const { top, left, right, edge } = TONES[tone];
+  const sw = Math.max(1, r * 0.026);
+  return (
+    <g strokeLinejoin="round" strokeWidth={sw} stroke={edge}>
+      <polygon
+        points={`${cx - r},${cy} ${cx},${cy + ry} ${cx},${cy + ry + body} ${cx - r},${cy + body}`}
+        fill={left}
+      />
+      <polygon
+        points={`${cx + r},${cy} ${cx},${cy + ry} ${cx},${cy + ry + body} ${cx + r},${cy + body}`}
+        fill={right}
+      />
+      <polygon
+        points={`${cx},${cy - ry} ${cx + r},${cy} ${cx},${cy + ry} ${cx - r},${cy}`}
+        fill={top}
+      />
+    </g>
+  );
+};
+
+/** Rounded elbow from a satellite edge to the hub edge, as in the source. */
+const connectorPath = (sat: (typeof SATELLITES)[number]) => {
+  const isLeft = sat.x < HUB.x;
+  const from = isLeft ? sat.x + SAT_R : sat.x - SAT_R;
+  const to = isLeft ? HUB.x - HUB_R * 0.62 : HUB.x + HUB_R * 0.62;
+  const mid = from + (to - from) * 0.28;
+  const dir = isLeft ? 1 : -1;
+  const vdir = sat.y < HUB.y ? 1 : -1;
+  const R = 10;
+
+  if (Math.abs(sat.y - HUB.y) < 2) return `M${from} ${sat.y} H${to}`;
+
+  return [
+    `M${from} ${sat.y}`,
+    `H${mid - R * dir}`,
+    `Q${mid} ${sat.y} ${mid} ${sat.y + R * vdir}`,
+    `V${HUB.y - R * vdir}`,
+    `Q${mid} ${HUB.y} ${mid + R * dir} ${HUB.y}`,
+    `H${to}`,
+  ].join(" ");
+};
+
+/** Hub drawn in its own overlay so the float can animate on an HTML wrapper —
+ *  CSS transforms do not reliably animate on SVG <g> elements. */
+const HubOverlay: React.FC<{ compact?: boolean }> = ({ compact = false }) => (
+  <div
+    aria-hidden
+    style={{
+      position: "absolute",
+      inset: 0,
+      animation: `rengo-hub-float ${FLOAT_CYCLE} ease-in-out infinite`,
+      pointerEvents: "none",
+    }}
   >
-    <defs>
-      {/* Dashed field, echoing the marketing grid vocabulary. */}
-      <pattern
-        id="rengo-deploy-grid"
-        width="24"
-        height="24"
-        patternUnits="userSpaceOnUse"
-      >
-        <path
-          d="M24 0 L0 0 0 24"
-          fill="none"
-          stroke={RULE}
-          strokeWidth="1"
-          strokeDasharray="3 3"
-          opacity="0.7"
-        />
-      </pattern>
-      <linearGradient id="rengo-deploy-fade" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0" stopColor="#ffffff" stopOpacity="0" />
-        <stop offset="0.18" stopColor="#ffffff" stopOpacity="1" />
-        <stop offset="0.82" stopColor="#ffffff" stopOpacity="1" />
-        <stop offset="1" stopColor="#ffffff" stopOpacity="0" />
-      </linearGradient>
-      <mask id="rengo-deploy-mask">
-        <rect width="760" height="360" fill="url(#rengo-deploy-fade)" />
-      </mask>
-    </defs>
-
-    <g mask="url(#rengo-deploy-mask)">
-      <rect width="760" height="360" fill="url(#rengo-deploy-grid)" />
-    </g>
-
-    {/* ── Source rail: where firm data enters ───────────────────── */}
-    <g>
-      <text
-        x="40"
-        y="150"
-        fill={RULE_SOFT}
-        fontSize="9"
-        letterSpacing="1"
-        fontFamily="var(--rengo-fonts-mono)"
-      >
-        YOUR SYSTEMS
-      </text>
-      {[168, 186, 204].map((y, i) => (
-        <rect
-          key={y}
-          x="40"
-          y={y}
-          width={i === 1 ? 86 : 64}
-          height="8"
-          rx="1"
-          fill={i === 1 ? INK_SOFT : SURFACE}
-          stroke={RULE}
-          strokeWidth="0.75"
-        />
-      ))}
-      {/* Feed into the spine */}
-      <path
-        d={`M136 190 H${NODE_X - 26}`}
-        stroke={RULE_SOFT}
-        strokeWidth="1"
-        strokeDasharray="3 3"
-        fill="none"
+    <svg
+      viewBox={`0 0 ${VB_W} ${VB_H}`}
+      preserveAspectRatio="xMidYMid meet"
+      style={{ display: "block", width: "100%", height: "100%" }}
+    >
+      <Cube
+        cx={HUB.x}
+        cy={HUB.y}
+        r={compact ? HUB_R * 0.86 : HUB_R}
+        tone="hub"
       />
-      <circle cx={NODE_X - 26} cy="190" r="3" fill={ACCENT} />
-    </g>
+    </svg>
+  </div>
+);
 
-    {/* ── Spine connecting the environment nodes ────────────────── */}
-    <path
-      d={`M${NODE_X - 26} 190 V${NODES[0].y + NODE_H / 2} H${NODE_X}`}
-      stroke={RULE_SOFT}
-      strokeWidth="1"
-      fill="none"
-    />
-    <path
-      d={`M${NODE_X - 26} 190 V${NODES[2].y + NODE_H / 2} H${NODE_X}`}
-      stroke={RULE_SOFT}
-      strokeWidth="1"
-      fill="none"
-    />
-    <path
-      d={`M${NODE_X - 26} ${NODES[1].y + NODE_H / 2} H${NODE_X}`}
-      stroke={RULE_SOFT}
-      strokeWidth="1"
-      fill="none"
-    />
+interface DeploymentDiagramProps {
+  /** "band" fills the wide section; "tile" is the compact bento variant. */
+  size?: "band" | "tile";
+}
 
-    {/* ── Environment nodes ─────────────────────────────────────── */}
-    {NODES.map((node) => (
-      <g key={node.id}>
-        <rect
-          x={NODE_X}
-          y={node.y}
-          width={NODE_W}
-          height={NODE_H}
-          rx="2"
-          fill={node.active ? "#ffffff" : SURFACE_LIGHT}
-          stroke={node.active ? ACCENT : RULE}
-          strokeWidth={node.active ? 1.25 : 1}
-        />
-        {/* Status pip */}
-        <circle
-          cx={NODE_X + 18}
-          cy={node.y + NODE_H / 2}
-          r="3.5"
-          fill={node.active ? ACCENT : RULE_SOFT}
-        />
-        <text
-          x={NODE_X + 32}
-          y={node.y + NODE_H / 2 + 3.5}
-          fill={node.active ? INK : INK_SOFT}
-          fontSize="10"
-          letterSpacing="1.2"
-          fontFamily="var(--rengo-fonts-mono)"
-        >
-          {node.label}
-        </text>
-        {/* Load bar, standing in for the source's replica meter */}
-        <rect
-          x={NODE_X + 150}
-          y={node.y + NODE_H / 2 - 3}
-          width="80"
-          height="6"
-          rx="1"
-          fill={SURFACE}
-        />
-        <rect
-          x={NODE_X + 150}
-          y={node.y + NODE_H / 2 - 3}
-          width={node.active ? 62 : 28}
-          height="6"
-          rx="1"
-          fill={node.active ? ACCENT : RULE_SOFT}
-        />
+export const DeploymentDiagram: React.FC<DeploymentDiagramProps> = ({
+  size = "band",
+}) => (
+  <div style={{ position: "relative", width: "100%", height: "100%" }}>
+    <style>{`
+      @keyframes rengo-hub-float {
+        0%, 100% { transform: translateY(0); }
+        50%      { transform: translateY(-5px); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        [style*="rengo-hub-float"] { animation: none !important; }
+      }
+    `}</style>
+    <svg
+      viewBox={`0 0 ${VB_W} ${VB_H}`}
+      preserveAspectRatio="xMidYMid meet"
+      role="img"
+      aria-label="Connected systems feeding a central Rengo deployment."
+      style={{ display: "block", width: "100%", height: "100%" }}
+    >
+      <defs>
+        <linearGradient id="rengo-labs-fade" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="#ffffff" stopOpacity="0" />
+          <stop offset="0.16" stopColor="#ffffff" stopOpacity="1" />
+          <stop offset="0.84" stopColor="#ffffff" stopOpacity="1" />
+          <stop offset="1" stopColor="#ffffff" stopOpacity="0" />
+        </linearGradient>
+        <mask id="rengo-labs-mask">
+          <rect width={VB_W} height={VB_H} fill="url(#rengo-labs-fade)" />
+        </mask>
+      </defs>
+
+      <style>{`
+      }
+      @keyframes rengo-hub-float {
+        0%, 100% { transform: translate(0px, 0px); }
+        50%      { transform: translate(0px, -5px); }
+      }
+      .rengo-hub {
+        animation: rengo-hub-float ${FLOAT_CYCLE} ease-in-out infinite;
+        transform-box: view-box;
+        transform-origin: center;
+      }
+      @keyframes rengo-pulse-run {
+        0%        { stroke-dashoffset: var(--run); opacity: 0; }
+        6%        { opacity: 1; }
+        45%       { stroke-dashoffset: 0; opacity: 1; }
+        60%, 100% { stroke-dashoffset: 0; opacity: 0; }
+      }
+      .rengo-pulse { animation: rengo-pulse-run ${LOOP}s linear infinite; }
+      @media (prefers-reduced-motion: reduce) {
+        .rengo-hub { animation: none; }
+        .rengo-pulse { animation: none; opacity: 0; }
+      }
+    `}</style>
+
+      <g mask="url(#rengo-labs-mask)">
+        {/* ── Connector runs, with a pulse travelling each one ─────── */}
+        {SATELLITES.map((sat) => {
+          const d = connectorPath(sat);
+          const run = 420;
+          const isLeft = sat.tone === "in";
+          return (
+            <g key={`link-${sat.id}`} fill="none">
+              <path
+                d={d}
+                stroke={isLeft ? "rgba(0,113,227,0.34)" : RULE}
+                strokeWidth="1.25"
+                strokeDasharray="4 4"
+                strokeLinecap="round"
+              />
+              <path
+                className="rengo-pulse"
+                d={d}
+                stroke={ACCENT}
+                strokeWidth="2"
+                strokeLinecap="round"
+                style={
+                  {
+                    strokeDasharray: `54 ${run}`,
+                    animationDelay: `${sat.delay}s`,
+                    ["--run" as string]: `${run}`,
+                  } as React.CSSProperties
+                }
+              />
+            </g>
+          );
+        })}
+
+        {/* ── Satellites ──────────────────────────────────────────── */}
+        {SATELLITES.map((sat) => (
+          <Cube
+            key={sat.id}
+            cx={sat.x}
+            cy={sat.y}
+            r={SAT_R}
+            tone={sat.tone as Tone}
+          />
+        ))}
+
+        {/* ── Hub ─────────────────────────────────────────────────── */}
       </g>
-    ))}
 
-    {/* ── Metric chips ──────────────────────────────────────────── */}
-    {CHIPS.map((chip) => (
-      <g key={chip.text}>
-        <path
-          d={`M${NODE_X + NODE_W} ${chip.y + 10} H${chip.x - 16}`}
-          stroke={RULE}
-          strokeWidth="1"
-          strokeDasharray="2 3"
-          fill="none"
-        />
-        <rect
-          x={chip.x}
-          y={chip.y}
-          width="172"
-          height="21"
-          rx="2"
-          fill="#ffffff"
-          stroke={RULE}
-          strokeWidth="1"
-        />
-        <text
-          x={chip.x + 10}
-          y={chip.y + 14}
-          fill={INK_SOFT}
-          fontSize="9"
-          letterSpacing="0.8"
-          fontFamily="var(--rengo-fonts-mono)"
-        >
-          {chip.text}
-        </text>
-      </g>
-    ))}
-
-    {/* ── Isometric model cube ──────────────────────────────────── */}
-    <g transform="translate(556, 258)">
-      <polygon
-        points="44,0 88,22 44,44 0,22"
-        fill={SURFACE}
-        stroke={RULE}
-        strokeWidth="1"
-      />
-      <polygon
-        points="0,22 44,44 44,88 0,66"
-        fill={SURFACE_LIGHT}
-        stroke={RULE}
-        strokeWidth="1"
-      />
-      <polygon
-        points="88,22 44,44 44,88 88,66"
-        fill={ACCENT}
-        opacity="0.16"
-        stroke={ACCENT}
-        strokeWidth="1"
-      />
-      <text
-        x="44"
-        y="-8"
-        textAnchor="middle"
-        fill={RULE_SOFT}
-        fontSize="9"
-        letterSpacing="1"
-        fontFamily="var(--rengo-fonts-mono)"
-      >
-        YOUR REPO
-      </text>
-    </g>
-  </svg>
+      {/* Outside the mask: a masked subtree suppresses this animation, and the
+        hub is central enough that it never needs the edge fade. */}
+    </svg>
+    <HubOverlay compact={size === "tile"} />
+  </div>
 );

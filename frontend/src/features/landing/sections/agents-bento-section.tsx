@@ -1,6 +1,7 @@
 import { AccessRolesArt } from "@/features/landing/sections/access-roles-art";
 import { BentoIsoImage } from "@/features/landing/sections/bento-iso-image";
 import { ConnectSystemsArt } from "@/features/landing/sections/connect-systems-art";
+import { DeploymentDiagram } from "@/features/landing/sections/deployment-diagram";
 import { ExistingToolsArt } from "@/features/landing/sections/existing-tools-art";
 import { SectionHeading } from "@/features/landing/sections/section-heading";
 import { Box, Grid, GridItem, Text } from "@chakra-ui/react";
@@ -11,7 +12,8 @@ type TileArt =
   | { kind: "image"; src: string }
   | { kind: "roles" }
   | { kind: "systems" }
-  | { kind: "existingTools" };
+  | { kind: "existingTools" }
+  | { kind: "deployment" };
 
 const TILES: {
   label: string;
@@ -21,7 +23,7 @@ const TILES: {
 }[] = [
   {
     label: "Built on top of your existing tools and systems",
-    art: { kind: "existingTools" },
+    art: { kind: "deployment" },
     col: "1 / span 8",
     row: "1",
   },
@@ -99,6 +101,8 @@ export const AgentsBentoSection: React.FC = () => (
                 <ConnectSystemsArt />
               ) : tile.art.kind === "existingTools" ? (
                 <ExistingToolsArt />
+              ) : tile.art.kind === "deployment" ? (
+                <DeploymentDiagram size="tile" />
               ) : (
                 <BentoIsoImage src={tile.art.src} />
               )}
