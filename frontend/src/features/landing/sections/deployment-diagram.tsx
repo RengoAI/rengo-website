@@ -128,7 +128,10 @@ const cubeCentreY = (cy: number, r: number) => cy + (r * BODY_RATIO) / 2;
 const connectorPath = (sat: (typeof SATELLITES)[number]) => {
   const isLeft = sat.x < HUB.x;
   const from = isLeft ? sat.x + SAT_R : sat.x - SAT_R;
-  const to = isLeft ? HUB.x - HUB_R * 0.62 : HUB.x + HUB_R * 0.62;
+  // Stop at the hub's silhouette edge. At the cube's centre height that is
+  // the waist corner, cx ± r — using a fraction of r ran the line inside the
+  // cube and out the far side.
+  const to = isLeft ? HUB.x - HUB_R : HUB.x + HUB_R;
   const mid = from + (to - from) * 0.28;
   const dir = isLeft ? 1 : -1;
 
