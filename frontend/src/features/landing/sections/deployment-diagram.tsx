@@ -20,7 +20,8 @@ import React from "react";
 
 const ACCENT = "#0071e3"; // accent.link
 const RULE = "#d3dde1"; // slate.30
-const RULE_SOFT = "#a9b7c6"; // slate.40
+const SLATE_20 = "#eaedee";
+const SLATE_10 = "#f5f5f6";
 
 const VB_W = 760;
 const VB_H = 360;
@@ -43,7 +44,6 @@ const BODY_RATIO = 48.8 / 42.1; // body drop ÷ half-width
 
 const HUB = { x: VB_W * 0.5, y: VB_H * 0.42 };
 
-const FLOAT_CYCLE = "2.83s";
 const LOOP = 9.58;
 
 /**
@@ -68,21 +68,21 @@ const TONES: Record<
 > = {
   in: {
     top: "#ffffff",
-    left: "rgba(0,113,227,0.10)",
-    right: "rgba(0,113,227,0.20)",
-    edge: "rgba(0,113,227,0.45)",
+    left: SLATE_10,
+    right: SLATE_20,
+    edge: RULE,
   },
   out: {
     top: "#ffffff",
-    left: "rgba(118,140,166,0.12)",
-    right: "rgba(118,140,166,0.26)",
-    edge: RULE_SOFT,
+    left: SLATE_10,
+    right: SLATE_20,
+    edge: RULE,
   },
   hub: {
     top: "#ffffff",
-    left: "rgba(0,113,227,0.26)",
-    right: ACCENT,
-    edge: ACCENT,
+    left: SLATE_10,
+    right: SLATE_20,
+    edge: RULE,
   },
 };
 
@@ -118,19 +118,16 @@ const Cube: React.FC<{ cx: number; cy: number; r: number; tone: Tone }> = ({
   );
 };
 
-/** Rounded elbow from a satellite edge to the hub edge, as in the source. */
 /**
  * A cube's drawing origin (cy) sits at the top rhombus's waist, so its visual
  * centre is half a body-drop lower. Connectors aim at that centre.
  */
 const cubeCentreY = (cy: number, r: number) => cy + (r * BODY_RATIO) / 2;
 
+/** Rounded elbow from a satellite edge to the hub edge, as in the source. */
 const connectorPath = (sat: (typeof SATELLITES)[number]) => {
   const isLeft = sat.x < HUB.x;
   const from = isLeft ? sat.x + SAT_R : sat.x - SAT_R;
-  // Stop at the hub's silhouette edge. At the cube's centre height that is
-  // the waist corner, cx ± r — using a fraction of r ran the line inside the
-  // cube and out the far side.
   const to = isLeft ? HUB.x - HUB_R : HUB.x + HUB_R;
   const mid = from + (to - from) * 0.28;
   const dir = isLeft ? 1 : -1;
@@ -158,32 +155,6 @@ const connectorPath = (sat: (typeof SATELLITES)[number]) => {
  */
 const TILE_VIEWBOX = { x: 34, y: 40, w: 692, h: 280 };
 
-/** Hub drawn in its own overlay so the float can animate on an HTML wrapper —
- *  CSS transforms do not reliably animate on SVG <g> elements. */
-const HubOverlay: React.FC<{ compact?: boolean }> = ({ compact = false }) => (
-  <div
-    aria-hidden
-    style={{
-      position: "absolute",
-      inset: 0,
-      animation: `rengo-hub-float ${FLOAT_CYCLE} ease-in-out infinite`,
-      pointerEvents: "none",
-    }}
-  >
-    <svg
-      viewBox={
-        compact
-          ? `${TILE_VIEWBOX.x} ${TILE_VIEWBOX.y} ${TILE_VIEWBOX.w} ${TILE_VIEWBOX.h}`
-          : `0 0 ${VB_W} ${VB_H}`
-      }
-      preserveAspectRatio="xMidYMid meet"
-      style={{ display: "block", width: "100%", height: "100%" }}
-    >
-      <Cube cx={HUB.x} cy={HUB.y} r={HUB_R} tone="hub" />
-    </svg>
-  </div>
-);
-
 interface DeploymentDiagramProps {
   /** "band" fills the wide section; "tile" is the compact bento variant. */
   size?: "band" | "tile";
@@ -200,15 +171,6 @@ export const DeploymentDiagram: React.FC<DeploymentDiagramProps> = ({
       maxHeight: size === "tile" ? "180px" : undefined,
     }}
   >
-    <style>{`
-      @keyframes rengo-hub-float {
-        0%, 100% { transform: translateY(0); }
-        50%      { transform: translateY(-5px); }
-      }
-      @media (prefers-reduced-motion: reduce) {
-        [style*="rengo-hub-float"] { animation: none !important; }
-      }
-    `}</style>
     <svg
       viewBox={
         size === "tile"
@@ -233,26 +195,9 @@ export const DeploymentDiagram: React.FC<DeploymentDiagramProps> = ({
       </defs>
 
       <style>{`
-      }
-      @keyframes rengo-hub-float {
-        0%, 100% { transform: translate(0px, 0px); }
-        50%      { transform: translate(0px, -5px); }
-      }
-      .rengo-hub {
-        animation: rengo-hub-float ${FLOAT_CYCLE} ease-in-out infinite;
-        transform-box: view-box;
-        transform-origin: center;
-      }
-      @keyframes rengo-pulse-run {
-        0%        { stroke-dashoffset: var(--run); opacity: 0; }
-        6%        { opacity: 1; }
-        45%       { stroke-dashoffset: 0; opacity: 1; }
-        60%, 100% { stroke-dashoffset: 0; opacity: 0; }
-      }
-      .rengo-pulse { animation: rengo-pulse-run ${LOOP}s linear infinite; }
       @media (prefers-reduced-motion: reduce) {
-        .rengo-hub { animation: none; }
-        .rengo-pulse { animation: none; opacity: 0; }
+        .rengo-pulse { opacity: 0 !important; }
+        .rengo-pulse animate { display: none; }
       }
     `}</style>
 
@@ -260,13 +205,11 @@ export const DeploymentDiagram: React.FC<DeploymentDiagramProps> = ({
         {/* ── Connector runs, with a pulse travelling each one ─────── */}
         {SATELLITES.map((sat) => {
           const d = connectorPath(sat);
-          const run = 420;
-          const isLeft = sat.tone === "in";
           return (
             <g key={`link-${sat.id}`} fill="none">
               <path
                 d={d}
-                stroke={isLeft ? "rgba(0,113,227,0.34)" : RULE}
+                stroke={RULE}
                 strokeWidth="1.25"
                 strokeDasharray="4 4"
                 strokeLinecap="round"
@@ -274,17 +217,34 @@ export const DeploymentDiagram: React.FC<DeploymentDiagramProps> = ({
               <path
                 className="rengo-pulse"
                 d={d}
+                pathLength={1}
                 stroke={ACCENT}
                 strokeWidth="2"
                 strokeLinecap="round"
-                style={
-                  {
-                    strokeDasharray: `54 ${run}`,
-                    animationDelay: `${sat.delay}s`,
-                    ["--run" as string]: `${run}`,
-                  } as React.CSSProperties
-                }
-              />
+                strokeLinejoin="round"
+                fill="none"
+                strokeDasharray="0.22 1"
+                strokeDashoffset={1}
+                opacity={0}
+              >
+                <animate
+                  attributeName="stroke-dashoffset"
+                  values="1;0;0"
+                  keyTimes="0;0.88;1"
+                  dur={`${LOOP}s`}
+                  begin={`${sat.delay}s`}
+                  repeatCount="indefinite"
+                  calcMode="linear"
+                />
+                <animate
+                  attributeName="opacity"
+                  values="0;1;1;0"
+                  keyTimes="0;0.04;0.88;1"
+                  dur={`${LOOP}s`}
+                  begin={`${sat.delay}s`}
+                  repeatCount="indefinite"
+                />
+              </path>
             </g>
           );
         })}
@@ -300,12 +260,9 @@ export const DeploymentDiagram: React.FC<DeploymentDiagramProps> = ({
           />
         ))}
 
-        {/* ── Hub ─────────────────────────────────────────────────── */}
       </g>
 
-      {/* Outside the mask: a masked subtree suppresses this animation, and the
-        hub is central enough that it never needs the edge fade. */}
+      <Cube cx={HUB.x} cy={HUB.y} r={HUB_R} tone="hub" />
     </svg>
-    <HubOverlay compact={size === "tile"} />
   </div>
 );
