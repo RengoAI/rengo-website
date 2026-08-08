@@ -99,9 +99,14 @@ const Cube: React.FC<{ cx: number; cy: number; r: number; tone: Tone }> = ({
   const ry = r * TOP_RATIO;
   const body = r * BODY_RATIO;
   const { top, left, right, edge } = TONES[tone];
-  const sw = Math.max(1, r * 0.026);
   return (
-    <g strokeLinejoin="round" strokeWidth={sw} stroke={edge}>
+    <g
+      filter="url(#rengo-cube-card)"
+      strokeLinejoin="round"
+      strokeLinecap="round"
+      strokeWidth={1}
+      stroke={edge}
+    >
       <polygon
         points={`${cx - r},${cy} ${cx},${cy + ry} ${cx},${cy + ry + body} ${cx - r},${cy + body}`}
         fill={left}
@@ -192,6 +197,21 @@ export const DeploymentDiagram: React.FC<DeploymentDiagramProps> = ({
         <mask id="rengo-labs-mask">
           <rect width={VB_W} height={VB_H} fill="url(#rengo-labs-fade)" />
         </mask>
+        <filter
+          id="rengo-cube-card"
+          x="-40%"
+          y="-40%"
+          width="180%"
+          height="180%"
+        >
+          <feDropShadow
+            dx="0"
+            dy="8"
+            stdDeviation="12"
+            floodColor="#213044"
+            floodOpacity="0.08"
+          />
+        </filter>
       </defs>
 
       <style>{`
