@@ -22,6 +22,14 @@ const ACCENT = "#0071e3"; // accent.link
 const RULE = "#d3dde1"; // slate.30
 const SLATE_20 = "#eaedee";
 const SLATE_10 = "#f5f5f6";
+const SLATE_30 = "#d3dde1";
+const SLATE_40 = "#a9b7c6";
+
+/** Hub faces — same light / mid / dark rhythm as satellites, with a blue tint. */
+const HUB_TOP = "#f4f7fb"; // blue.50
+const HUB_LEFT = "#e6eef7"; // blue.100
+const HUB_RIGHT = "#adc6e3"; // blue.300
+const HUB_EDGE = "#cdddf0"; // blue.200
 
 const VB_W = 760;
 const VB_H = 360;
@@ -67,22 +75,22 @@ const TONES: Record<
   { top: string; left: string; right: string; edge: string }
 > = {
   in: {
-    top: "#ffffff",
-    left: SLATE_10,
-    right: SLATE_20,
-    edge: RULE,
+    top: SLATE_10,
+    left: SLATE_20,
+    right: SLATE_40,
+    edge: SLATE_30,
   },
   out: {
-    top: "#ffffff",
-    left: SLATE_10,
-    right: SLATE_20,
-    edge: RULE,
+    top: SLATE_10,
+    left: SLATE_20,
+    right: SLATE_40,
+    edge: SLATE_30,
   },
   hub: {
-    top: "#ffffff",
-    left: SLATE_10,
-    right: SLATE_20,
-    edge: RULE,
+    top: HUB_TOP,
+    left: HUB_LEFT,
+    right: HUB_RIGHT,
+    edge: HUB_EDGE,
   },
 };
 
@@ -156,9 +164,9 @@ const connectorPath = (sat: (typeof SATELLITES)[number]) => {
 
 /**
  * Tile mode widens the viewBox around the same geometry, scaling the diagram
- * down inside a bento cell and leaving margin so nothing clips.
+ * down inside a bento cell and leaving margin so shadows are not clipped.
  */
-const TILE_VIEWBOX = { x: 34, y: 40, w: 692, h: 280 };
+const TILE_VIEWBOX = { x: 34, y: 36, w: 692, h: 308 };
 
 interface DeploymentDiagramProps {
   /** "band" fills the wide section; "tile" is the compact bento variant. */
@@ -199,10 +207,10 @@ export const DeploymentDiagram: React.FC<DeploymentDiagramProps> = ({
         </mask>
         <filter
           id="rengo-cube-card"
-          x="-40%"
-          y="-40%"
-          width="180%"
-          height="180%"
+          x="-50%"
+          y="-50%"
+          width="200%"
+          height="200%"
         >
           <feDropShadow
             dx="0"

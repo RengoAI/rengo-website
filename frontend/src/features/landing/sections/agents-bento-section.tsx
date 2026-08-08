@@ -30,14 +30,14 @@ const TILES: {
   {
     label: "Single source of truth",
     art: { kind: "image", src: "/landing/bento-iso-b.svg" },
-    col: "9 / span 4",
-    row: "1",
+    col: "1 / span 4",
+    row: "2",
   },
   {
     label: "Control who has access",
     art: { kind: "roles" },
-    col: "1 / span 4",
-    row: "2",
+    col: "9 / span 4",
+    row: "1",
   },
   {
     label: "Use your tools",
