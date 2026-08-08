@@ -105,7 +105,7 @@ const CARDS: DeploymentCard[] = [
     id: "infrastructure",
     title: "Shared foundation",
     caption:
-      "We run and operate the platform so your team can focus on the work, not the stack.",
+      "Connect your data, systems, and workflows to a governed foundation that every application and agent can build on.",
     from: "#0d2440",
     to: "#12325a",
     glyph: (
@@ -139,9 +139,9 @@ const CARDS: DeploymentCard[] = [
   },
   {
     id: "own-code",
-    title: "Own your code",
+    title: "Own what you build",
     caption:
-      "Applications and integrations built just for you, in your own repository.",
+      "Applications and integrations tailored to your workflows, owned in your repository and built to evolve with you.",
     from: "#132a44",
     to: "#1d4f7c",
     glyph: (
@@ -167,9 +167,9 @@ const CARDS: DeploymentCard[] = [
   },
   {
     id: "applied-ai",
-    title: "Apply learnings",
+    title: "Compound knowledge",
     caption:
-      "We turn frontier models into production systems that fit how your firm actually works.",
+      "Work shouldn’t start from scratch. Capture the context behind every decision so the next workflow benefits from the last.",
     from: "#0a2440",
     to: "#0071e3",
     glyph: <ApplyLearningsLoopGlyph />,

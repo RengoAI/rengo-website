@@ -40,7 +40,7 @@ const TILES: {
     row: "1",
   },
   {
-    label: "Use your tools",
+    label: "Query on demand",
     art: { kind: "systems" },
     col: "5 / span 4",
     row: "2",
