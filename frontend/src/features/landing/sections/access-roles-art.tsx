@@ -63,7 +63,7 @@ export const AccessRolesArt: React.FC<AccessRolesArtProps> = ({
             }
             pl={variant === "compact" ? 2.5 : 3}
             pr={variant === "compact" ? 3 : 4}
-            bg="white"
+            bg={isAdmin ? "white" : "slate.10"}
             border="1px solid"
             borderColor="slate.30"
             borderRight={variant === "compact" ? undefined : "none"}
