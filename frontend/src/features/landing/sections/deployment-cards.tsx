@@ -10,9 +10,14 @@ import React from "react";
  * Rengo palette rather than their per-brand hues.
  */
 
-const INK = "#213044";
-const SLATE_GLYPH = "#768ca6"; // slate.50 — muted bars on the foundation glyph
 const RULE = "#d3dde1";
+
+/** Glyph strokes/fills — one step darker on the slate/blue ramps for white plates. */
+const GLYPH_SLATE_LIGHT = "#d3dde1"; // slate.30
+const GLYPH_SLATE_MID = "#a9b7c6"; // slate.40
+const GLYPH_SLATE_DARK = "#768ca6"; // slate.50
+const GLYPH_HUB_MID = "#8aabcf"; // blue.400
+const GLYPH_ACCENT = "#0066cc";
 
 /**
  * Apply-learnings plate: the AGM deck's learning-loop mark reduced to logo scale.
@@ -42,16 +47,20 @@ const loopPoint = (deg: number) => {
 };
 
 const ApplyLearningsLoopGlyph: React.FC = () => {
-  // Value ramp: three active hand-offs in ink, the return leg muted.
+  const legColors = [
+    GLYPH_SLATE_DARK,
+    GLYPH_SLATE_MID,
+    GLYPH_ACCENT,
+    GLYPH_HUB_MID,
+  ];
   const legs = LOOP_NODE_DEG.map((deg, i) => {
     const from = loopPoint(deg + LOOP_GAP_DEG);
     const toDeg = deg + 90 - LOOP_GAP_DEG;
     const to = loopPoint(toDeg);
     return {
       key: i,
-      color: i === 3 ? SLATE_GLYPH : INK,
+      color: legColors[i],
       d: `M${from.x.toFixed(2)},${from.y.toFixed(2)} A${LOOP.r},${LOOP.r} 0 0 1 ${to.x.toFixed(2)},${to.y.toFixed(2)}`,
-      // the head sits at the leg's end, turned to the clockwise tangent
       arrow: `translate(${to.x.toFixed(2)},${to.y.toFixed(2)}) rotate(${toDeg + 90})`,
     };
   });
@@ -101,9 +110,30 @@ const CARDS: DeploymentCard[] = [
     to: "#12325a",
     glyph: (
       <>
-        <rect x="10" y="12" width="28" height="7" rx="1.5" fill={SLATE_GLYPH} />
-        <rect x="10" y="22" width="28" height="7" rx="1.5" fill={SLATE_GLYPH} />
-        <rect x="10" y="32" width="28" height="7" rx="1.5" fill={INK} />
+        <rect
+          x="10"
+          y="12"
+          width="28"
+          height="7"
+          rx="1.5"
+          fill={GLYPH_SLATE_LIGHT}
+        />
+        <rect
+          x="10"
+          y="22"
+          width="28"
+          height="7"
+          rx="1.5"
+          fill={GLYPH_SLATE_MID}
+        />
+        <rect
+          x="10"
+          y="32"
+          width="28"
+          height="7"
+          rx="1.5"
+          fill={GLYPH_SLATE_DARK}
+        />
       </>
     ),
   },
@@ -119,7 +149,7 @@ const CARDS: DeploymentCard[] = [
         <path
           d="M18 16 L10 24 L18 32"
           fill="none"
-          stroke={SLATE_GLYPH}
+          stroke={GLYPH_SLATE_MID}
           strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -127,7 +157,7 @@ const CARDS: DeploymentCard[] = [
         <path
           d="M30 16 L38 24 L30 32"
           fill="none"
-          stroke={INK}
+          stroke={GLYPH_SLATE_DARK}
           strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -192,12 +222,11 @@ export const DeploymentCards: React.FC = () => (
         >
           <CardField from={card.from} to={card.to} />
 
-          {/* Centre plate, as on Mintlify's cards */}
           <Flex position="absolute" inset={0} align="center" justify="center">
             <Flex
-              w="72px"
-              h="72px"
-              borderRadius="11px"
+              w="56px"
+              h="56px"
+              borderRadius="9px"
               bg="white"
               align="center"
               justify="center"
@@ -205,8 +234,8 @@ export const DeploymentCards: React.FC = () => (
             >
               <Box
                 as="svg"
-                width="36px"
-                height="36px"
+                width="34px"
+                height="34px"
                 viewBox="0 0 48 48"
                 aria-hidden
               >
