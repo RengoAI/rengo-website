@@ -154,7 +154,7 @@ export const MarketingNavMenu: React.FC<MarketingNavMenuProps> = ({
               {label}
             </Text>
           </Box>
-          <Flex direction="column" align="stretch" py={1}>
+          <Flex direction="column" align="stretch">
             {items.map((item) => (
               <Box
                 key={item.id}

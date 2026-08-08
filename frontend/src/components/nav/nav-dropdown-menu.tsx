@@ -116,14 +116,13 @@ export const NavDropdownMenu: React.FC<NavDropdownMenuProps> = ({
           border="1px solid"
           borderColor={panelBorder}
           borderRadius={0}
-          p={2}
           zIndex={110}
           boxShadow="0 12px 40px rgba(17, 24, 39, 0.12)"
           role="menu"
           onMouseEnter={openMenu}
           onMouseLeave={scheduleClose}
         >
-          <Flex direction="column" gap={1}>
+          <Flex direction="column">
             {items.map((item) => {
               const Icon = item.icon;
               return (
