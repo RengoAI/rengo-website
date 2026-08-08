@@ -24,6 +24,13 @@ export const rootRoute = route(
       {},
       {
         index: route("/", {}, {}),
+        role: route(
+          "/:roleId",
+          {
+            roleId: stringParser,
+          },
+          {},
+        ),
       },
     ),
     company: route("/company", {}, {}),

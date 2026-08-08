@@ -97,7 +97,7 @@ export const CaseStudySection: React.FC = () => (
                 <Text
                   fontFamily="heading"
                   fontWeight={350}
-                  fontSize={{ base: "22px", md: "28px" }}
+                  fontSize={{ base: "18px", md: "22px" }}
                   lineHeight={1.2}
                   letterSpacing="-0.72px"
                   color="indigo.900"
@@ -109,7 +109,7 @@ export const CaseStudySection: React.FC = () => (
                   fontFamily="body"
                   fontSize="16px"
                   lineHeight="24px"
-                  color="ink.body"
+                  color="slate.50"
                   m={0}
                 >
                   {pillar.body}

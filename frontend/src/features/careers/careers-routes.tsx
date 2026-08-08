@@ -18,5 +18,18 @@ export const careersRoutes: RouteObject = {
         return { Component: CareersPage };
       },
     },
+    {
+      id: "careersRole",
+      path: ":roleId",
+      handle: {
+        pageTitle: "Open Role",
+      },
+      lazy: async () => {
+        const { JobListingPage } = await import(
+          "@/features/careers/job-listing-page"
+        );
+        return { Component: JobListingPage };
+      },
+    },
   ],
 };

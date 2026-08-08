@@ -1,30 +1,22 @@
+import { rootRoute } from "@/app/app-routes";
 import { PageContainer } from "@/components/layout/page-container";
-import { Box, Flex, Link, Text } from "@chakra-ui/react";
+import { TOP_NAV_HEIGHT } from "@/components/nav/nav-styles";
+import { OPEN_ROLES } from "@/features/careers/open-roles";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import React from "react";
+import { Link as RouterLink } from "react-router-dom";
 
-const OPEN_ROLES = [
-  {
-    id: "software-engineer",
-    title: "Software Engineer",
-    location: "New York",
-  },
-  {
-    id: "forward-deployed-engineer",
-    title: "Forward Deployed Engineer",
-    location: "New York",
-  },
-] as const;
-
-const roleMailto = (title: string) =>
-  `mailto:careers@rengoai.com?subject=${encodeURIComponent(`Application: ${title}`)}`;
+export const OPEN_ROLES_SECTION_ID = "open-roles";
 
 export const OpenRolesSection: React.FC = () => (
   <Box
     as="section"
+    id={OPEN_ROLES_SECTION_ID}
     bg="slate.10"
     py={24}
     borderTop="1px solid"
     borderColor="slate.30"
+    scrollMarginTop={`${TOP_NAV_HEIGHT}px`}
   >
     <PageContainer>
       <Box maxW="720px" mb={12}>
@@ -44,11 +36,10 @@ export const OpenRolesSection: React.FC = () => (
 
       <Flex direction="column" gap={3} w="full" alignItems="stretch">
         {OPEN_ROLES.map((role) => (
-          <Link
+          <Box
             key={role.id}
-            href={roleMailto(role.title)}
+            asChild
             w="full"
-            alignSelf="stretch"
             display="flex"
             alignItems="center"
             justifyContent="space-between"
@@ -63,32 +54,36 @@ export const OpenRolesSection: React.FC = () => (
             _hover={{ bg: "slate.20", textDecoration: "none" }}
             transition="background 150ms ease"
           >
-            <Text
-              fontFamily="body"
-              fontSize="20px"
-              fontWeight="medium"
-              lineHeight={1.25}
-              letterSpacing="-0.4px"
-              color="indigo.900"
-              m={0}
-              textAlign="left"
-              flex="1"
-              minW={0}
+            <RouterLink
+              to={rootRoute({}).careers({}).role({ roleId: role.id }).$}
             >
-              {role.title}
-            </Text>
-            <Text
-              fontFamily="body"
-              fontSize="sm"
-              lineHeight="short"
-              color="slate.50"
-              m={0}
-              flexShrink={0}
-              textAlign="right"
-            >
-              {role.location}
-            </Text>
-          </Link>
+              <Text
+                fontFamily="body"
+                fontSize="20px"
+                fontWeight="medium"
+                lineHeight={1.25}
+                letterSpacing="-0.4px"
+                color="indigo.900"
+                m={0}
+                textAlign="left"
+                flex="1"
+                minW={0}
+              >
+                {role.title}
+              </Text>
+              <Text
+                fontFamily="body"
+                fontSize="sm"
+                lineHeight="short"
+                color="slate.50"
+                m={0}
+                flexShrink={0}
+                textAlign="right"
+              >
+                {role.location}
+              </Text>
+            </RouterLink>
+          </Box>
         ))}
       </Flex>
     </PageContainer>
