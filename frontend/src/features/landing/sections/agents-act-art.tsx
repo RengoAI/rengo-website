@@ -61,22 +61,31 @@ const Block: React.FC<{
  */
 const ROW_PITCH = 38;
 const ROW_TOP_Y = 34;
-const ROW_X = 166;
+const ROW_X = 171;
 
 const BLOCKS = [
-  { id: "a", from: { x: 34, y: 28 }, tag: "Emails" },
-  { id: "b", from: { x: 74, y: 56 }, tag: "PDFs" },
-  { id: "c", from: { x: 28, y: 88 }, tag: "Excel" },
-  { id: "d", from: { x: 78, y: 118 }, tag: "Ledger" },
+  { id: "a", from: { x: 39, y: 28 }, tag: "Emails" },
+  { id: "b", from: { x: 79, y: 56 }, tag: "PDFs" },
+  { id: "c", from: { x: 33, y: 88 }, tag: "Excel" },
+  { id: "d", from: { x: 83, y: 118 }, tag: "Ledger" },
 ].map((b, i) => ({
   ...b,
   to: { x: ROW_X, y: ROW_TOP_Y + i * ROW_PITCH },
 }));
 
-/** The ordered frame starts clear of the scatter's right edge (78 + R = 93)
+/** The ordered frame starts clear of the scatter's right edge (83 + R = 98)
  *  so the two zones read as distinct halves. */
-const GRID_X = 140;
-const GRID_W = 156;
+const GRID_X = 145;
+const GRID_W = 151;
+
+/**
+ * The divider sits midway between the two halves' facing edges, so each side
+ * is the same distance from it. The right-hand edge is the dashed frame, not
+ * the first cube — the frame is drawn, so it is what the eye measures from;
+ * aligning to the cube instead left the right side looking tighter.
+ */
+const SCATTER_RIGHT_EDGE = Math.max(...BLOCKS.map((b) => b.from.x)) + R;
+const DIVIDER_X = (SCATTER_RIGHT_EDGE + GRID_X) / 2;
 
 /**
  * A cube's visual centre sits half a body-drop below its drawing origin, so
@@ -181,8 +190,8 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
       {/* The divide between the two halves, in the same soft slate as the cube
         edges so it reads as part of the composition. */}
       <line
-        x1={GRID_X - 22}
-        x2={GRID_X - 22}
+        x1={DIVIDER_X}
+        x2={DIVIDER_X}
         y1={GRID_Y}
         y2={GRID_Y + GRID_H}
         stroke={RULE_SOFT}
