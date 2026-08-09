@@ -38,6 +38,7 @@ export const AppTopNav: React.FC = () => {
   // swaps treatments per route.
   const navColor = "indigo.900";
   const navHoverColor = "indigo.700";
+  const hideNavHairline = location.pathname.startsWith("/solutions");
 
   const navItems = [
     {
@@ -69,8 +70,8 @@ export const AppTopNav: React.FC = () => {
         left={0}
         right={0}
         zIndex={100}
-        borderBottom="1px solid"
-        borderColor="slate.30"
+        borderBottom={hideNavHairline ? undefined : "1px solid"}
+        borderColor={hideNavHairline ? undefined : "slate.30"}
         bg="slate.10"
         style={{ transition: "background 200ms ease, border-color 200ms ease" }}
       >

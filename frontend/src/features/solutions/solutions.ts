@@ -29,39 +29,10 @@ export interface SolutionCapability {
 
 export const SOLUTION_CAPABILITIES: readonly SolutionCapability[] = [
   {
-    slug: "data-infrastructure",
-    title: "Data Infrastructure",
-    summary: "One governed foundation for the firm's data",
-    lede: "One governed foundation for everything the firm knows — permissioned, lineage-tracked, and ready to be queried.",
-    body: "We help firms put their meetings, documents, spreadsheets, and ledgers on a single governed foundation, so every downstream workflow draws on the same source rather than another copy that somebody has to reconcile.",
-    sections: [
-      {
-        title: "Ingest what you already have",
-        body: "Native files land as they are — no templates to fill in and no manual review step before the data is usable. Meetings, PDFs, workbooks, ledger extracts, and market data all arrive through the same path.",
-      },
-      {
-        title: "Structure it so it can be asked questions",
-        body: "Raw files become typed, related records with an ontology over them. That is the difference between storing documents and being able to ask what changed in a position since last quarter.",
-      },
-      {
-        title: "Govern it from the start",
-        body: "Permissions follow the firm's own structure, every value keeps its lineage back to the document it came from, and boundaries are enforced at the storage layer rather than in application code.",
-      },
-    ],
-    detail: [
-      "Warehouse or lakehouse foundation",
-      "Native-file ingestion without templates",
-      "Ontology and structured context",
-      "Permissions and lineage",
-      "Migration off existing systems",
-    ],
-    icon: Boxes,
-  },
-  {
     slug: "applied-ai",
     title: "Applied AI",
     summary: "Applications and agents built for your operations",
-    lede: "Applications and agents developed against how your firm actually runs, then extended as the work changes.",
+    lede: "We help organizations operationalize AI by bringing together the people, processes, and technology required to scale.",
     body: "We help firms turn that foundation into working software by developing the applications and agents against their own close, reporting cycle, and approval chains — and by staying on to extend them rather than handing over a template.",
     sections: [
       {
@@ -85,6 +56,35 @@ export const SOLUTION_CAPABILITIES: readonly SolutionCapability[] = [
       "Ongoing development as needs change",
     ],
     icon: Bot,
+  },
+  {
+    slug: "data-infrastructure",
+    title: "Data Infrastructure",
+    summary: "One governed foundation for the firm's data",
+    lede: "We help organizations turn data into lasting performance by improving the technology, processes, and capabilities behind how they operate.",
+    body: "We help firms put their meetings, documents, spreadsheets, and ledgers on a single governed foundation, so every downstream workflow draws on the same source rather than another copy that somebody has to reconcile.",
+    sections: [
+      {
+        title: "Ingest what you already have",
+        body: "Native files land as they are — no templates to fill in and no manual review step before the data is usable. Meetings, PDFs, workbooks, ledger extracts, and market data all arrive through the same path.",
+      },
+      {
+        title: "Structure it so it can be asked questions",
+        body: "Raw files become typed, related records with an ontology over them. That is the difference between storing documents and being able to ask what changed in a position since last quarter.",
+      },
+      {
+        title: "Govern it from the start",
+        body: "Permissions follow the firm's own structure, every value keeps its lineage back to the document it came from, and boundaries are enforced at the storage layer rather than in application code.",
+      },
+    ],
+    detail: [
+      "Warehouse or lakehouse foundation",
+      "Native-file ingestion without templates",
+      "Ontology and structured context",
+      "Permissions and lineage",
+      "Migration off existing systems",
+    ],
+    icon: Boxes,
   },
 ];
 

@@ -18,7 +18,7 @@ type StepState = "done" | "running" | "queued";
 
 const STEPS: { id: string; step: string; state: StepState }[] = [
   { id: "ingest", step: "Analyze call transcripts", state: "done" },
-  { id: "extract", step: "Synthesize data points", state: "running" },
+  { id: "extract", step: "Create a source-backed brief", state: "running" },
   { id: "sync", step: "Send email", state: "queued" },
 ];
 

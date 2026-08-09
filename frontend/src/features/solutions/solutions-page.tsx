@@ -25,7 +25,7 @@ export const SolutionsPage: React.FC = () => (
       background={<HeroGridCanvas />}
     />
 
-    <SectionShell borderTop bg="slate.10" py={{ base: 16, md: "80px" }}>
+    <SectionShell bg="slate.10" py={{ base: 16, md: "80px" }}>
       <Grid
         templateColumns={{ base: "1fr", md: "repeat(2, minmax(0, 1fr))" }}
         gap={{ base: 4, md: 5 }}
@@ -103,7 +103,7 @@ export const SolutionsPage: React.FC = () => (
       </Grid>
     </SectionShell>
 
-    <SectionShell borderTop bg="slate.20" py={{ base: 16, md: "80px" }}>
+    <SectionShell bg="slate.20" py={{ base: 16, md: "80px" }}>
       <Flex direction="column" gap={{ base: 12, md: "56px" }}>
         {SOLUTION_PILLARS.map((p) => (
           <Flex

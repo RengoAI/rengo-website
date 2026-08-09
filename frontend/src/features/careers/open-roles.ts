@@ -20,7 +20,7 @@ export type OpenRole = {
 export const OPEN_ROLES: readonly OpenRole[] = [
   {
     id: "forward-deployed-engineer",
-    title: "Forward Deployed Engineer",
+    title: "Software Engineer",
     location: "New York",
     department: "Deployment",
     employmentType: "Full time",

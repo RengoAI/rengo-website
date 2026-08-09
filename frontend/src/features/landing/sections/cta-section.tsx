@@ -8,10 +8,14 @@ import { SectionShell } from "./section-shell";
 
 interface CtaSectionProps {
   onTalkToSales: () => void;
+  borderTop?: boolean;
 }
 
-export const CtaSection: React.FC<CtaSectionProps> = ({ onTalkToSales }) => (
-  <SectionShell borderTop bg="slate.10" py={{ base: 16, md: "80px" }}>
+export const CtaSection: React.FC<CtaSectionProps> = ({
+  onTalkToSales,
+  borderTop = true,
+}) => (
+  <SectionShell borderTop={borderTop} bg="slate.10" py={{ base: 16, md: "80px" }}>
     <Flex
       direction="column"
       align="center"

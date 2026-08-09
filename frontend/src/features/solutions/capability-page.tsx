@@ -1,15 +1,16 @@
 import { PageHero } from "@/components/layout/page-hero";
 import { HeroGridCanvas } from "@/features/landing/sections/hero-grid-canvas";
+import { CtaSection } from "@/features/landing/sections/cta-section";
 import { SectionShell } from "@/features/landing/sections/section-shell";
 import {
-  SOLUTIONS_PATH,
-  SOLUTION_CAPABILITIES,
   type SolutionCapability,
 } from "@/features/solutions/solutions";
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { ArrowRight, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import React from "react";
-import { Link } from "react-router-dom";
+
+const openSalesMail = () =>
+  window.open("mailto:sales@rengoai.com", "_blank", "noopener,noreferrer");
 
 /**
  * Shared template for the capability pages under /solutions.
@@ -22,12 +23,10 @@ export const CapabilityPage: React.FC<{ capability: SolutionCapability }> = ({
   capability: c,
 }) => {
   const Icon = c.icon;
-  const other = SOLUTION_CAPABILITIES.find((x) => x.slug !== c.slug);
 
   return (
     <Box fontFamily="body" bg="slate.10">
       <PageHero
-        eyebrow="Solutions"
         headline={c.title}
         subtext={c.lede}
         ctaLabel="Get started"
@@ -35,7 +34,7 @@ export const CapabilityPage: React.FC<{ capability: SolutionCapability }> = ({
         background={<HeroGridCanvas />}
       />
 
-      <SectionShell borderTop bg="slate.10" py={{ base: 14, md: "72px" }}>
+      <SectionShell bg="slate.10" py={{ base: 14, md: "72px" }}>
         <Flex
           direction={{ base: "column", md: "row" }}
           gap={{ base: 8, md: 16 }}
@@ -83,7 +82,7 @@ export const CapabilityPage: React.FC<{ capability: SolutionCapability }> = ({
         </Flex>
       </SectionShell>
 
-      <SectionShell borderTop bg="slate.20" py={{ base: 16, md: "80px" }}>
+      <SectionShell bg="slate.20" py={{ base: 16, md: "80px" }}>
         <Flex direction="column" gap={{ base: 12, md: "64px" }}>
           {c.sections.map((s, i) => (
             <Flex
@@ -130,47 +129,7 @@ export const CapabilityPage: React.FC<{ capability: SolutionCapability }> = ({
         </Flex>
       </SectionShell>
 
-      {/* Cross-link, so a capability page is not a dead end. */}
-      {other && (
-        <SectionShell borderTop bg="slate.10" py={{ base: 12, md: "56px" }}>
-          <Link
-            to={`${SOLUTIONS_PATH}/${other.slug}`}
-            style={{ textDecoration: "none" }}
-          >
-            <Flex direction="column" gap={2} role="group">
-              <Text
-                fontFamily="mono"
-                fontSize="11px"
-                letterSpacing="0.08em"
-                textTransform="uppercase"
-                color="slate.50"
-                m={0}
-              >
-                Next
-              </Text>
-              <Flex align="center" gap={2.5} color="indigo.900">
-                <Text
-                  fontFamily="heading"
-                  fontSize={{ base: "22px", md: "26px" }}
-                  lineHeight={1.15}
-                  letterSpacing="-0.5px"
-                  m={0}
-                  _groupHover={{ color: "accent.link" }}
-                >
-                  {other.title}
-                </Text>
-                <Box
-                  display="flex"
-                  _groupHover={{ color: "accent.link" }}
-                  transition="color 150ms ease"
-                >
-                  <ArrowRight size={18} strokeWidth={2} />
-                </Box>
-              </Flex>
-            </Flex>
-          </Link>
-        </SectionShell>
-      )}
+      <CtaSection onTalkToSales={openSalesMail} borderTop={false} />
     </Box>
   );
 };
