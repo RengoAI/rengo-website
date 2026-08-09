@@ -120,7 +120,7 @@ export const MarketingNavMenu: React.FC<MarketingNavMenuProps> = ({
       {open && (
         <Box
           position="absolute"
-          top="calc(100% + 4px)"
+          top="100%"
           left={0}
           w="max-content"
           minW="210px"
