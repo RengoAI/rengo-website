@@ -1,6 +1,6 @@
 import { AccessRolesArt } from "@/features/landing/sections/access-roles-art";
 import { AgentsActArt } from "@/features/landing/sections/agents-act-art";
-import { AgentsLearnArt } from "@/features/landing/sections/agents-learn-art";
+import { AgentsSecureArt } from "@/features/landing/sections/agents-secure-art";
 import { BentoIsoImage } from "@/features/landing/sections/bento-iso-image";
 import { ConnectSystemsArt } from "@/features/landing/sections/connect-systems-art";
 import { DeploymentDiagram } from "@/features/landing/sections/deployment-diagram";
@@ -17,7 +17,7 @@ type TileArt =
   | { kind: "existingTools" }
   | { kind: "deployment" }
   | { kind: "agentsAct" }
-  | { kind: "agentsLearn" };
+  | { kind: "agentsSecure" };
 
 const TILES: {
   label: string;
@@ -32,26 +32,26 @@ const TILES: {
     row: "1",
   },
   {
-    label: "Agents act",
-    art: { kind: "agentsAct" },
-    col: "1 / span 4",
-    row: "2",
-  },
-  {
     label: "Control who has access",
     art: { kind: "roles" },
     col: "9 / span 4",
     row: "1",
   },
   {
-    label: "Unlock collective intelligence",
-    art: { kind: "systems" },
+    label: "Secure deployments",
+    art: { kind: "agentsSecure" },
+    col: "1 / span 4",
+    row: "2",
+  },
+  {
+    label: "Structure Knowledge",
+    art: { kind: "agentsAct" },
     col: "5 / span 4",
     row: "2",
   },
   {
-    label: "Agents learn",
-    art: { kind: "agentsLearn" },
+    label: "Unlock collective intelligence",
+    art: { kind: "systems" },
     col: "9 / span 4",
     row: "2",
   },
@@ -76,7 +76,7 @@ export const AgentsBentoSection: React.FC = () => (
       >
         {TILES.map((tile) => (
           <GridItem
-            key={`${tile.col}-${tile.row}`}
+            key={tile.label}
             gridColumn={{ base: "auto", md: tile.col }}
             gridRow={{ base: "auto", md: tile.row }}
             bg="slate.20"
@@ -109,8 +109,8 @@ export const AgentsBentoSection: React.FC = () => (
                 <DeploymentDiagram size="tile" />
               ) : tile.art.kind === "agentsAct" ? (
                 <AgentsActArt />
-              ) : tile.art.kind === "agentsLearn" ? (
-                <AgentsLearnArt />
+              ) : tile.art.kind === "agentsSecure" ? (
+                <AgentsSecureArt />
               ) : (
                 <BentoIsoImage src={tile.art.src} />
               )}

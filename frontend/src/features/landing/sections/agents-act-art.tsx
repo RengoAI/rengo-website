@@ -61,19 +61,22 @@ const Block: React.FC<{
 /**
  * Scattered origins and ordered destinations. Both are hand-placed so the
  * composition stays balanced and the animation is identical on every load.
+ *
+ * Every block carries a type in the ordered state: an untagged block reads as
+ * leftover rather than as structured, which undercuts the whole point. One
+ * block per row, so each row is a labelled record instead of a pair.
  */
 const BLOCKS = [
-  { id: "a", from: { x: 46, y: 30 }, to: { x: 150, y: 42 }, tag: "Emails" },
-  { id: "b", from: { x: 88, y: 60 }, to: { x: 252, y: 42 }, tag: null },
-  { id: "c", from: { x: 38, y: 92 }, to: { x: 150, y: 90 }, tag: "PDFs" },
-  { id: "d", from: { x: 96, y: 120 }, to: { x: 252, y: 90 }, tag: null },
-  { id: "e", from: { x: 56, y: 148 }, to: { x: 150, y: 138 }, tag: "Excel" },
-  { id: "f", from: { x: 104, y: 24 }, to: { x: 252, y: 138 }, tag: null },
+  { id: "a", from: { x: 44, y: 26 }, to: { x: 150, y: 40 }, tag: "Emails" },
+  { id: "b", from: { x: 92, y: 54 }, to: { x: 150, y: 78 }, tag: "PDFs" },
+  { id: "c", from: { x: 36, y: 86 }, to: { x: 150, y: 116 }, tag: "Excel" },
+  { id: "d", from: { x: 100, y: 114 }, to: { x: 150, y: 154 }, tag: "Ledger" },
 ] as const;
 
 const GRID_X = 124;
 const GRID_W = 172;
-const ROW_RULES = [66, 114];
+/** Rules sit between rows, offset from each block's waist. */
+const ROW_RULES = [59, 97, 135];
 
 type AgentsActArtProps = {
   variant?: "tile" | "compact";
@@ -142,7 +145,7 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
       <g className="rengo-act-ordered">
         <rect
           x={GRID_X}
-          y={18}
+          y={20}
           width={GRID_W}
           height={154}
           rx={3}
@@ -171,11 +174,11 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
             accent={i === 0}
           />
         ))}
-        {BLOCKS.filter((b) => b.tag).map((b) => (
+        {BLOCKS.map((b) => (
           <text
             key={`tag-${b.id}`}
             className="rengo-act-tag"
-            x={b.to.x + R + 6}
+            x={b.to.x + R + 10}
             y={b.to.y + (R * BODY_RATIO) / 2}
             dominantBaseline="middle"
             fill={INK}
