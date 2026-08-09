@@ -38,8 +38,12 @@ export const rootRoute = route(
       "/solutions",
       {},
       {
-        aiDataPlatform: route("/ai-data-platform", {}, {}),
-        customAiApplications: route("/custom-ai-applications", {}, {}),
+        index: route("/", {}, {}),
+        appliedAi: route("/applied-ai", {}, {}),
+        dataInfrastructure: route("/data-infrastructure", {}, {}),
+        aiDataPlatformRedirect: route("/ai-data-platform", {}, {}),
+        customAiApplicationsRedirect: route("/custom-ai-applications", {}, {}),
+        managedOperationsRedirect: route("/managed-operations", {}, {}),
       },
     ),
     blog: route(
