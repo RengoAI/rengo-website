@@ -14,7 +14,7 @@ const ACCENT = "#0071e3";
 const RULE_SOFT = "#a9b7c6";
 const INK = "#124476";
 
-const VB_W = 320;
+const VB_W = 380;
 const VB_H = 190;
 
 /** Rhombus half-height ÷ half-width, from the deck's isometric geometry. */
@@ -61,28 +61,31 @@ const Block: React.FC<{
  */
 const ROW_PITCH = 38;
 const ROW_TOP_Y = 34;
-const ROW_X = 171;
+const ROW_X = 198;
 
 const BLOCKS = [
-  { id: "a", from: { x: 39, y: 28 }, tag: "Emails" },
-  { id: "b", from: { x: 79, y: 56 }, tag: "PDFs" },
-  { id: "c", from: { x: 33, y: 88 }, tag: "Excel" },
-  { id: "d", from: { x: 83, y: 118 }, tag: "Ledger" },
+  { id: "a", from: { x: 22, y: 28 }, tag: "Emails" },
+  { id: "b", from: { x: 58, y: 56 }, tag: "PDFs" },
+  { id: "c", from: { x: 16, y: 88 }, tag: "Excel" },
+  { id: "d", from: { x: 62, y: 118 }, tag: "Ledger" },
 ].map((b, i) => ({
   ...b,
   to: { x: ROW_X, y: ROW_TOP_Y + i * ROW_PITCH },
 }));
 
-/** The ordered frame starts clear of the scatter's right edge (83 + R = 98)
- *  so the two zones read as distinct halves. */
-const GRID_X = 145;
-const GRID_W = 151;
+/** The ordered frame starts clear of the scatter's right edge so the two zones
+ *  read as distinct halves with a wider gutter at the center divide. */
+const GRID_X = 172;
+const GRID_W = 156;
 
 /**
- * The divider sits midway between the two halves' facing edges, so each side
- * is the same distance from it. The right-hand edge is the dashed frame, not
- * the first cube — the frame is drawn, so it is what the eye measures from;
- * aligning to the cube instead left the right side looking tighter.
+ * The divider sits midway between the two halves' facing edges, so each side is
+ * the same distance from it. The right-hand edge is the dashed frame, not the
+ * first cube — the frame is drawn, so it is what the eye measures from.
+ *
+ * Derived rather than offset from GRID_X: a fixed offset drifts out of balance
+ * whenever the gutter changes, which is what left the line 73px from one half
+ * and 22px from the other.
  */
 const SCATTER_RIGHT_EDGE = Math.max(...BLOCKS.map((b) => b.from.x)) + R;
 const DIVIDER_X = (SCATTER_RIGHT_EDGE + GRID_X) / 2;
@@ -113,7 +116,7 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
     style={{
       position: "relative",
       width: "100%",
-      maxWidth: variant === "compact" ? "220px" : "300px",
+      maxWidth: variant === "compact" ? "220px" : "340px",
       height: variant === "compact" ? "150px" : "180px",
       margin: "0 auto",
     }}

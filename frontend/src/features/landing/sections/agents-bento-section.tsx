@@ -38,13 +38,13 @@ const TILES: {
     row: "1",
   },
   {
-    label: "Manage agents",
+    label: "Manage automations",
     art: { kind: "manageAgents" },
     col: "1 / span 4",
     row: "2",
   },
   {
-    label: "Structure Knowledge",
+    label: "Structure knowledge",
     art: { kind: "agentsAct" },
     col: "5 / span 4",
     row: "2",
