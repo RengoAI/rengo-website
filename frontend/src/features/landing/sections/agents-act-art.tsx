@@ -55,11 +55,15 @@ const Block: React.FC<{
 };
 
 /**
- * Ordered rows: even pitch, first row's drawing origin. The pitch has to clear
- * a cube's full drawn height (top rhombus half + body drop ≈ 26) or the rows
- * visibly overlap — the body of one dropping into the cap of the next.
+ * Ordered rows: even pitch, first row's drawing origin.
+ *
+ * The pitch has to clear a cube's full drawn height (top rhombus half + body
+ * drop ≈ 26) or the rows visibly overlap — the body of one dropping into the
+ * cap of the next. It also sets each band's height, since the frame pads by
+ * half a pitch; 40 leaves the cubes ~2.8px clear of their band edges while
+ * keeping the frame inside the viewBox.
  */
-const ROW_PITCH = 38;
+const ROW_PITCH = 40;
 const ROW_TOP_Y = 34;
 const ROW_X = 198;
 
@@ -100,10 +104,17 @@ const rowCentre = (i: number) =>
 
 const ROW_RULES = [0, 1, 2].map((i) => (rowCentre(i) + rowCentre(i + 1)) / 2);
 
-/** Frame bounds derived from the rows it contains, so nothing overflows. */
-const GRID_Y = rowCentre(0) - R * TOP_RATIO - (R * BODY_RATIO) / 2 - 12;
-const GRID_H =
-  rowCentre(3) + (R * BODY_RATIO) / 2 + R * TOP_RATIO + 12 - GRID_Y;
+/**
+ * Frame bounds derived from the rows it contains.
+ *
+ * The top and bottom padding is half a row pitch, which makes the four bands
+ * the rules divide the frame into exactly ROW_PITCH tall each — and therefore
+ * puts every cube dead centre in its own band. A fixed padding instead
+ * stretched only the outer two bands (48.2 against 38.0) and pushed the first
+ * and last cubes 5px off centre.
+ */
+const GRID_Y = rowCentre(0) - ROW_PITCH / 2;
+const GRID_H = rowCentre(3) + ROW_PITCH / 2 - GRID_Y;
 
 /**
  * The figure's own bounds. The two halves are positioned relative to each other
