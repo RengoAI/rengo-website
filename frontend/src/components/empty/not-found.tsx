@@ -9,21 +9,21 @@ export const NotFound = () => {
     <Center w="100%" minH="100vh">
       <VStack alignItems="flex-start" gap={12} w="100%" maxW="450px">
         <VStack alignItems="flex-start" gap={4}>
-          <Text fontSize="5xl" color="gray.700">
+          <Text fontSize="5xl" color="ink.body">
             Not Found
           </Text>
-          <Text fontSize="md" color="gray.500">
+          <Text fontSize="md" color="slate.50">
             Looks like the page you are looking for does not exist. If you need
             help, please contact support.
           </Text>
           <Button
             variant="outline"
             border="1px solid"
-            borderColor="gray.200"
+            borderColor="slate.30"
             borderRadius="md"
             _hover={{
-              borderColor: "gray.300",
-              bg: "gray.50",
+              borderColor: "slate.30",
+              bg: "slate.10",
             }}
             onClick={() =>
               navigate(rootRoute({}).$, {

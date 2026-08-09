@@ -1,12 +1,27 @@
 import { Logo } from "@/components/logo/logo";
-import { Box, Button, VStack } from "@chakra-ui/react";
+import { marketingContentPaddingX } from "@/components/layout/marketing-frame";
+import { topNavCtaStyles } from "@/components/nav/nav-styles";
+import {
+  ButtonArrowLabel,
+  ctaButtonHoverWithArrowProps,
+} from "@/components/ui/button-arrow-label";
+import { Box, Button, IconButton, Text, VStack } from "@chakra-ui/react";
 import { X } from "lucide-react";
 import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
 
-interface MobileNavItem {
+/** Matches marketing-nav-menu dropdown panel shadow. */
+const NAV_PANEL_SHADOW = "0 12px 40px rgba(17, 24, 39, 0.12)";
+
+interface MobileNavChild {
   label: string;
   path: string;
+}
+
+interface MobileNavItem {
+  label: string;
+  path?: string;
+  children?: MobileNavChild[];
 }
 
 interface MobileNavDrawerProps {
@@ -22,7 +37,6 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
   navItems,
   onNavigate,
 }) => {
-  // Lock body scroll when open
   useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
@@ -38,17 +52,14 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
 
   return createPortal(
     <>
-      {/* Backdrop */}
       <Box
         position="fixed"
         inset={0}
         zIndex={9998}
-        bg="blackAlpha.700"
+        bg="blackAlpha.500"
         onClick={() => onOpenChange(false)}
-        style={{ backdropFilter: "blur(2px)" }}
       />
 
-      {/* Drawer panel — slides from top, flush with viewport */}
       <Box
         position="fixed"
         top={0}
@@ -56,73 +67,148 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
         right={0}
         zIndex={9999}
         bg="white"
-        color="primary.800"
-        borderBottomRadius="18px"
+        color="indigo.900"
         overflow="hidden"
-        boxShadow="overlay"
+        borderBottom="1px solid"
+        borderColor="slate.30"
+        boxShadow={NAV_PANEL_SHADOW}
       >
-        {/* Header row with logo and close button */}
         <Box
-          px={4}
-          py={1}
-          borderBottom="1px solid"
-          borderColor="gray.100"
+          px={marketingContentPaddingX}
+          minH="64px"
+          h="64px"
           display="flex"
           alignItems="center"
           justifyContent="space-between"
+          bg="slate.10"
+          borderBottom="1px solid"
+          borderColor="slate.30"
         >
-          <Logo color="primary.700" homeLink />
-          <Button
+          <Logo color="indigo.900" homeLink />
+          <IconButton
+            aria-label="Close menu"
             variant="ghost"
             size="sm"
-            aria-label="Close menu"
-            color="primary.800"
-            bg="gray.50"
-            borderRadius="8px"
-            w="44px"
-            h="44px"
-            minW="44px"
-            p={0}
-            _hover={{ bg: "gray.100" }}
+            color="indigo.900"
+            borderRadius={0}
+            minW="auto"
+            w="auto"
+            h="auto"
+            p={2}
+            _hover={{ bg: "transparent", color: "indigo.700" }}
             onClick={() => onOpenChange(false)}
           >
-            <X size={20} />
-          </Button>
+            <X size={22} />
+          </IconButton>
         </Box>
+
         <VStack gap={0} alignItems="stretch">
-          {navItems.map((item) => (
-            <Box borderBottom="1px solid" borderColor="gray.100">
-              <Button
-                key={item.path}
-                variant="ghost"
-                h={18}
-                px={5}
-                w="full"
-                borderRadius={0}
-                color="primary.800"
-                fontSize="sm"
-                fontWeight="normal"
-                justifyContent="space-between"
-                _hover={{ bg: "gray.50" }}
-                onClick={() => onNavigate(item.path)}
+          {navItems.map((item) =>
+            item.children ? (
+              <Box
+                key={item.label}
+                borderBottom="1px solid"
+                borderColor="slate.30"
               >
-                {item.label}
-              </Button>
-            </Box>
-          ))}
-          <Box p={5}>
+                <Box
+                  px={7}
+                  py={3}
+                  bg="slate.10"
+                  borderBottom="1px solid"
+                  borderColor="slate.30"
+                >
+                  <Text
+                    fontFamily="body"
+                    fontSize="14px"
+                    fontWeight="medium"
+                    lineHeight="16px"
+                    color="ink.body"
+                    m={0}
+                  >
+                    {item.label}
+                  </Text>
+                </Box>
+                {item.children.map((child) => (
+                  <Button
+                    key={child.path}
+                    variant="ghost"
+                    h="auto"
+                    py={3}
+                    px={7}
+                    w="full"
+                    borderRadius={0}
+                    justifyContent="flex-start"
+                    bg="white"
+                    _hover={{ bg: "slate.10" }}
+                    onClick={() => onNavigate(child.path)}
+                  >
+                    <Text
+                      fontFamily="body"
+                      fontSize="14px"
+                      fontWeight="medium"
+                      lineHeight="16px"
+                      color="indigo.900"
+                      m={0}
+                    >
+                      {child.label}
+                    </Text>
+                  </Button>
+                ))}
+              </Box>
+            ) : (
+              <Box
+                key={item.path}
+                borderBottom="1px solid"
+                borderColor="slate.30"
+              >
+                <Button
+                  variant="ghost"
+                  h="auto"
+                  py={3}
+                  px={7}
+                  w="full"
+                  borderRadius={0}
+                  justifyContent="flex-start"
+                  bg="white"
+                  _hover={{ bg: "slate.10" }}
+                  onClick={() => item.path && onNavigate(item.path)}
+                >
+                  <Text
+                    fontFamily="body"
+                    fontSize="14px"
+                    fontWeight="medium"
+                    lineHeight="16px"
+                    color="indigo.900"
+                    m={0}
+                  >
+                    {item.label}
+                  </Text>
+                </Button>
+              </Box>
+            ),
+          )}
+
+          <Box px={7} py={5}>
             <Button
               w="full"
-              h="44px"
-              borderRadius="8px"
-              bg="primary.700"
-              color="white"
-              fontSize="sm"
-              fontWeight="normal"
-              _hover={{ bg: "primary.800" }}
-              onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
+              bg="indigo.900"
+              color="slate.10"
+              onClick={() =>
+                window.open(
+                  "mailto:sales@rengoai.com",
+                  "_blank",
+                  "noopener,noreferrer",
+                )
+              }
+              {...topNavCtaStyles}
+              {...ctaButtonHoverWithArrowProps}
+              /* After the spreads: topNavCtaStyles sets h 34px and a 4px radius
+                 for the compact top nav, which is wrong for a full-width drawer
+                 CTA. Declared before them, these were silently overwritten. */
+              borderRadius={0}
+              h="auto"
             >
-              See a demo
+              <ButtonArrowLabel>Get Started</ButtonArrowLabel>
             </Button>
           </Box>
         </VStack>

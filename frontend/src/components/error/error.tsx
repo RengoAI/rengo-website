@@ -19,10 +19,10 @@ export const ErrorComponent: React.FC<ErrorBoundaryFallbackProps> = ({
         mx="130px"
       >
         <VStack alignItems="flex-start" gap={4}>
-          <Text fontSize="5xl" color="gray.700">
+          <Text fontSize="5xl" color="ink.body">
             Something went wrong
           </Text>
-          <Text fontSize="md" color="gray.500">
+          <Text fontSize="md" color="slate.50">
             If you need help contact support.
           </Text>
           <Box

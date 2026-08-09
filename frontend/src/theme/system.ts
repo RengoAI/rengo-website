@@ -20,6 +20,8 @@ const config = defineConfig({
     // Global typography settings
     "html, body": {
       fontVariantNumeric: "lining-nums tabular-nums",
+      // Match the marketing canvas so the scrollbar gutter isn't pure white
+      bg: "slate.10",
     },
     body: {
       WebkitFontSmoothing: "auto",
@@ -30,7 +32,7 @@ const config = defineConfig({
       height: "10px",
     },
     "*::-webkit-scrollbar-track": {
-      background: "transparent",
+      background: "var(--rengo-colors-slate-10)",
     },
     "*::-webkit-scrollbar-thumb": {
       background: "rgba(0, 0, 0, .5)",
@@ -42,6 +44,26 @@ const config = defineConfig({
       background: "rgba(0, 0, 0, .6)",
       backgroundClip: "padding-box",
     },
+    "*::-webkit-scrollbar-corner": {
+      background: "var(--rengo-colors-slate-10)",
+    },
+    // Firefox + reserve scrollbar space so the rim line stays aligned
+    html: {
+      scrollbarGutter: "stable",
+      scrollbarColor: "rgba(0, 0, 0, 0.5) var(--rengo-colors-slate-10)",
+    },
+    // Hairline on the left edge of the scrollbar gutter
+    "html::after": {
+      content: '""',
+      position: "fixed",
+      top: 0,
+      right: 0,
+      bottom: 0,
+      width: "1px",
+      background: "var(--rengo-colors-slate-30)",
+      pointerEvents: "none",
+      zIndex: 9999,
+    },
     // Add top border to scrollbar track for tables only
     ".data-table-scroll-container::-webkit-scrollbar-track": {
       background: "transparent",
@@ -51,7 +73,7 @@ const config = defineConfig({
     },
     // Footer link styles using token CSS variables
     ".footer-link": {
-      color: "var(--rengo-colors-white-alpha-550)",
+      color: "var(--rengo-colors-slate-50)",
       textDecoration: "none",
       fontSize: "14px",
       lineHeight: "20px",
@@ -60,7 +82,7 @@ const config = defineConfig({
       display: "block",
     },
     ".footer-link:hover": {
-      color: "var(--rengo-colors-white)",
+      color: "var(--rengo-colors-ink-body)",
     },
     // React-PDF styling to match provided HTML/CSS example
     ".react-pdf__Document": {

@@ -19,20 +19,31 @@ export const rootRoute = route(
         privacyPolicy: route("/privacy-policy", {}, {}),
       },
     ),
-    security: route("/security", {}, {}),
     careers: route(
       "/careers",
       {},
       {
         index: route("/", {}, {}),
+        role: route(
+          "/:roleId",
+          {
+            roleId: stringParser,
+          },
+          {},
+        ),
       },
     ),
     company: route("/company", {}, {}),
-    product: route(
-      "/product",
+    solutions: route(
+      "/solutions",
       {},
       {
-        portfolioMonitoring: route("/portfolio-monitoring", {}, {}),
+        index: route("/", {}, {}),
+        appliedAi: route("/applied-ai", {}, {}),
+        dataInfrastructure: route("/data-infrastructure", {}, {}),
+        aiDataPlatformRedirect: route("/ai-data-platform", {}, {}),
+        customAiApplicationsRedirect: route("/custom-ai-applications", {}, {}),
+        managedOperationsRedirect: route("/managed-operations", {}, {}),
       },
     ),
     blog: route(
