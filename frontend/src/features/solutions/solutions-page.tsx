@@ -1,15 +1,10 @@
 import { PageHero } from "@/components/layout/page-hero";
 import { HeroGridCanvas } from "@/features/landing/sections/hero-grid-canvas";
 import { SectionHeading } from "@/features/landing/sections/section-heading";
-import {
-  SolutionContentSection,
-  SolutionPhilosophyColumns,
-  SolutionWideSection,
-} from "@/features/solutions/solution-content-layout";
+import { SolutionContentSection } from "@/features/solutions/solution-content-layout";
 import {
   SOLUTIONS_PATH,
   SOLUTION_CAPABILITIES,
-  SOLUTION_PILLARS,
 } from "@/features/solutions/solutions";
 import { Box, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 import { ArrowRight } from "lucide-react";
@@ -120,14 +115,5 @@ export const SolutionsPage: React.FC = () => (
         })}
       </Grid>
     </SolutionContentSection>
-
-    <SolutionWideSection bg="slate.20" borderTop>
-      <SolutionPhilosophyColumns
-        items={SOLUTION_PILLARS.map((p) => ({
-          title: p.title,
-          body: p.body,
-        }))}
-      />
-    </SolutionWideSection>
   </Box>
 );
