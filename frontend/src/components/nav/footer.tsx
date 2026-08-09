@@ -92,7 +92,7 @@ export const AppFooter: React.FC = () => (
               ))}
             </FooterCol>
 
-            <FooterCol title="Company">
+            <FooterCol title="Resources">
               <FooterLink to={rootRoute({}).careers({}).$}>Careers</FooterLink>
             </FooterCol>
 
@@ -109,7 +109,6 @@ export const AppFooter: React.FC = () => (
               <FooterLink href="https://www.linkedin.com/company/106703002">
                 LinkedIn
               </FooterLink>
-              <FooterLink href="mailto:sales@rengoai.com">Sales</FooterLink>
             </FooterCol>
           </Flex>
         </Flex>
