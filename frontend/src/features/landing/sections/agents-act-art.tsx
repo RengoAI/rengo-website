@@ -78,10 +78,10 @@ const ROW_X = 198;
  * makes the left side read as unsorted.
  */
 const BLOCKS = [
-  { id: "a", from: { x: 22, y: 23 }, tag: "Emails" },
-  { id: "b", from: { x: 58, y: 73 }, tag: "PDFs" },
-  { id: "c", from: { x: 16, y: 124 }, tag: "Excel" },
-  { id: "d", from: { x: 62, y: 174 }, tag: "Ledger" },
+  { id: "a", from: { x: 22, y: 23 }, tag: "Audio" },
+  { id: "b", from: { x: 58, y: 73 }, tag: "Embeddings" },
+  { id: "c", from: { x: 16, y: 124 }, tag: "Text" },
+  { id: "d", from: { x: 62, y: 174 }, tag: "Time series" },
 ].map((b, i) => ({
   ...b,
   to: { x: ROW_X, y: ROW_TOP_Y + i * ROW_PITCH },
