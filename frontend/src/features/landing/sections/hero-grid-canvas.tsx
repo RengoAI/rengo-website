@@ -109,11 +109,7 @@ const cellAtPoint = (
   return fallback;
 };
 
-const pointInHost = (
-  host: HTMLElement,
-  clientX: number,
-  clientY: number,
-) => {
+const pointInHost = (host: HTMLElement, clientX: number, clientY: number) => {
   const rect = host.getBoundingClientRect();
   const x = clientX - rect.left;
   const y = clientY - rect.top;
