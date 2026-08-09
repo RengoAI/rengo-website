@@ -18,7 +18,7 @@ export const CareersPage: React.FC = () => (
   <Box fontFamily="body" bg="slate.10">
     <PageHero
       headline="Join Us"
-      subtext="Build at the frontier of AI"
+      subtext="Turn frontier AI into real-world systems"
       ctaLabel="View open roles"
       onCtaClick={scrollToOpenRoles}
       background={<HeroGridCanvas />}

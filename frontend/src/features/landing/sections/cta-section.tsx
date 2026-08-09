@@ -36,7 +36,7 @@ export const CtaSection: React.FC<CtaSectionProps> = ({
         whiteSpace={{ base: "normal", md: "nowrap" }}
         m={0}
       >
-        Ready to put your data to work with AI?
+        Ready to put AI to work?
       </Box>
 
       <Button

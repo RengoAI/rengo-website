@@ -61,7 +61,7 @@ export const AgentsBentoSection: React.FC = () => (
   <SectionShell borderTop bg="slate.10" py={{ base: 16, md: "80px" }}>
     <Box display="flex" flexDirection="column" gap={{ base: 10, md: "60px" }}>
       <SectionHeading>
-        Build your AI Advantage
+        Build your AI advantage
         <br />
         <Box as="span" color="slate.50" fontWeight={300}>
           Applications and agents tailored to your team
