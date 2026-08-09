@@ -1,5 +1,4 @@
-import { SolutionsLayout } from "@/features/solutions/solutions-layout";
-import { RouteObject } from "react-router-dom";
+import { RouteObject, Navigate } from "react-router-dom";
 
 export const solutionsRoutes: RouteObject = {
   id: "solutions",
@@ -7,33 +6,28 @@ export const solutionsRoutes: RouteObject = {
   handle: {
     pageTitle: "Solutions",
   },
-  element: <SolutionsLayout />,
   children: [
     {
-      id: "aiDataPlatform",
-      path: "ai-data-platform",
-      handle: {
-        pageTitle: "Enterprise",
-      },
+      id: "solutionsIndex",
+      index: true,
       lazy: async () => {
-        const { AiDataPlatformPage } = await import(
-          "@/features/solutions/ai-data-platform-page"
+        const { SolutionsPage } = await import(
+          "@/features/solutions/solutions-page"
         );
-        return { Component: AiDataPlatformPage };
+        return { Component: SolutionsPage };
       },
     },
+    /* The two former child pages were each a bare hero. Redirect rather than
+       404 so existing links and any indexed URLs still land somewhere. */
     {
-      id: "customAiApplications",
+      id: "aiDataPlatformRedirect",
+      path: "ai-data-platform",
+      element: <Navigate to="/solutions" replace />,
+    },
+    {
+      id: "customAiApplicationsRedirect",
       path: "custom-ai-applications",
-      handle: {
-        pageTitle: "Private Equity",
-      },
-      lazy: async () => {
-        const { CustomAiApplicationsPage } = await import(
-          "@/features/solutions/custom-ai-applications-page"
-        );
-        return { Component: CustomAiApplicationsPage };
-      },
+      element: <Navigate to="/solutions" replace />,
     },
   ],
 };
