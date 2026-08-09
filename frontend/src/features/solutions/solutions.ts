@@ -32,7 +32,7 @@ export const SOLUTION_CAPABILITIES: readonly SolutionCapability[] = [
     slug: "applied-ai",
     title: "Applied AI",
     summary: "Applications and agents built for your operations",
-    lede: "We help organizations operationalize AI by bringing together the people, processes, and technology required to scale.",
+    lede: "Rengo AI helps organizations build the technology and workflows needed to operationalize AI",
     body: "We help firms turn that foundation into working software by developing the applications and agents against their own close, reporting cycle, and approval chains — and by staying on to extend them rather than handing over a template.",
     sections: [
       {
@@ -61,7 +61,7 @@ export const SOLUTION_CAPABILITIES: readonly SolutionCapability[] = [
     slug: "data-infrastructure",
     title: "Data Infrastructure",
     summary: "One governed foundation for the firm's data",
-    lede: "We help organizations turn data into lasting performance by improving the technology, processes, and capabilities behind how they operate.",
+    lede: "Rengo AI helps organizations modernize their data foundation to unlock the full potential of AI",
     body: "We help firms put their meetings, documents, spreadsheets, and ledgers on a single governed foundation, so every downstream workflow draws on the same source rather than another copy that somebody has to reconcile.",
     sections: [
       {
