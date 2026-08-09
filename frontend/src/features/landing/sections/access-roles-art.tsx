@@ -95,9 +95,9 @@ export const AccessRolesArt: React.FC<AccessRolesArtProps> = ({
             />
             <Text
               fontFamily="body"
-              fontSize={variant === "compact" ? "10px" : "11px"}
+              fontSize={variant === "compact" ? "9px" : "10px"}
               fontWeight="medium"
-              lineHeight="14px"
+              lineHeight="12px"
               letterSpacing="-0.2px"
               color="indigo.700"
               m={0}

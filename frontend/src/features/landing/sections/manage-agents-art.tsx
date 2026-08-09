@@ -114,10 +114,11 @@ export const ManageAgentsArt: React.FC<ManageAgentsArtProps> = ({
                 py={isCompact ? 1.5 : 2}
               >
                 <Text
-                  fontFamily="mono"
+                  fontFamily="body"
                   fontSize={isCompact ? "9px" : "10px"}
-                  lineHeight={1.3}
-                  letterSpacing="-0.1px"
+                  fontWeight="medium"
+                  lineHeight="12px"
+                  letterSpacing="-0.2px"
                   color={s.state === "queued" ? "slate.50" : "indigo.700"}
                   flex="1"
                   minW={0}
@@ -129,9 +130,10 @@ export const ManageAgentsArt: React.FC<ManageAgentsArtProps> = ({
                   {s.step}
                 </Text>
                 <Text
-                  fontFamily="mono"
-                  fontSize={isCompact ? "8px" : "9px"}
-                  lineHeight={1.3}
+                  fontFamily="body"
+                  fontSize={isCompact ? "9px" : "10px"}
+                  lineHeight="12px"
+                  letterSpacing="-0.2px"
                   color={s.state === "running" ? ACCENT : "slate.50"}
                   flexShrink={0}
                   m={0}
