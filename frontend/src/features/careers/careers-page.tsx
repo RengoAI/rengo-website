@@ -1,5 +1,5 @@
 import { PageHero } from "@/components/layout/page-hero";
-import { HeroCubeField } from "@/features/careers/hero-cube-field";
+import { HeroGridCanvas } from "@/features/landing/sections/hero-grid-canvas";
 import {
   OPEN_ROLES_SECTION_ID,
   OpenRolesSection,
@@ -21,7 +21,7 @@ export const CareersPage: React.FC = () => (
       subtext="Build at the frontier of AI"
       ctaLabel="View open roles"
       onCtaClick={scrollToOpenRoles}
-      background={<HeroCubeField />}
+      background={<HeroGridCanvas />}
     />
     <FoundersSection />
     <OpenRolesSection />
