@@ -18,8 +18,8 @@ const PILLARS_SECTION_ID = "how-we-work";
 export const SolutionsPage: React.FC = () => (
   <Box fontFamily="body" bg="slate.10">
     <PageHero
-      headline="How we work"
-      subtext="Governed data infrastructure and applied AI, deployed against your live operations."
+      headline="We build it. We run it."
+      subtext="We build and run your firm's data infrastructure, then develop the applications and agents that work on top of it."
       ctaLabel="Get started"
       onCtaClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
       background={<HeroGridCanvas />}
