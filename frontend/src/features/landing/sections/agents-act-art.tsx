@@ -68,19 +68,44 @@ const Block: React.FC<{
  * leftover rather than as structured, which undercuts the whole point. One
  * block per row, so each row is a labelled record instead of a pair.
  */
+/**
+ * Ordered rows: even pitch, first row's drawing origin. The pitch has to clear
+ * a cube's full drawn height (top rhombus half + body drop ≈ 26) or the rows
+ * visibly overlap — the body of one dropping into the cap of the next.
+ */
+const ROW_PITCH = 38;
+const ROW_TOP_Y = 34;
+const ROW_X = 166;
+
 const BLOCKS = [
-  { id: "a", from: { x: 34, y: 28 }, to: { x: 166, y: 42 }, tag: "Emails" },
-  { id: "b", from: { x: 74, y: 56 }, to: { x: 166, y: 80 }, tag: "PDFs" },
-  { id: "c", from: { x: 28, y: 88 }, to: { x: 166, y: 118 }, tag: "Excel" },
-  { id: "d", from: { x: 78, y: 118 }, to: { x: 166, y: 156 }, tag: "Ledger" },
-] as const;
+  { id: "a", from: { x: 34, y: 28 }, tag: "Emails" },
+  { id: "b", from: { x: 74, y: 56 }, tag: "PDFs" },
+  { id: "c", from: { x: 28, y: 88 }, tag: "Excel" },
+  { id: "d", from: { x: 78, y: 118 }, tag: "Ledger" },
+].map((b, i) => ({
+  ...b,
+  to: { x: ROW_X, y: ROW_TOP_Y + i * ROW_PITCH },
+}));
 
 /** The ordered frame starts clear of the scatter's right edge (78 + R = 93),
  *  so with both halves permanently visible the two zones stay legible. */
 const GRID_X = 140;
 const GRID_W = 156;
-/** Rules sit between rows, offset from each block's waist. */
-const ROW_RULES = [61, 99, 137];
+
+/**
+ * A cube's visual centre sits half a body-drop below its drawing origin, so
+ * midpoints have to be computed from the centres — using the raw origins put
+ * every rule ~9px high, which read as uneven spacing.
+ */
+const rowCentre = (i: number) =>
+  ROW_TOP_Y + i * ROW_PITCH + (R * BODY_RATIO) / 2;
+
+const ROW_RULES = [0, 1, 2].map((i) => (rowCentre(i) + rowCentre(i + 1)) / 2);
+
+/** Frame bounds derived from the rows it contains, so nothing overflows. */
+const GRID_Y = rowCentre(0) - R * TOP_RATIO - (R * BODY_RATIO) / 2 - 12;
+const GRID_H =
+  rowCentre(3) + (R * BODY_RATIO) / 2 + R * TOP_RATIO + 12 - GRID_Y;
 
 type AgentsActArtProps = {
   variant?: "tile" | "compact";
@@ -127,25 +152,16 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
           42%, 84%  { opacity: 1; }
           98%, 100% { opacity: 0.42; }
         }
-        @keyframes rengo-act-sweep {
-          0%, 16%  { opacity: 0; }
-          26%      { opacity: 1; }
-          44%, 100% { opacity: 0; }
-        }
         .rengo-act-scattered {
           animation: rengo-act-scattered ${CYCLE}s ease-in-out infinite;
         }
         .rengo-act-ordered {
           animation: rengo-act-ordered ${CYCLE}s ease-in-out infinite;
         }
-        .rengo-act-sweep {
-          animation: rengo-act-sweep ${CYCLE}s ease-in-out infinite;
-        }
         /* At rest, both halves are visible with the ordered side leading. */
         @media (prefers-reduced-motion: reduce) {
           .rengo-act-scattered { animation: none; opacity: 0.34; }
           .rengo-act-ordered { animation: none; opacity: 1; }
-          .rengo-act-sweep { animation: none; opacity: 0; }
         }
       `}</style>
 
@@ -153,9 +169,9 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
       <g className="rengo-act-ordered">
         <rect
           x={GRID_X}
-          y={20}
+          y={GRID_Y}
           width={GRID_W}
-          height={154}
+          height={GRID_H}
           rx={3}
           fill="none"
           stroke={RULE_SOFT}
@@ -197,15 +213,17 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
         ))}
       </g>
 
-      {/* The organising sweep, crossing into the frame. */}
+      {/* The divide between the two halves. Always drawn, in the same soft
+        slate as the cube edges, so it reads as part of the composition rather
+        than as a moving highlight. */}
       <line
-        className="rengo-act-sweep"
-        x1={GRID_X - 10}
-        x2={GRID_X - 10}
-        y1={22}
-        y2={168}
-        stroke={ACCENT}
-        strokeWidth={1.5}
+        x1={GRID_X - 22}
+        x2={GRID_X - 22}
+        y1={GRID_Y}
+        y2={GRID_Y + GRID_H}
+        stroke={RULE_SOFT}
+        strokeOpacity={0.55}
+        strokeWidth={1.25}
       />
 
       {/* Scattered state, drawn last so it sits above while visible. */}

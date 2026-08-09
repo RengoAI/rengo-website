@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import React from "react";
 
 /**
@@ -74,10 +74,10 @@ const SyncGlyph: Glyph = ({ size }) => (
   </svg>
 );
 
-const CAPABILITIES: { id: string; label: string; Glyph: Glyph }[] = [
-  { id: "transcribe", label: "Transcribe", Glyph: TranscribeGlyph },
-  { id: "extract", label: "Extract", Glyph: ExtractGlyph },
-  { id: "sync", label: "Sync", Glyph: SyncGlyph },
+const CAPABILITIES: { id: string; Glyph: Glyph }[] = [
+  { id: "transcribe", Glyph: TranscribeGlyph },
+  { id: "extract", Glyph: ExtractGlyph },
+  { id: "sync", Glyph: SyncGlyph },
 ];
 
 type ManageAgentsArtProps = {
@@ -90,49 +90,31 @@ export const ManageAgentsArt: React.FC<ManageAgentsArtProps> = ({
   const isCompact = variant === "compact";
   /** Matches the vendor cards in `connect-systems-art` exactly — the two tiles
    *  sit in the same row, so a smaller card reads as a mismatch rather than a
-   *  deliberate difference. Four at this size still clear the tile width. */
+   *  deliberate difference. */
   const cardSize = isCompact ? "44px" : "54px";
   const glyphSize = isCompact ? 19 : 22;
 
   return (
     <Box w="full" maxW={isCompact ? "220px" : "280px"} mx="auto" aria-hidden>
-      <Flex align="flex-start" justify="center" gap={isCompact ? 2 : 2.5}>
-        {CAPABILITIES.map(({ id, label, Glyph }) => (
-          <Flex
+      <Flex align="center" justify="center" gap={isCompact ? 2 : 2.5}>
+        {CAPABILITIES.map(({ id, Glyph }) => (
+          <Box
             key={id}
-            direction="column"
-            align="center"
-            gap={2}
+            w={cardSize}
+            h={cardSize}
             flexShrink={0}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            bg="slate.10"
+            border="1px solid"
+            borderColor="slate.30"
+            borderRadius="8px"
+            boxShadow="0 8px 24px rgba(33, 48, 68, 0.1)"
+            color="indigo.700"
           >
-            <Box
-              w={cardSize}
-              h={cardSize}
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              bg="slate.10"
-              border="1px solid"
-              borderColor="slate.30"
-              borderRadius="8px"
-              boxShadow="0 8px 24px rgba(33, 48, 68, 0.1)"
-              color="indigo.700"
-            >
-              <Glyph size={glyphSize} />
-            </Box>
-            <Text
-              fontFamily="body"
-              fontSize={isCompact ? "9px" : "10px"}
-              lineHeight={1.2}
-              letterSpacing="-0.1px"
-              color="indigo.700"
-              opacity={0.75}
-              textAlign="center"
-              m={0}
-            >
-              {label}
-            </Text>
-          </Flex>
+            <Glyph size={glyphSize} />
+          </Box>
         ))}
       </Flex>
     </Box>
