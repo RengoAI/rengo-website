@@ -287,7 +287,6 @@ export const DeploymentDiagram: React.FC<DeploymentDiagramProps> = ({
             tone={sat.tone as Tone}
           />
         ))}
-
       </g>
 
       <Cube cx={HUB.x} cy={HUB.y} r={HUB_R} tone="hub" />

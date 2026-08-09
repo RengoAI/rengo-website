@@ -54,13 +54,7 @@ const JobBlock: React.FC<{ block: JobContentBlock }> = ({ block }) => {
   }
 
   return (
-    <Box
-      as="ul"
-      m={0}
-      pl={6}
-      listStyleType="disc"
-      listStylePosition="outside"
-    >
+    <Box as="ul" m={0} pl={6} listStyleType="disc" listStylePosition="outside">
       {block.items.map((item) => (
         <Box
           as="li"
@@ -118,7 +112,12 @@ export const JobListingPage: React.FC = () => {
       pt={`${TOP_NAV_HEIGHT}px`}
     >
       <PageContainer>
-        <Box maxW="760px" mx="auto" pt={{ base: 8, md: 12 }} pb={{ base: 12, md: 16 }}>
+        <Box
+          maxW="760px"
+          mx="auto"
+          pt={{ base: 8, md: 12 }}
+          pb={{ base: 12, md: 16 }}
+        >
           <Button
             asChild
             variant="ghost"

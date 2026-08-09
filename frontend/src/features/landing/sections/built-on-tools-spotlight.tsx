@@ -51,8 +51,10 @@ export const BuiltOnToolsSpotlight: React.FC<{ showCta?: boolean }> = ({
 
       {showCta ? (
         <Button
-          as={RouterLink}
-          to="/solutions/ai-data-platform"
+          /* `asChild` with the link as a child, rather than `as={RouterLink}`:
+             Chakra v3's ButtonProps has no `to`, so the polymorphic form does
+             not type-check. This matches the pattern used elsewhere. */
+          asChild
           variant="outline"
           size="sm"
           h="40px"
@@ -68,7 +70,9 @@ export const BuiltOnToolsSpotlight: React.FC<{ showCta?: boolean }> = ({
           bg="white"
           _hover={{ bg: "slate.20", borderColor: "slate.40" }}
         >
-          <ButtonArrowLabel iconSize={11}>Learn more</ButtonArrowLabel>
+          <RouterLink to="/solutions/data-infrastructure">
+            <ButtonArrowLabel iconSize={11}>Learn more</ButtonArrowLabel>
+          </RouterLink>
         </Button>
       ) : null}
     </Box>

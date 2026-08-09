@@ -39,12 +39,7 @@ const ProgressRing: React.FC<{ size: number; progress?: number }> = ({
   const dash = circumference * progress;
 
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox={`0 0 ${size} ${size}`}
-      aria-hidden
-    >
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} aria-hidden>
       <g transform={`translate(${cx} ${cy})`}>
         <circle
           cx={0}

@@ -19,8 +19,7 @@ type AccessRolesArtProps = {
 export const AccessRolesArt: React.FC<AccessRolesArtProps> = ({
   variant = "tile",
 }) => {
-  const roles =
-    variant === "compact" ? ACCESS_ROLES.slice(0, 2) : ACCESS_ROLES;
+  const roles = variant === "compact" ? ACCESS_ROLES.slice(0, 2) : ACCESS_ROLES;
   const bleed = variant === "compact" ? 0 : ROLES_BLEED_PX;
 
   return (
@@ -45,13 +44,7 @@ export const AccessRolesArt: React.FC<AccessRolesArtProps> = ({
             alignItems="center"
             gap={variant === "compact" ? 2 : 2.5}
             ml={variant === "compact" ? 0 : "auto"}
-            w={
-              variant === "compact"
-                ? "100%"
-                : isAdmin
-                  ? "92%"
-                  : "76%"
-            }
+            w={variant === "compact" ? "100%" : isAdmin ? "92%" : "76%"}
             minH={
               variant === "compact"
                 ? isAdmin

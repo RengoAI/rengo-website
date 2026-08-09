@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text, chakra } from "@chakra-ui/react";
 import React from "react";
 
 /**
@@ -9,7 +9,6 @@ import React from "react";
  * row — ~341×390 tiles, 6px radius, overflow hidden — recoloured onto the
  * Rengo palette rather than their per-brand hues.
  */
-
 
 /** Card field gradients — lighter primary ramp on slate.10 section. */
 const FIELD_INDIGO_700 = "#124476";
@@ -132,14 +131,7 @@ const CARDS: DeploymentCard[] = [
           rx="1.5"
           fill={GLYPH_SLATE_20}
         />
-        <rect
-          x="10"
-          y="32"
-          width="28"
-          height="7"
-          rx="1.5"
-          fill={GLYPH_WHITE}
-        />
+        <rect x="10" y="32" width="28" height="7" rx="1.5" fill={GLYPH_WHITE} />
       </>
     ),
   },
@@ -186,9 +178,7 @@ const CARDS: DeploymentCard[] = [
 const CardField: React.FC<{ from: string; to: string }> = ({ from, to }) => {
   const id = React.useId();
   return (
-    <Box
-      as="svg"
-      // @ts-expect-error -- svg attrs on Box
+    <chakra.svg
       viewBox="0 0 340 300"
       preserveAspectRatio="none"
       position="absolute"
@@ -204,7 +194,7 @@ const CardField: React.FC<{ from: string; to: string }> = ({ from, to }) => {
         </linearGradient>
       </defs>
       <rect width="340" height="300" fill={`url(#g-${id})`} />
-    </Box>
+    </chakra.svg>
   );
 };
 
@@ -229,15 +219,17 @@ export const DeploymentCards: React.FC = () => (
           <CardField from={card.from} to={card.to} />
 
           <Flex position="absolute" inset={0} align="center" justify="center">
-            <Box
-              as="svg"
+            {/* `chakra.svg` rather than `Box as="svg"`: Box's props do not
+                include SVG attributes, so `viewBox` failed to type-check.
+                chakra.svg keeps the responsive width/height props. */}
+            <chakra.svg
               width={{ base: "64px", md: "72px" }}
               height={{ base: "64px", md: "72px" }}
               viewBox="0 0 48 48"
               aria-hidden
             >
               {card.glyph}
-            </Box>
+            </chakra.svg>
           </Flex>
         </Box>
 

@@ -11,7 +11,12 @@ interface SectionShellProps extends React.PropsWithChildren {
   /** Full-width top + bottom rules (Mintlify-style CTA frame). */
   borderY?: boolean;
   /** Horizontal padding on the content column. Defaults to marketing gutters. */
-  px?: false | typeof marketingContentPaddingX | Record<string, number | string> | number | string;
+  px?:
+    | false
+    | typeof marketingContentPaddingX
+    | Record<string, number | string>
+    | number
+    | string;
   bg?: string;
   py?: Record<string, number | string> | number | string;
 }

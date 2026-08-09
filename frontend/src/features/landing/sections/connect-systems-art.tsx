@@ -24,35 +24,40 @@ export const ConnectSystemsArt: React.FC<ConnectSystemsArtProps> = ({
   const gap = variant === "compact" ? 2 : 2.5;
 
   return (
-  <Box w="full" maxW={variant === "compact" ? "220px" : "280px"} mx="auto" aria-hidden>
-    <Flex align="center" justify="center" gap={gap}>
-      {VENDOR_TILES.map((vendor) => (
-        <Box
-          key={vendor.id}
-          w={tileSize}
-          h={tileSize}
-          flexShrink={0}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          bg="slate.10"
-          border="1px solid"
-          borderColor="slate.30"
-          borderRadius="8px"
-          boxShadow="0 8px 24px rgba(33, 48, 68, 0.1)"
-        >
-          <Image
-            src={vendor.src}
-            alt=""
-            maxH={vendor.maxH}
-            maxW="40px"
-            w="auto"
-            h="auto"
-            objectFit="contain"
-          />
-        </Box>
-      ))}
-    </Flex>
-  </Box>
+    <Box
+      w="full"
+      maxW={variant === "compact" ? "220px" : "280px"}
+      mx="auto"
+      aria-hidden
+    >
+      <Flex align="center" justify="center" gap={gap}>
+        {VENDOR_TILES.map((vendor) => (
+          <Box
+            key={vendor.id}
+            w={tileSize}
+            h={tileSize}
+            flexShrink={0}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            bg="slate.10"
+            border="1px solid"
+            borderColor="slate.30"
+            borderRadius="8px"
+            boxShadow="0 8px 24px rgba(33, 48, 68, 0.1)"
+          >
+            <Image
+              src={vendor.src}
+              alt=""
+              maxH={vendor.maxH}
+              maxW="40px"
+              w="auto"
+              h="auto"
+              objectFit="contain"
+            />
+          </Box>
+        ))}
+      </Flex>
+    </Box>
   );
 };

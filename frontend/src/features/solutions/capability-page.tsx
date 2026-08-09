@@ -12,16 +12,14 @@ const openSalesMail = () =>
  */
 export const CapabilityPage: React.FC<{ capability: SolutionCapability }> = ({
   capability: c,
-}) => {
-  return (
-    <Box fontFamily="body" bg="slate.10">
-      <PageHero
-        headline={c.title}
-        subtext={c.lede}
-        ctaLabel="Get started"
-        onCtaClick={openSalesMail}
-        background={<HeroGridCanvas />}
-      />
-    </Box>
-  );
-};
+}) => (
+  <Box fontFamily="body" bg="slate.10">
+    <PageHero
+      headline={c.title}
+      subtext={c.lede}
+      ctaLabel="Get started"
+      onCtaClick={openSalesMail}
+      background={<HeroGridCanvas />}
+    />
+  </Box>
+);

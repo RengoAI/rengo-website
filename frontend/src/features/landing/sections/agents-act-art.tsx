@@ -155,8 +155,7 @@ const GRID_X = 172;
 const GRID_W = 156;
 
 const TILE_HALF = TILE_SIZE / 2;
-const SCATTER_RIGHT_EDGE =
-  Math.max(...BLOCKS.map((b) => b.from.x)) + CUBE_R;
+const SCATTER_RIGHT_EDGE = Math.max(...BLOCKS.map((b) => b.from.x)) + CUBE_R;
 const DIVIDER_X = (SCATTER_RIGHT_EDGE + GRID_X) / 2;
 
 const rowCentre = (i: number) => ROW_TOP_Y + i * ROW_PITCH;
@@ -181,23 +180,23 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
   const tileShadowId = `act-tile-shadow-${React.useId().replace(/:/g, "")}`;
 
   return (
-  <div
-    style={{
-      position: "relative",
-      width: "100%",
-      maxWidth: variant === "compact" ? "220px" : "340px",
-      height: variant === "compact" ? "180px" : "220px",
-      margin: "0 auto",
-    }}
-  >
-    <svg
-      viewBox={`0 0 ${VB_W} ${VB_H}`}
-      preserveAspectRatio="xMidYMid meet"
-      role="img"
-      aria-label="Scattered blocks on the left, the same modalities as ordered rows on the right."
-      style={{ display: "block", width: "100%", height: "100%" }}
+    <div
+      style={{
+        position: "relative",
+        width: "100%",
+        maxWidth: variant === "compact" ? "220px" : "340px",
+        height: variant === "compact" ? "180px" : "220px",
+        margin: "0 auto",
+      }}
     >
-      <style>{`
+      <svg
+        viewBox={`0 0 ${VB_W} ${VB_H}`}
+        preserveAspectRatio="xMidYMid meet"
+        role="img"
+        aria-label="Scattered blocks on the left, the same modalities as ordered rows on the right."
+        style={{ display: "block", width: "100%", height: "100%" }}
+      >
+        <style>{`
         .rengo-act-tag {
           font-family: var(--chakra-fonts-mono, ui-monospace, monospace);
           font-size: 8px;
@@ -205,89 +204,89 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
         }
       `}</style>
 
-      <defs>
-        <filter
-          id={tileShadowId}
-          x="-40%"
-          y="-40%"
-          width="180%"
-          height="180%"
-        >
-          <feDropShadow
-            dx="0"
-            dy="4"
-            stdDeviation="6"
-            floodColor="#213048"
-            floodOpacity="0.1"
-          />
-        </filter>
-      </defs>
+        <defs>
+          <filter
+            id={tileShadowId}
+            x="-40%"
+            y="-40%"
+            width="180%"
+            height="180%"
+          >
+            <feDropShadow
+              dx="0"
+              dy="4"
+              stdDeviation="6"
+              floodColor="#213048"
+              floodOpacity="0.1"
+            />
+          </filter>
+        </defs>
 
-      <g transform={`translate(${CENTRE_SHIFT} 0)`}>
-        <g>
-          <rect
-            x={GRID_X}
-            y={GRID_Y}
-            width={GRID_W}
-            height={GRID_H}
-            rx={3}
-            fill="none"
-            stroke={RULE_SOFT}
-            strokeOpacity={0.5}
-            strokeDasharray="3 3"
-          />
-          {ROW_RULES.map((y) => (
-            <line
-              key={y}
-              x1={GRID_X + 8}
-              x2={GRID_X + GRID_W - 8}
-              y1={y}
-              y2={y}
+        <g transform={`translate(${CENTRE_SHIFT} 0)`}>
+          <g>
+            <rect
+              x={GRID_X}
+              y={GRID_Y}
+              width={GRID_W}
+              height={GRID_H}
+              rx={3}
+              fill="none"
               stroke={RULE_SOFT}
-              strokeOpacity={0.4}
+              strokeOpacity={0.5}
+              strokeDasharray="3 3"
             />
-          ))}
-          {BLOCKS.map((b, i) => (
-            <ModalityTile
-              key={`to-${b.id}`}
-              cx={b.to.x}
-              cy={rowCentre(i)}
-              kind={b.kind}
-              shadowFilterId={tileShadowId}
-            />
-          ))}
-          {BLOCKS.map((b, i) => (
-            <text
-              key={`tag-${b.id}`}
-              className="rengo-act-tag"
-              x={b.to.x + TILE_HALF + 10}
-              y={rowCentre(i)}
-              dominantBaseline="middle"
-              fill={INK}
-              fillOpacity={0.75}
-            >
-              {b.tag}
-            </text>
-          ))}
-        </g>
+            {ROW_RULES.map((y) => (
+              <line
+                key={y}
+                x1={GRID_X + 8}
+                x2={GRID_X + GRID_W - 8}
+                y1={y}
+                y2={y}
+                stroke={RULE_SOFT}
+                strokeOpacity={0.4}
+              />
+            ))}
+            {BLOCKS.map((b, i) => (
+              <ModalityTile
+                key={`to-${b.id}`}
+                cx={b.to.x}
+                cy={rowCentre(i)}
+                kind={b.kind}
+                shadowFilterId={tileShadowId}
+              />
+            ))}
+            {BLOCKS.map((b, i) => (
+              <text
+                key={`tag-${b.id}`}
+                className="rengo-act-tag"
+                x={b.to.x + TILE_HALF + 10}
+                y={rowCentre(i)}
+                dominantBaseline="middle"
+                fill={INK}
+                fillOpacity={0.75}
+              >
+                {b.tag}
+              </text>
+            ))}
+          </g>
 
-        <line
-          x1={DIVIDER_X}
-          x2={DIVIDER_X}
-          y1={GRID_Y}
-          y2={GRID_Y + GRID_H}
-          stroke={RULE_SOFT}
-          strokeOpacity={0.55}
-          strokeWidth={1.25}
-        />
+          <line
+            x1={DIVIDER_X}
+            x2={DIVIDER_X}
+            y1={GRID_Y}
+            y2={GRID_Y + GRID_H}
+            stroke={RULE_SOFT}
+            strokeOpacity={0.55}
+            strokeWidth={1.25}
+          />
 
-        <g>
-          {BLOCKS.map((b) => (
-            <ScatterBlock key={`from-${b.id}`} cx={b.from.x} cy={b.from.y} />
-          ))}
+          <g>
+            {BLOCKS.map((b) => (
+              <ScatterBlock key={`from-${b.id}`} cx={b.from.x} cy={b.from.y} />
+            ))}
+          </g>
         </g>
-      </g>
-    </svg>
-  </div>
+      </svg>
+    </div>
   );
 };

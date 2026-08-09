@@ -61,7 +61,7 @@ export const OPEN_ROLES: readonly OpenRole[] = [
             items: [
               "Engineering experience, with deep care for the craft. You've shipped multiple complete products end-to-end and write elegant, production-ready code across multiple disciplines.",
               "Specific interest in applying software engineering fundamentals to AI systems. You care about balancing frontier model capabilities with good system design.",
-              "Extreme ownership mindset. You jump in without instruction, embrace a \"no job too big, no job too small\" mindset, and want to shape strategy and culture.",
+              'Extreme ownership mindset. You jump in without instruction, embrace a "no job too big, no job too small" mindset, and want to shape strategy and culture.',
             ],
           },
         ],

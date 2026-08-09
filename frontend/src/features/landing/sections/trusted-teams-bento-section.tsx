@@ -33,7 +33,7 @@ const TESTIMONIALS: readonly Testimonial[] = [
 const STAGGER_MS = 70;
 const ENTRANCE_MS = 560;
 
-function useRevealOnScroll() {
+const useRevealOnScroll = () => {
   const ref = React.useRef<HTMLDivElement>(null);
   const [revealed, setRevealed] = React.useState(false);
 
@@ -56,7 +56,7 @@ function useRevealOnScroll() {
   }, [revealed]);
 
   return { ref, revealed };
-}
+};
 
 const TestimonialCard: React.FC<{
   item: Testimonial;
