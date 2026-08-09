@@ -44,7 +44,7 @@ export const AppTopNav: React.FC = () => {
       label: "Solutions",
       children: SOLUTION_CAPABILITIES.map((c) => ({
         label: c.title,
-        path: `${SOLUTIONS_PATH}#${c.id}`,
+        path: `${SOLUTIONS_PATH}/${c.slug}`,
         description: c.summary,
         icon: c.icon,
       })),

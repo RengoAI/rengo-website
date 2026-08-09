@@ -89,7 +89,7 @@ export const AppFooter: React.FC = () => (
           >
             <FooterCol title="Solutions">
               {SOLUTION_CAPABILITIES.map((c) => (
-                <FooterLink key={c.id} to={`${SOLUTIONS_PATH}#${c.id}`}>
+                <FooterLink key={c.slug} to={`${SOLUTIONS_PATH}/${c.slug}`}>
                   {c.title}
                 </FooterLink>
               ))}

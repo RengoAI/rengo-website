@@ -11,17 +11,15 @@ interface SolutionsNavMenuProps {
 }
 
 /**
- * The Solutions dropdown. Items are section anchors on the single Solutions
- * page rather than child routes — see `solutions.ts` for why there are no
- * child pages.
+ * The Solutions dropdown. Each capability has its own page under /solutions.
  */
 export const SolutionsNavMenu: React.FC<SolutionsNavMenuProps> = (props) => (
   <MarketingNavMenu
     label="Solutions"
     items={SOLUTION_CAPABILITIES.map((c) => ({
-      id: c.id,
+      id: c.slug,
       title: c.title,
-      path: `${SOLUTIONS_PATH}#${c.id}`,
+      path: `${SOLUTIONS_PATH}/${c.slug}`,
     }))}
     {...props}
   />

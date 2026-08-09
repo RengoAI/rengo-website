@@ -1,76 +1,95 @@
-import { Boxes, Bot, ServerCog, type LucideIcon } from "lucide-react";
+import { Boxes, Bot, type LucideIcon } from "lucide-react";
 
 /**
- * Solutions is one page with three capability sections, and the nav dropdown
- * links to those sections rather than to child pages.
+ * Two capabilities, each with its own page under /solutions.
  *
- * An earlier version had two child pages whose title, URL and category each
- * named a different taxonomy — "Enterprise" at /solutions/ai-data-platform
- * filed under Infrastructure, "Private Equity" at /custom-ai-applications
- * under Delivery — and both were a bare hero with no body. Anchors keep the
- * dropdown affordance without recreating pages there is nothing to put on.
+ * An earlier version had child pages whose title, URL and category each named a
+ * different taxonomy — "Enterprise" at /solutions/ai-data-platform filed under
+ * Infrastructure, "Private Equity" at /custom-ai-applications under Delivery —
+ * and both were a bare hero. The axis here is capability throughout, and each
+ * page carries its own sections, so the structure holds this time.
  */
 
 export const SOLUTIONS_PATH = "/solutions";
 
-/**
- * The three capabilities, in the order the page argues them: the foundation,
- * what gets built on it, and who operates it afterwards. Descriptions follow
- * the consulting-capability pattern — what we do, for whom, by what mechanism —
- * rather than listing features.
- */
-export const SOLUTION_CAPABILITIES: readonly {
-  id: string;
+export interface SolutionCapability {
+  /** Also the URL segment: /solutions/<slug>. */
+  slug: string;
   title: string;
   /** Shown in the nav dropdown, so it has to read in one line. */
   summary: string;
+  /** Hero subtext on the capability's own page. */
+  lede: string;
+  /** What we do, for whom, by what mechanism — not a feature list. */
   body: string;
+  sections: readonly { title: string; body: string }[];
   detail: readonly string[];
   icon: LucideIcon;
-}[] = [
+}
+
+export const SOLUTION_CAPABILITIES: readonly SolutionCapability[] = [
   {
-    id: "data-infrastructure",
+    slug: "data-infrastructure",
     title: "Data Infrastructure",
     summary: "One governed foundation for the firm's data",
-    body: "We help firms put their meetings, documents, spreadsheets, and ledgers on a single governed foundation — permissioned, lineage-tracked, and ready to be queried — so that every downstream workflow draws on the same source rather than another copy.",
+    lede: "One governed foundation for everything the firm knows — permissioned, lineage-tracked, and ready to be queried.",
+    body: "We help firms put their meetings, documents, spreadsheets, and ledgers on a single governed foundation, so every downstream workflow draws on the same source rather than another copy that somebody has to reconcile.",
+    sections: [
+      {
+        title: "Ingest what you already have",
+        body: "Native files land as they are — no templates to fill in and no manual review step before the data is usable. Meetings, PDFs, workbooks, ledger extracts, and market data all arrive through the same path.",
+      },
+      {
+        title: "Structure it so it can be asked questions",
+        body: "Raw files become typed, related records with an ontology over them. That is the difference between storing documents and being able to ask what changed in a position since last quarter.",
+      },
+      {
+        title: "Govern it from the start",
+        body: "Permissions follow the firm's own structure, every value keeps its lineage back to the document it came from, and boundaries are enforced at the storage layer rather than in application code.",
+      },
+    ],
     detail: [
       "Warehouse or lakehouse foundation",
       "Native-file ingestion without templates",
       "Ontology and structured context",
       "Permissions and lineage",
+      "Migration off existing systems",
     ],
     icon: Boxes,
   },
   {
-    id: "applied-ai",
+    slug: "applied-ai",
     title: "Applied AI",
     summary: "Applications and agents built for your operations",
-    body: "We help firms turn that foundation into working software by developing the applications and agents against how the firm actually runs — its close, its reporting cycle, its approval chains — and extending them as the work changes.",
+    lede: "Applications and agents developed against how your firm actually runs, then extended as the work changes.",
+    body: "We help firms turn that foundation into working software by developing the applications and agents against their own close, reporting cycle, and approval chains — and by staying on to extend them rather than handing over a template.",
+    sections: [
+      {
+        title: "Applications for your workflows",
+        body: "Ready-to-deploy surfaces for the work your team repeats: portfolio monitoring, reporting, and the reviews that currently live in a spreadsheet and someone's inbox.",
+      },
+      {
+        title: "Agents that carry context forward",
+        body: "Agents execute and coordinate recurring work across systems. Because they run on the governed foundation, each decision becomes context for the next rather than starting from scratch.",
+      },
+      {
+        title: "Answers you can check",
+        body: "Every figure traces back to the document or record it came from, so an output can be verified rather than trusted. Your team also reaches the same context from the AI tools they already use.",
+      },
+    ],
     detail: [
       "Custom applications for your workflows",
       "Agents that execute across systems",
       "Access from the AI tools you already use",
       "Source-backed answers with citations",
+      "Ongoing development as needs change",
     ],
     icon: Bot,
-  },
-  {
-    id: "managed-operations",
-    title: "Managed Operations",
-    summary: "We run and monitor the whole stack",
-    body: "We help firms adopt all of this without hiring for it. The pipelines, integrations, permissions, and monitoring are ours to operate, so nobody on the client side is on call for the infrastructure underneath.",
-    detail: [
-      "Pipelines and integrations operated for you",
-      "Monitoring, alerting, and incident response",
-      "Ongoing development as needs change",
-      "SOC 2 Type II with independent testing",
-    ],
-    icon: ServerCog,
   },
 ];
 
 /**
- * Framing pillars, below the capabilities: the conditions that make the offer
+ * Framing pillars on the Solutions overview: the conditions that make the offer
  * credible rather than the offer itself.
  */
 export const SOLUTION_PILLARS: readonly {
