@@ -109,6 +109,18 @@ const cellAtPoint = (
   return fallback;
 };
 
+const pointInHost = (
+  host: HTMLElement,
+  clientX: number,
+  clientY: number,
+) => {
+  const rect = host.getBoundingClientRect();
+  const x = clientX - rect.left;
+  const y = clientY - rect.top;
+  if (x < 0 || x > rect.width || y < 0 || y > rect.height) return null;
+  return { x, y };
+};
+
 /**
  * Ambient isometric grid that drifts diagonally, with diamonds lighting up
  * under the pointer and fading out. Renders nothing but decoration: it is
@@ -257,15 +269,7 @@ export const HeroGridCanvas: React.FC = () => {
     };
 
     const onPointerMove = (event: PointerEvent) => {
-      const rect = host.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-      // Ignore movement outside the hero — the listener is on window, so the
-      // cursor is often somewhere else on the page entirely.
-      pointer =
-        x >= 0 && x <= rect.width && y >= 0 && y <= rect.height
-          ? { x, y }
-          : null;
+      pointer = pointInHost(host, event.clientX, event.clientY);
     };
     const onPointerLeave = () => {
       pointer = null;
@@ -275,7 +279,6 @@ export const HeroGridCanvas: React.FC = () => {
     window.addEventListener("resize", resize);
 
     if (reduceMotion) {
-      // Static grid only: no drift, no pointer trail.
       return () => window.removeEventListener("resize", resize);
     }
 
@@ -310,7 +313,6 @@ export const HeroGridCanvas: React.FC = () => {
       ref={hostRef}
       position="absolute"
       inset={0}
-      display={{ base: "none", md: "block" }}
       overflow="hidden"
       aria-hidden
       // Fades the field out at the top and bottom edges so it reads as
@@ -342,27 +344,33 @@ export const HeroGridCanvas: React.FC = () => {
       />
 
       {/*
-        Blurs and lightens the grid directly behind the headline so the serif
-        type stays crisp against it. `backdrop-filter` blurs what is painted
-        underneath; the radial mask confines that to an ellipse at the centre
-        and feathers the edge so there is no visible seam.
+        Blurs and lightens the grid behind the headline (and the nav band above it)
+        so serif type stays crisp. On narrow viewports the ellipse is still tighter
+        on the sides so the moving grid stays visible lower in the hero.
       */}
       <Box
         position="absolute"
         inset={0}
         pointerEvents="none"
         css={{
-          backdropFilter: "blur(14px)",
-          WebkitBackdropFilter: "blur(14px)",
-          backgroundColor: "rgba(245, 245, 246, 0.72)",
-          // Anchored over the left-aligned copy column and pulled upward so
-          // the quiet field runs from under the nav down past the CTA. Tall
-          // enough that its top edge clears the header rather than fading in
-          // mid-headline.
-          maskImage:
-            "radial-gradient(ellipse 58% 62% at 18% 30%, black 55%, transparent 100%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 58% 62% at 18% 30%, black 55%, transparent 100%)",
+          "@media (max-width: 47.99em)": {
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
+            backgroundColor: "rgba(245, 245, 246, 0.5)",
+            maskImage:
+              "radial-gradient(ellipse 58% 52% at 12% 22%, black 54%, transparent 84%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 58% 52% at 12% 22%, black 54%, transparent 84%)",
+          },
+          "@media (min-width: 48em)": {
+            backdropFilter: "blur(14px)",
+            WebkitBackdropFilter: "blur(14px)",
+            backgroundColor: "rgba(245, 245, 246, 0.72)",
+            maskImage:
+              "radial-gradient(ellipse 60% 72% at 18% 24%, black 58%, transparent 100%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 60% 72% at 18% 24%, black 58%, transparent 100%)",
+          },
         }}
       />
     </Box>
