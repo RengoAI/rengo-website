@@ -1,6 +1,11 @@
 import { PageHero } from "@/components/layout/page-hero";
 import { HeroGridCanvas } from "@/features/landing/sections/hero-grid-canvas";
-import { SectionShell } from "@/features/landing/sections/section-shell";
+import { SectionHeading } from "@/features/landing/sections/section-heading";
+import {
+  SolutionContentSection,
+  SolutionPhilosophyColumns,
+  SolutionWideSection,
+} from "@/features/solutions/solution-content-layout";
 import {
   SOLUTIONS_PATH,
   SOLUTION_CAPABILITIES,
@@ -10,6 +15,9 @@ import { Box, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 import { ArrowRight } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
+
+const openSalesMail = () =>
+  window.open("mailto:sales@rengoai.com", "_blank", "noopener,noreferrer");
 
 /**
  * The Solutions overview: the two capabilities as cards linking to their own
@@ -21,14 +29,23 @@ export const SolutionsPage: React.FC = () => (
       headline="We build it. We run it."
       subtext="We build and run your firm's data infrastructure, then develop the applications and agents that work on top of it."
       ctaLabel="Get started"
-      onCtaClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
+      onCtaClick={openSalesMail}
       background={<HeroGridCanvas />}
     />
 
-    <SectionShell bg="slate.10" py={{ base: 16, md: "80px" }}>
+    <SolutionContentSection bg="slate.10" borderTop>
+      <SectionHeading maxW="720px">
+        What we build
+        <br />
+        <Box as="span" color="slate.50" fontWeight={300}>
+          Applied AI and data infrastructure
+        </Box>
+      </SectionHeading>
+
       <Grid
         templateColumns={{ base: "1fr", md: "repeat(2, minmax(0, 1fr))" }}
         gap={{ base: 4, md: 5 }}
+        w="full"
       >
         {SOLUTION_CAPABILITIES.map((c) => {
           const Icon = c.icon;
@@ -62,9 +79,10 @@ export const SolutionsPage: React.FC = () => (
                   <Flex direction="column" gap={3} flex="1">
                     <Text
                       fontFamily="heading"
-                      fontSize={{ base: "24px", md: "28px" }}
-                      lineHeight={1.15}
-                      letterSpacing="-0.6px"
+                      fontWeight={350}
+                      fontSize={{ base: "18px", md: "22px" }}
+                      lineHeight={1.2}
+                      letterSpacing="-0.72px"
                       color="indigo.900"
                       m={0}
                     >
@@ -72,9 +90,9 @@ export const SolutionsPage: React.FC = () => (
                     </Text>
                     <Text
                       fontFamily="body"
-                      fontSize={{ base: "15px", md: "16px" }}
-                      lineHeight={1.6}
-                      color="slate.100"
+                      fontSize="16px"
+                      lineHeight="24px"
+                      color="slate.50"
                       m={0}
                     >
                       {c.body}
@@ -101,53 +119,15 @@ export const SolutionsPage: React.FC = () => (
           );
         })}
       </Grid>
-    </SectionShell>
+    </SolutionContentSection>
 
-    <SectionShell bg="slate.20" py={{ base: 16, md: "80px" }}>
-      <Flex direction="column" gap={{ base: 12, md: "56px" }}>
-        {SOLUTION_PILLARS.map((p) => (
-          <Flex
-            key={p.n}
-            direction={{ base: "column", md: "row" }}
-            gap={{ base: 3, md: 12 }}
-            align="flex-start"
-          >
-            <Text
-              fontFamily="mono"
-              fontSize="12px"
-              letterSpacing="1px"
-              color="accent.link"
-              flexShrink={0}
-              minW={{ md: "48px" }}
-              pt={{ md: 1 }}
-              m={0}
-            >
-              {p.n}
-            </Text>
-            <Flex direction="column" gap={4} maxW="640px">
-              <Text
-                fontFamily="heading"
-                fontSize={{ base: "22px", md: "26px" }}
-                lineHeight={1.15}
-                letterSpacing="-0.5px"
-                color="indigo.900"
-                m={0}
-              >
-                {p.title}
-              </Text>
-              <Text
-                fontFamily="body"
-                fontSize={{ base: "15px", md: "16px" }}
-                lineHeight={1.6}
-                color="slate.100"
-                m={0}
-              >
-                {p.body}
-              </Text>
-            </Flex>
-          </Flex>
-        ))}
-      </Flex>
-    </SectionShell>
+    <SolutionWideSection bg="slate.20" borderTop>
+      <SolutionPhilosophyColumns
+        items={SOLUTION_PILLARS.map((p) => ({
+          title: p.title,
+          body: p.body,
+        }))}
+      />
+    </SolutionWideSection>
   </Box>
 );
