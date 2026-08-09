@@ -8,7 +8,7 @@ import {
 } from "@/components/layout/marketing-frame";
 import { TOP_NAV_HEIGHT } from "@/components/nav/nav-styles";
 import { HeroGridCanvas } from "@/features/landing/sections/hero-grid-canvas";
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import React from "react";
 
 interface LandingHeroProps {
@@ -29,7 +29,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
   >
     <HeroGridCanvas />
 
-    <Box display="flex" w="full" maxW="1440px" mx="auto">
+    <Box display="flex" w="full" flex="1" alignItems="stretch">
       <Box
         display={{ base: "none", md: "block" }}
         w={MARKETING_GUTTER_WIDTH}
@@ -58,9 +58,9 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
               // Sized to hold "Your data is your alpha" on a single line; the
               // vw term keeps it from wrapping between the md and lg stops.
               fontSize={{
-                base: "clamp(34px, 9vw, 46px)",
-                md: "clamp(52px, 7.4vw, 72px)",
-                lg: "clamp(64px, 6.6vw, 88px)",
+                base: "clamp(32px, 8.2vw, 42px)",
+                md: "clamp(48px, 7vw, 66px)",
+                lg: "clamp(58px, 6.2vw, 78px)",
               }}
               lineHeight={1.02}
               letterSpacing={{ base: "-1.5px", md: "-3px" }}
@@ -75,21 +75,27 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
               </Box>
             </Box>
 
-            {/* Matches the muted second line of SectionHeading: serif, light
-                weight, tight tracking — so the hero and section titles read
-                as the same typographic system. */}
-            <Text
+            <Box
+              as="p"
               fontFamily="heading"
-              fontWeight={300}
-              fontSize={{ base: "22px", md: "32px" }}
+              fontWeight={350}
+              fontSize={{ base: "26px", md: "32px" }}
               lineHeight={1.2}
               letterSpacing="-2px"
-              color="slate.50"
+              color="indigo.900"
               maxW="680px"
               m={0}
             >
-              Turn proprietary knowledge into operating leverage
-            </Text>
+              <Box
+                as="span"
+                color="slate.50"
+                fontWeight={300}
+                fontSize={{ base: "20px", md: "28px" }}
+                lineHeight={1.2}
+              >
+                Turn proprietary knowledge into operating leverage
+              </Box>
+            </Box>
           </Flex>
 
           <Button
