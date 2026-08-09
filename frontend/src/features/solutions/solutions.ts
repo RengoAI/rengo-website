@@ -1,21 +1,77 @@
+import { Boxes, Bot, ServerCog, type LucideIcon } from "lucide-react";
+
 /**
- * Solutions is a single page rather than a set of child pages.
+ * Solutions is one page with three capability sections, and the nav dropdown
+ * links to those sections rather than to child pages.
  *
- * It previously held two entries whose title, URL and category each named a
- * different taxonomy — "Enterprise" at /solutions/ai-data-platform filed under
- * Infrastructure, and "Private Equity" at /solutions/custom-ai-applications
- * filed under Delivery. Audience, capability and delivery-model cannot all be
- * the axis at once, and both pages were a bare hero with no body, so the tree
- * was collapsed into one page carrying the pillars below.
+ * An earlier version had two child pages whose title, URL and category each
+ * named a different taxonomy — "Enterprise" at /solutions/ai-data-platform
+ * filed under Infrastructure, "Private Equity" at /custom-ai-applications
+ * under Delivery — and both were a bare hero with no body. Anchors keep the
+ * dropdown affordance without recreating pages there is nothing to put on.
  */
 
 export const SOLUTIONS_PATH = "/solutions";
 
 /**
- * What the page argues, in order: we do the work, we build to your operations,
- * we run it afterwards. The first three pillars are the offer itself — service,
- * custom development, managed infrastructure — and the last two are the
- * conditions that make it credible.
+ * The three capabilities, in the order the page argues them: the foundation,
+ * what gets built on it, and who operates it afterwards. Descriptions follow
+ * the consulting-capability pattern — what we do, for whom, by what mechanism —
+ * rather than listing features.
+ */
+export const SOLUTION_CAPABILITIES: readonly {
+  id: string;
+  title: string;
+  /** Shown in the nav dropdown, so it has to read in one line. */
+  summary: string;
+  body: string;
+  detail: readonly string[];
+  icon: LucideIcon;
+}[] = [
+  {
+    id: "data-infrastructure",
+    title: "Data Infrastructure",
+    summary: "One governed foundation for the firm's data",
+    body: "We help firms put their meetings, documents, spreadsheets, and ledgers on a single governed foundation — permissioned, lineage-tracked, and ready to be queried — so that every downstream workflow draws on the same source rather than another copy.",
+    detail: [
+      "Warehouse or lakehouse foundation",
+      "Native-file ingestion without templates",
+      "Ontology and structured context",
+      "Permissions and lineage",
+    ],
+    icon: Boxes,
+  },
+  {
+    id: "applied-ai",
+    title: "Applied AI",
+    summary: "Applications and agents built for your operations",
+    body: "We help firms turn that foundation into working software by developing the applications and agents against how the firm actually runs — its close, its reporting cycle, its approval chains — and extending them as the work changes.",
+    detail: [
+      "Custom applications for your workflows",
+      "Agents that execute across systems",
+      "Access from the AI tools you already use",
+      "Source-backed answers with citations",
+    ],
+    icon: Bot,
+  },
+  {
+    id: "managed-operations",
+    title: "Managed Operations",
+    summary: "We run and monitor the whole stack",
+    body: "We help firms adopt all of this without hiring for it. The pipelines, integrations, permissions, and monitoring are ours to operate, so nobody on the client side is on call for the infrastructure underneath.",
+    detail: [
+      "Pipelines and integrations operated for you",
+      "Monitoring, alerting, and incident response",
+      "Ongoing development as needs change",
+      "SOC 2 Type II with independent testing",
+    ],
+    icon: ServerCog,
+  },
+];
+
+/**
+ * Framing pillars, below the capabilities: the conditions that make the offer
+ * credible rather than the offer itself.
  */
 export const SOLUTION_PILLARS: readonly {
   n: string;
@@ -29,21 +85,11 @@ export const SOLUTION_PILLARS: readonly {
   },
   {
     n: "02",
-    title: "Built for your operations, not configured",
-    body: "Every firm's close, reporting cycle, and approval chain is its own. We write the applications and agents against how yours actually runs rather than asking you to fit a template — and we keep extending them as the work changes.",
-  },
-  {
-    n: "03",
-    title: "We run the infrastructure",
-    body: "The warehouse, the pipelines, the integrations, and the permissions are ours to operate and monitor. Your team gets the outputs and the access controls; nobody there is on call for the plumbing.",
-  },
-  {
-    n: "04",
     title: "Institutional rigor by default",
     body: "Strong data isolation with boundaries enforced at the storage layer, end-to-end encryption, and SOC 2 Type II with ongoing independent testing. Your data is never used to train models.",
   },
   {
-    n: "05",
+    n: "03",
     title: "Weeks to value",
     body: "Migrate, unify, automate, deploy, operate. For one asset manager that sequence ran in a month and delivered more than their previous vendor had in over a year.",
   },

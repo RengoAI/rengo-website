@@ -11,9 +11,12 @@ import {
   topNavRowProps,
 } from "@/components/nav/nav-styles";
 import { ResourcesNavMenu } from "@/components/nav/resources-nav-menu";
-import { MarketingNavLink } from "@/components/nav/marketing-nav-link";
+import { SolutionsNavMenu } from "@/components/nav/solutions-nav-menu";
 import { COMPANY_LINKS } from "@/features/company/company-links";
-import { SOLUTIONS_PATH } from "@/features/solutions/solutions";
+import {
+  SOLUTIONS_PATH,
+  SOLUTION_CAPABILITIES,
+} from "@/features/solutions/solutions";
 import { Box, Button, Flex, IconButton } from "@chakra-ui/react";
 import { Menu } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -39,7 +42,12 @@ export const AppTopNav: React.FC = () => {
   const navItems = [
     {
       label: "Solutions",
-      path: SOLUTIONS_PATH,
+      children: SOLUTION_CAPABILITIES.map((c) => ({
+        label: c.title,
+        path: `${SOLUTIONS_PATH}#${c.id}`,
+        description: c.summary,
+        icon: c.icon,
+      })),
     },
     {
       label: "Resources",
@@ -88,9 +96,7 @@ export const AppTopNav: React.FC = () => {
               display={{ base: "none", md: "flex" }}
               align="center"
             >
-              <MarketingNavLink
-                label="Solutions"
-                to={SOLUTIONS_PATH}
+              <SolutionsNavMenu
                 navColor={navColor}
                 navHoverColor={navHoverColor}
               />

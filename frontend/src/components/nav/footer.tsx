@@ -4,7 +4,10 @@ import {
 } from "@/components/layout/marketing-frame";
 import { rootRoute } from "@/app/app-routes";
 import { Logo } from "@/components/logo/logo";
-import { SOLUTIONS_PATH } from "@/features/solutions/solutions";
+import {
+  SOLUTIONS_PATH,
+  SOLUTION_CAPABILITIES,
+} from "@/features/solutions/solutions";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -85,7 +88,11 @@ export const AppFooter: React.FC = () => (
             minW={{ base: "min(100%, 280px)", lg: 0 }}
           >
             <FooterCol title="Solutions">
-              <FooterLink to={SOLUTIONS_PATH}>How we work</FooterLink>
+              {SOLUTION_CAPABILITIES.map((c) => (
+                <FooterLink key={c.id} to={`${SOLUTIONS_PATH}#${c.id}`}>
+                  {c.title}
+                </FooterLink>
+              ))}
             </FooterCol>
 
             <FooterCol title="Resources">
