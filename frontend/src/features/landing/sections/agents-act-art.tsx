@@ -1,49 +1,39 @@
+import {
+  AudioLines,
+  ChartNoAxesCombined,
+  ScanText,
+  Table,
+  type LucideIcon,
+} from "lucide-react";
 import React from "react";
 
 /**
- * "Structure Knowledge" — unstructured material on one side, the same records
- * typed and ordered on the other.
- *
- * A static figure: blocks are drawn twice, scattered on the left and aligned in
- * typed rows on the right, both at full opacity. The input and the result are
- * the two halves of the claim, and showing them side by side states it without
- * the reader having to wait for anything.
+ * "Structure knowledge" — unstructured isometric blocks on the left, the same
+ * modalities as typed tiles in the ordered frame on the right.
  */
 
-const ACCENT = "#0071e3";
-const RULE_SOFT = "#a9b7c6";
-const INK = "#124476";
-
-const VB_W = 380;
-
-/** Rhombus half-height ÷ half-width, from the deck's isometric geometry. */
 const TOP_RATIO = 48.0 / 84.2;
 const BODY_RATIO = 48.8 / 42.1;
+const CUBE_R = 15;
 
-const R = 15;
-
-/** A small isometric block; `r` is the top face's half-width. */
-const Block: React.FC<{
-  cx: number;
-  cy: number;
-  r: number;
-  accent?: boolean;
-}> = ({ cx, cy, r, accent = false }) => {
+/** Isometric block for the scattered (unordered) half. */
+const ScatterBlock: React.FC<{ cx: number; cy: number }> = ({ cx, cy }) => {
+  const r = CUBE_R;
   const ry = r * TOP_RATIO;
   const body = r * BODY_RATIO;
   return (
     <g
       strokeLinejoin="round"
       strokeWidth={Math.max(0.8, r * 0.05)}
-      stroke={accent ? ACCENT : RULE_SOFT}
+      stroke={RULE_SOFT}
     >
       <polygon
         points={`${cx - r},${cy} ${cx},${cy + ry} ${cx},${cy + ry + body} ${cx - r},${cy + body}`}
-        fill={accent ? "rgba(0,113,227,0.14)" : "rgba(118,140,166,0.12)"}
+        fill="rgba(118,140,166,0.12)"
       />
       <polygon
         points={`${cx + r},${cy} ${cx},${cy + ry} ${cx},${cy + ry + body} ${cx + r},${cy + body}`}
-        fill={accent ? "rgba(0,113,227,0.26)" : "rgba(118,140,166,0.24)"}
+        fill="rgba(118,140,166,0.24)"
       />
       <polygon
         points={`${cx},${cy - ry} ${cx + r},${cy} ${cx},${cy + ry} ${cx - r},${cy}`}
@@ -53,94 +43,131 @@ const Block: React.FC<{
   );
 };
 
-/**
- * Vertical breathing room between a cube and its band's edges.
- *
- * The pitch is this padding either side of a cube's full drawn height, so this
- * is the single knob for how airy the rows feel: it sets the row spacing, each
- * band's height (the frame pads by half a pitch), and the viewBox height, all
- * of which follow from it.
- */
-const ROW_PAD_Y = 6;
-const CUBE_H = 2 * R * TOP_RATIO + R * BODY_RATIO;
-const ROW_PITCH = CUBE_H + 2 * ROW_PAD_Y;
+const RULE_SOFT = "#a9b7c6";
+const GLYPH_STROKE = "#768ca6";
+const INK = "#124476";
+/** Bento vendor-tile styling (slate.10 surface, slate.30 border, 8px radius). */
+const TILE_FILL = "#f5f5f6";
+const TILE_BORDER = "#d3dde1";
 
-/** Margin between the frame and the viewBox, top and bottom. */
-const FRAME_MARGIN_Y = 14;
+const VB_W = 380;
+/** Sized to read like the 54px vendor chips in the bento, scaled to this figure. */
+const TILE_SIZE = 36;
+const TILE_RX = 6;
 
-/** Placed so the first band's centre sits one half-pitch below the frame top. */
-const ROW_TOP_Y = FRAME_MARGIN_Y + ROW_PITCH / 2 - (R * BODY_RATIO) / 2;
+type ModalityKind = "audio" | "tables" | "text" | "timeSeries";
+
+const MODALITY_ICONS: Record<ModalityKind, LucideIcon> = {
+  audio: AudioLines,
+  tables: Table,
+  text: ScanText,
+  timeSeries: ChartNoAxesCombined,
+};
+
+const MODALITY_ICON_SIZE = 18;
+
+const ModalityTile: React.FC<{
+  cx: number;
+  cy: number;
+  kind: ModalityKind;
+  shadowFilterId?: string;
+}> = ({ cx, cy, kind, shadowFilterId }) => {
+  const half = TILE_SIZE / 2;
+  const Icon = MODALITY_ICONS[kind];
+  return (
+    <g filter={shadowFilterId ? `url(#${shadowFilterId})` : undefined}>
+      <rect
+        x={cx - half}
+        y={cy - half}
+        width={TILE_SIZE}
+        height={TILE_SIZE}
+        rx={TILE_RX}
+        fill={TILE_FILL}
+        stroke={TILE_BORDER}
+        strokeWidth={1}
+      />
+      <foreignObject
+        x={cx - half}
+        y={cy - half}
+        width={TILE_SIZE}
+        height={TILE_SIZE}
+        xmlns="http://www.w3.org/1999/xhtml"
+      >
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Icon
+            size={MODALITY_ICON_SIZE}
+            strokeWidth={1.75}
+            color={GLYPH_STROKE}
+            aria-hidden
+          />
+        </div>
+      </foreignObject>
+    </g>
+  );
+};
+
+const ROW_PAD_Y = 12;
+const ROW_PITCH = TILE_SIZE + 2 * ROW_PAD_Y;
+const FRAME_MARGIN_Y = 18;
+
+const ROW_TOP_Y = FRAME_MARGIN_Y + ROW_PITCH / 2;
 const ROW_X = 198;
 
-/**
- * Scatter origins. The y values span the frame's vertical extent so the two
- * halves read as the same height; the x values stay irregular, which is what
- * makes the left side read as unsorted.
- */
 const BLOCKS = [
-  { id: "a", from: { x: 22, y: 23 }, tag: "Audio" },
-  { id: "b", from: { x: 58, y: 73 }, tag: "Embeddings" },
-  { id: "c", from: { x: 16, y: 124 }, tag: "Text" },
-  { id: "d", from: { x: 62, y: 174 }, tag: "Time series" },
+  {
+    id: "a",
+    kind: "audio" as ModalityKind,
+    from: { x: 22, y: 28 },
+    tag: "Audio",
+  },
+  {
+    id: "b",
+    kind: "tables" as ModalityKind,
+    from: { x: 58, y: 88 },
+    tag: "Tables",
+  },
+  {
+    id: "c",
+    kind: "text" as ModalityKind,
+    from: { x: 16, y: 148 },
+    tag: "Text",
+  },
+  {
+    id: "d",
+    kind: "timeSeries" as ModalityKind,
+    from: { x: 62, y: 212 },
+    tag: "Time series",
+  },
 ].map((b, i) => ({
   ...b,
   to: { x: ROW_X, y: ROW_TOP_Y + i * ROW_PITCH },
 }));
 
-/** The ordered frame starts clear of the scatter's right edge so the two zones
- *  read as distinct halves with a wider gutter at the center divide. */
 const GRID_X = 172;
 const GRID_W = 156;
 
-/**
- * The divider sits midway between the two halves' facing edges, so each side is
- * the same distance from it. The right-hand edge is the dashed frame, not the
- * first cube — the frame is drawn, so it is what the eye measures from.
- *
- * Derived rather than offset from GRID_X: a fixed offset drifts out of balance
- * whenever the gutter changes, which is what left the line 73px from one half
- * and 22px from the other.
- */
-const SCATTER_RIGHT_EDGE = Math.max(...BLOCKS.map((b) => b.from.x)) + R;
+const TILE_HALF = TILE_SIZE / 2;
+const SCATTER_RIGHT_EDGE =
+  Math.max(...BLOCKS.map((b) => b.from.x)) + CUBE_R;
 const DIVIDER_X = (SCATTER_RIGHT_EDGE + GRID_X) / 2;
 
-/**
- * A cube's visual centre sits half a body-drop below its drawing origin, so
- * midpoints have to be computed from the centres — using the raw origins put
- * every rule ~9px high, which read as uneven spacing.
- */
-const rowCentre = (i: number) =>
-  ROW_TOP_Y + i * ROW_PITCH + (R * BODY_RATIO) / 2;
+const rowCentre = (i: number) => ROW_TOP_Y + i * ROW_PITCH;
 
 const ROW_RULES = [0, 1, 2].map((i) => (rowCentre(i) + rowCentre(i + 1)) / 2);
 
-/**
- * Frame bounds derived from the rows it contains.
- *
- * The top and bottom padding is half a row pitch, which makes the four bands
- * the rules divide the frame into exactly ROW_PITCH tall each — and therefore
- * puts every cube dead centre in its own band. A fixed padding instead
- * stretched only the outer two bands and pushed the first and last cubes off
- * centre by the difference.
- */
 const GRID_Y = rowCentre(0) - ROW_PITCH / 2;
 const GRID_H = rowCentre(3) + ROW_PITCH / 2 - GRID_Y;
-
-/** Tall enough for the frame plus its margin, so the frame stays centred
- *  vertically however the pitch changes. */
 const VB_H = GRID_Y + GRID_H + FRAME_MARGIN_Y;
 
-/**
- * The figure's own bounds. The two halves are positioned relative to each other
- * rather than to the viewBox, so their combined extent is not centred in it —
- * the content sat 25px left of centre. Shifting the whole group by the
- * difference centres it without disturbing the gutter or either half's
- * internal spacing, and it stays centred if the geometry changes again.
- *
- * The left edge is the scatter's outermost cube; the right edge is the frame,
- * since the type tags sit inside it.
- */
-const CONTENT_LEFT = Math.min(...BLOCKS.map((b) => b.from.x)) - R;
+const CONTENT_LEFT = Math.min(...BLOCKS.map((b) => b.from.x)) - CUBE_R;
 const CONTENT_RIGHT = GRID_X + GRID_W;
 const CENTRE_SHIFT = VB_W / 2 - (CONTENT_LEFT + CONTENT_RIGHT) / 2;
 
@@ -150,14 +177,16 @@ type AgentsActArtProps = {
 
 export const AgentsActArt: React.FC<AgentsActArtProps> = ({
   variant = "tile",
-}) => (
+}) => {
+  const tileShadowId = `act-tile-shadow-${React.useId().replace(/:/g, "")}`;
+
+  return (
   <div
     style={{
       position: "relative",
       width: "100%",
       maxWidth: variant === "compact" ? "220px" : "340px",
-      /** Matches the viewBox's aspect so the taller rows are not letterboxed. */
-      height: variant === "compact" ? "160px" : "192px",
+      height: variant === "compact" ? "180px" : "220px",
       margin: "0 auto",
     }}
   >
@@ -165,26 +194,36 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
       viewBox={`0 0 ${VB_W} ${VB_H}`}
       preserveAspectRatio="xMidYMid meet"
       role="img"
-      aria-label="Scattered records on the left, the same records as typed ordered rows on the right."
+      aria-label="Scattered blocks on the left, the same modalities as ordered rows on the right."
       style={{ display: "block", width: "100%", height: "100%" }}
     >
       <style>{`
-        /* font-size must come from CSS: a font-size attribute loses to any
-           inherited CSS font rule, which rendered these labels at 16px. */
         .rengo-act-tag {
           font-family: var(--chakra-fonts-mono, ui-monospace, monospace);
           font-size: 8px;
           letter-spacing: 0.4px;
         }
-        /* Both halves render at full, constant opacity. The input and the
-           result are the two halves of the claim, and the figure reads as a
-           single static composition — dimming either one made the tile flicker
-           between states rather than simply showing both. */
       `}</style>
 
-      {/* Shifted so the figure sits centred in the viewBox; see CENTRE_SHIFT. */}
+      <defs>
+        <filter
+          id={tileShadowId}
+          x="-40%"
+          y="-40%"
+          width="180%"
+          height="180%"
+        >
+          <feDropShadow
+            dx="0"
+            dy="4"
+            stdDeviation="6"
+            floodColor="#213048"
+            floodOpacity="0.1"
+          />
+        </filter>
+      </defs>
+
       <g transform={`translate(${CENTRE_SHIFT} 0)`}>
-        {/* Ordered half: frame, row rules, aligned blocks and type tags. */}
         <g>
           <rect
             x={GRID_X}
@@ -209,20 +248,20 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
             />
           ))}
           {BLOCKS.map((b, i) => (
-            <Block
+            <ModalityTile
               key={`to-${b.id}`}
               cx={b.to.x}
-              cy={b.to.y}
-              r={R}
-              accent={i === 0}
+              cy={rowCentre(i)}
+              kind={b.kind}
+              shadowFilterId={tileShadowId}
             />
           ))}
-          {BLOCKS.map((b) => (
+          {BLOCKS.map((b, i) => (
             <text
               key={`tag-${b.id}`}
               className="rengo-act-tag"
-              x={b.to.x + R + 10}
-              y={b.to.y + (R * BODY_RATIO) / 2}
+              x={b.to.x + TILE_HALF + 10}
+              y={rowCentre(i)}
               dominantBaseline="middle"
               fill={INK}
               fillOpacity={0.75}
@@ -232,8 +271,6 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
           ))}
         </g>
 
-        {/* The divide between the two halves, in the same soft slate as the cube
-        edges so it reads as part of the composition. */}
         <line
           x1={DIVIDER_X}
           x2={DIVIDER_X}
@@ -244,13 +281,13 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
           strokeWidth={1.25}
         />
 
-        {/* Scattered half, drawn last so it sits above the divider. */}
         <g>
           {BLOCKS.map((b) => (
-            <Block key={`from-${b.id}`} cx={b.from.x} cy={b.from.y} r={R} />
+            <ScatterBlock key={`from-${b.id}`} cx={b.from.x} cy={b.from.y} />
           ))}
         </g>
       </g>
     </svg>
   </div>
-);
+  );
+};
