@@ -1,84 +1,78 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
+import { Check } from "lucide-react";
 import React from "react";
 
 /**
- * "Manage agents" — the capabilities agents run, as a row of indicator cards.
+ * "Manage automations" — the recurring jobs, and what each one is doing.
  *
- * Deliberately mirrors the vendor-card row in `connect-systems-art` (same card
- * size, fill, border, radius and shadow) so the two tiles read as siblings:
- * one shows the tools you plug in, this one shows the work agents do. The
- * capability verbs come from the deck's Agents layer.
+ * A run list rather than a row of capability icons: the label's operative word
+ * is "manage", which means oversight — what ran, what is running, what is
+ * queued. Three glyphs in boxes showed capabilities instead, which any product
+ * could claim and which needed captions to be legible at all.
  *
- * Glyphs are inline SVG rather than image assets — they need to inherit the
- * ink colour and stay crisp at ~22px, which a raster logo would not.
+ * Built from Chakra rather than SVG because it is rows of type and status
+ * marks; the surface styling matches the vendor chips in the sibling tile.
  */
 
-type Glyph = React.FC<{ size: number }>;
+const ACCENT = "#0071e3";
 
-/** Microphone, for transcription. */
-const TranscribeGlyph: Glyph = ({ size }) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.6"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden
-  >
-    <rect x="9" y="2.5" width="6" height="11" rx="3" />
-    <path d="M5.5 11a6.5 6.5 0 0 0 13 0" />
-    <path d="M12 17.5V21" />
-  </svg>
-);
+type RunState = "done" | "running" | "queued";
 
-/** Document with a pulled-out line, for extraction. */
-const ExtractGlyph: Glyph = ({ size }) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.6"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden
-  >
-    <path d="M14 2.5H6.5A1.5 1.5 0 0 0 5 4v16a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 20V7.5z" />
-    <path d="M14 2.5V7.5H19" />
-    <path d="M8.5 13.5h7" />
-    <path d="M8.5 17h4.5" />
-  </svg>
-);
-
-/** Two arrows in a loop, for sync. */
-const SyncGlyph: Glyph = ({ size }) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.6"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden
-  >
-    <path d="M20 11.5a8 8 0 0 0-13.7-5.1L3.5 9" />
-    <path d="M3.5 4.5V9H8" />
-    <path d="M4 12.5a8 8 0 0 0 13.7 5.1l2.8-2.6" />
-    <path d="M20.5 19.5V15H16" />
-  </svg>
-);
-
-const CAPABILITIES: { id: string; Glyph: Glyph }[] = [
-  { id: "transcribe", Glyph: TranscribeGlyph },
-  { id: "extract", Glyph: ExtractGlyph },
-  { id: "sync", Glyph: SyncGlyph },
+const RUNS: { id: string; job: string; when: string; state: RunState }[] = [
+  { id: "ledger", job: "Ingest ledger", when: "2m", state: "done" },
+  { id: "calls", job: "Transcribe calls", when: "1h", state: "done" },
+  { id: "pdfs", job: "Extract Q3 PDFs", when: "now", state: "running" },
+  { id: "positions", job: "Sync positions", when: "6h", state: "queued" },
 ];
+
+/**
+ * Status mark. Done is a filled check, running a half-filled accent ring, and
+ * queued a hollow ring — so state reads from the shape alone rather than from
+ * colour, which matters for anyone who cannot separate the two.
+ */
+const StatusMark: React.FC<{ state: RunState }> = ({ state }) => {
+  if (state === "done") {
+    return (
+      <Flex
+        w="14px"
+        h="14px"
+        borderRadius="full"
+        bg="rgba(118,140,166,0.18)"
+        align="center"
+        justify="center"
+        flexShrink={0}
+        color="slate.100"
+      >
+        <Check size={9} strokeWidth={3} />
+      </Flex>
+    );
+  }
+  if (state === "running") {
+    return (
+      <Box
+        w="14px"
+        h="14px"
+        borderRadius="full"
+        flexShrink={0}
+        border="2px solid"
+        borderColor={ACCENT}
+        /* Half-filled: a running job is neither empty nor complete. Written as
+           a plain CSS gradient — Chakra v3 dropped the `bgGradient` shorthand. */
+        backgroundImage={`linear-gradient(to right, ${ACCENT} 50%, transparent 50%)`}
+      />
+    );
+  }
+  return (
+    <Box
+      w="14px"
+      h="14px"
+      borderRadius="full"
+      flexShrink={0}
+      border="1.5px solid"
+      borderColor="slate.40"
+    />
+  );
+};
 
 type ManageAgentsArtProps = {
   variant?: "tile" | "compact";
@@ -88,35 +82,57 @@ export const ManageAgentsArt: React.FC<ManageAgentsArtProps> = ({
   variant = "tile",
 }) => {
   const isCompact = variant === "compact";
-  /** Matches the vendor cards in `connect-systems-art` exactly — the two tiles
-   *  sit in the same row, so a smaller card reads as a mismatch rather than a
-   *  deliberate difference. */
-  const cardSize = isCompact ? "44px" : "54px";
-  const glyphSize = isCompact ? 19 : 22;
-
   return (
-    <Box w="full" maxW={isCompact ? "220px" : "280px"} mx="auto" aria-hidden>
-      <Flex align="center" justify="center" gap={isCompact ? 2 : 2.5}>
-        {CAPABILITIES.map(({ id, Glyph }) => (
-          <Box
-            key={id}
-            w={cardSize}
-            h={cardSize}
-            flexShrink={0}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            bg="slate.10"
-            border="1px solid"
-            borderColor="slate.30"
-            borderRadius="8px"
-            boxShadow="0 8px 24px rgba(33, 48, 68, 0.1)"
-            color="indigo.700"
+    <Box
+      w="full"
+      maxW={isCompact ? "240px" : "300px"}
+      mx="auto"
+      bg="slate.10"
+      border="1px solid"
+      borderColor="slate.30"
+      borderRadius="8px"
+      boxShadow="0 8px 24px rgba(33, 48, 68, 0.1)"
+      overflow="hidden"
+      aria-hidden
+    >
+      {RUNS.map((run, i) => (
+        <Flex
+          key={run.id}
+          align="center"
+          gap={2.5}
+          px={3}
+          py={isCompact ? 2 : 2.5}
+          borderTop={i === 0 ? undefined : "1px solid"}
+          borderColor="slate.20"
+        >
+          <StatusMark state={run.state} />
+          <Text
+            fontFamily="mono"
+            fontSize={isCompact ? "9px" : "10px"}
+            lineHeight={1.2}
+            letterSpacing="-0.1px"
+            color={run.state === "queued" ? "slate.50" : "indigo.700"}
+            flex="1"
+            minW={0}
+            whiteSpace="nowrap"
+            overflow="hidden"
+            textOverflow="ellipsis"
+            m={0}
           >
-            <Glyph size={glyphSize} />
-          </Box>
-        ))}
-      </Flex>
+            {run.job}
+          </Text>
+          <Text
+            fontFamily="mono"
+            fontSize={isCompact ? "8px" : "9px"}
+            lineHeight={1.2}
+            color={run.state === "running" ? ACCENT : "slate.50"}
+            flexShrink={0}
+            m={0}
+          >
+            {run.when}
+          </Text>
+        </Flex>
+      ))}
     </Box>
   );
 };
