@@ -3,6 +3,7 @@ import {
   OPEN_ROLES_SECTION_ID,
   OpenRolesSection,
 } from "@/features/careers/open-roles-section";
+import { WhyJoinSection } from "@/features/careers/why-join-section";
 import { FoundersSection } from "@/features/company/founders-section";
 import { Box } from "@chakra-ui/react";
 import React from "react";
@@ -21,6 +22,7 @@ export const CareersPage: React.FC = () => (
       ctaLabel="View open roles"
       onCtaClick={scrollToOpenRoles}
     />
+    <WhyJoinSection />
     <FoundersSection />
     <OpenRolesSection />
   </Box>
