@@ -193,13 +193,20 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
               w="full"
               bg="indigo.900"
               color="slate.10"
-              borderRadius={0}
-              h="auto"
               onClick={() =>
-                window.open("mailto:sales@rengoai.com", "_blank", "noopener,noreferrer")
+                window.open(
+                  "mailto:sales@rengoai.com",
+                  "_blank",
+                  "noopener,noreferrer",
+                )
               }
               {...topNavCtaStyles}
               {...ctaButtonHoverWithArrowProps}
+              /* After the spreads: topNavCtaStyles sets h 34px and a 4px radius
+                 for the compact top nav, which is wrong for a full-width drawer
+                 CTA. Declared before them, these were silently overwritten. */
+              borderRadius={0}
+              h="auto"
             >
               <ButtonArrowLabel>Get Started</ButtonArrowLabel>
             </Button>
