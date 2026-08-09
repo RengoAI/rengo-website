@@ -15,24 +15,6 @@ import React from "react";
 
 type Glyph = React.FC<{ size: number }>;
 
-/** Envelope. */
-const MailGlyph: Glyph = ({ size }) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.6"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden
-  >
-    <rect x="3" y="5.5" width="18" height="13" rx="2" />
-    <path d="M3.5 7 12 13l8.5-6" />
-  </svg>
-);
-
 /** Microphone, for transcription. */
 const TranscribeGlyph: Glyph = ({ size }) => (
   <svg
@@ -93,7 +75,6 @@ const SyncGlyph: Glyph = ({ size }) => (
 );
 
 const CAPABILITIES: { id: string; label: string; Glyph: Glyph }[] = [
-  { id: "mail", label: "Mail", Glyph: MailGlyph },
   { id: "transcribe", label: "Transcribe", Glyph: TranscribeGlyph },
   { id: "extract", label: "Extract", Glyph: ExtractGlyph },
   { id: "sync", label: "Sync", Glyph: SyncGlyph },

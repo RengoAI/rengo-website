@@ -1,16 +1,18 @@
 import React from "react";
 
 /**
- * "Agents act" — unstructured material arriving, then snapped into order.
+ * "Structure Knowledge" — unstructured material on one side, the same records
+ * typed and ordered on the other.
  *
- * Blocks are drawn twice, once scattered and once aligned in typed rows, and
- * the two states cross-fade as a sweep passes. The transformation is the point:
- * agents impose structure on material that arrived without any.
+ * Blocks are drawn twice, scattered on the left and aligned in typed rows on
+ * the right. Both halves stay visible for the whole cycle and trade emphasis
+ * as a sweep passes: the input and the result are the two halves of the claim,
+ * so hiding either would leave the tile telling half a story.
  *
- * Cross-fading two static states rather than animating a CSS transform is
- * deliberate — transforms on SVG <g> interpolate inconsistently across
- * browsers, and percentage keyframes on them landed mid-ease rather than on
- * the intended plateau. Two positioned copies are unambiguous.
+ * Two positioned copies rather than an animated transform is deliberate —
+ * transforms on SVG <g> interpolate inconsistently across browsers, and
+ * percentage keyframes on them landed mid-ease rather than on the intended
+ * plateau.
  */
 
 const ACCENT = "#0071e3";
@@ -67,16 +69,18 @@ const Block: React.FC<{
  * block per row, so each row is a labelled record instead of a pair.
  */
 const BLOCKS = [
-  { id: "a", from: { x: 44, y: 26 }, to: { x: 150, y: 40 }, tag: "Emails" },
-  { id: "b", from: { x: 92, y: 54 }, to: { x: 150, y: 78 }, tag: "PDFs" },
-  { id: "c", from: { x: 36, y: 86 }, to: { x: 150, y: 116 }, tag: "Excel" },
-  { id: "d", from: { x: 100, y: 114 }, to: { x: 150, y: 154 }, tag: "Ledger" },
+  { id: "a", from: { x: 34, y: 28 }, to: { x: 166, y: 42 }, tag: "Emails" },
+  { id: "b", from: { x: 74, y: 56 }, to: { x: 166, y: 80 }, tag: "PDFs" },
+  { id: "c", from: { x: 28, y: 88 }, to: { x: 166, y: 118 }, tag: "Excel" },
+  { id: "d", from: { x: 78, y: 118 }, to: { x: 166, y: 156 }, tag: "Ledger" },
 ] as const;
 
-const GRID_X = 124;
-const GRID_W = 172;
+/** The ordered frame starts clear of the scatter's right edge (78 + R = 93),
+ *  so with both halves permanently visible the two zones stay legible. */
+const GRID_X = 140;
+const GRID_W = 156;
 /** Rules sit between rows, offset from each block's waist. */
-const ROW_RULES = [59, 97, 135];
+const ROW_RULES = [61, 99, 137];
 
 type AgentsActArtProps = {
   variant?: "tile" | "compact";
@@ -98,7 +102,7 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
       viewBox={`0 0 ${VB_W} ${VB_H}`}
       preserveAspectRatio="xMidYMid meet"
       role="img"
-      aria-label="Scattered records being organised into typed, ordered rows."
+      aria-label="Scattered records on the left, the same records as typed ordered rows on the right."
       style={{ display: "block", width: "100%", height: "100%" }}
     >
       <style>{`
@@ -109,15 +113,19 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
           font-size: 8px;
           letter-spacing: 0.4px;
         }
+        /* Both sides stay on screen for the whole cycle — the input and the
+           result are the two halves of the claim, so hiding either leaves the
+           tile telling half a story. They trade emphasis instead: each dims to
+           a legible floor rather than to zero. */
         @keyframes rengo-act-scattered {
-          0%, 26%   { opacity: 1; }
-          40%, 88%  { opacity: 0; }
+          0%, 22%   { opacity: 1; }
+          42%, 84%  { opacity: 0.34; }
           98%, 100% { opacity: 1; }
         }
         @keyframes rengo-act-ordered {
-          0%, 30%   { opacity: 0; }
-          46%, 86%  { opacity: 1; }
-          96%, 100% { opacity: 0; }
+          0%, 22%   { opacity: 0.42; }
+          42%, 84%  { opacity: 1; }
+          98%, 100% { opacity: 0.42; }
         }
         @keyframes rengo-act-sweep {
           0%, 16%  { opacity: 0; }
@@ -133,9 +141,9 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
         .rengo-act-sweep {
           animation: rengo-act-sweep ${CYCLE}s ease-in-out infinite;
         }
-        /* Rest on the ordered state: it is the one that carries the meaning. */
+        /* At rest, both halves are visible with the ordered side leading. */
         @media (prefers-reduced-motion: reduce) {
-          .rengo-act-scattered { animation: none; opacity: 0; }
+          .rengo-act-scattered { animation: none; opacity: 0.34; }
           .rengo-act-ordered { animation: none; opacity: 1; }
           .rengo-act-sweep { animation: none; opacity: 0; }
         }
