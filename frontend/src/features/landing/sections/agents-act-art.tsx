@@ -15,7 +15,6 @@ const RULE_SOFT = "#a9b7c6";
 const INK = "#124476";
 
 const VB_W = 380;
-const VB_H = 190;
 
 /** Rhombus half-height ÷ half-width, from the deck's isometric geometry. */
 const TOP_RATIO = 48.0 / 84.2;
@@ -55,23 +54,34 @@ const Block: React.FC<{
 };
 
 /**
- * Ordered rows: even pitch, first row's drawing origin.
+ * Vertical breathing room between a cube and its band's edges.
  *
- * The pitch has to clear a cube's full drawn height (top rhombus half + body
- * drop ≈ 26) or the rows visibly overlap — the body of one dropping into the
- * cap of the next. It also sets each band's height, since the frame pads by
- * half a pitch; 40 leaves the cubes ~2.8px clear of their band edges while
- * keeping the frame inside the viewBox.
+ * The pitch is this padding either side of a cube's full drawn height, so this
+ * is the single knob for how airy the rows feel: it sets the row spacing, each
+ * band's height (the frame pads by half a pitch), and the viewBox height, all
+ * of which follow from it.
  */
-const ROW_PITCH = 40;
-const ROW_TOP_Y = 34;
+const ROW_PAD_Y = 6;
+const CUBE_H = 2 * R * TOP_RATIO + R * BODY_RATIO;
+const ROW_PITCH = CUBE_H + 2 * ROW_PAD_Y;
+
+/** Margin between the frame and the viewBox, top and bottom. */
+const FRAME_MARGIN_Y = 14;
+
+/** Placed so the first band's centre sits one half-pitch below the frame top. */
+const ROW_TOP_Y = FRAME_MARGIN_Y + ROW_PITCH / 2 - (R * BODY_RATIO) / 2;
 const ROW_X = 198;
 
+/**
+ * Scatter origins. The y values span the frame's vertical extent so the two
+ * halves read as the same height; the x values stay irregular, which is what
+ * makes the left side read as unsorted.
+ */
 const BLOCKS = [
-  { id: "a", from: { x: 22, y: 28 }, tag: "Emails" },
-  { id: "b", from: { x: 58, y: 56 }, tag: "PDFs" },
-  { id: "c", from: { x: 16, y: 88 }, tag: "Excel" },
-  { id: "d", from: { x: 62, y: 118 }, tag: "Ledger" },
+  { id: "a", from: { x: 22, y: 23 }, tag: "Emails" },
+  { id: "b", from: { x: 58, y: 73 }, tag: "PDFs" },
+  { id: "c", from: { x: 16, y: 124 }, tag: "Excel" },
+  { id: "d", from: { x: 62, y: 174 }, tag: "Ledger" },
 ].map((b, i) => ({
   ...b,
   to: { x: ROW_X, y: ROW_TOP_Y + i * ROW_PITCH },
@@ -110,11 +120,15 @@ const ROW_RULES = [0, 1, 2].map((i) => (rowCentre(i) + rowCentre(i + 1)) / 2);
  * The top and bottom padding is half a row pitch, which makes the four bands
  * the rules divide the frame into exactly ROW_PITCH tall each — and therefore
  * puts every cube dead centre in its own band. A fixed padding instead
- * stretched only the outer two bands (48.2 against 38.0) and pushed the first
- * and last cubes 5px off centre.
+ * stretched only the outer two bands and pushed the first and last cubes off
+ * centre by the difference.
  */
 const GRID_Y = rowCentre(0) - ROW_PITCH / 2;
 const GRID_H = rowCentre(3) + ROW_PITCH / 2 - GRID_Y;
+
+/** Tall enough for the frame plus its margin, so the frame stays centred
+ *  vertically however the pitch changes. */
+const VB_H = GRID_Y + GRID_H + FRAME_MARGIN_Y;
 
 /**
  * The figure's own bounds. The two halves are positioned relative to each other
@@ -142,7 +156,8 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
       position: "relative",
       width: "100%",
       maxWidth: variant === "compact" ? "220px" : "340px",
-      height: variant === "compact" ? "150px" : "180px",
+      /** Matches the viewBox's aspect so the taller rows are not letterboxed. */
+      height: variant === "compact" ? "160px" : "192px",
       margin: "0 auto",
     }}
   >
