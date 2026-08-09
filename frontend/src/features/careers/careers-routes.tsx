@@ -22,7 +22,7 @@ export const careersRoutes: RouteObject = {
       id: "careersRole",
       path: ":roleId",
       handle: {
-        pageTitle: "Open Role",
+        pageTitle: "Software Engineer",
       },
       lazy: async () => {
         const { JobListingPage } = await import(
