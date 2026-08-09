@@ -4,15 +4,10 @@ import React from "react";
  * "Structure Knowledge" — unstructured material on one side, the same records
  * typed and ordered on the other.
  *
- * Blocks are drawn twice, scattered on the left and aligned in typed rows on
- * the right. Both halves stay visible for the whole cycle and trade emphasis
- * as a sweep passes: the input and the result are the two halves of the claim,
- * so hiding either would leave the tile telling half a story.
- *
- * Two positioned copies rather than an animated transform is deliberate —
- * transforms on SVG <g> interpolate inconsistently across browsers, and
- * percentage keyframes on them landed mid-ease rather than on the intended
- * plateau.
+ * A static figure: blocks are drawn twice, scattered on the left and aligned in
+ * typed rows on the right, both at full opacity. The input and the result are
+ * the two halves of the claim, and showing them side by side states it without
+ * the reader having to wait for anything.
  */
 
 const ACCENT = "#0071e3";
@@ -26,7 +21,6 @@ const VB_H = 190;
 const TOP_RATIO = 48.0 / 84.2;
 const BODY_RATIO = 48.8 / 42.1;
 
-const CYCLE = 7.5;
 const R = 15;
 
 /** A small isometric block; `r` is the top face's half-width. */
@@ -61,14 +55,6 @@ const Block: React.FC<{
 };
 
 /**
- * Scattered origins and ordered destinations. Both are hand-placed so the
- * composition stays balanced and the animation is identical on every load.
- *
- * Every block carries a type in the ordered state: an untagged block reads as
- * leftover rather than as structured, which undercuts the whole point. One
- * block per row, so each row is a labelled record instead of a pair.
- */
-/**
  * Ordered rows: even pitch, first row's drawing origin. The pitch has to clear
  * a cube's full drawn height (top rhombus half + body drop ≈ 26) or the rows
  * visibly overlap — the body of one dropping into the cap of the next.
@@ -87,8 +73,8 @@ const BLOCKS = [
   to: { x: ROW_X, y: ROW_TOP_Y + i * ROW_PITCH },
 }));
 
-/** The ordered frame starts clear of the scatter's right edge (78 + R = 93),
- *  so with both halves permanently visible the two zones stay legible. */
+/** The ordered frame starts clear of the scatter's right edge (78 + R = 93)
+ *  so the two zones read as distinct halves. */
 const GRID_X = 140;
 const GRID_W = 156;
 
@@ -138,35 +124,14 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
           font-size: 8px;
           letter-spacing: 0.4px;
         }
-        /* Both sides stay on screen for the whole cycle — the input and the
-           result are the two halves of the claim, so hiding either leaves the
-           tile telling half a story. They trade emphasis instead: each dims to
-           a legible floor rather than to zero. */
-        @keyframes rengo-act-scattered {
-          0%, 22%   { opacity: 1; }
-          42%, 84%  { opacity: 0.34; }
-          98%, 100% { opacity: 1; }
-        }
-        @keyframes rengo-act-ordered {
-          0%, 22%   { opacity: 0.42; }
-          42%, 84%  { opacity: 1; }
-          98%, 100% { opacity: 0.42; }
-        }
-        .rengo-act-scattered {
-          animation: rengo-act-scattered ${CYCLE}s ease-in-out infinite;
-        }
-        .rengo-act-ordered {
-          animation: rengo-act-ordered ${CYCLE}s ease-in-out infinite;
-        }
-        /* At rest, both halves are visible with the ordered side leading. */
-        @media (prefers-reduced-motion: reduce) {
-          .rengo-act-scattered { animation: none; opacity: 0.34; }
-          .rengo-act-ordered { animation: none; opacity: 1; }
-        }
+        /* Both halves render at full, constant opacity. The input and the
+           result are the two halves of the claim, and the figure reads as a
+           single static composition — dimming either one made the tile flicker
+           between states rather than simply showing both. */
       `}</style>
 
-      {/* Ordered state: frame, row rules, aligned blocks and type tags. */}
-      <g className="rengo-act-ordered">
+      {/* Ordered half: frame, row rules, aligned blocks and type tags. */}
+      <g>
         <rect
           x={GRID_X}
           y={GRID_Y}
@@ -213,9 +178,8 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
         ))}
       </g>
 
-      {/* The divide between the two halves. Always drawn, in the same soft
-        slate as the cube edges, so it reads as part of the composition rather
-        than as a moving highlight. */}
+      {/* The divide between the two halves, in the same soft slate as the cube
+        edges so it reads as part of the composition. */}
       <line
         x1={GRID_X - 22}
         x2={GRID_X - 22}
@@ -226,8 +190,8 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
         strokeWidth={1.25}
       />
 
-      {/* Scattered state, drawn last so it sits above while visible. */}
-      <g className="rengo-act-scattered">
+      {/* Scattered half, drawn last so it sits above the divider. */}
+      <g>
         {BLOCKS.map((b) => (
           <Block key={`from-${b.id}`} cx={b.from.x} cy={b.from.y} r={R} />
         ))}
