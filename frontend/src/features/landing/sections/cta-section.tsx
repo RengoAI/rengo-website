@@ -47,7 +47,6 @@ export const CtaSection: React.FC<CtaSectionProps> = ({
         flexShrink={0}
         bg="indigo.900"
         color="slate.10"
-        borderRadius={0}
         px={8}
         py={3.5}
         h="auto"

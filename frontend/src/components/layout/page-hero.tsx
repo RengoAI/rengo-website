@@ -154,7 +154,6 @@ export const PageHero: React.FC<PageHeroProps> = ({
           alignSelf="flex-start"
           bg="indigo.900"
           color="slate.10"
-          borderRadius={0}
           px={8}
           py={3.5}
           h="auto"

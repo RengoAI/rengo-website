@@ -131,7 +131,6 @@ export const AppTopNav: React.FC = () => {
                     window.open("mailto:sales@rengoai.com", "_blank")
                   }
                   {...topNavCtaStyles}
-                  borderRadius={0}
                   {...ctaButtonHoverProps}
                 >
                   Get Started

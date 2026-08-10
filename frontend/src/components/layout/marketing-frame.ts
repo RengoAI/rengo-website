@@ -34,6 +34,9 @@ export const marketingLayoutBorderColor = "slate.25";
 /** Bento tiles, cards, and other boxed content on marketing pages. */
 export const marketingCardBorderColor = "slate.30";
 
+/** Buttons and controls — matches bento tile corner radius. */
+export const marketingControlBorderRadius = "3px";
+
 /**
  * Section headings: pull the title block to the content rim so the accent
  * stays flush with the left border (independent of title text inset below).
