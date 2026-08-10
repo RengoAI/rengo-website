@@ -45,7 +45,7 @@ const ScatterBlock: React.FC<{ cx: number; cy: number }> = ({ cx, cy }) => {
 
 const RULE_SOFT = "#a9b7c6";
 const GLYPH_STROKE = "#768ca6";
-const INK = "#124476";
+const TAG_INK = "#124476"; // indigo.700 — matches ManageAgentsArt step labels
 /** Bento vendor-tile styling (slate.10 surface, slate.30 border, 8px radius). */
 const TILE_FILL = "#f5f5f6";
 const TILE_BORDER = "#d3dde1";
@@ -65,6 +65,39 @@ const MODALITY_ICONS: Record<ModalityKind, LucideIcon> = {
 };
 
 const MODALITY_ICON_SIZE = 18;
+const TAG_LINE_HEIGHT = 12;
+const TAG_GAP = 10;
+
+const ModalityTag: React.FC<{
+  x: number;
+  y: number;
+  children: string;
+  fontSize: number;
+}> = ({ x, y, children, fontSize }) => (
+  <foreignObject
+    x={x}
+    y={y - TAG_LINE_HEIGHT / 2}
+    width={132}
+    height={TAG_LINE_HEIGHT}
+    xmlns="http://www.w3.org/1999/xhtml"
+  >
+    <p
+      className="rengo-text"
+      style={{
+        margin: 0,
+        fontFamily: "var(--chakra-fonts-body, system-ui, sans-serif)",
+        fontSize: `${fontSize}px`,
+        fontWeight: 500,
+        lineHeight: `${TAG_LINE_HEIGHT}px`,
+        letterSpacing: "-0.2px",
+        color: TAG_INK,
+        whiteSpace: "nowrap",
+      }}
+    >
+      {children}
+    </p>
+  </foreignObject>
+);
 
 const ModalityTile: React.FC<{
   cx: number;
@@ -119,7 +152,14 @@ const ROW_PITCH = TILE_SIZE + 2 * ROW_PAD_Y;
 const FRAME_MARGIN_Y = 18;
 
 const ROW_TOP_Y = FRAME_MARGIN_Y + ROW_PITCH / 2;
-const ROW_X = 198;
+
+const GRID_X = 172;
+const GRID_W = 156;
+const GRID_PAD_X = 16;
+
+const ROW_X = GRID_X + GRID_PAD_X + TILE_SIZE / 2;
+
+const TILE_HALF = TILE_SIZE / 2;
 
 const BLOCKS = [
   {
@@ -151,10 +191,6 @@ const BLOCKS = [
   to: { x: ROW_X, y: ROW_TOP_Y + i * ROW_PITCH },
 }));
 
-const GRID_X = 172;
-const GRID_W = 156;
-
-const TILE_HALF = TILE_SIZE / 2;
 const SCATTER_RIGHT_EDGE = Math.max(...BLOCKS.map((b) => b.from.x)) + CUBE_R;
 const DIVIDER_X = (SCATTER_RIGHT_EDGE + GRID_X) / 2;
 
@@ -178,6 +214,8 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
   variant = "tile",
 }) => {
   const tileShadowId = `act-tile-shadow-${React.useId().replace(/:/g, "")}`;
+  const isCompact = variant === "compact";
+  const tagFontSize = isCompact ? 9 : 10;
 
   return (
     <div
@@ -196,14 +234,6 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
         aria-label="Scattered blocks on the left, the same modalities as ordered rows on the right."
         style={{ display: "block", width: "100%", height: "100%" }}
       >
-        <style>{`
-        .rengo-act-tag {
-          font-family: var(--chakra-fonts-mono, ui-monospace, monospace);
-          font-size: 8px;
-          letter-spacing: 0.4px;
-        }
-      `}</style>
-
         <defs>
           <filter
             id={tileShadowId}
@@ -238,8 +268,8 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
             {ROW_RULES.map((y) => (
               <line
                 key={y}
-                x1={GRID_X + 8}
-                x2={GRID_X + GRID_W - 8}
+                x1={GRID_X + GRID_PAD_X}
+                x2={GRID_X + GRID_W - GRID_PAD_X}
                 y1={y}
                 y2={y}
                 stroke={RULE_SOFT}
@@ -256,17 +286,14 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
               />
             ))}
             {BLOCKS.map((b, i) => (
-              <text
+              <ModalityTag
                 key={`tag-${b.id}`}
-                className="rengo-act-tag"
-                x={b.to.x + TILE_HALF + 10}
+                x={b.to.x + TILE_HALF + TAG_GAP}
                 y={rowCentre(i)}
-                dominantBaseline="middle"
-                fill={INK}
-                fillOpacity={0.75}
+                fontSize={tagFontSize}
               >
                 {b.tag}
-              </text>
+              </ModalityTag>
             ))}
           </g>
 
