@@ -1,5 +1,8 @@
 import { Logo } from "@/components/logo/logo";
-import { marketingPageMarginX, marketingLayoutBorderColor } from "@/components/layout/marketing-frame";
+import {
+  marketingPageMarginX,
+  marketingLayoutBorderColor,
+} from "@/components/layout/marketing-frame";
 import { topNavCtaStyles } from "@/components/nav/nav-styles";
 import {
   ButtonArrowLabel,

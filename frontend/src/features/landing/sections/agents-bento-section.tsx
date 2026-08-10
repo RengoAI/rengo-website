@@ -201,7 +201,11 @@ export const AgentsBentoSection: React.FC = () => (
       </Flex>
     </MarketingPageWidth>
 
-    <Box w="full" borderTop="1px solid" borderColor={marketingLayoutBorderColor} />
+    <Box
+      w="full"
+      borderTop="1px solid"
+      borderColor={marketingLayoutBorderColor}
+    />
 
     <MarketingPageWidth variant="content" py={{ base: 10, md: 12 }}>
       <DeploymentCards />
