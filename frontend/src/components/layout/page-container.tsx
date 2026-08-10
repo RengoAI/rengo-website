@@ -3,6 +3,4 @@ import React from "react";
 
 export const PageContainer: React.FC<React.PropsWithChildren> = ({
   children,
-}) => (
-  <MarketingPageWidth variant="content">{children}</MarketingPageWidth>
-);
+}) => <MarketingPageWidth variant="content">{children}</MarketingPageWidth>;

@@ -85,7 +85,12 @@ export const PageHero: React.FC<PageHeroProps> = ({
         pt={contentPt}
         pb={contentPb}
       >
-        <Flex direction="column" gap={{ base: 5, md: 7 }} align="flex-start" w="full">
+        <Flex
+          direction="column"
+          gap={{ base: 5, md: 7 }}
+          align="flex-start"
+          w="full"
+        >
           {eyebrow && (
             <Text
               fontFamily="mono"
