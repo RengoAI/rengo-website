@@ -25,11 +25,11 @@ const SLATE_10 = "#f5f5f6";
 const SLATE_30 = "#d3dde1";
 const SLATE_40 = "#a9b7c6";
 
-/** Hub faces — light top (Admin-chip white) with blue-tinted sides. */
+/** Hub faces — white top, slightly richer blue sides. */
 const HUB_TOP = "#ffffff";
-const HUB_LEFT = "#e6eef7"; // blue.100
-const HUB_RIGHT = "#adc6e3"; // blue.300
-const HUB_EDGE = "#cdddf0"; // blue.200
+const HUB_LEFT = "#dce8f5";
+const HUB_RIGHT = "#9bb5d4";
+const HUB_EDGE = "#b8cfe6";
 
 const VB_W = 760;
 const VB_H = 360;
@@ -107,9 +107,10 @@ const Cube: React.FC<{ cx: number; cy: number; r: number; tone: Tone }> = ({
   const ry = r * TOP_RATIO;
   const body = r * BODY_RATIO;
   const { top, left, right, edge } = TONES[tone];
+  const isHub = tone === "hub";
   return (
     <g
-      filter="url(#rengo-cube-card)"
+      filter={isHub ? "url(#rengo-hub-cube)" : "url(#rengo-cube-card)"}
       strokeLinejoin="round"
       strokeLinecap="round"
       strokeWidth={1}
@@ -218,6 +219,21 @@ export const DeploymentDiagram: React.FC<DeploymentDiagramProps> = ({
             stdDeviation="12"
             floodColor="#213044"
             floodOpacity="0.08"
+          />
+        </filter>
+        <filter
+          id="rengo-hub-cube"
+          x="-55%"
+          y="-55%"
+          width="210%"
+          height="210%"
+        >
+          <feDropShadow
+            dx="0"
+            dy="8"
+            stdDeviation="10"
+            floodColor="#213044"
+            floodOpacity="0.1"
           />
         </filter>
       </defs>
