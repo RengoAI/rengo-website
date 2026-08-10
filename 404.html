@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Rengo AI" />
-    <link rel="icon" type="image/svg+xml" href="/assets/logo-BuwzBdGB.svg" />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
     <link
@@ -29,8 +29,20 @@
     <script nonce="ena5Ul0L1OFgf4ox9BNOaA==" type="module" crossorigin src="/assets/index-Wja4a1QA.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/vendor-Vs1Fv8tY.js">
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-DDR3Y0LH.js">
-  <link rel="manifest" href="/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/registerSW.js"></script></head>
+  </head>
   <body>
     <div id="root"></div>
+    <!--
+      Registers the self-destroying service worker in public/sw.js, which clears
+      the caches left behind by the removed vite-plugin-pwa worker. Delete this
+      tag and public/sw.js together once returning visitors have cycled through.
+    -->
+    <script nonce="ena5Ul0L1OFgf4ox9BNOaA==">
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("/sw.js");
+        });
+      }
+    </script>
   </body>
 </html>

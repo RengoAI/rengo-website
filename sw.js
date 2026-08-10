@@ -1,2 +1,34 @@
-if(!self.define){let s,e={};const l=(l,i)=>(l=new URL(l+".js",i).href,e[l]||new Promise(e=>{if("document"in self){const s=document.createElement("script");s.src=l,s.onload=e,document.head.appendChild(s)}else s=l,importScripts(l),e()}).then(()=>{let s=e[l];if(!s)throw new Error(`Module ${l} didn’t register its module`);return s}));self.define=(i,r)=>{const n=s||("document"in self?document.currentScript.src:"")||location.href;if(e[n])return;let o={};const t=s=>l(s,n),a={module:{uri:n},exports:o,require:t};e[n]=Promise.all(i.map(s=>a[s]||t(s))).then(s=>(r(...s),o))}}define(["./workbox-4723e66c"],function(s){"use strict";self.addEventListener("message",s=>{s.data&&"SKIP_WAITING"===s.data.type&&self.skipWaiting()}),s.precacheAndRoute([{url:"assets/capability-page-DaRPWgsN.js",revision:null},{url:"assets/careers-page-DwONdbho.js",revision:null},{url:"assets/changelog-entry-page-DeNOUeTg.js",revision:null},{url:"assets/changelog-page-sGUZaqMR.js",revision:null},{url:"assets/company-page-BzUPmAeK.js",revision:null},{url:"assets/hero-grid-canvas-CQz-hse5.js",revision:null},{url:"assets/index-Wja4a1QA.js",revision:null},{url:"assets/job-listing-page-WJH2ISta.js",revision:null},{url:"assets/landing-page-DjGLEqiD.js",revision:null},{url:"assets/open-roles-CZZVaWay.js",revision:null},{url:"assets/page-hero-DDrzPUZK.js",revision:null},{url:"assets/privacy-policy-page-BtQlhaoN.js",revision:null},{url:"assets/react-vendor-DDR3Y0LH.js",revision:null},{url:"assets/section-shell-Dj6HdQM9.js",revision:null},{url:"assets/solutions-page-DWWXFqcD.js",revision:null},{url:"assets/terms-of-service-page-CUpjZcz2.js",revision:null},{url:"assets/use-required-string-params-BLBWcZoS.js",revision:null},{url:"assets/utils-DwqqltDW.js",revision:null},{url:"assets/vendor-Vs1Fv8tY.js",revision:null},{url:"index.html",revision:"a349c8a56e636398fa5fcbafec0e1ee6"},{url:"registerSW.js",revision:"1872c500de691dce40960bb85481de07"},{url:"logo.svg",revision:"524470e81435942185fdca9decd4dec0"},{url:"manifest.webmanifest",revision:"bd5d33fce2ed6f37c25e17d0b7189e28"}],{}),s.cleanupOutdatedCaches(),s.registerRoute(new s.NavigationRoute(s.createHandlerBoundToURL("index.html")))});
-//# sourceMappingURL=sw.js.map
+// Self-destroying service worker.
+//
+// This site used to ship a Workbox service worker via vite-plugin-pwa. That
+// worker precached index.html and answered every navigation from the cache, so
+// visitors kept loading a stale build until they hard-refreshed.
+//
+// The PWA plugin is gone, but browsers that already registered /sw.js will keep
+// running their cached copy until something explicitly tears it down. They only
+// fetch this file as part of their update check, so it has to stay deployed at
+// this exact path to reach them. Once traffic has cycled through (a few weeks of
+// normal visits, or whatever covers your returning-visitor tail), delete this
+// file and the <script> tag in index.html that registers it.
+//
+// See: https://developer.chrome.com/docs/workbox/remove-buggy-service-workers
+
+self.addEventListener("install", () => {
+  // Replace the old worker immediately rather than waiting for every tab to close.
+  self.skipWaiting();
+});
+
+self.addEventListener("activate", async () => {
+  // Drop the precached build so nothing can be served from it.
+  const keys = await caches.keys();
+  await Promise.all(keys.map((key) => caches.delete(key)));
+
+  await self.registration.unregister();
+
+  // Reload open tabs so they leave the now-uncontrolled page and fetch fresh
+  // assets from the network.
+  const clients = await self.clients.matchAll({ type: "window" });
+  for (const client of clients) {
+    client.navigate(client.url);
+  }
+});
