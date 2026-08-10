@@ -1,3 +1,4 @@
+import { marketingLayoutBorderColor } from "@/components/layout/marketing-frame";
 import { topNavLinkStyles } from "@/components/nav/nav-styles";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { ChevronDown, type LucideIcon } from "lucide-react";
@@ -67,7 +68,7 @@ export const NavDropdownMenu: React.FC<NavDropdownMenuProps> = ({
   }, [open]);
 
   const panelBg = "white";
-  const panelBorder = "slate.30";
+  const panelBorder = marketingLayoutBorderColor;
   const titleColor = "indigo.900";
   const bodyColor = "ink.body";
   const itemHoverBg = "slate.20";

@@ -1,7 +1,9 @@
 import {
   MARKETING_GUTTER_WIDTH,
   marketingContentPaddingX,
+  marketingLayoutBorderColor,
 } from "@/components/layout/marketing-frame";
+import { MarketingPageWidth } from "@/components/layout/marketing-page-width";
 import { rootRoute } from "@/app/app-routes";
 import { Logo } from "@/components/logo/logo";
 import {
@@ -55,90 +57,94 @@ export const AppFooter: React.FC = () => (
     bg="slate.10"
     color="indigo.900"
     borderTop="1px solid"
-    borderColor="slate.30"
+    borderColor={marketingLayoutBorderColor}
     pt={16}
     pb={10}
   >
-    <Flex w="full" align="stretch">
-      <Box
-        display={{ base: "none", md: "block" }}
-        w={MARKETING_GUTTER_WIDTH}
-        flexShrink={0}
-      />
-      <Box flex="1" minW={0} px={marketingContentPaddingX}>
-        <Flex
-          justify="space-between"
-          align="flex-start"
-          w="full"
-          flexWrap="wrap"
-          gapX={16}
-          gapY={12}
-        >
-          <Box flexShrink={0}>
-            <Logo color="indigo.900" homeLink />
-          </Box>
+    <MarketingPageWidth>
+      <Flex w="full" align="stretch">
+        <Box
+          display={{ base: "none", md: "block" }}
+          w={MARKETING_GUTTER_WIDTH}
+          flexShrink={0}
+        />
+        <Box flex="1" minW={0} px={marketingContentPaddingX}>
+          <Flex
+            justify="space-between"
+            align="flex-start"
+            w="full"
+            flexWrap="wrap"
+            gapX={16}
+            gapY={12}
+          >
+            <Box flexShrink={0}>
+              <Logo color="indigo.900" homeLink />
+            </Box>
+
+            <Flex
+              flex="1"
+              justify={{ base: "flex-start", lg: "flex-end" }}
+              align="flex-start"
+              flexWrap="wrap"
+              gapX={{ base: 14, md: 24 }}
+              gapY={10}
+              minW={{ base: "min(100%, 280px)", lg: 0 }}
+            >
+              <FooterCol title="Solutions">
+                {SOLUTION_CAPABILITIES.map((c) => (
+                  <FooterLink key={c.slug} to={`${SOLUTIONS_PATH}/${c.slug}`}>
+                    {c.title}
+                  </FooterLink>
+                ))}
+              </FooterCol>
+
+              <FooterCol title="Resources">
+                <FooterLink to={rootRoute({}).careers({}).$}>
+                  Careers
+                </FooterLink>
+              </FooterCol>
+
+              <FooterCol title="Legal">
+                <FooterLink to={rootRoute({}).legal({}).privacyPolicy({}).$}>
+                  Privacy Policy
+                </FooterLink>
+                <FooterLink to={rootRoute({}).legal({}).termsOfService({}).$}>
+                  Terms of Service
+                </FooterLink>
+              </FooterCol>
+
+              <FooterCol title="Contact">
+                <FooterLink href="https://www.linkedin.com/company/106703002">
+                  LinkedIn
+                </FooterLink>
+              </FooterCol>
+            </Flex>
+          </Flex>
 
           <Flex
-            flex="1"
-            justify={{ base: "flex-start", lg: "flex-end" }}
-            align="flex-start"
+            mt={24}
+            align={{ base: "flex-start", sm: "center" }}
+            justify="flex-end"
             flexWrap="wrap"
-            gapX={{ base: 14, md: 24 }}
-            gapY={10}
-            minW={{ base: "min(100%, 280px)", lg: 0 }}
+            gapY={4}
           >
-            <FooterCol title="Solutions">
-              {SOLUTION_CAPABILITIES.map((c) => (
-                <FooterLink key={c.slug} to={`${SOLUTIONS_PATH}/${c.slug}`}>
-                  {c.title}
-                </FooterLink>
-              ))}
-            </FooterCol>
-
-            <FooterCol title="Resources">
-              <FooterLink to={rootRoute({}).careers({}).$}>Careers</FooterLink>
-            </FooterCol>
-
-            <FooterCol title="Legal">
-              <FooterLink to={rootRoute({}).legal({}).privacyPolicy({}).$}>
-                Privacy Policy
-              </FooterLink>
-              <FooterLink to={rootRoute({}).legal({}).termsOfService({}).$}>
-                Terms of Service
-              </FooterLink>
-            </FooterCol>
-
-            <FooterCol title="Contact">
-              <FooterLink href="https://www.linkedin.com/company/106703002">
-                LinkedIn
-              </FooterLink>
-            </FooterCol>
+            <Text
+              fontSize="xs"
+              color="slate.50"
+              lineHeight="short"
+              m={0}
+              textAlign="right"
+            >
+              © 2026 Rengo AI, Inc. All rights reserved.
+            </Text>
           </Flex>
-        </Flex>
-
-        <Flex
-          mt={24}
-          align={{ base: "flex-start", sm: "center" }}
-          justify="flex-end"
-          flexWrap="wrap"
-          gapY={4}
-        >
-          <Text
-            fontSize="xs"
-            color="slate.50"
-            lineHeight="short"
-            m={0}
-            textAlign="right"
-          >
-            © 2026 Rengo AI, Inc. All rights reserved.
-          </Text>
-        </Flex>
-      </Box>
-      <Box
-        display={{ base: "none", md: "block" }}
-        w={MARKETING_GUTTER_WIDTH}
-        flexShrink={0}
-      />
-    </Flex>
+        </Box>
+        <Box
+          display={{ base: "none", md: "block" }}
+          w={MARKETING_GUTTER_WIDTH}
+          flexShrink={0}
+        />
+      </Flex>
+    </MarketingPageWidth>
   </Box>
 );

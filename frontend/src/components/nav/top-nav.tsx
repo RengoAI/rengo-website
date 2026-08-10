@@ -4,7 +4,9 @@ import { MobileNavDrawer } from "@/components/nav/mobile-nav-drawer";
 import {
   MARKETING_GUTTER_WIDTH,
   marketingContentPaddingX,
+  marketingLayoutBorderColor,
 } from "@/components/layout/marketing-frame";
+import { MarketingPageWidth } from "@/components/layout/marketing-page-width";
 import {
   TOP_NAV_HEIGHT,
   topNavCtaStyles,
@@ -66,94 +68,96 @@ export const AppTopNav: React.FC = () => {
         right={0}
         zIndex={100}
         borderBottom="1px solid"
-        borderColor="slate.30"
+        borderColor={marketingLayoutBorderColor}
         bg="slate.10"
         style={{ transition: "background 200ms ease, border-color 200ms ease" }}
       >
-        <Flex w="full" align="stretch" {...topNavRowProps}>
-          <Box
-            display={{ base: "none", md: "block" }}
-            w={MARKETING_GUTTER_WIDTH}
-            flexShrink={0}
-          />
-          <Flex
-            flex="1"
-            minW={0}
-            px={marketingContentPaddingX}
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            <Logo color="indigo.900" homeLink />
-
-            {/* Desktop nav */}
+        <MarketingPageWidth>
+          <Flex w="full" align="stretch" {...topNavRowProps}>
+            <Box
+              display={{ base: "none", md: "block" }}
+              w={MARKETING_GUTTER_WIDTH}
+              flexShrink={0}
+            />
             <Flex
-              as="nav"
-              gap="6px"
-              display={{ base: "none", md: "flex" }}
-              align="center"
-            >
-              <SolutionsNavMenu
-                navColor={navColor}
-                navHoverColor={navHoverColor}
-              />
-              <ResourcesNavMenu
-                navColor={navColor}
-                navHoverColor={navHoverColor}
-              />
-            </Flex>
-
-            {/* Desktop CTAs */}
-            <Flex
-              gap="6px"
+              flex="1"
+              minW={0}
+              px={marketingContentPaddingX}
               alignItems="center"
-              display={{ base: "none", md: "flex" }}
+              justifyContent="space-between"
             >
-              <Button
-                variant="ghost"
-                color={navColor}
-                _hover={{ bg: "transparent", color: navHoverColor }}
-                onClick={() =>
-                  window.open("https://app.rengoai.com/", "_blank")
-                }
-                {...topNavCtaStyles}
-                h="34px"
-                minH="34px"
-              >
-                Log in
-              </Button>
-              <Button
-                bg="indigo.900"
-                color="slate.10"
-                onClick={() =>
-                  window.open("mailto:sales@rengoai.com", "_blank")
-                }
-                {...topNavCtaStyles}
-                borderRadius={0}
-                {...ctaButtonHoverProps}
-              >
-                Get Started
-              </Button>
-            </Flex>
+              <Logo color="indigo.900" homeLink />
 
-            {/* Mobile hamburger */}
-            <IconButton
-              display={{ base: "flex", md: "none" }}
-              aria-label="Open menu"
-              variant="ghost"
-              size="sm"
-              color="indigo.900"
-              _hover={{ bg: "transparent" }}
-              onClick={() => setDrawerOpen(true)}
-            >
-              <Menu size={22} />
-            </IconButton>
+              {/* Desktop nav */}
+              <Flex
+                as="nav"
+                gap="6px"
+                display={{ base: "none", md: "flex" }}
+                align="center"
+              >
+                <SolutionsNavMenu
+                  navColor={navColor}
+                  navHoverColor={navHoverColor}
+                />
+                <ResourcesNavMenu
+                  navColor={navColor}
+                  navHoverColor={navHoverColor}
+                />
+              </Flex>
+
+              {/* Desktop CTAs */}
+              <Flex
+                gap="6px"
+                alignItems="center"
+                display={{ base: "none", md: "flex" }}
+              >
+                <Button
+                  variant="ghost"
+                  color={navColor}
+                  _hover={{ bg: "transparent", color: navHoverColor }}
+                  onClick={() =>
+                    window.open("https://app.rengoai.com/", "_blank")
+                  }
+                  {...topNavCtaStyles}
+                  h="34px"
+                  minH="34px"
+                >
+                  Log in
+                </Button>
+                <Button
+                  bg="indigo.900"
+                  color="slate.10"
+                  onClick={() =>
+                    window.open("mailto:sales@rengoai.com", "_blank")
+                  }
+                  {...topNavCtaStyles}
+                  borderRadius={0}
+                  {...ctaButtonHoverProps}
+                >
+                  Get Started
+                </Button>
+              </Flex>
+
+              {/* Mobile hamburger */}
+              <IconButton
+                display={{ base: "flex", md: "none" }}
+                aria-label="Open menu"
+                variant="ghost"
+                size="sm"
+                color="indigo.900"
+                _hover={{ bg: "transparent" }}
+                onClick={() => setDrawerOpen(true)}
+              >
+                <Menu size={22} />
+              </IconButton>
+            </Flex>
+            <Box
+              display={{ base: "none", md: "block" }}
+              w={MARKETING_GUTTER_WIDTH}
+              flexShrink={0}
+            />
           </Flex>
-          <Box
-            display={{ base: "none", md: "block" }}
-            w={MARKETING_GUTTER_WIDTH}
-            flexShrink={0}
-          />
-        </Flex>
+        </MarketingPageWidth>
       </Box>
 
       <MobileNavDrawer
