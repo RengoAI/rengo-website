@@ -9,7 +9,7 @@ import { AccessRolesArt } from "@/features/landing/sections/access-roles-art";
 import { AgentsActArt } from "@/features/landing/sections/agents-act-art";
 import { ManageAgentsArt } from "@/features/landing/sections/manage-agents-art";
 import { BentoIsoImage } from "@/features/landing/sections/bento-iso-image";
-import { CollectiveStackArt } from "@/features/landing/sections/collective-stack-art";
+import { CollectiveSearchArt } from "@/features/landing/sections/collective-search-art";
 import { DeploymentDiagram } from "@/features/landing/sections/deployment-diagram";
 import { ExistingToolsArt } from "@/features/landing/sections/existing-tools-art";
 import { DeploymentCards } from "@/features/landing/sections/deployment-cards";
@@ -20,7 +20,7 @@ import React from "react";
 type TileArt =
   | { kind: "image"; src: string }
   | { kind: "roles" }
-  | { kind: "collectiveStack" }
+  | { kind: "collectiveSearch" }
   | { kind: "existingTools" }
   | { kind: "deployment" }
   | { kind: "agentsAct" }
@@ -58,7 +58,7 @@ const TILES: {
   },
   {
     label: "Unlock collective intelligence",
-    art: { kind: "collectiveStack" },
+    art: { kind: "collectiveSearch" },
     col: "9 / span 4",
     row: "2",
   },
@@ -133,13 +133,22 @@ export const AgentsBentoSection: React.FC = () => (
                   p={7}
                   display="flex"
                   flexDirection="column"
-                  justifyContent="space-between"
-                  gap={6}
+                  /* `mt-auto` on the label pins it to the bottom for the search
+                     tile, so its art keeps its natural height instead of being
+                     stretched by space-between. */
+                  justifyContent={
+                    tile.art.kind === "collectiveSearch"
+                      ? "flex-start"
+                      : "space-between"
+                  }
+                  gap={tile.art.kind === "collectiveSearch" ? 0 : 6}
                   minH={{ base: "240px", md: "auto" }}
                   overflow="hidden"
                 >
                   <Box
-                    flex="1"
+                    flex={
+                      tile.art.kind === "collectiveSearch" ? "0 0 auto" : "1"
+                    }
                     display="flex"
                     alignItems="center"
                     justifyContent={
@@ -150,8 +159,8 @@ export const AgentsBentoSection: React.FC = () => (
                   >
                     {tile.art.kind === "roles" ? (
                       <AccessRolesArt />
-                    ) : tile.art.kind === "collectiveStack" ? (
-                      <CollectiveStackArt />
+                    ) : tile.art.kind === "collectiveSearch" ? (
+                      <CollectiveSearchArt />
                     ) : tile.art.kind === "existingTools" ? (
                       <ExistingToolsArt />
                     ) : tile.art.kind === "deployment" ? (
@@ -171,6 +180,10 @@ export const AgentsBentoSection: React.FC = () => (
                     letterSpacing="-0.4px"
                     color="indigo.700"
                     m={0}
+                    /* Pinned to the bottom with its own top spacing, per the
+                       reference card pattern. */
+                    mt={tile.art.kind === "collectiveSearch" ? "auto" : 0}
+                    pt={tile.art.kind === "collectiveSearch" ? 8 : 0}
                   >
                     {tile.label}
                   </Text>
