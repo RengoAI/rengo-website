@@ -6,43 +6,18 @@ import path from "path";
 import { defineConfig } from "vite";
 
 import dns from "dns";
-import { VitePWA, VitePWAOptions } from "vite-plugin-pwa";
 import vitePluginSvgr from "vite-plugin-svgr";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 
 // https://vite.dev/config/server-options
 dns.setDefaultResultOrder("verbatim");
 
-// https://github.com/vite-pwa/vite-plugin-pwa/blob/main/examples/react-router/vite.config.ts
-const vitePwaPlugin = (mode: VitePWAOptions["mode"]) =>
-  VitePWA({
-    mode: mode,
-    base: "/",
-    includeAssets: ["logo.svg"],
-    manifest: {
-      name: "Rengo AI",
-      short_name: "Rengo AI",
-      theme_color: "#ffffff",
-      icons: [
-        {
-          src: "logo.svg",
-          sizes: "192x192",
-          type: "image/svg+xml",
-        },
-      ],
-    },
-    devOptions: {
-      enabled: mode === "development",
-    },
-  });
-
 // https://vite.dev/config/
-export default defineConfig(({ mode }) => ({
+export default defineConfig(() => ({
   plugins: [
     react(),
     viteTsconfigPaths(),
     vitePluginSvgr(),
-    vitePwaPlugin(mode as never),
     {
       name: "html-inject-nonce-into-script-tag",
       enforce: "post",
