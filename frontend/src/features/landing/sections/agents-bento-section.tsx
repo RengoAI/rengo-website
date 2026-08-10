@@ -9,7 +9,7 @@ import { AccessRolesArt } from "@/features/landing/sections/access-roles-art";
 import { AgentsActArt } from "@/features/landing/sections/agents-act-art";
 import { ManageAgentsArt } from "@/features/landing/sections/manage-agents-art";
 import { BentoIsoImage } from "@/features/landing/sections/bento-iso-image";
-import { ConnectSystemsArt } from "@/features/landing/sections/connect-systems-art";
+import { CollectiveStackArt } from "@/features/landing/sections/collective-stack-art";
 import { DeploymentDiagram } from "@/features/landing/sections/deployment-diagram";
 import { ExistingToolsArt } from "@/features/landing/sections/existing-tools-art";
 import { DeploymentCards } from "@/features/landing/sections/deployment-cards";
@@ -20,7 +20,7 @@ import React from "react";
 type TileArt =
   | { kind: "image"; src: string }
   | { kind: "roles" }
-  | { kind: "systems" }
+  | { kind: "collectiveStack" }
   | { kind: "existingTools" }
   | { kind: "deployment" }
   | { kind: "agentsAct" }
@@ -58,7 +58,7 @@ const TILES: {
   },
   {
     label: "Unlock collective intelligence",
-    art: { kind: "systems" },
+    art: { kind: "collectiveStack" },
     col: "9 / span 4",
     row: "2",
   },
@@ -150,8 +150,8 @@ export const AgentsBentoSection: React.FC = () => (
                   >
                     {tile.art.kind === "roles" ? (
                       <AccessRolesArt />
-                    ) : tile.art.kind === "systems" ? (
-                      <ConnectSystemsArt />
+                    ) : tile.art.kind === "collectiveStack" ? (
+                      <CollectiveStackArt />
                     ) : tile.art.kind === "existingTools" ? (
                       <ExistingToolsArt />
                     ) : tile.art.kind === "deployment" ? (
