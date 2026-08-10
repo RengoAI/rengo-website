@@ -19,5 +19,24 @@ export const MARKETING_MAX_FRAME_WIDTH = "1248px";
  */
 export const marketingPageMarginX = { base: 4, lg: 8 } as const;
 
-/** Padding inside the center column (between ruled gutters on md+). */
-export const marketingContentPaddingX = { base: 4, md: 5 } as const;
+/**
+ * Mintlify `px-7` (28px) — horizontal inset for section body content from the
+ * content column rim (between ruled gutters).
+ */
+export const marketingContentPaddingX = { base: 7, md: 7 } as const;
+
+/**
+ * Section headings: pull the title block to the content rim so the accent
+ * stays flush with the left border (independent of title text inset below).
+ */
+export const sectionHeadingMarginLeft = {
+  /** Mobile shell has `border-left`; sit accent on that line. */
+  base: "calc(-1 * var(--chakra-spacing-7) - 1px)",
+  md: -marketingContentPaddingX.md,
+} as const;
+
+/**
+ * Title text inset after the rim accent — larger than body padding so headings
+ * breathe more while the accent remains on the column border.
+ */
+export const sectionHeadingTextPl = { base: 9, md: 9 } as const;

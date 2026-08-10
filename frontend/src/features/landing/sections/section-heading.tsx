@@ -1,4 +1,7 @@
-import { marketingContentPaddingX } from "@/components/layout/marketing-frame";
+import {
+  sectionHeadingMarginLeft,
+  sectionHeadingTextPl,
+} from "@/components/layout/marketing-frame";
 import { Box } from "@chakra-ui/react";
 import React from "react";
 
@@ -6,35 +9,32 @@ type SectionHeadingProps = {
   children: React.ReactNode;
   maxW?: string | number;
   /**
-   * When the parent SectionShell uses default content padding, the accent
-   * sits on the left border rim. Pass false if the shell already has px={false}
-   * and the heading is padded itself.
+   * When false, the section shell has no horizontal padding — still apply
+   * Mintlify `px-7` on the title text only.
    */
   flushToRim?: boolean;
 };
 
 /**
- * Marketing section title with a Mintlify-style accent tick on the left
- * border rim, for dual-tone (dark + muted) headlines.
+ * Section title: accent flush to the content column’s left border; title text
+ * uses {@link sectionHeadingTextPl} (wider than body padding).
  */
 export const SectionHeading: React.FC<SectionHeadingProps> = ({
   children,
-  maxW = "648px",
+  maxW = "664px",
   flushToRim = true,
 }) => (
-  <Box position="relative" maxW={maxW}>
+  <Box
+    position="relative"
+    maxW={maxW}
+    ml={flushToRim ? sectionHeadingMarginLeft : 0}
+    pl={sectionHeadingTextPl}
+  >
     <Box
       aria-hidden
       position="absolute"
-      left={
-        flushToRim
-          ? {
-              base: -marketingContentPaddingX.base,
-              md: -marketingContentPaddingX.md,
-            }
-          : 0
-      }
-      top="0.45em"
+      left={0}
+      top={{ base: "0.55em", md: "0.5em" }}
       w="2px"
       h="24px"
       bg="indigo.900"
@@ -44,9 +44,9 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
       as="h2"
       fontFamily="heading"
       fontWeight={350}
-      fontSize={{ base: "26px", md: "32px" }}
-      lineHeight={1.2}
-      letterSpacing="-2px"
+      fontSize={{ base: "28px", md: "36px" }}
+      lineHeight={{ base: "32px", md: "40px" }}
+      letterSpacing="-0.72px"
       color="indigo.900"
       m={0}
     >
