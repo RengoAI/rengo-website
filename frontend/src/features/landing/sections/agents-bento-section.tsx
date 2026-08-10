@@ -133,22 +133,13 @@ export const AgentsBentoSection: React.FC = () => (
                   p={7}
                   display="flex"
                   flexDirection="column"
-                  /* `mt-auto` on the label pins it to the bottom for the search
-                     tile, so its art keeps its natural height instead of being
-                     stretched by space-between. */
-                  justifyContent={
-                    tile.art.kind === "collectiveSearch"
-                      ? "flex-start"
-                      : "space-between"
-                  }
-                  gap={tile.art.kind === "collectiveSearch" ? 0 : 6}
+                  justifyContent="space-between"
+                  gap={6}
                   minH={{ base: "240px", md: "auto" }}
                   overflow="hidden"
                 >
                   <Box
-                    flex={
-                      tile.art.kind === "collectiveSearch" ? "0 0 auto" : "1"
-                    }
+                    flex="1"
                     display="flex"
                     alignItems="center"
                     justifyContent={
@@ -180,10 +171,6 @@ export const AgentsBentoSection: React.FC = () => (
                     letterSpacing="-0.4px"
                     color="indigo.700"
                     m={0}
-                    /* Pinned to the bottom with its own top spacing, per the
-                       reference card pattern. */
-                    mt={tile.art.kind === "collectiveSearch" ? "auto" : 0}
-                    pt={tile.art.kind === "collectiveSearch" ? 8 : 0}
                   >
                     {tile.label}
                   </Text>
@@ -196,7 +183,7 @@ export const AgentsBentoSection: React.FC = () => (
                 Our engineering principles
                 <br />
                 <Box as="span" color="slate.50" fontWeight={300}>
-                  We build AI systems for production, bringing world-class
+                  We build AI systems for production, bringing elite
                   engineering to your business
                 </Box>
               </SectionHeading>

@@ -1,5 +1,5 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
-import { CornerDownLeft, Search } from "lucide-react";
+import { Box, Flex, Image, Text } from "@chakra-ui/react";
+import { ArrowRight, Sparkle } from "lucide-react";
 import React from "react";
 
 /**
@@ -16,21 +16,21 @@ import React from "react";
  * interactive to a screen reader, so the whole figure is aria-hidden instead.
  */
 
-const ACCENT = "#0071e3";
+const QUERY = "Our perspective on…";
+const GLYPH_STROKE = "#768ca6"; // slate.50 — sparkle
+const ARROW_STROKE = "#425366"; // slate.100
+const INK = "#124476"; // indigo.700
 
-/** Matches the sibling tiles' card surfaces. */
-const SLATE_30 = "#d3dde1";
-
-const QUERY = "Which portfolio companies flagged supply-chain risk?";
-
-/**
- * Results are cited, since a source-backed answer is the claim — an answer with
- * no provenance is what a general chatbot already gives you.
- */
-const RESULTS = [
-  { id: "r1", source: "Q3 board deck", detail: "Apex Logistics" },
-  { id: "r2", source: "Earnings call", detail: "Northwind Mfg." },
-  { id: "r3", source: "Diligence memo", detail: "Cardinal Foods" },
+/** Same vendor chips as connect-systems-art — search spans model providers. */
+const PROVIDER_TILES = [
+  { id: "claude", label: "Claude", src: "/logos/claude.png", maxH: "16px" },
+  {
+    id: "copilot",
+    label: "Copilot",
+    src: "/logos/copilot.png",
+    maxH: "16px",
+  },
+  { id: "openai", label: "OpenAI", src: "/logos/open-ai.png", maxH: "18px" },
 ] as const;
 
 type CollectiveSearchArtProps = {
@@ -41,92 +41,88 @@ export const CollectiveSearchArt: React.FC<CollectiveSearchArtProps> = ({
   variant = "tile",
 }) => {
   const isCompact = variant === "compact";
-  const results = isCompact ? RESULTS.slice(0, 2) : RESULTS;
+  const tileSize = isCompact ? "32px" : "40px";
+  const vendorGap = isCompact ? 1.5 : 2;
 
   return (
-    <Box w="full" maxW={isCompact ? "240px" : "300px"} mx="auto" aria-hidden>
-      {/* The field. */}
+    <Box w="full" maxW="100%" mx="auto" aria-hidden>
       <Flex
         align="center"
-        gap={2.5}
+        gap={2}
         bg="white"
         border="1px solid"
-        borderColor={ACCENT}
+        borderColor="slate.30"
         borderRadius="8px"
-        px={3}
+        pl={isCompact ? 2.5 : 3}
+        pr={isCompact ? 3 : 4}
         py={isCompact ? 2 : 2.5}
-        boxShadow="0 8px 24px rgba(33, 48, 68, 0.1)"
+        minH={isCompact ? "36px" : "44px"}
+        minW={0}
+        boxShadow="0 8px 24px rgba(33, 48, 68, 0.08)"
+        w="full"
       >
-        <Box color={ACCENT} display="flex" flexShrink={0}>
-          <Search size={13} strokeWidth={2.25} />
-        </Box>
-        <Text
-          fontFamily="body"
-          fontSize={isCompact ? "9px" : "10px"}
-          lineHeight="12px"
-          letterSpacing="-0.2px"
-          color="indigo.700"
-          flex="1"
-          minW={0}
-          whiteSpace="nowrap"
-          overflow="hidden"
-          textOverflow="ellipsis"
-          m={0}
+        <Flex align="center" gap={isCompact ? 2.5 : 3} flex="1" minW={0}>
+          <Box color={GLYPH_STROKE} display="flex" flexShrink={0}>
+            <Sparkle size={13} strokeWidth={2.25} />
+          </Box>
+          <Text
+            fontFamily="body"
+            fontSize={isCompact ? "9px" : "10px"}
+            lineHeight="12px"
+            letterSpacing="-0.2px"
+            color={INK}
+            flex="1"
+            minW={0}
+            whiteSpace="nowrap"
+            overflow="hidden"
+            textOverflow="ellipsis"
+            m={0}
+          >
+            {QUERY}
+          </Text>
+        </Flex>
+        <Flex
+          w={isCompact ? "12px" : "16px"}
+          h={isCompact ? "12px" : "16px"}
+          align="center"
+          justify="center"
+          flexShrink={0}
         >
-          {QUERY}
-        </Text>
-        {/* Caret, so the field reads as mid-question rather than as a label. */}
-        <Box w="1px" h="11px" bg={ACCENT} flexShrink={0} />
-        <Box color="slate.50" display="flex" flexShrink={0}>
-          <CornerDownLeft size={11} strokeWidth={2} />
-        </Box>
+          <ArrowRight
+            size={isCompact ? 12 : 13}
+            strokeWidth={1.75}
+            color={ARROW_STROKE}
+            aria-hidden
+          />
+        </Flex>
       </Flex>
 
-      {/* Cited results beneath it. */}
-      <Flex direction="column" gap={0} mt={2.5}>
-        {results.map((r, i) => (
-          <Flex
-            key={r.id}
-            align="center"
-            gap={2}
-            px={3}
-            py={isCompact ? 1.5 : 2}
-            borderTop={i === 0 ? undefined : "1px solid"}
-            borderColor="slate.20"
+      <Flex align="center" justify="center" gap={vendorGap} mt={2.5}>
+        {PROVIDER_TILES.map((vendor) => (
+          <Box
+            key={vendor.id}
+            w={tileSize}
+            h={tileSize}
+            flexShrink={0}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            bg="slate.10"
+            border="1px solid"
+            borderColor="slate.30"
+            borderRadius="6px"
+            boxShadow="0 6px 18px rgba(33, 48, 68, 0.08)"
           >
-            <Box
-              w="4px"
-              h="4px"
-              borderRadius="full"
-              bg={SLATE_30}
-              flexShrink={0}
+            <Image
+              src={vendor.src}
+              alt=""
+              maxH={vendor.maxH}
+              maxW="28px"
+              w="auto"
+              h="auto"
+              objectFit="contain"
             />
-            <Text
-              fontFamily="body"
-              fontSize={isCompact ? "9px" : "10px"}
-              lineHeight="12px"
-              letterSpacing="-0.2px"
-              color="indigo.700"
-              flexShrink={0}
-              m={0}
-            >
-              {r.detail}
-            </Text>
-            <Text
-              fontFamily="mono"
-              fontSize={isCompact ? "8px" : "9px"}
-              lineHeight="12px"
-              color="slate.50"
-              ml="auto"
-              flexShrink={0}
-              whiteSpace="nowrap"
-              overflow="hidden"
-              textOverflow="ellipsis"
-              m={0}
-            >
-              {r.source}
-            </Text>
-          </Flex>
+          </Box>
         ))}
       </Flex>
     </Box>
