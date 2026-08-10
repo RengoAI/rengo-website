@@ -3,6 +3,7 @@ import { PageContainer } from "@/components/layout/page-container";
 import { marketingLayoutBorderColor } from "@/components/layout/marketing-frame";
 import { TOP_NAV_HEIGHT } from "@/components/nav/nav-styles";
 import { OPEN_ROLES } from "@/features/careers/open-roles";
+import { SectionHeading } from "@/features/landing/sections/section-heading";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -20,19 +21,10 @@ export const OpenRolesSection: React.FC = () => (
     scrollMarginTop={`${TOP_NAV_HEIGHT}px`}
   >
     <PageContainer>
-      <Box maxW="720px" mb={12}>
-        <Box
-          as="h2"
-          fontFamily="heading"
-          fontSize={{ base: "34px", md: "48px" }}
-          fontWeight={350}
-          lineHeight={1.06}
-          letterSpacing="-0.03em"
-          color="indigo.900"
-          m={0}
-        >
+      <Box mb={12}>
+        <SectionHeading maxW="720px" flushToRim={false} showAccent={false}>
           Open roles
-        </Box>
+        </SectionHeading>
       </Box>
 
       <Flex direction="column" gap={3} w="full" alignItems="stretch">

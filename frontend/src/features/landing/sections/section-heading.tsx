@@ -13,6 +13,8 @@ type SectionHeadingProps = {
    * pull to the content column rim).
    */
   flushToRim?: boolean;
+  /** Rim accent bar to the left of the title. */
+  showAccent?: boolean;
 };
 
 /**
@@ -23,23 +25,26 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
   children,
   maxW = "664px",
   flushToRim = true,
+  showAccent = true,
 }) => (
   <Box
     position="relative"
     maxW={maxW}
     ml={flushToRim ? sectionHeadingMarginLeft : 0}
-    pl={flushToRim ? sectionHeadingTextPl : 0}
+    pl={flushToRim && showAccent ? sectionHeadingTextPl : 0}
   >
-    <Box
-      aria-hidden
-      position="absolute"
-      left={0}
-      top={{ base: "0.55em", md: "0.5em" }}
-      w="2px"
-      h="24px"
-      bg="indigo.900"
-      borderRadius="1px"
-    />
+    {showAccent ? (
+      <Box
+        aria-hidden
+        position="absolute"
+        left={0}
+        top={{ base: "0.55em", md: "0.5em" }}
+        w="2px"
+        h="24px"
+        bg="indigo.900"
+        borderRadius="1px"
+      />
+    ) : null}
     <Box
       as="h2"
       fontFamily="heading"
@@ -49,7 +54,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
       letterSpacing="-0.72px"
       color="indigo.900"
       m={0}
-      pl={flushToRim ? 0 : sectionHeadingTextPl}
+      pl={flushToRim || !showAccent ? 0 : sectionHeadingTextPl}
     >
       {children}
     </Box>
