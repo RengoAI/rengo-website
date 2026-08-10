@@ -108,8 +108,14 @@ export const AgentsBentoSection: React.FC = () => (
             </SectionHeading>
 
             <Grid
-              templateColumns={{ base: "1fr", md: "repeat(12, minmax(0, 1fr))" }}
-              templateRows={{ base: "auto", md: "repeat(2, minmax(280px, 1fr))" }}
+              templateColumns={{
+                base: "1fr",
+                md: "repeat(12, minmax(0, 1fr))",
+              }}
+              templateRows={{
+                base: "auto",
+                md: "repeat(2, minmax(280px, 1fr))",
+              }}
               gap={2}
               w="full"
             >
@@ -195,10 +201,7 @@ export const AgentsBentoSection: React.FC = () => (
 
     <Box w="full" borderTop="1px solid" borderColor="slate.30" />
 
-    <MarketingPageWidth
-      variant="content"
-      py={{ base: 10, md: 12 }}
-    >
+    <MarketingPageWidth variant="content" py={{ base: 10, md: 12 }}>
       <DeploymentCards />
     </MarketingPageWidth>
   </Box>
