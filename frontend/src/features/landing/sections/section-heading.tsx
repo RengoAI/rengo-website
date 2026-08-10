@@ -9,15 +9,15 @@ type SectionHeadingProps = {
   children: React.ReactNode;
   maxW?: string | number;
   /**
-   * When false, the section shell has no horizontal padding — still apply
-   * Mintlify `px-7` on the title text only.
+   * When false, keep the heading inside section padding (accent + title do not
+   * pull to the content column rim).
    */
   flushToRim?: boolean;
 };
 
 /**
- * Section title: accent flush to the content column’s left border; title text
- * uses {@link sectionHeadingTextPl} (wider than body padding).
+ * Section title with optional rim-flush accent; inset title text via
+ * {@link sectionHeadingTextPl}.
  */
 export const SectionHeading: React.FC<SectionHeadingProps> = ({
   children,
@@ -28,7 +28,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
     position="relative"
     maxW={maxW}
     ml={flushToRim ? sectionHeadingMarginLeft : 0}
-    pl={sectionHeadingTextPl}
+    pl={flushToRim ? sectionHeadingTextPl : 0}
   >
     <Box
       aria-hidden
@@ -49,6 +49,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
       letterSpacing="-0.72px"
       color="indigo.900"
       m={0}
+      pl={flushToRim ? 0 : sectionHeadingTextPl}
     >
       {children}
     </Box>
