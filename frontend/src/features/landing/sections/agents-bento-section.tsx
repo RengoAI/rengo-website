@@ -183,8 +183,8 @@ export const AgentsBentoSection: React.FC = () => (
                 Our engineering principles
                 <br />
                 <Box as="span" color="slate.50" fontWeight={300}>
-                  We build AI systems for production, bringing elite
-                  engineering to your business
+                  We build AI systems for production, bringing elite engineering
+                  to your business
                 </Box>
               </SectionHeading>
             </Box>

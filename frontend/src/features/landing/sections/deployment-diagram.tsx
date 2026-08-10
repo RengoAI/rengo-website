@@ -110,13 +110,7 @@ const Cube: React.FC<{
   r: number;
   tone: Tone;
   outerSide?: "left" | "right";
-}> = ({
-  cx,
-  cy,
-  r,
-  tone,
-  outerSide,
-}) => {
+}> = ({ cx, cy, r, tone, outerSide }) => {
   const ry = r * TOP_RATIO;
   const body = r * BODY_RATIO;
   const { top, left, right, edge } = TONES[tone];
