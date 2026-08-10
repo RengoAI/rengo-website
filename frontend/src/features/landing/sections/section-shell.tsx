@@ -21,6 +21,8 @@ interface SectionShellProps extends React.PropsWithChildren {
     | string;
   bg?: string;
   py?: Record<string, number | string> | number | string;
+  id?: string;
+  scrollMarginTop?: string | number;
 }
 
 /**
@@ -35,9 +37,13 @@ export const SectionShell: React.FC<SectionShellProps> = ({
   px = marketingContentPaddingX,
   bg,
   py = { base: 16, md: 24 },
+  id,
+  scrollMarginTop,
 }) => (
   <Box
     as="section"
+    id={id}
+    scrollMarginTop={scrollMarginTop}
     w="full"
     bg={bg}
     borderTop={borderTop || borderY ? "1px solid" : undefined}

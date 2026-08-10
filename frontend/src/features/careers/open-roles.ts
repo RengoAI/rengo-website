@@ -22,7 +22,7 @@ export const OPEN_ROLES: readonly OpenRole[] = [
     id: "software-engineer",
     title: "Software Engineer",
     location: "New York",
-    department: "Deployment",
+    department: "Engineering",
     employmentType: "Full time",
     summary:
       "Sit with investment firms, turn ambiguous AI goals into production systems, and own the path from first conversation to live deployment.",
