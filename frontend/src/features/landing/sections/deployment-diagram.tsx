@@ -25,8 +25,8 @@ const SLATE_10 = "#f5f5f6";
 const SLATE_30 = "#d3dde1";
 const SLATE_40 = "#a9b7c6";
 
-/** Hub faces — same light / mid / dark rhythm as satellites, with a blue tint. */
-const HUB_TOP = "#f4f7fb"; // blue.50
+/** Hub faces — light top (Admin-chip white) with blue-tinted sides. */
+const HUB_TOP = "#ffffff";
 const HUB_LEFT = "#e6eef7"; // blue.100
 const HUB_RIGHT = "#adc6e3"; // blue.300
 const HUB_EDGE = "#cdddf0"; // blue.200
