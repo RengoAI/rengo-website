@@ -132,7 +132,7 @@ export const ManageAgentsArt: React.FC<ManageAgentsArtProps> = ({
               align="center"
               gap={2}
               minH={isCompact ? "32px" : "38px"}
-              bg="slate.10"
+              bg={s.state === "running" ? "white" : "slate.10"}
               border="1px solid"
               borderColor="slate.30"
               borderRadius="8px"

@@ -3,6 +3,7 @@ import { defineRecipe } from "@chakra-ui/react";
 export const buttonRecipe = defineRecipe({
   className: "rengo-btn",
   base: {
+    borderRadius: "3px",
     margin: "4px 0 4px 0",
     minWidth: "min-content",
     transitionProperty: "common",
@@ -54,13 +55,13 @@ export const buttonRecipe = defineRecipe({
       },
       solid: {
         borderWidth: "1px",
-        borderRadius: "6px",
+        borderRadius: "3px",
       },
       subtle: {
         p: "2px",
         height: "unset",
         minHeight: "unset",
-        borderRadius: "4px",
+        borderRadius: "3px",
       },
       text: {
         textDecoration: "underline",
@@ -76,7 +77,7 @@ export const buttonRecipe = defineRecipe({
         overflow: "hidden",
       },
       ghost: {
-        borderRadius: "6px",
+        borderRadius: "3px",
         bg: "transparent",
         fontWeight: "normal",
         cursor: "pointer",
@@ -88,7 +89,7 @@ export const buttonRecipe = defineRecipe({
         },
       },
       transparent: {
-        borderRadius: "6px",
+        borderRadius: "3px",
         bg: "transparent",
         cursor: "pointer",
         _hover: {
@@ -99,7 +100,7 @@ export const buttonRecipe = defineRecipe({
         },
       },
       outline: {
-        borderRadius: "6px",
+        borderRadius: "3px",
         bg: "transparent",
         borderWidth: "1px",
         borderColor: "gray.200",
@@ -148,7 +149,7 @@ export const buttonRecipe = defineRecipe({
         },
       },
       destructive: {
-        borderRadius: "6px",
+        borderRadius: "3px",
         bg: "transparent",
         borderWidth: "1px",
         borderColor: "red.600",
@@ -181,7 +182,7 @@ export const buttonRecipe = defineRecipe({
         },
       },
       select: {
-        borderRadius: "4px",
+        borderRadius: "3px",
         borderWidth: "1px",
         backgroundColor: "white",
         borderColor: "gray.300",
@@ -259,7 +260,7 @@ export const buttonRecipe = defineRecipe({
       },
       xxsIcon: {
         p: "0",
-        borderRadius: "2px",
+        borderRadius: "3px",
         width: "16px",
         height: "16px",
         "& svg": {

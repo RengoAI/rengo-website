@@ -20,16 +20,22 @@ import React from "react";
 
 const ACCENT = "#0071e3"; // accent.link
 const RULE = "#d3dde1"; // slate.30
-const SLATE_20 = "#eaedee";
-const SLATE_10 = "#f5f5f6";
-const SLATE_30 = "#d3dde1";
 const SLATE_40 = "#a9b7c6";
 
-/** Hub faces — same light / mid / dark rhythm as satellites, with a blue tint. */
-const HUB_TOP = "#f4f7fb"; // blue.50
-const HUB_LEFT = "#e6eef7"; // blue.100
-const HUB_RIGHT = "#adc6e3"; // blue.300
-const HUB_EDGE = "#cdddf0"; // blue.200
+/** Satellite cubes — AgentsActArt ScatterBlock fills; ribs drawn crisp outside shadow. */
+const SAT_TOP = "#ffffff";
+const SAT_LEFT = "rgba(118,140,166,0.12)";
+const SAT_RIGHT = "rgba(118,140,166,0.24)";
+const SAT_EDGE = SLATE_40;
+const SAT_INNER_EDGE_OPACITY = 0.58;
+const SAT_RIB_OPACITY = 0.94;
+const SAT_RIB_WIDTH = 1.2;
+
+/** Hub faces — white top, slightly richer blue sides. */
+const HUB_TOP = "#ffffff";
+const HUB_LEFT = "#dce8f5";
+const HUB_RIGHT = "#9bb5d4";
+const HUB_EDGE = SLATE_40;
 
 const VB_W = 760;
 const VB_H = 360;
@@ -75,16 +81,16 @@ const TONES: Record<
   { top: string; left: string; right: string; edge: string }
 > = {
   in: {
-    top: SLATE_10,
-    left: SLATE_20,
-    right: SLATE_40,
-    edge: SLATE_30,
+    top: SAT_TOP,
+    left: SAT_LEFT,
+    right: SAT_RIGHT,
+    edge: SAT_EDGE,
   },
   out: {
-    top: SLATE_10,
-    left: SLATE_20,
-    right: SLATE_40,
-    edge: SLATE_30,
+    top: SAT_TOP,
+    left: SAT_LEFT,
+    right: SAT_RIGHT,
+    edge: SAT_EDGE,
   },
   hub: {
     top: HUB_TOP,
@@ -98,35 +104,87 @@ const TONES: Record<
  * A single isometric cube — top rhombus plus two body faces — drawn from its
  * centre using the source's face ratios.
  */
-const Cube: React.FC<{ cx: number; cy: number; r: number; tone: Tone }> = ({
-  cx,
-  cy,
-  r,
-  tone,
-}) => {
+const Cube: React.FC<{
+  cx: number;
+  cy: number;
+  r: number;
+  tone: Tone;
+  outerSide?: "left" | "right";
+}> = ({ cx, cy, r, tone, outerSide }) => {
   const ry = r * TOP_RATIO;
   const body = r * BODY_RATIO;
   const { top, left, right, edge } = TONES[tone];
+  const isHub = tone === "hub";
+
+  if (isHub) {
+    return (
+      <g
+        filter="url(#rengo-hub-cube)"
+        strokeLinejoin="miter"
+        strokeMiterlimit={2}
+        strokeLinecap="butt"
+        strokeWidth={1.35}
+        stroke={edge}
+      >
+        <polygon
+          points={`${cx - r},${cy} ${cx},${cy + ry} ${cx},${cy + ry + body} ${cx - r},${cy + body}`}
+          fill={left}
+        />
+        <polygon
+          points={`${cx + r},${cy} ${cx},${cy + ry} ${cx},${cy + ry + body} ${cx + r},${cy + body}`}
+          fill={right}
+        />
+        <polygon
+          points={`${cx},${cy - ry} ${cx + r},${cy} ${cx},${cy + ry} ${cx - r},${cy}`}
+          fill={top}
+        />
+      </g>
+    );
+  }
+
+  const innerStroke = Math.max(0.75, r * 0.028);
+  const ribPath =
+    outerSide === "left"
+      ? `M ${cx} ${cy - ry} L ${cx - r} ${cy} L ${cx - r} ${cy + body} L ${cx} ${cy + ry + body}`
+      : outerSide === "right"
+        ? `M ${cx} ${cy - ry} L ${cx + r} ${cy} L ${cx + r} ${cy + body} L ${cx} ${cy + ry + body}`
+        : null;
+
   return (
-    <g
-      filter="url(#rengo-cube-card)"
-      strokeLinejoin="round"
-      strokeLinecap="round"
-      strokeWidth={1}
-      stroke={edge}
-    >
-      <polygon
-        points={`${cx - r},${cy} ${cx},${cy + ry} ${cx},${cy + ry + body} ${cx - r},${cy + body}`}
-        fill={left}
-      />
-      <polygon
-        points={`${cx + r},${cy} ${cx},${cy + ry} ${cx},${cy + ry + body} ${cx + r},${cy + body}`}
-        fill={right}
-      />
-      <polygon
-        points={`${cx},${cy - ry} ${cx + r},${cy} ${cx},${cy + ry} ${cx - r},${cy}`}
-        fill={top}
-      />
+    <g>
+      <g
+        filter="url(#rengo-cube-card)"
+        stroke={SAT_EDGE}
+        strokeOpacity={SAT_INNER_EDGE_OPACITY}
+        strokeWidth={innerStroke}
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      >
+        <polygon
+          points={`${cx - r},${cy} ${cx},${cy + ry} ${cx},${cy + ry + body} ${cx - r},${cy + body}`}
+          fill={left}
+        />
+        <polygon
+          points={`${cx + r},${cy} ${cx},${cy + ry} ${cx},${cy + ry + body} ${cx + r},${cy + body}`}
+          fill={right}
+        />
+        <polygon
+          points={`${cx},${cy - ry} ${cx + r},${cy} ${cx},${cy + ry} ${cx - r},${cy}`}
+          fill={top}
+        />
+      </g>
+      {ribPath ? (
+        <path
+          d={ribPath}
+          fill="none"
+          stroke={SAT_EDGE}
+          strokeOpacity={SAT_RIB_OPACITY}
+          strokeWidth={SAT_RIB_WIDTH}
+          strokeLinejoin="miter"
+          strokeMiterlimit={2}
+          strokeLinecap="butt"
+        />
+      ) : null}
     </g>
   );
 };
@@ -214,10 +272,25 @@ export const DeploymentDiagram: React.FC<DeploymentDiagramProps> = ({
         >
           <feDropShadow
             dx="0"
-            dy="8"
-            stdDeviation="12"
+            dy="6"
+            stdDeviation="8"
             floodColor="#213044"
             floodOpacity="0.08"
+          />
+        </filter>
+        <filter
+          id="rengo-hub-cube"
+          x="-55%"
+          y="-55%"
+          width="210%"
+          height="210%"
+        >
+          <feDropShadow
+            dx="0"
+            dy="8"
+            stdDeviation="10"
+            floodColor="#213044"
+            floodOpacity="0.1"
           />
         </filter>
       </defs>
@@ -285,6 +358,7 @@ export const DeploymentDiagram: React.FC<DeploymentDiagramProps> = ({
             cy={sat.y}
             r={SAT_R}
             tone={sat.tone as Tone}
+            outerSide={sat.x < HUB.x ? "left" : "right"}
           />
         ))}
       </g>

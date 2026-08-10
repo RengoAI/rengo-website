@@ -80,7 +80,6 @@ const ApplyButton: React.FC<{ role: OpenRole; w?: string }> = ({ role, w }) => (
     w={w}
     bg="indigo.900"
     color="slate.10"
-    borderRadius={0}
     px={8}
     py={3.5}
     h="auto"
@@ -131,7 +130,6 @@ export const JobListingPage: React.FC = () => {
             fontFamily="body"
             fontSize="14px"
             fontWeight="normal"
-            borderRadius={0}
             bg="transparent"
             _hover={{ bg: "transparent", color: "indigo.900" }}
           >

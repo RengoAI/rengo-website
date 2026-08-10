@@ -9,7 +9,7 @@ import { AccessRolesArt } from "@/features/landing/sections/access-roles-art";
 import { AgentsActArt } from "@/features/landing/sections/agents-act-art";
 import { ManageAgentsArt } from "@/features/landing/sections/manage-agents-art";
 import { BentoIsoImage } from "@/features/landing/sections/bento-iso-image";
-import { ConnectSystemsArt } from "@/features/landing/sections/connect-systems-art";
+import { CollectiveSearchArt } from "@/features/landing/sections/collective-search-art";
 import { DeploymentDiagram } from "@/features/landing/sections/deployment-diagram";
 import { ExistingToolsArt } from "@/features/landing/sections/existing-tools-art";
 import { DeploymentCards } from "@/features/landing/sections/deployment-cards";
@@ -20,7 +20,7 @@ import React from "react";
 type TileArt =
   | { kind: "image"; src: string }
   | { kind: "roles" }
-  | { kind: "systems" }
+  | { kind: "collectiveSearch" }
   | { kind: "existingTools" }
   | { kind: "deployment" }
   | { kind: "agentsAct" }
@@ -58,7 +58,7 @@ const TILES: {
   },
   {
     label: "Unlock collective intelligence",
-    art: { kind: "systems" },
+    art: { kind: "collectiveSearch" },
     col: "9 / span 4",
     row: "2",
   },
@@ -150,8 +150,8 @@ export const AgentsBentoSection: React.FC = () => (
                   >
                     {tile.art.kind === "roles" ? (
                       <AccessRolesArt />
-                    ) : tile.art.kind === "systems" ? (
-                      <ConnectSystemsArt />
+                    ) : tile.art.kind === "collectiveSearch" ? (
+                      <CollectiveSearchArt />
                     ) : tile.art.kind === "existingTools" ? (
                       <ExistingToolsArt />
                     ) : tile.art.kind === "deployment" ? (
@@ -183,8 +183,8 @@ export const AgentsBentoSection: React.FC = () => (
                 Our engineering principles
                 <br />
                 <Box as="span" color="slate.50" fontWeight={300}>
-                  We build AI systems for production, bringing world-class
-                  engineering to your business
+                  We build AI systems for production, bringing elite engineering
+                  to your business
                 </Box>
               </SectionHeading>
             </Box>

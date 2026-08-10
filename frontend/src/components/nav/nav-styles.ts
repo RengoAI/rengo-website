@@ -1,4 +1,6 @@
 /** Fixed header height (64px row + 1px border). */
+import { marketingControlBorderRadius } from "@/components/layout/marketing-frame";
+
 export const TOP_NAV_HEIGHT = 65;
 
 export const topNavRowProps = {
@@ -32,5 +34,5 @@ export const topNavCtaStyles = {
   px: "14px",
   py: "8px",
   m: 0,
-  borderRadius: "4px",
+  borderRadius: marketingControlBorderRadius,
 } as const;
