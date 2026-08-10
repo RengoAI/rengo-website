@@ -1,5 +1,6 @@
 import { rootRoute } from "@/app/app-routes";
 import { PageContainer } from "@/components/layout/page-container";
+import { marketingLayoutBorderColor } from "@/components/layout/marketing-frame";
 import { TOP_NAV_HEIGHT } from "@/components/nav/nav-styles";
 import { OPEN_ROLES } from "@/features/careers/open-roles";
 import { Box, Flex, Text } from "@chakra-ui/react";
@@ -15,7 +16,7 @@ export const OpenRolesSection: React.FC = () => (
     bg="slate.10"
     py={24}
     borderTop="1px solid"
-    borderColor="slate.30"
+    borderColor={marketingLayoutBorderColor}
     scrollMarginTop={`${TOP_NAV_HEIGHT}px`}
   >
     <PageContainer>

@@ -243,6 +243,7 @@ export const colors = defineTokens.colors({
   slate: {
     10: { value: "#f5f5f6" },
     20: { value: "#eaedee" },
+    25: { value: "#dee5e7" },
     30: { value: "#d3dde1" },
     40: { value: "#a9b7c6" },
     50: { value: "#768ca6" },

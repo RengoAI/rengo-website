@@ -2,6 +2,8 @@ import { MarketingPageWidth } from "@/components/layout/marketing-page-width";
 import {
   MARKETING_GUTTER_WIDTH,
   marketingContentPaddingX,
+  marketingLayoutBorderColor,
+  marketingCardBorderColor,
 } from "@/components/layout/marketing-frame";
 import { AccessRolesArt } from "@/features/landing/sections/access-roles-art";
 import { AgentsActArt } from "@/features/landing/sections/agents-act-art";
@@ -68,7 +70,7 @@ export const AgentsBentoSection: React.FC = () => (
     w="full"
     bg="slate.10"
     borderTop="1px solid"
-    borderColor="slate.30"
+    borderColor={marketingLayoutBorderColor}
   >
     {/* Ruled frame: bento + principles title (inside section padding). */}
     <MarketingPageWidth>
@@ -79,7 +81,7 @@ export const AgentsBentoSection: React.FC = () => (
           flexShrink={0}
           borderRightWidth="1px"
           borderRightStyle="solid"
-          borderRightColor="slate.30"
+          borderRightColor={marketingLayoutBorderColor}
         />
         <Box
           flex="1"
@@ -91,8 +93,8 @@ export const AgentsBentoSection: React.FC = () => (
           borderRightWidth={{ base: "1px", md: 0 }}
           borderLeftStyle="solid"
           borderRightStyle="solid"
-          borderLeftColor="slate.30"
-          borderRightColor="slate.30"
+          borderLeftColor={marketingLayoutBorderColor}
+          borderRightColor={marketingLayoutBorderColor}
         >
           <Box
             display="flex"
@@ -126,7 +128,7 @@ export const AgentsBentoSection: React.FC = () => (
                   gridRow={{ base: "auto", md: tile.row }}
                   bg="slate.20"
                   border="1px solid"
-                  borderColor="slate.30"
+                  borderColor={marketingCardBorderColor}
                   borderRadius="3px"
                   p={7}
                   display="flex"
@@ -194,12 +196,12 @@ export const AgentsBentoSection: React.FC = () => (
           flexShrink={0}
           borderLeftWidth="1px"
           borderLeftStyle="solid"
-          borderLeftColor="slate.30"
+          borderLeftColor={marketingLayoutBorderColor}
         />
       </Flex>
     </MarketingPageWidth>
 
-    <Box w="full" borderTop="1px solid" borderColor="slate.30" />
+    <Box w="full" borderTop="1px solid" borderColor={marketingLayoutBorderColor} />
 
     <MarketingPageWidth variant="content" py={{ base: 10, md: 12 }}>
       <DeploymentCards />

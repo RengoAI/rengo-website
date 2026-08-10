@@ -1,3 +1,4 @@
+import { marketingLayoutBorderColor } from "@/components/layout/marketing-frame";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { ChevronDown } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
@@ -127,7 +128,7 @@ export const MarketingNavMenu: React.FC<MarketingNavMenuProps> = ({
           maxW="calc(100vw - 48px)"
           bg="white"
           border="1px solid"
-          borderColor="slate.30"
+          borderColor={marketingLayoutBorderColor}
           borderRadius={0}
           zIndex={110}
           boxShadow="0 12px 40px rgba(17, 24, 39, 0.12)"
@@ -141,7 +142,7 @@ export const MarketingNavMenu: React.FC<MarketingNavMenuProps> = ({
             py={3}
             bg="slate.10"
             borderBottom="1px solid"
-            borderColor="slate.30"
+            borderColor={marketingLayoutBorderColor}
           >
             <Text
               fontFamily="body"

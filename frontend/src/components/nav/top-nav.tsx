@@ -4,6 +4,7 @@ import { MobileNavDrawer } from "@/components/nav/mobile-nav-drawer";
 import {
   MARKETING_GUTTER_WIDTH,
   marketingContentPaddingX,
+  marketingLayoutBorderColor,
 } from "@/components/layout/marketing-frame";
 import { MarketingPageWidth } from "@/components/layout/marketing-page-width";
 import {
@@ -67,7 +68,7 @@ export const AppTopNav: React.FC = () => {
         right={0}
         zIndex={100}
         borderBottom="1px solid"
-        borderColor="slate.30"
+        borderColor={marketingLayoutBorderColor}
         bg="slate.10"
         style={{ transition: "background 200ms ease, border-color 200ms ease" }}
       >

@@ -1,5 +1,5 @@
 import { Logo } from "@/components/logo/logo";
-import { marketingPageMarginX } from "@/components/layout/marketing-frame";
+import { marketingPageMarginX, marketingLayoutBorderColor } from "@/components/layout/marketing-frame";
 import { topNavCtaStyles } from "@/components/nav/nav-styles";
 import {
   ButtonArrowLabel,
@@ -70,7 +70,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
         color="indigo.900"
         overflow="hidden"
         borderBottom="1px solid"
-        borderColor="slate.30"
+        borderColor={marketingLayoutBorderColor}
         boxShadow={NAV_PANEL_SHADOW}
       >
         <Box
@@ -82,7 +82,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
           justifyContent="space-between"
           bg="slate.10"
           borderBottom="1px solid"
-          borderColor="slate.30"
+          borderColor={marketingLayoutBorderColor}
         >
           <Logo color="indigo.900" homeLink />
           <IconButton
@@ -108,14 +108,14 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
               <Box
                 key={item.label}
                 borderBottom="1px solid"
-                borderColor="slate.30"
+                borderColor={marketingLayoutBorderColor}
               >
                 <Box
                   px={7}
                   py={3}
                   bg="slate.10"
                   borderBottom="1px solid"
-                  borderColor="slate.30"
+                  borderColor={marketingLayoutBorderColor}
                 >
                   <Text
                     fontFamily="body"
@@ -159,7 +159,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
               <Box
                 key={item.path}
                 borderBottom="1px solid"
-                borderColor="slate.30"
+                borderColor={marketingLayoutBorderColor}
               >
                 <Button
                   variant="ghost"

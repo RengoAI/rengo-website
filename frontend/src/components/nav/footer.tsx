@@ -1,6 +1,7 @@
 import {
   MARKETING_GUTTER_WIDTH,
   marketingContentPaddingX,
+  marketingLayoutBorderColor,
 } from "@/components/layout/marketing-frame";
 import { MarketingPageWidth } from "@/components/layout/marketing-page-width";
 import { rootRoute } from "@/app/app-routes";
@@ -56,7 +57,7 @@ export const AppFooter: React.FC = () => (
     bg="slate.10"
     color="indigo.900"
     borderTop="1px solid"
-    borderColor="slate.30"
+    borderColor={marketingLayoutBorderColor}
     pt={16}
     pb={10}
   >

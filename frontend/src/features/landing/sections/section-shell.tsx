@@ -1,6 +1,7 @@
 import {
   MARKETING_GUTTER_WIDTH,
   marketingContentPaddingX,
+  marketingLayoutBorderColor,
 } from "@/components/layout/marketing-frame";
 import { MarketingPageWidth } from "@/components/layout/marketing-page-width";
 import { Box, Flex } from "@chakra-ui/react";
@@ -41,7 +42,7 @@ export const SectionShell: React.FC<SectionShellProps> = ({
     bg={bg}
     borderTop={borderTop || borderY ? "1px solid" : undefined}
     borderBottom={borderY ? "1px solid" : undefined}
-    borderColor={borderTop || borderY ? "slate.30" : undefined}
+    borderColor={borderTop || borderY ? marketingLayoutBorderColor : undefined}
   >
     <MarketingPageWidth>
       <Flex w="full" align="stretch">
@@ -51,7 +52,7 @@ export const SectionShell: React.FC<SectionShellProps> = ({
           flexShrink={0}
           borderRightWidth="1px"
           borderRightStyle="solid"
-          borderRightColor="slate.30"
+          borderRightColor={marketingLayoutBorderColor}
         />
         <Box
           flex="1"
@@ -62,8 +63,8 @@ export const SectionShell: React.FC<SectionShellProps> = ({
           borderRightWidth={{ base: "1px", md: 0 }}
           borderLeftStyle="solid"
           borderRightStyle="solid"
-          borderLeftColor="slate.30"
-          borderRightColor="slate.30"
+          borderLeftColor={marketingLayoutBorderColor}
+          borderRightColor={marketingLayoutBorderColor}
         >
           {children}
         </Box>
@@ -73,7 +74,7 @@ export const SectionShell: React.FC<SectionShellProps> = ({
           flexShrink={0}
           borderLeftWidth="1px"
           borderLeftStyle="solid"
-          borderLeftColor="slate.30"
+          borderLeftColor={marketingLayoutBorderColor}
         />
       </Flex>
     </MarketingPageWidth>

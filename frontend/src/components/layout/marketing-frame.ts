@@ -26,6 +26,15 @@ export const marketingPageMarginX = { base: 4, lg: 8 } as const;
 export const marketingContentPaddingX = { base: 7, md: 7 } as const;
 
 /**
+ * Hairlines for nav, ruled frame gutters, and section dividers — between
+ * `slate.20` and {@link marketingCardBorderColor} on `slate.10` surfaces.
+ */
+export const marketingLayoutBorderColor = "slate.25";
+
+/** Bento tiles, cards, and other boxed content on marketing pages. */
+export const marketingCardBorderColor = "slate.30";
+
+/**
  * Section headings: pull the title block to the content rim so the accent
  * stays flush with the left border (independent of title text inset below).
  */
