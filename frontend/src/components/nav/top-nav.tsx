@@ -5,6 +5,7 @@ import {
   MARKETING_GUTTER_WIDTH,
   marketingContentPaddingX,
 } from "@/components/layout/marketing-frame";
+import { MarketingPageWidth } from "@/components/layout/marketing-page-width";
 import {
   TOP_NAV_HEIGHT,
   topNavCtaStyles,
@@ -70,19 +71,20 @@ export const AppTopNav: React.FC = () => {
         bg="slate.10"
         style={{ transition: "background 200ms ease, border-color 200ms ease" }}
       >
-        <Flex w="full" align="stretch" {...topNavRowProps}>
-          <Box
-            display={{ base: "none", md: "block" }}
-            w={MARKETING_GUTTER_WIDTH}
-            flexShrink={0}
-          />
-          <Flex
-            flex="1"
-            minW={0}
-            px={marketingContentPaddingX}
-            alignItems="center"
-            justifyContent="space-between"
-          >
+        <MarketingPageWidth>
+          <Flex w="full" align="stretch" {...topNavRowProps}>
+            <Box
+              display={{ base: "none", md: "block" }}
+              w={MARKETING_GUTTER_WIDTH}
+              flexShrink={0}
+            />
+            <Flex
+              flex="1"
+              minW={0}
+              px={marketingContentPaddingX}
+              alignItems="center"
+              justifyContent="space-between"
+            >
             <Logo color="indigo.900" homeLink />
 
             {/* Desktop nav */}
@@ -154,6 +156,7 @@ export const AppTopNav: React.FC = () => {
             flexShrink={0}
           />
         </Flex>
+        </MarketingPageWidth>
       </Box>
 
       <MobileNavDrawer

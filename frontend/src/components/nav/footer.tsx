@@ -2,6 +2,7 @@ import {
   MARKETING_GUTTER_WIDTH,
   marketingContentPaddingX,
 } from "@/components/layout/marketing-frame";
+import { MarketingPageWidth } from "@/components/layout/marketing-page-width";
 import { rootRoute } from "@/app/app-routes";
 import { Logo } from "@/components/logo/logo";
 import {
@@ -59,7 +60,8 @@ export const AppFooter: React.FC = () => (
     pt={16}
     pb={10}
   >
-    <Flex w="full" align="stretch">
+    <MarketingPageWidth>
+      <Flex w="full" align="stretch">
       <Box
         display={{ base: "none", md: "block" }}
         w={MARKETING_GUTTER_WIDTH}
@@ -139,6 +141,7 @@ export const AppFooter: React.FC = () => (
         w={MARKETING_GUTTER_WIDTH}
         flexShrink={0}
       />
-    </Flex>
+      </Flex>
+    </MarketingPageWidth>
   </Box>
 );

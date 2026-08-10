@@ -2,6 +2,7 @@ import {
   ctaButtonHoverWithArrowProps,
   ButtonArrowLabel,
 } from "@/components/ui/button-arrow-label";
+import { MarketingPageWidth } from "@/components/layout/marketing-page-width";
 import {
   MARKETING_GUTTER_WIDTH,
   marketingContentPaddingX,
@@ -29,7 +30,11 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
   >
     <HeroGridCanvas />
 
-    <Box display="flex" w="full" flex="1" alignItems="stretch">
+    <MarketingPageWidth
+      flex="1"
+      display="flex"
+      innerProps={{ display: "flex", flex: "1", alignItems: "stretch" }}
+    >
       <Box
         display={{ base: "none", md: "block" }}
         w={MARKETING_GUTTER_WIDTH}
@@ -121,6 +126,6 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
         w={MARKETING_GUTTER_WIDTH}
         flexShrink={0}
       />
-    </Box>
+    </MarketingPageWidth>
   </Box>
 );

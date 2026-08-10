@@ -2,6 +2,7 @@ import {
   ctaButtonHoverWithArrowProps,
   ButtonArrowLabel,
 } from "@/components/ui/button-arrow-label";
+import { MarketingPageWidth } from "@/components/layout/marketing-page-width";
 import {
   MARKETING_GUTTER_WIDTH,
   marketingContentPaddingX,
@@ -62,9 +63,11 @@ export const PageHero: React.FC<PageHeroProps> = ({
       </Box>
     )}
 
-    {/* Full-width marketing frame (gutters + padding) matches the nav and
-        section shells so hero copy stays on the same left rim as the logo. */}
-    <Flex w="full" flex="1" align="stretch">
+    <MarketingPageWidth
+      flex="1"
+      display="flex"
+      innerProps={{ display: "flex", flex: "1", alignItems: "stretch" }}
+    >
       <Box
         display={{ base: "none", md: "block" }}
         w={MARKETING_GUTTER_WIDTH}
@@ -165,6 +168,6 @@ export const PageHero: React.FC<PageHeroProps> = ({
         w={MARKETING_GUTTER_WIDTH}
         flexShrink={0}
       />
-    </Flex>
+    </MarketingPageWidth>
   </Box>
 );

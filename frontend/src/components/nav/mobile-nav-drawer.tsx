@@ -1,5 +1,5 @@
 import { Logo } from "@/components/logo/logo";
-import { marketingContentPaddingX } from "@/components/layout/marketing-frame";
+import { marketingPageMarginX } from "@/components/layout/marketing-frame";
 import { topNavCtaStyles } from "@/components/nav/nav-styles";
 import {
   ButtonArrowLabel,
@@ -74,7 +74,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
         boxShadow={NAV_PANEL_SHADOW}
       >
         <Box
-          px={marketingContentPaddingX}
+          px={marketingPageMarginX}
           minH="64px"
           h="64px"
           display="flex"

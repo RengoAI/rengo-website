@@ -2,6 +2,7 @@ import {
   MARKETING_GUTTER_WIDTH,
   marketingContentPaddingX,
 } from "@/components/layout/marketing-frame";
+import { MarketingPageWidth } from "@/components/layout/marketing-page-width";
 import { Box, Flex } from "@chakra-ui/react";
 import React from "react";
 
@@ -24,6 +25,7 @@ interface SectionShellProps extends React.PropsWithChildren {
 /**
  * The repeating page frame from the marketing design: an 80px ruled gutter on
  * each side with the content column between them. Gutters collapse on mobile.
+ * The shell sits inside {@link MarketingPageWidth} (1088px cap + page margin).
  */
 export const SectionShell: React.FC<SectionShellProps> = ({
   children,
@@ -31,46 +33,49 @@ export const SectionShell: React.FC<SectionShellProps> = ({
   borderY = false,
   px = marketingContentPaddingX,
   bg,
-  py = { base: 16, md: 20 },
+  py = { base: 16, md: 24 },
 }) => (
-  <Flex
+  <Box
     as="section"
     w="full"
     bg={bg}
-    align="stretch"
     borderTop={borderTop || borderY ? "1px solid" : undefined}
     borderBottom={borderY ? "1px solid" : undefined}
     borderColor={borderTop || borderY ? "slate.30" : undefined}
   >
-    <Box
-      display={{ base: "none", md: "block" }}
-      w={MARKETING_GUTTER_WIDTH}
-      flexShrink={0}
-      borderRightWidth="1px"
-      borderRightStyle="solid"
-      borderRightColor="slate.30"
-    />
-    <Box
-      flex="1"
-      minW={0}
-      px={px === false ? 0 : px}
-      py={py}
-      borderLeftWidth={{ base: "1px", md: 0 }}
-      borderRightWidth={{ base: "1px", md: 0 }}
-      borderLeftStyle="solid"
-      borderRightStyle="solid"
-      borderLeftColor="slate.30"
-      borderRightColor="slate.30"
-    >
-      {children}
-    </Box>
-    <Box
-      display={{ base: "none", md: "block" }}
-      w={MARKETING_GUTTER_WIDTH}
-      flexShrink={0}
-      borderLeftWidth="1px"
-      borderLeftStyle="solid"
-      borderLeftColor="slate.30"
-    />
-  </Flex>
+    <MarketingPageWidth>
+      <Flex w="full" align="stretch">
+        <Box
+          display={{ base: "none", md: "block" }}
+          w={MARKETING_GUTTER_WIDTH}
+          flexShrink={0}
+          borderRightWidth="1px"
+          borderRightStyle="solid"
+          borderRightColor="slate.30"
+        />
+        <Box
+          flex="1"
+          minW={0}
+          px={px === false ? 0 : px}
+          py={py}
+          borderLeftWidth={{ base: "1px", md: 0 }}
+          borderRightWidth={{ base: "1px", md: 0 }}
+          borderLeftStyle="solid"
+          borderRightStyle="solid"
+          borderLeftColor="slate.30"
+          borderRightColor="slate.30"
+        >
+          {children}
+        </Box>
+        <Box
+          display={{ base: "none", md: "block" }}
+          w={MARKETING_GUTTER_WIDTH}
+          flexShrink={0}
+          borderLeftWidth="1px"
+          borderLeftStyle="solid"
+          borderLeftColor="slate.30"
+        />
+      </Flex>
+    </MarketingPageWidth>
+  </Box>
 );
