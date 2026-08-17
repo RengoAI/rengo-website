@@ -23,6 +23,12 @@ const config = defineConfig({
       // Match the marketing canvas so the scrollbar gutter isn't pure white
       bg: "slate.10",
     },
+    // Ensure all semantic heading elements use the heading font token directly.
+    // This acts as a safety net independent of Chakra style prop resolution,
+    // which only runs after React mounts.
+    "h1, h2, h3, h4, h5, h6": {
+      fontFamily: "var(--rengo-fonts-heading)",
+    },
     body: {
       WebkitFontSmoothing: "auto",
     } as any,

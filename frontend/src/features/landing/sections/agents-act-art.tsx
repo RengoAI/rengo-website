@@ -120,7 +120,7 @@ const ModalityPill: React.FC<{
         >
           <span
             style={{
-              fontFamily: "var(--chakra-fonts-body, system-ui, sans-serif)",
+              fontFamily: "var(--rengo-fonts-body, system-ui, sans-serif)",
               fontSize: `${PILL_FONT_SIZE}px`,
               fontWeight: 500,
               lineHeight: "1",
