@@ -18,8 +18,8 @@ const CELL_MAX_SCALE = 0.30;
 const NOISE_SPACE = 0.38;
 const NOISE_TIME = 0.30;
 
-// Very low contrast — the grid reads as ambient texture, not UI chrome.
-const GRID_LINE = "rgba(169, 183, 198, 0.13)";
+// Visible but light — blue-grey that reads clearly without competing with copy.
+const GRID_LINE = "rgba(169, 183, 198, 0.55)";
 /** RGB of the soft blue gradient fill on the hovered diamond. */
 const HOVER_RGB = "108, 149, 203";
 
