@@ -6,7 +6,7 @@ export const textRecipe = defineRecipe({
     variant: {
       h1: {
         fontFamily: "heading",
-        fontSize: "2.75rem",
+        fontSize: "3rem",
         fontWeight: "light",
         letterSpacing: "-0.05em",
         lineHeight: "3.25rem",

@@ -2,7 +2,7 @@ import { Box } from "@chakra-ui/react";
 import React, { useEffect, useRef } from "react";
 
 /** Diamond edge length in px. The field repeats every 2× this. */
-const TILE = 48;
+const TILE = 74;
 const PERIOD = TILE * 2;
 const ANGLE = Math.PI / 6;
 const COS = Math.cos(ANGLE);
@@ -27,13 +27,23 @@ const ANIM_IN_MS = 280;
 /** ms for the fade-out when the pointer leaves. */
 const ANIM_OUT_MS = 180;
 /** Number of previously visited cells whose labels appear in the trail. */
-const TRAIL_LENGTH = 5;
+const TRAIL_LENGTH = 8;
 /** Perlin spatial and temporal frequencies. */
 const NOISE_SPACE = 0.38;
 const NOISE_TIME = 0.30;
 
+// ── Cell color animation (Perlin noise: background grey → light blue-grey) ───
+/** Spatial frequency of the color noise field. */
+const COLOR_NOISE_SPACE = 0.09;
+/** Temporal frequency — keep very low for a slow, dreamy drift. */
+const COLOR_NOISE_TIME  = 0.06;
+/** Low end of the color ramp — exactly matches slate.10 bg (#f5f5f6). */
+const CLOW  = { r: 255, g: 255, b: 255 } as const;
+/** High end of the color ramp — very subtle cool blue-grey. */
+const CHIGH = { r: 232, g: 237, b: 245 } as const;
+
 // Visible but light — blue-grey that reads clearly without competing with copy.
-const GRID_LINE = "rgba(169, 183, 198, 0.55)";
+const GRID_LINE = "rgba(169, 183, 198, 0.85)";
 /** RGB of the soft blue gradient fill on the hovered diamond. */
 const HOVER_RGB = "108, 149, 203";
 
@@ -166,19 +176,22 @@ const smoothstep = (t: number) => {
 
 // ── Component ────────────────────────────────────────────────────────────────
 export const HeroGridCanvas: React.FC = () => {
+  const colorRef = useRef<HTMLCanvasElement>(null);
   const gridRef  = useRef<HTMLCanvasElement>(null);
   const hoverRef = useRef<HTMLCanvasElement>(null);
   const hostRef  = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const colorCanvas = colorRef.current;
     const gridCanvas  = gridRef.current;
     const hoverCanvas = hoverRef.current;
     const host        = hostRef.current;
-    if (!gridCanvas || !hoverCanvas || !host) return;
+    if (!colorCanvas || !gridCanvas || !hoverCanvas || !host) return;
 
+    const cCtx = colorCanvas.getContext("2d");
     const gCtx = gridCanvas.getContext("2d");
     const hCtx = hoverCanvas.getContext("2d");
-    if (!gCtx || !hCtx) return;
+    if (!cCtx || !gCtx || !hCtx) return;
 
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
@@ -189,8 +202,9 @@ export const HeroGridCanvas: React.FC = () => {
     let elapsed = 0;   // accumulated time (seconds)
     let pointer: { x: number; y: number } | null = null;
     let visible = true;
-    let frame   = 0;
-    let lastTime = performance.now();
+    let frame         = 0;
+    let lastTime      = performance.now();
+    let lastColorTime = 0;
 
     // Hover animation state ──────────────────────────────────────────────────
     /** Cell whose animation we are currently driving (persists during exit). */
@@ -208,13 +222,55 @@ export const HeroGridCanvas: React.FC = () => {
     /** Shared 0→1 opacity multiplier for the entire trail. */
     let trailAlpha = 0;
 
+    // ── Color layer (Perlin cell fills, sits below grid lines) ─────────────
+    /**
+     * Fills every visible diamond with a color sampled from the 2-D+time Perlin
+     * noise field, mapped from CLOW (the page bg grey) to CHIGH (light blue-grey).
+     * Runs at ~20 fps — the animation is slow enough that higher rates are wasted.
+     */
+    const drawColors = (t: number) => {
+      if (!width || !height) return;
+      cCtx.clearRect(0, 0, width, height);
+      const ox   = offset % PERIOD;
+      // Span wide enough to cover the full canvas in isometric coordinates.
+      const span = Math.ceil(
+        Math.max(width / (TILE * COS), height / (TILE * SIN)) / 2,
+      ) + 3;
+      for (let gx = -span; gx <= span; gx++) {
+        for (let gy = -span; gy <= span; gy++) {
+          const [cx, cy] = cellCenter(width, height, gx, gy, ox);
+          // Coarse cull — skip cells whose centres are well off-screen.
+          if (
+            cx < -TILE * 2 || cx > width  + TILE * 2 ||
+            cy < -TILE * 2 || cy > height + TILE * 2
+          ) continue;
+          // Perlin value in [0, 1]
+          const n = (noise2(
+            gx * COLOR_NOISE_SPACE + t * COLOR_NOISE_TIME,
+            gy * COLOR_NOISE_SPACE - t * COLOR_NOISE_TIME * 0.2,
+          ) + 1) / 2;
+          const r = Math.round(CLOW.r + n * (CHIGH.r - CLOW.r));
+          const g = Math.round(CLOW.g + n * (CHIGH.g - CLOW.g));
+          const b = Math.round(CLOW.b + n * (CHIGH.b - CLOW.b));
+          const corners = diamond(cx, cy, 1.0);
+          cCtx.beginPath();
+          cCtx.moveTo(corners[0][0], corners[0][1]);
+          for (let i = 1; i < corners.length; i++) cCtx.lineTo(corners[i][0], corners[i][1]);
+          cCtx.closePath();
+          cCtx.fillStyle = `rgb(${r},${g},${b})`;
+          cCtx.fill();
+        }
+      }
+    };
+
     // ── Grid layer ──────────────────────────────────────────────────────────
     const drawGrid = () => {
       if (!width || !height) return;
       gCtx.clearRect(0, 0, width, height);
       gCtx.strokeStyle = GRID_LINE;
-      gCtx.lineWidth   = 1;
-      gCtx.setLineDash([1, 1]);
+      gCtx.lineWidth   = 1.5;
+      gCtx.lineCap     = "round";
+      gCtx.setLineDash([0, 4]);
 
       const shift = offset % PERIOD;
       const span  = Math.ceil(Math.max(width, height) / (TILE * SIN)) + 2;
@@ -250,61 +306,66 @@ export const HeroGridCanvas: React.FC = () => {
      */
     const drawHover = (t: number, prog: number) => {
       hCtx.clearRect(0, 0, width, height);
-      if (prog <= 0.001 || !animCell) return;
 
-      const { gx: hgx, gy: hgy } = animCell;
+      const hasHover = prog > 0.001 && animCell != null;
+      const hasTrail = trailAlpha > 0.002 && trail.length > 0;
+      if (!hasHover && !hasTrail) return;
+
       const ox = offset % PERIOD;
-      const R  = Math.ceil(HOVER_RADIUS) + 1;
 
       hCtx.save();
       hCtx.setLineDash([]);
 
-      // ── Pass 1: surrounding cells shrink ──────────────────────────────────
-      for (let dgx = -R; dgx <= R; dgx++) {
-        for (let dgy = -R; dgy <= R; dgy++) {
-          if (dgx === 0 && dgy === 0) continue;
-          const dist = Math.sqrt(dgx * dgx + dgy * dgy);
-          if (dist > HOVER_RADIUS) continue;
+      // ── Pass 1: surrounding cells shrink (only while actively hovering) ───
+      if (hasHover) {
+        const { gx: hgx, gy: hgy } = animCell!;
+        const R = Math.ceil(HOVER_RADIUS) + 1;
+        for (let dgx = -R; dgx <= R; dgx++) {
+          for (let dgy = -R; dgy <= R; dgy++) {
+            if (dgx === 0 && dgy === 0) continue;
+            const dist = Math.sqrt(dgx * dgx + dgy * dgy);
+            if (dist > HOVER_RADIUS) continue;
 
-          const gx = hgx + dgx;
-          const gy = hgy + dgy;
-          const [cx, cy] = cellCenter(width, height, gx, gy, ox);
-          const falloff   = Math.max(0, 1 - dist / HOVER_RADIUS);
+            const gx = hgx + dgx;
+            const gy = hgy + dgy;
+            const [cx, cy] = cellCenter(width, height, gx, gy, ox);
+            const falloff   = Math.max(0, 1 - dist / HOVER_RADIUS);
 
-          // Perlin noise as a per-cell transformation coefficient
-          const n = (noise2(
-            gx * NOISE_SPACE + t * NOISE_TIME,
-            gy * NOISE_SPACE - t * NOISE_TIME * 0.65,
-          ) + 1) / 2; // 0 → 1
+            // Perlin noise as a per-cell transformation coefficient
+            const n = (noise2(
+              gx * NOISE_SPACE + t * NOISE_TIME,
+              gy * NOISE_SPACE - t * NOISE_TIME * 0.65,
+            ) + 1) / 2; // 0 → 1
 
-          // Nearest cells shrink most; noise adds organic irregularity
-          const shrinkCoef = falloff * falloff * (0.35 + 0.65 * n);
-          const s = Math.max(0.68, 1 - prog * SURROUND_MAX_SHRINK * shrinkCoef);
+            // Nearest cells shrink most; noise adds organic irregularity
+            const shrinkCoef = falloff * falloff * (0.35 + 0.65 * n);
+            const s = Math.max(0.68, 1 - prog * SURROUND_MAX_SHRINK * shrinkCoef);
 
-          // Step A: flood full-size diamond with bg colour to erase grid lines
-          //         inside it — makes the contraction legible.
-          const fullC = diamond(cx, cy, 1.0);
-          hCtx.beginPath();
-          hCtx.moveTo(fullC[0][0], fullC[0][1]);
-          for (let i = 1; i < fullC.length; i++) hCtx.lineTo(fullC[i][0], fullC[i][1]);
-          hCtx.closePath();
-          hCtx.fillStyle = `rgba(245,245,246,${(falloff * prog * 0.86).toFixed(3)})`;
-          hCtx.fill();
+            // Step A: flood full-size diamond with bg colour to erase grid lines
+            //         inside it — makes the contraction legible.
+            const fullC = diamond(cx, cy, 1.0);
+            hCtx.beginPath();
+            hCtx.moveTo(fullC[0][0], fullC[0][1]);
+            for (let i = 1; i < fullC.length; i++) hCtx.lineTo(fullC[i][0], fullC[i][1]);
+            hCtx.closePath();
+            hCtx.fillStyle = `rgba(245,245,246,${(falloff * prog * 0.86).toFixed(3)})`;
+            hCtx.fill();
 
-          // Step B: redraw the shrunk outline (same colour as the grid)
-          const shrC = diamond(cx, cy, s);
-          hCtx.beginPath();
-          hCtx.moveTo(shrC[0][0], shrC[0][1]);
-          for (let i = 1; i < shrC.length; i++) hCtx.lineTo(shrC[i][0], shrC[i][1]);
-          hCtx.closePath();
-          hCtx.strokeStyle = `rgba(169,183,198,${(falloff * 0.55 * prog).toFixed(3)})`;
-          hCtx.lineWidth   = 1;
-          hCtx.stroke();
+            // Step B: redraw the shrunk outline (same colour as the grid)
+            const shrC = diamond(cx, cy, s);
+            hCtx.beginPath();
+            hCtx.moveTo(shrC[0][0], shrC[0][1]);
+            for (let i = 1; i < shrC.length; i++) hCtx.lineTo(shrC[i][0], shrC[i][1]);
+            hCtx.closePath();
+            hCtx.strokeStyle = `rgba(169,183,198,${(falloff * 0.55 * prog).toFixed(3)})`;
+            hCtx.lineWidth   = 1;
+            hCtx.stroke();
+          }
         }
       }
 
-      // ── Pass 2: trail labels (oldest → newest so newest is on top) ────────
-      if (trailAlpha > 0.002) {
+      // ── Pass 2: trail labels — persist until overwritten by new hover ──────
+      if (hasTrail) {
         hCtx.font         = '7px "Chivo Mono","Geist Mono",monospace';
         hCtx.textAlign    = "center";
         hCtx.textBaseline = "middle";
@@ -332,8 +393,9 @@ export const HeroGridCanvas: React.FC = () => {
         }
       }
 
-      // ── Pass 3: hovered cell expands on top ───────────────────────────────
-      {
+      // ── Pass 3: hovered cell expands on top (only while actively hovering) ─
+      if (hasHover) {
+        const { gx: hgx, gy: hgy } = animCell!;
         const [cx, cy] = cellCenter(width, height, hgx, hgy, ox);
         const s        = 1 + prog * CELL_MAX_SCALE;
         const corners  = diamond(cx, cy, s);
@@ -388,6 +450,12 @@ export const HeroGridCanvas: React.FC = () => {
       offset  += (DRIFT * delta) / 1000;
       elapsed += delta / 1000;
 
+      // Color layer: update at ~20 fps — slow noise drift doesn't need 60 fps.
+      if (elapsed - lastColorTime >= 1 / 20) {
+        drawColors(elapsed);
+        lastColorTime = elapsed;
+      }
+
       drawGrid();
 
       // Resolve which cell is under the pointer this frame
@@ -420,15 +488,14 @@ export const HeroGridCanvas: React.FC = () => {
         // Trail fades in quickly while any cell is hovered
         trailAlpha = Math.min(1, trailAlpha + delta / 80);
       } else {
-        // Pointer left — fade out everything, then clear state
+        // Pointer left — fade out the active-cell animation only.
+        // Trail and trailAlpha are intentionally preserved; they persist
+        // until a new hover session overwrites them with fresh cells.
         if (animProg > 0) {
           animProg = Math.max(0, animProg - delta / ANIM_OUT_MS);
         }
-        trailAlpha = Math.max(0, trailAlpha - delta / ANIM_OUT_MS);
         if (animProg <= 0) {
-          animCell   = null;
-          trail      = [];
-          trailAlpha = 0;
+          animCell = null;
         }
       }
 
@@ -440,14 +507,16 @@ export const HeroGridCanvas: React.FC = () => {
       const rect = host.getBoundingClientRect();
       width  = rect.width;
       height = rect.height;
-      for (const canvas of [gridCanvas, hoverCanvas]) {
+      for (const canvas of [colorCanvas, gridCanvas, hoverCanvas]) {
         canvas.width  = Math.round(width  * dpr);
         canvas.height = Math.round(height * dpr);
         canvas.style.width  = `${width}px`;
         canvas.style.height = `${height}px`;
       }
+      cCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
       gCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
       hCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      drawColors(elapsed);
       drawGrid();
     };
 
@@ -495,14 +564,8 @@ export const HeroGridCanvas: React.FC = () => {
       inset={0}
       overflow="hidden"
       aria-hidden
-      // Fade the field out at the top/bottom edges so it blends into the page.
-      css={{
-        maskImage:
-          "linear-gradient(to bottom, transparent, black 8%, black 78%, transparent)",
-        WebkitMaskImage:
-          "linear-gradient(to bottom, transparent, black 8%, black 78%, transparent)",
-      }}
     >
+      <Box as="canvas" ref={colorRef} position="absolute" top={0} left={0} w="full" h="full" />
       <Box as="canvas" ref={gridRef}  position="absolute" top={0} left={0} w="full" h="full" />
       <Box as="canvas" ref={hoverRef} position="absolute" top={0} left={0} w="full" h="full" />
     </Box>

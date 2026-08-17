@@ -26,6 +26,13 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
     overflow="hidden"
   >
     <HeroGridCanvas />
+    <Box
+      position="absolute"
+      inset="0 0 auto"
+      h="50%"
+      pointerEvents="none"
+      bg="linear-gradient(to bottom, {colors.slate.10}, transparent)"
+    />
 
     <MarketingPageWidth
       flex="1"
@@ -55,10 +62,10 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
           <Flex
             direction="column"
             align="flex-start"
-            gap={{ base: 8, md: 10 }}
+            gap={{ base: 6, md: 8 }}
             position="relative"
             w="full"
-            maxW={{ base: "100%", md: "680px" }}
+            maxW={{ base: "100%", md: "780px" }}
             py={{ base: 6, md: 8 }}
             pr={{ base: 4, md: 8 }}
             _before={{
@@ -74,7 +81,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
               "& > *": { position: "relative", zIndex: 1 },
             }}
           >
-            <Flex direction="column" align="flex-start" gap={{ base: 5, md: 7 }}>
+            <Flex direction="column" align="flex-start" gap={{ base: 2, md: 3 }}>
               <Text
                 as="h1"
                 variant="h1"
@@ -91,15 +98,14 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
                 as="p"
                 fontFamily="body"
                 fontWeight={300}
-                fontSize={{ base: "15px", md: "17px" }}
+                fontSize={{ base: "16px", md: "17px" }}
                 lineHeight={1.4}
                 letterSpacing="normal"
                 color="slate.50"
-                maxW="520px"
+                maxW="780px"
                 m={0}
               >
-                Build a governed data foundation for AI —
-                replacing fragmented workflows with firm-wide knowledge
+                Replace fragmented workflows with a governed AI data foundation
                 that compounds.
               </Box>
             </Flex>

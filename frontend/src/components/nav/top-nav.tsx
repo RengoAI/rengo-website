@@ -69,7 +69,7 @@ export const AppTopNav: React.FC = () => {
         zIndex={100}
         borderBottom="1px solid"
         borderColor={marketingLayoutBorderColor}
-        bg="slate.10"
+        bg="slate.10/90"
         style={{ transition: "background 200ms ease, border-color 200ms ease" }}
       >
         <MarketingPageWidth>
