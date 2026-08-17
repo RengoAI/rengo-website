@@ -66,7 +66,7 @@ export const AgentsBentoSection: React.FC = () => (
         <SectionHeading>
           Build your AI advantage
           <br />
-          <Box as="span" color="slate.50" fontWeight={300}>
+          <Box as="span" color="indigo.900" fontWeight={300}>
             Applications and agents tailored to your team
           </Box>
         </SectionHeading>
@@ -147,9 +147,11 @@ export const AgentsBentoSection: React.FC = () => (
         <SectionHeading maxW="820px">
           Our engineering principles
           <br />
-          <Box as="span" color="slate.50" fontWeight={300}>
-            We build AI systems for production, bringing elite engineering to
-            your business
+          <Box as="span" color="indigo.900" fontWeight={300}>
+            We build AI systems for production,{" "}
+            <Box as="span" color="accent.link">
+              bringing elite engineering to your business
+            </Box>
           </Box>
         </SectionHeading>
 
