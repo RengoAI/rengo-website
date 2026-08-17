@@ -1,25 +1,34 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
+import { Circle, Loader2, SquareCheck, type LucideIcon } from "lucide-react";
 import React from "react";
 
 /**
  * "Manage automations" — three colour-coded workflow step cards connected by
  * a dashed vertical rule (Figma node 171-1406).
- *
- * Cards are intentionally plain (no status icons); the accent colour of each
- * card carries the visual hierarchy.
  */
 
 /** Matches the connector stroke used across the bento section. */
 const RULE_SOFT = "#a9b7c6";
 const CONNECTOR_H = 16;
+const ICON_SIZE = 14;
 
-const STEPS = [
+type Step = {
+  id: string;
+  label: string;
+  bg: string;
+  color: string;
+  hasBorder: boolean;
+  Icon: LucideIcon;
+};
+
+const STEPS: Step[] = [
   {
     id: "ingest",
     label: "Analyze call transcripts",
     bg: "#e4ede8", // light/green/subtle
     color: "#2a533c", // light/green/fg
     hasBorder: false,
+    Icon: SquareCheck,
   },
   {
     id: "extract",
@@ -27,6 +36,7 @@ const STEPS = [
     bg: "white",
     color: "#495d7c", // light/blue/fg
     hasBorder: true,
+    Icon: Loader2,
   },
   {
     id: "sync",
@@ -34,8 +44,9 @@ const STEPS = [
     bg: "#e0e5e6", // slate-blue muted
     color: "#495d7c", // light/blue/fg
     hasBorder: false,
+    Icon: Circle,
   },
-] as const;
+];
 
 type ManageAgentsArtProps = {
   variant?: "tile" | "compact";
@@ -62,6 +73,7 @@ export const ManageAgentsArt: React.FC<ManageAgentsArtProps> = ({
               borderColor={s.hasBorder ? "#d3dde1" : undefined}
               borderRadius="6px"
               px={isCompact ? "12px" : "20px"}
+              gap={2}
             >
               <Text
                 fontFamily="body"
@@ -73,10 +85,18 @@ export const ManageAgentsArt: React.FC<ManageAgentsArtProps> = ({
                 whiteSpace="nowrap"
                 overflow="hidden"
                 textOverflow="ellipsis"
+                flex="1"
                 m={0}
               >
                 {s.label}
               </Text>
+              <s.Icon
+                size={isCompact ? ICON_SIZE - 2 : ICON_SIZE}
+                strokeWidth={1.75}
+                color={s.color}
+                aria-hidden
+                style={{ flexShrink: 0 }}
+              />
             </Flex>
 
             {!isLast && (
