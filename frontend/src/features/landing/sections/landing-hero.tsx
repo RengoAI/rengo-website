@@ -63,12 +63,12 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
               // Sized to hold "Your data is your alpha" on a single line; the
               // vw term keeps it from wrapping between the md and lg stops.
               fontSize={{
-                base: "clamp(32px, 8.2vw, 42px)",
-                md: "clamp(48px, 7vw, 66px)",
-                lg: "clamp(58px, 6.2vw, 78px)",
+                base: "clamp(28px, 7vw, 36px)",
+                md: "clamp(40px, 5.6vw, 52px)",
+                lg: "clamp(48px, 5vw, 60px)",
               }}
               lineHeight={1.02}
-              letterSpacing={{ base: "-1.5px", md: "-3px" }}
+              letterSpacing={{ base: "-1px", md: "-2px" }}
               color="indigo.900"
               maxW="none"
               whiteSpace={{ base: "normal", md: "nowrap" }}
@@ -93,10 +93,12 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
             >
               <Box
                 as="span"
+                fontFamily="body"
                 color="slate.50"
                 fontWeight={300}
-                fontSize={{ base: "20px", md: "28px" }}
+                fontSize="16px"
                 lineHeight={1.2}
+                letterSpacing="normal"
               >
                 Turn proprietary knowledge into operating leverage
               </Box>

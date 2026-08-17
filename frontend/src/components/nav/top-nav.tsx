@@ -78,6 +78,9 @@ export const AppTopNav: React.FC = () => {
               display={{ base: "none", md: "block" }}
               w={MARKETING_GUTTER_WIDTH}
               flexShrink={0}
+              borderRightWidth="1px"
+              borderRightStyle="solid"
+              borderRightColor={marketingLayoutBorderColor}
             />
             <Flex
               flex="1"
@@ -154,6 +157,9 @@ export const AppTopNav: React.FC = () => {
               display={{ base: "none", md: "block" }}
               w={MARKETING_GUTTER_WIDTH}
               flexShrink={0}
+              borderLeftWidth="1px"
+              borderLeftStyle="solid"
+              borderLeftColor={marketingLayoutBorderColor}
             />
           </Flex>
         </MarketingPageWidth>

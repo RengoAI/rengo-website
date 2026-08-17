@@ -9,7 +9,7 @@ import React from "react";
 
 /**
  * "Structure knowledge" — isometric cube nodes connected by dotted lines to
- * coloured modality pills; icon + label centred inside each pill.
+ * coloured modality pills; label left, icon right, space-between.
  */
 
 // ─── Cube geometry ────────────────────────────────────────────────────────────
@@ -82,13 +82,13 @@ const MODALITY: Record<
   },
 };
 
-const PILL_W = 104;
-const PILL_H = 34;
+const PILL_W = 118;
+const PILL_H = 36;
 const PILL_RX = 5;
-const PILL_ICON_SIZE = 13;
-const PILL_FONT_SIZE = 9.5;
+const PILL_ICON_SIZE = 16;
+const PILL_FONT_SIZE = 12;
 
-/** Rounded pill with icon + label centred as a group. */
+/** Rounded pill with label left and icon right. */
 const ModalityPill: React.FC<{
   cx: number;
   cy: number;
@@ -109,15 +109,15 @@ const ModalityPill: React.FC<{
       >
         <div
           style={{
+            boxSizing: "border-box",
             width: "100%",
             height: "100%",
             display: "flex",
             alignItems: "center",
-            justifyContent: "center",
-            gap: "5px",
+            justifyContent: "space-between",
+            padding: "0 10px",
           }}
         >
-          <Icon size={PILL_ICON_SIZE} strokeWidth={1.75} color={fg} aria-hidden />
           <span
             style={{
               fontFamily: "var(--chakra-fonts-body, system-ui, sans-serif)",
@@ -131,6 +131,12 @@ const ModalityPill: React.FC<{
           >
             {label}
           </span>
+          <Icon
+            size={PILL_ICON_SIZE}
+            strokeWidth={1.75}
+            color={fg}
+            aria-hidden
+          />
         </div>
       </foreignObject>
     </g>

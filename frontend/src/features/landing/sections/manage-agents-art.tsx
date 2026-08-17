@@ -1,5 +1,5 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { Circle, Loader2, SquareCheck, type LucideIcon } from "lucide-react";
+import { Check, Circle, Loader2, type LucideIcon } from "lucide-react";
 import React from "react";
 
 /**
@@ -9,8 +9,8 @@ import React from "react";
 
 /** Matches the connector stroke used across the bento section. */
 const RULE_SOFT = "#a9b7c6";
-const CONNECTOR_H = 16;
-const ICON_SIZE = 14;
+const CONNECTOR_H = 14;
+const ICON_SIZE = 13;
 
 type Step = {
   id: string;
@@ -19,16 +19,42 @@ type Step = {
   color: string;
   hasBorder: boolean;
   Icon: LucideIcon;
+  /** Filled circle with a white check instead of the outline icon. */
+  filledCheck?: boolean;
 };
+
+const FilledCircleCheck: React.FC<{ size: number; color: string }> = ({
+  size,
+  color,
+}) => (
+  <Box
+    w={`${size}px`}
+    h={`${size}px`}
+    borderRadius="full"
+    bg={color}
+    display="flex"
+    alignItems="center"
+    justifyContent="center"
+    flexShrink={0}
+  >
+    <Check
+      size={Math.round(size * 0.65)}
+      strokeWidth={3}
+      color="white"
+      aria-hidden
+    />
+  </Box>
+);
 
 const STEPS: Step[] = [
   {
     id: "ingest",
     label: "Analyze call transcripts",
-    bg: "#e4ede8", // light/green/subtle
+    bg: "#C9DCD1",
     color: "#2a533c", // light/green/fg
     hasBorder: false,
-    Icon: SquareCheck,
+    Icon: Check,
+    filledCheck: true,
   },
   {
     id: "extract",
@@ -58,7 +84,7 @@ export const ManageAgentsArt: React.FC<ManageAgentsArtProps> = ({
   const isCompact = variant === "compact";
 
   return (
-    <Box w="full" maxW={isCompact ? "220px" : "320px"} mx="auto" aria-hidden>
+    <Box w="full" maxW={isCompact ? "200px" : "260px"} mx="auto" aria-hidden>
       {STEPS.map((s, i) => {
         const isLast = i === STEPS.length - 1;
 
@@ -67,17 +93,17 @@ export const ManageAgentsArt: React.FC<ManageAgentsArtProps> = ({
             <Flex
               w="full"
               align="center"
-              h={isCompact ? "40px" : "50px"}
+              h={isCompact ? "34px" : "42px"}
               bg={s.bg}
               border={s.hasBorder ? "1px solid" : undefined}
               borderColor={s.hasBorder ? "#d3dde1" : undefined}
               borderRadius="6px"
-              px={isCompact ? "12px" : "20px"}
+              px={isCompact ? "10px" : "14px"}
               gap={2}
             >
               <Text
                 fontFamily="body"
-                fontSize={isCompact ? "10px" : "12px"}
+                fontSize={isCompact ? "10px" : "11px"}
                 fontWeight="normal"
                 lineHeight="1.2"
                 letterSpacing="-0.36px"
@@ -90,13 +116,20 @@ export const ManageAgentsArt: React.FC<ManageAgentsArtProps> = ({
               >
                 {s.label}
               </Text>
-              <s.Icon
-                size={isCompact ? ICON_SIZE - 2 : ICON_SIZE}
-                strokeWidth={1.75}
-                color={s.color}
-                aria-hidden
-                style={{ flexShrink: 0 }}
-              />
+              {s.filledCheck ? (
+                <FilledCircleCheck
+                  size={isCompact ? ICON_SIZE - 2 : ICON_SIZE}
+                  color={s.color}
+                />
+              ) : (
+                <s.Icon
+                  size={isCompact ? ICON_SIZE - 2 : ICON_SIZE}
+                  strokeWidth={1.75}
+                  color={s.color}
+                  aria-hidden
+                  style={{ flexShrink: 0 }}
+                />
+              )}
             </Flex>
 
             {!isLast && (
