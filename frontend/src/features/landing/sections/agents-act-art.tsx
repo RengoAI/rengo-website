@@ -148,17 +148,65 @@ const PILL_CX = VB_W - 22 - PILL_W / 2; // ≈ 306
 const PILL_LEFT = PILL_CX - PILL_W / 2; // ≈ 254
 
 /**
- * Modalities ordered top-to-bottom (matching Figma reference).
- * cubeX alternates between two columns, echoing the scattered-nodes feel.
+ * Four cube nodes forming two T-junction pairs (matching Figma 173-1453).
+ *
+ * Topology:
+ *   CUBE_LT ──→ trunk_a ──→ [Text arm]
+ *                       └──→ CUBE_MT ──→ [Tables arm]
+ *
+ *   CUBE_LB ──→ trunk_b ──→ [Audio arm]
+ *                       └──→ CUBE_MB ──→ [TimeSeries arm]
+ *
+ * midY is the right-face centre Y, placing the horizontal connector
+ * between the two rows each cube serves.
  */
-const BLOCKS: Array<{ kind: ModalityKind; cubeX: number }> = [
-  { kind: "text", cubeX: 38 },
-  { kind: "tables", cubeX: 80 },
-  { kind: "audio", cubeX: 38 },
-  { kind: "timeSeries", cubeX: 80 },
+const CUBE_LT = { cx: 42, midY: 44 }; // main cube: Text + Tables (between rows 0 & 1)
+const CUBE_LB = { cx: 52, midY: 169 }; // main cube: Audio + TimeSeries (between rows 2 & 3)
+const CUBE_MT = { cx: 196, midY: rowCY(1) }; // junction cube at Tables row
+const CUBE_MB = { cx: 162, midY: rowCY(3) }; // junction cube at TimeSeries row
+
+/** X of the vertical trunk for each cluster. */
+const TRUNK_A_X = 78; // top cluster (Text / Tables)
+const TRUNK_B_X = 134; // bottom cluster (Audio / TimeSeries) — scaled from Figma Vector252
+
+const VB_H = rowCY(3) + ROW_PITCH / 2 + 12; // ≈ 233
+
+/**
+ * All dotted line segments that form the tree.
+ * Each entry is [x1, y1, x2, y2].
+ */
+const TREE_LINES: [number, number, number, number][] = [
+  // ── Top cluster ───────────────────────────────────────────────────────────
+  // Cube_LT right-face → trunk_a (horizontal)
+  [CUBE_LT.cx + CUBE_R, CUBE_LT.midY, TRUNK_A_X, CUBE_LT.midY],
+  // Trunk vertical: Text row → Tables row
+  [TRUNK_A_X, rowCY(0), TRUNK_A_X, rowCY(1)],
+  // Text arm: trunk_a top → Text pill left
+  [TRUNK_A_X, rowCY(0), PILL_LEFT, rowCY(0)],
+  // Tables arm: trunk_a bottom → Cube_MT left face
+  [TRUNK_A_X, rowCY(1), CUBE_MT.cx - CUBE_R, rowCY(1)],
+  // Cube_MT right face → Tables pill left
+  [CUBE_MT.cx + CUBE_R, rowCY(1), PILL_LEFT, rowCY(1)],
+
+  // ── Bottom cluster ────────────────────────────────────────────────────────
+  // Cube_LB right-face → trunk_b (horizontal)
+  [CUBE_LB.cx + CUBE_R, CUBE_LB.midY, TRUNK_B_X, CUBE_LB.midY],
+  // Trunk vertical: Audio row → TimeSeries row
+  [TRUNK_B_X, rowCY(2), TRUNK_B_X, rowCY(3)],
+  // Audio arm: trunk_b top → Audio pill left
+  [TRUNK_B_X, rowCY(2), PILL_LEFT, rowCY(2)],
+  // TimeSeries arm: trunk_b bottom → Cube_MB left face
+  [TRUNK_B_X, rowCY(3), CUBE_MB.cx - CUBE_R, rowCY(3)],
+  // Cube_MB right face → TimeSeries pill left
+  [CUBE_MB.cx + CUBE_R, rowCY(3), PILL_LEFT, rowCY(3)],
 ];
 
-const VB_H = rowCY(BLOCKS.length - 1) + ROW_PITCH / 2 + 12;
+const PILL_ROWS: Array<{ kind: ModalityKind; row: number }> = [
+  { kind: "text", row: 0 },
+  { kind: "tables", row: 1 },
+  { kind: "audio", row: 2 },
+  { kind: "timeSeries", row: 3 },
+];
 
 // ─── Component ────────────────────────────────────────────────────────────────
 type AgentsActArtProps = {
@@ -184,17 +232,17 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
         viewBox={`0 0 ${VB_W} ${VB_H}`}
         preserveAspectRatio="xMidYMid meet"
         role="img"
-        aria-label="Cube nodes connected by dotted lines to typed modality pills."
+        aria-label="Cube nodes connected by a branching dotted-line tree to typed modality pills."
         style={{ display: "block", width: "100%", height: "100%" }}
       >
-        {/* Horizontal dotted lines: cube right-face centre → pill left edge */}
-        {BLOCKS.map((b, i) => (
+        {/* T-junction tree: dotted line segments */}
+        {TREE_LINES.map(([x1, y1, x2, y2], i) => (
           <line
-            key={`line-${b.kind}`}
-            x1={b.cubeX + CUBE_R}
-            y1={rowCY(i)}
-            x2={PILL_LEFT}
-            y2={rowCY(i)}
+            key={i}
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
             stroke={RULE_SOFT}
             strokeWidth={1}
             strokeDasharray="3 3"
@@ -203,17 +251,18 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
         ))}
 
         {/* Isometric cube nodes */}
-        {BLOCKS.map((b, i) => (
-          <ScatterBlock key={`cube-${b.kind}`} cx={b.cubeX} midY={rowCY(i)} />
-        ))}
+        <ScatterBlock cx={CUBE_LT.cx} midY={CUBE_LT.midY} />
+        <ScatterBlock cx={CUBE_LB.cx} midY={CUBE_LB.midY} />
+        <ScatterBlock cx={CUBE_MT.cx} midY={CUBE_MT.midY} />
+        <ScatterBlock cx={CUBE_MB.cx} midY={CUBE_MB.midY} />
 
         {/* Coloured modality pills */}
-        {BLOCKS.map((b, i) => (
+        {PILL_ROWS.map(({ kind, row }) => (
           <ModalityPill
-            key={`pill-${b.kind}`}
+            key={kind}
             cx={PILL_CX}
-            cy={rowCY(i)}
-            kind={b.kind}
+            cy={rowCY(row)}
+            kind={kind}
           />
         ))}
       </svg>
