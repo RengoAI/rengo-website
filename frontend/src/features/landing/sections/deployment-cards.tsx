@@ -24,6 +24,40 @@ const loopPoint = (deg: number) => {
   };
 };
 
+const BAR_YS = [12, 22, 32] as const;
+const BAR_CYCLE = "3.6s";
+
+const FoundationBarsGlyph: React.FC = () => (
+  <chakra.g
+    css={{
+      "@keyframes rengo-bar-cycle": {
+        "0%, 100%": { fill: ICON_300 },
+        "33.333%": { fill: ICON_600 },
+        "66.666%": { fill: ICON_900 },
+      },
+      "@media (prefers-reduced-motion: reduce)": {
+        "& rect": { animation: "none" },
+      },
+    }}
+  >
+    {BAR_YS.map((y, i) => (
+      <chakra.rect
+        key={y}
+        x="10"
+        y={y}
+        width="28"
+        height="7"
+        rx="1.5"
+        fill={i === 0 ? ICON_300 : i === 1 ? ICON_600 : ICON_900}
+        style={{
+          animation: `rengo-bar-cycle ${BAR_CYCLE} ease-in-out infinite`,
+          animationDelay: `${-i * 1.2}s`,
+        }}
+      />
+    ))}
+  </chakra.g>
+);
+
 const ApplyLearningsLoopGlyph: React.FC = () => {
   const legColors = [ICON_300, ICON_600, ICON_900, ICON_300];
   const legs = LOOP_NODE_DEG.map((deg, i) => {
@@ -75,20 +109,14 @@ const CARDS: DeploymentCard[] = [
     id: "infrastructure",
     title: "Shared foundation",
     caption:
-      "Connect your data, systems, and workflows to a governed foundation that every application and agent can build on.",
-    glyph: (
-      <>
-        <rect x="10" y="12" width="28" height="7" rx="1.5" fill={ICON_300} />
-        <rect x="10" y="22" width="28" height="7" rx="1.5" fill={ICON_600} />
-        <rect x="10" y="32" width="28" height="7" rx="1.5" fill={ICON_900} />
-      </>
-    ),
+      "Connect your data, systems, and workflows to a foundation for every application and agent.",
+    glyph: <FoundationBarsGlyph />,
   },
   {
     id: "own-code",
     title: "Own what you build",
     caption:
-      "Applications and integrations tailored to your workflows, owned in your repository and built to evolve with you.",
+      "Applications tailored to your workflows, owned in your repository and built to evolve with you.",
     glyph: (
       <>
         <path
@@ -114,7 +142,7 @@ const CARDS: DeploymentCard[] = [
     id: "applied-ai",
     title: "Compound knowledge",
     caption:
-      "Work shouldn't start from scratch. Capture the context behind every decision so the next workflow benefits from the last.",
+      "Capture the context behind every decision so the next workflow benefits from the last.",
     glyph: <ApplyLearningsLoopGlyph />,
   },
 ];
@@ -134,10 +162,10 @@ export const DeploymentCards: React.FC = () => (
     {CARDS.map((card, i) => (
       <Flex
         key={card.id}
-        direction={{ base: "column", md: "row" }}
-        align={{ base: "flex-start", md: "center" }}
+        direction="row"
+        align="center"
         justify="space-between"
-        gap={{ base: "56px", md: "72px" }}
+        gap={{ base: 4, md: 6 }}
         px="24px"
         py="28px"
         w="full"
@@ -145,42 +173,53 @@ export const DeploymentCards: React.FC = () => (
         borderTop={i > 0 ? "1px solid" : undefined}
         borderColor="slate.30"
       >
-        <Flex align="center" gap={3} flexShrink={0} minW={{ md: "260px" }}>
-          <chakra.svg
-            width="48px"
-            height="48px"
-            viewBox="0 0 48 48"
-            aria-hidden
-            flexShrink={0}
-          >
-            {card.glyph}
-          </chakra.svg>
+        <Flex align="flex-start" gap={3} flex="1" minW={0}>
           <Text
             fontFamily="body"
-            fontWeight="medium"
-            fontSize="20px"
-            lineHeight="1.2"
-            letterSpacing="-0.6px"
-            color="indigo.900"
+            fontWeight="light"
+            fontSize="12px"
+            lineHeight="24px"
+            color="slate.40"
+            flexShrink={0}
+            w="16px"
             m={0}
           >
-            {card.title}
+            {i + 1}
           </Text>
+          <Flex direction="column" align="flex-start" gap={0.5} minW={0}>
+            <Text
+              fontFamily="body"
+              fontWeight="medium"
+              fontSize="20px"
+              lineHeight="1.2"
+              letterSpacing="-0.6px"
+              color="indigo.900"
+              m={0}
+            >
+              {card.title}
+            </Text>
+            <Text
+              fontFamily="body"
+              fontWeight="normal"
+              fontSize="15px"
+              lineHeight="1.4"
+              color="ink.body"
+              m={0}
+            >
+              {card.caption}
+            </Text>
+          </Flex>
         </Flex>
 
-        <Text
-          fontFamily="body"
-          fontWeight="normal"
-          fontSize="15px"
-          lineHeight="1.4"
-          color="ink.body"
-          m={0}
-          flex="1"
-          minW={0}
-          maxW={{ md: "720px" }}
+        <chakra.svg
+          width="80px"
+          height="80px"
+          viewBox="0 0 48 48"
+          aria-hidden
+          flexShrink={0}
         >
-          {card.caption}
-        </Text>
+          {card.glyph}
+        </chakra.svg>
       </Flex>
     ))}
   </Flex>

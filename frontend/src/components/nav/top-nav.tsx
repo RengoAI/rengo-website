@@ -120,13 +120,19 @@ export const AppTopNav: React.FC = () => {
                   <Button
                     variant="ghost"
                     color={navColor}
-                    _hover={{ bg: "transparent", color: navHoverColor }}
                     onClick={() =>
                       window.open("https://app.rengoai.com/", "_blank")
                     }
                     {...topNavCtaStyles}
                     h="34px"
                     minH="34px"
+                    border="1px solid"
+                    borderColor="slate.30"
+                    _hover={{
+                      bg: "transparent",
+                      color: navHoverColor,
+                      borderColor: "slate.40",
+                    }}
                   >
                     Log in
                   </Button>

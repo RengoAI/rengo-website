@@ -81,6 +81,8 @@ const config = defineConfig({
     ".footer-link": {
       color: "var(--rengo-colors-slate-30)",
       textDecoration: "none",
+      fontFamily: "var(--rengo-fonts-body)",
+      fontWeight: 300,
       fontSize: "14px",
       lineHeight: "20px",
       cursor: "pointer",

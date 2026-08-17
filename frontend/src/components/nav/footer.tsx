@@ -20,7 +20,14 @@ interface FooterColProps {
 
 const FooterCol: React.FC<FooterColProps> = ({ title, children }) => (
   <Flex direction="column" gap={2} minW={{ base: "auto", sm: "128px" }}>
-    <Text fontSize="sm" color="slate.30" lineHeight="short" mb={1}>
+    <Text
+      fontFamily="body"
+      fontWeight="light"
+      fontSize="sm"
+      color="slate.30"
+      lineHeight="short"
+      mb={1}
+    >
       {title}
     </Text>
     {children}
@@ -128,6 +135,8 @@ export const AppFooter: React.FC = () => (
             gapY={4}
           >
             <Text
+              fontFamily="body"
+              fontWeight="light"
               fontSize="xs"
               color="slate.30"
               lineHeight="short"
