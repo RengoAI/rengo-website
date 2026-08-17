@@ -78,8 +78,8 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
       >
         <Box
           px={marketingPageMarginX}
-          minH="56px"
-          h="56px"
+          minH="48px"
+          h="48px"
           display="flex"
           alignItems="center"
           justifyContent="space-between"

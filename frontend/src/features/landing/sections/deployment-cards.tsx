@@ -120,14 +120,14 @@ const CARDS: DeploymentCard[] = [
 ];
 
 // ─── Component ────────────────────────────────────────────────────────────────
-const ROW_BG = "#f0f1f2";
+const ROW_BG = "#F0F1F2";
 
 export const DeploymentCards: React.FC = () => (
   <Flex
     direction="column"
     w="full"
     overflow="hidden"
-    borderRadius="6px"
+    borderRadius="4px"
     border="1px solid"
     borderColor="slate.30"
   >

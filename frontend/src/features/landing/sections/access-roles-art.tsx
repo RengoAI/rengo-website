@@ -1,11 +1,15 @@
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 
-const ACCESS_ROLES = [
-  { role: "Viewer" },
-  { role: "Admin", outlined: true },
+const ACCESS_ROLES: {
+  role: string;
+  outlined?: boolean;
+  accentColor?: string;
+}[] = [
+  { role: "Viewer", accentColor: "#A4C4B2" },
+  { role: "Admin", outlined: true, accentColor: "#F2E6B5" },
   { role: "Editor" },
-] as const;
+];
 
 const TILE_PAD_PX = 28;
 const ROLES_BLEED_PX = TILE_PAD_PX + 6;
@@ -113,7 +117,7 @@ export const AccessRolesArt: React.FC<AccessRolesArtProps> = ({
               h={variant === "compact" ? "12px" : "16px"}
               borderRadius="full"
               flexShrink={0}
-              bg="slate.40"
+              bg={person.accentColor ?? "slate.40"}
             />
             <Box
               h="6px"
@@ -128,7 +132,7 @@ export const AccessRolesArt: React.FC<AccessRolesArtProps> = ({
                     ? "96px"
                     : "72px"
               }
-              bg="slate.40"
+              bg={person.accentColor ?? "slate.40"}
               opacity={0.85}
             />
             <Text

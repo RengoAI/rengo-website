@@ -1,14 +1,11 @@
-import {
-  ctaButtonHoverWithArrowProps,
-  ButtonArrowLabel,
-} from "@/components/ui/button-arrow-label";
 import { MarketingPageWidth } from "@/components/layout/marketing-page-width";
+import { MarketingCtaButton } from "@/components/ui/marketing-cta-button";
 import {
   MARKETING_GUTTER_WIDTH,
   marketingContentPaddingX,
 } from "@/components/layout/marketing-frame";
 import { TOP_NAV_HEIGHT } from "@/components/nav/nav-styles";
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 
 interface PageHeroProps {
@@ -114,22 +111,11 @@ export const PageHero: React.FC<PageHeroProps> = ({
           )}
         </Flex>
 
-        <Button
-          alignSelf="flex-start"
-          bg="indigo.900"
-          color="slate.10"
-          px={8}
-          py={3.5}
-          h="auto"
-          fontFamily="body"
-          fontSize="14px"
-          fontWeight="light"
-          lineHeight="21px"
-          onClick={onCtaClick}
-          {...ctaButtonHoverWithArrowProps}
-        >
-          <ButtonArrowLabel>{ctaLabel}</ButtonArrowLabel>
-        </Button>
+        <Box alignSelf="flex-start">
+          <MarketingCtaButton onClick={onCtaClick}>
+            {ctaLabel}
+          </MarketingCtaButton>
+        </Box>
       </Flex>
       <Box
         display={{ base: "none", md: "block" }}

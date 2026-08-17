@@ -1,15 +1,12 @@
-import {
-  ctaButtonHoverWithArrowProps,
-  ButtonArrowLabel,
-} from "@/components/ui/button-arrow-label";
 import { MarketingPageWidth } from "@/components/layout/marketing-page-width";
 import {
   MARKETING_GUTTER_WIDTH,
   marketingContentPaddingX,
 } from "@/components/layout/marketing-frame";
 import { TOP_NAV_HEIGHT } from "@/components/nav/nav-styles";
+import { MarketingCtaButton } from "@/components/ui/marketing-cta-button";
 import { HeroGridCanvas } from "@/features/landing/sections/hero-grid-canvas";
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 
 interface LandingHeroProps {
@@ -55,51 +52,62 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
           pt={`calc(${TOP_NAV_HEIGHT}px + var(--chakra-spacing-10))`}
           pb={10}
         >
-          <Flex direction="column" align="flex-start" gap={{ base: 5, md: 7 }}>
-            <Text
-              as="h1"
-              variant="h1"
-              maxW={{ base: "none", md: "590px" }}
-              m={0}
-            >
-              Turn proprietary knowledge into{" "}
-              <Box as="span" color="accent.link">
-                operational leverage
-              </Box>
-            </Text>
-
-            <Box
-              as="p"
-              fontFamily="body"
-              fontWeight={300}
-              fontSize={{ base: "15px", md: "17px" }}
-              lineHeight={1.6}
-              letterSpacing="normal"
-              color="slate.50"
-              maxW="520px"
-              m={0}
-            >
-              Rengo gives your firm a governed data foundation for AI —
-              replacing fragmented manual workflows with firm-wide knowledge
-              that compounds over time.
-            </Box>
-          </Flex>
-
-          <Button
-            bg="indigo.900"
-            color="slate.10"
-            px={8}
-            py={3.5}
-            h="auto"
-            fontFamily="body"
-            fontSize="14px"
-            fontWeight="light"
-            lineHeight="21px"
-            onClick={onCtaClick}
-            {...ctaButtonHoverWithArrowProps}
+          <Flex
+            direction="column"
+            align="flex-start"
+            gap={{ base: 8, md: 10 }}
+            position="relative"
+            w="full"
+            maxW={{ base: "100%", md: "680px" }}
+            py={{ base: 6, md: 8 }}
+            pr={{ base: 4, md: 8 }}
+            _before={{
+              content: '""',
+              position: "absolute",
+              inset: "-32% -40% -36% -56%",
+              zIndex: 0,
+              pointerEvents: "none",
+              background:
+                "radial-gradient(ellipse 88% 72% at 52% 42%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.58) 24%, rgba(255, 255, 255, 0.28) 46%, rgba(255, 255, 255, 0.08) 68%, rgba(255, 255, 255, 0) 86%)",
+            }}
+            css={{
+              "& > *": { position: "relative", zIndex: 1 },
+            }}
           >
-            <ButtonArrowLabel>Get Started</ButtonArrowLabel>
-          </Button>
+            <Flex direction="column" align="flex-start" gap={{ base: 5, md: 7 }}>
+              <Text
+                as="h1"
+                variant="h1"
+                maxW={{ base: "none", md: "590px" }}
+                m={0}
+              >
+                Turn proprietary knowledge into{" "}
+                <Box as="span" color="accent.link">
+                  operational leverage
+                </Box>
+              </Text>
+
+              <Box
+                as="p"
+                fontFamily="body"
+                fontWeight={300}
+                fontSize={{ base: "15px", md: "17px" }}
+                lineHeight={1.4}
+                letterSpacing="normal"
+                color="slate.50"
+                maxW="520px"
+                m={0}
+              >
+                Build a governed data foundation for AI —
+                replacing fragmented workflows with firm-wide knowledge
+                that compounds.
+              </Box>
+            </Flex>
+
+            <MarketingCtaButton onClick={onCtaClick}>
+              Get Started
+            </MarketingCtaButton>
+          </Flex>
         </Flex>
       </Box>
       <Box

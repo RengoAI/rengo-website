@@ -1,5 +1,5 @@
-import { ctaButtonHoverProps } from "@/components/ui/button-arrow-label";
 import { Logo } from "@/components/logo/logo";
+import { MarketingCtaButton } from "@/components/ui/marketing-cta-button";
 import { MobileNavDrawer } from "@/components/nav/mobile-nav-drawer";
 import {
   MARKETING_GUTTER_WIDTH,
@@ -130,17 +130,14 @@ export const AppTopNav: React.FC = () => {
                   >
                     Log in
                   </Button>
-                  <Button
-                    bg="indigo.900"
-                    color="slate.10"
+                  <MarketingCtaButton
+                    size="sm"
                     onClick={() =>
                       window.open("mailto:sales@rengoai.com", "_blank")
                     }
-                    {...topNavCtaStyles}
-                    {...ctaButtonHoverProps}
                   >
                     Get Started
-                  </Button>
+                  </MarketingCtaButton>
                 </Flex>
 
                 <IconButton

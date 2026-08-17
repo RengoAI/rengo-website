@@ -69,7 +69,7 @@ const TestimonialCard: React.FC<{
     bg="slate.30"
     border="1px solid"
     borderColor="blue.200"
-    borderRadius="6px"
+    borderRadius="4px"
     p="36px"
     display="flex"
     flexDirection="column"

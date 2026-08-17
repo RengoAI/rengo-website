@@ -112,7 +112,8 @@ export const CtaSection: React.FC<CtaSectionProps> = ({
           >
             <Text
               as="h2"
-              variant="h2"
+              variant="h1"
+              fontWeight="light"
               color="white"
               maxW="none"
               whiteSpace={{ base: "normal", md: "nowrap" }}
@@ -134,8 +135,8 @@ export const CtaSection: React.FC<CtaSectionProps> = ({
               lineHeight="21px"
               onClick={onTalkToSales}
               _hover={{
-                bg: "slate.10",
-                color: "indigo.900",
+                bg: "accent.link",
+                color: "white",
                 "& [data-arrow]": { transform: "translateX(4px)" },
               }}
             >
