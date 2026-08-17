@@ -10,7 +10,7 @@ const ctaHoverOverlayLayer = {
     position: "absolute",
     inset: 0,
     borderRadius: "inherit",
-    bg: "whiteAlpha.300",
+    bg: "blackAlpha.200",
     opacity: 0,
     transition: "opacity 0.2s ease",
     pointerEvents: "none",

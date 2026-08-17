@@ -148,7 +148,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
                     <Text
                       fontFamily="body"
                       fontSize="14px"
-                      fontWeight="medium"
+                      fontWeight="light"
                       lineHeight="16px"
                       color="indigo.900"
                       m={0}
@@ -179,7 +179,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
                   <Text
                     fontFamily="body"
                     fontSize="14px"
-                    fontWeight="medium"
+                    fontWeight="light"
                     lineHeight="16px"
                     color="indigo.900"
                     m={0}

@@ -130,11 +130,11 @@ export const CtaSection: React.FC<CtaSectionProps> = ({
               h="auto"
               fontFamily="body"
               fontSize="14px"
-              fontWeight="normal"
+              fontWeight="light"
               lineHeight="21px"
               onClick={onTalkToSales}
               _hover={{
-                bg: "white",
+                bg: "slate.10",
                 color: "indigo.900",
                 "& [data-arrow]": { transform: "translateX(4px)" },
               }}

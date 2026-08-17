@@ -93,7 +93,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
             h="auto"
             fontFamily="body"
             fontSize="14px"
-            fontWeight="normal"
+            fontWeight="light"
             lineHeight="21px"
             onClick={onCtaClick}
             {...ctaButtonHoverWithArrowProps}

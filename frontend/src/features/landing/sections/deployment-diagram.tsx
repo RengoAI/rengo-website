@@ -21,35 +21,43 @@ const STYLES = `
   /* cluster and dark-cube faces */
   .dp-stack { fill: #D3DDE1; stroke: #A9B7C6; stroke-width: 1; }
   .dp-flat  { fill: #5A759A; stroke: #A9B7C6; stroke-width: 1; }
-  /* dotted path guides */
+  /* dotted path guides — matches AgentsActArt line style */
   .dp-dot   {
     fill: none;
     stroke: #A9B7C6;
     stroke-width: 1;
-    stroke-dasharray: 1 3;
-    stroke-linecap: round;
+    stroke-dasharray: 3 3;
   }
   /* satellite cube faces — start dark blue, animate to grey */
   .dp-sat   { fill: #5A759A; stroke: #A9B7C6; stroke-width: 1; }
-  /* animated blue wire drawn over each dotted guide */
+  /* travelling grey segment drawn over each dotted guide */
   .dp-wire  {
     fill: none;
-    stroke: #5A759A;
+    stroke: #C0CDD5;
     stroke-width: 2;
     stroke-linecap: round;
     stroke-linejoin: round;
   }
 
-  .dp-link  { opacity: .6; }
+  /* leading-edge cube: invisible by default; CSS motion path drives it */
+  .dp-cube { opacity: 0; offset-rotate: 0deg; }
+
+  .dp-link  { opacity: .65; }
   .dp-node  { opacity: 0; }
 
   @keyframes dp-satToGrey  { to   { fill: #D3DDE1; } }
   @keyframes dp-nodeIn  { from { opacity: 0; } to { opacity: 1; } }
-  @keyframes dp-wireRun { from { stroke-dashoffset: 0.12; } to { stroke-dashoffset: -1; } }
+  @keyframes dp-wireRun { from { stroke-dashoffset: 0.06; } to { stroke-dashoffset: -1; } }
+  @keyframes dp-cubeRun {
+    0%   { offset-distance: 0%;   opacity: 0; }
+    3%   { opacity: 1; }
+    92%  { opacity: 1; }
+    100% { offset-distance: 100%; opacity: 0; }
+  }
   @keyframes dp-linkPulse {
-    0%   { opacity: .6; }
+    0%   { opacity: .65; }
     35%  { opacity: 1; }
-    100% { opacity: .6; }
+    100% { opacity: .65; }
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -60,7 +68,7 @@ const STYLES = `
     .dp-run .dp-n3   { animation-delay: .6s;  }
     .dp-run .dp-n4   { animation-delay: .85s; }
 
-    /* blue bullet segment drifts gently from satellite → cluster (5 s each) */
+    /* grey bullet segment drifts gently from satellite → cluster (5 s each) */
     .dp-run .dp-w1 { animation: dp-wireRun 5s linear .85s  both; }
     .dp-run .dp-w2 { animation: dp-wireRun 5s linear 1.15s both; }
     .dp-run .dp-w3 { animation: dp-wireRun 5s linear 1.3s  both; }
@@ -71,6 +79,31 @@ const STYLES = `
     .dp-run .dp-n2 .dp-sat { animation: dp-satToGrey .5s ease 6.15s both; }
     .dp-run .dp-n3 .dp-sat { animation: dp-satToGrey .5s ease 6.3s  both; }
     .dp-run .dp-n4 .dp-sat { animation: dp-satToGrey .5s ease 6.55s both; }
+
+    /* tiny #597299 cube rides the leading edge of each wire segment */
+    .dp-run .dp-cube {
+      animation-name: dp-cubeRun;
+      animation-duration: 5s;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      will-change: offset-distance, opacity;
+    }
+    .dp-run .dp-c1 {
+      animation-delay: .85s;
+      offset-path: path("M129,127 L184,158 L212,142 L242,159 L221,171 L250,187");
+    }
+    .dp-run .dp-c2 {
+      animation-delay: 1.15s;
+      offset-path: path("M551,137 L513,158 L468,133 L445,146 L415,163");
+    }
+    .dp-run .dp-c3 {
+      animation-delay: 1.3s;
+      offset-path: path("M119,235 L169,207 L238,246 L265,230 L295,247");
+    }
+    .dp-run .dp-c4 {
+      animation-delay: 1.55s;
+      offset-path: path("M561,230 L499,265 L456,241 L415,264 L385,247");
+    }
 
     /* dotted guides pulse after everything settles */
     .dp-run .dp-link { animation: dp-linkPulse 1.6s ease-in-out both; }
@@ -141,19 +174,18 @@ export const DeploymentDiagram: React.FC<DeploymentDiagramProps> = ({
         <polyline className="dp-dot dp-link dp-l3" points={WIRE_POINTS.w3} />
         <polyline className="dp-dot dp-link dp-l4" points={WIRE_POINTS.w4} />
 
-        {/* ── Blue bullet: segment drifts from satellite → cluster over 5 s ── */}
-        {/* pathLength="1" normalises dashoffset; segment 12% of path length, 200% gap */}
+        {/* ── Grey bullet segment: 6% of path length, 200% gap; cube leads it ─ */}
         <polyline className="dp-wire dp-w1"
-          pathLength="1" strokeDasharray="0.12 2" strokeDashoffset="0.12"
+          pathLength="1" strokeDasharray="0.06 2" strokeDashoffset="0.06"
           points={WIRE_POINTS.w1} />
         <polyline className="dp-wire dp-w2"
-          pathLength="1" strokeDasharray="0.12 2" strokeDashoffset="0.12"
+          pathLength="1" strokeDasharray="0.06 2" strokeDashoffset="0.06"
           points={WIRE_POINTS.w2} />
         <polyline className="dp-wire dp-w3"
-          pathLength="1" strokeDasharray="0.12 2" strokeDashoffset="0.12"
+          pathLength="1" strokeDasharray="0.06 2" strokeDashoffset="0.06"
           points={WIRE_POINTS.w3} />
         <polyline className="dp-wire dp-w4"
-          pathLength="1" strokeDasharray="0.12 2" strokeDashoffset="0.12"
+          pathLength="1" strokeDasharray="0.06 2" strokeDashoffset="0.06"
           points={WIRE_POINTS.w4} />
 
         {/* ── Satellite cubes — fade in blue, turn grey when wire arrives ───── */}
@@ -177,6 +209,12 @@ export const DeploymentDiagram: React.FC<DeploymentDiagramProps> = ({
           <polygon className="dp-sat" points="570,245 588,235 588,257 570,267" />
           <polygon className="dp-sat" points="570,225 588,235 570,245 552,235" />
         </g>
+
+        {/* ── Bullet squares: flat #597299 square at leading edge of each wire ─ */}
+        <g className="dp-cube dp-c1"><rect fill="#597299" x="-3" y="-3" width="6" height="6" /></g>
+        <g className="dp-cube dp-c2"><rect fill="#597299" x="-3" y="-3" width="6" height="6" /></g>
+        <g className="dp-cube dp-c3"><rect fill="#597299" x="-3" y="-3" width="6" height="6" /></g>
+        <g className="dp-cube dp-c4"><rect fill="#597299" x="-3" y="-3" width="6" height="6" /></g>
 
         {/* ── Static cluster: 9 filled prisms ─────────────────────────────── */}
         <g>

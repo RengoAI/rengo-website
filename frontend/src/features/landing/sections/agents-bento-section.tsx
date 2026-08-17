@@ -1,7 +1,7 @@
 import { marketingCardBorderColor } from "@/components/layout/marketing-frame";
 import { AccessRolesArt } from "@/features/landing/sections/access-roles-art";
 import { AgentsActArt } from "@/features/landing/sections/agents-act-art";
-import { ManageAgentsArt } from "@/features/landing/sections/manage-agents-art";
+import { CollapsingStackArt } from "@/features/landing/sections/collapsing-stack-art";
 import { BentoIsoImage } from "@/features/landing/sections/bento-iso-image";
 import { CollectiveSearchArt } from "@/features/landing/sections/collective-search-art";
 import { DeploymentDiagram } from "@/features/landing/sections/deployment-diagram";
@@ -40,20 +40,20 @@ const TILES: {
     row: "1",
   },
   {
-    label: "Manage automations",
+    label: "Reduce days of work to hours",
     art: { kind: "manageAgents" },
     col: "1 / span 4",
     row: "2",
   },
   {
-    label: "Structure knowledge",
-    art: { kind: "agentsAct" },
+    label: "Unlock collective intelligence",
+    art: { kind: "collectiveSearch" },
     col: "5 / span 4",
     row: "2",
   },
   {
-    label: "Unlock collective intelligence",
-    art: { kind: "collectiveSearch" },
+    label: "Govern ontology of your data",
+    art: { kind: "agentsAct" },
     col: "9 / span 4",
     row: "2",
   },
@@ -121,7 +121,7 @@ export const AgentsBentoSection: React.FC = () => (
                 ) : tile.art.kind === "agentsAct" ? (
                   <AgentsActArt />
                 ) : tile.art.kind === "manageAgents" ? (
-                  <ManageAgentsArt />
+                  <CollapsingStackArt />
                 ) : (
                   <BentoIsoImage src={tile.art.src} />
                 )}

@@ -123,7 +123,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
           h="auto"
           fontFamily="body"
           fontSize="14px"
-          fontWeight="normal"
+          fontWeight="light"
           lineHeight="21px"
           onClick={onCtaClick}
           {...ctaButtonHoverWithArrowProps}

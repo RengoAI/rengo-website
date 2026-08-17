@@ -21,7 +21,7 @@ const PALETTE: Record<
   SquareKind,
   { bg: string; fg: string; label: string; Icon: LucideIcon | null }
 > = {
-  timeSeries: { bg: "#b3d0d4", fg: "#4d666b", label: "Time series", Icon: ChartNoAxesCombined },
+  timeSeries: { bg: "#A8D4FF", fg: "#4d666b", label: "Time series", Icon: ChartNoAxesCombined },
   tables:     { bg: "#a4c4b2", fg: "#2a533c", label: "Tables",      Icon: Table              },
   audio:      { bg: "#f2e6b5", fg: "#4d3e1a", label: "Audio",       Icon: AudioLines          },
   text:       { bg: "#d3dde1", fg: "#818181", label: "Text",         Icon: null               },
@@ -29,9 +29,8 @@ const PALETTE: Record<
 
 // ─── Layout constants ────────────────────────────────────────────────────────
 const SQ  = 50;           // large square side
-const JSQ = 6;            // junction square side
 const PT  = 5;            // particle square side
-const LINE_CLR = "#a9b7c6";
+const LINE_CLR = "#597299";
 
 // Column x (left edge of each square) — matches Figma proportions
 const C1X = 10;   // left col
@@ -132,17 +131,6 @@ const DataSquare: React.FC<{
     </g>
   );
 };
-
-/** Small grey square marking a branching point on the trunk. */
-const JunctionSq: React.FC<{ cx: number; cy: number }> = ({ cx, cy }) => (
-  <rect
-    x={cx - JSQ / 2}
-    y={cy - JSQ / 2}
-    width={JSQ}
-    height={JSQ}
-    fill={LINE_CLR}
-  />
-);
 
 /**
  * Tiny square that travels along an SVG path using SMIL animateMotion.
@@ -253,10 +241,6 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
         <line x1={C2R} y1={R0CY} x2={C3L} y2={R0CY} {...D} />
         <line x1={C2R} y1={R1CY} x2={C3L} y2={R1CY} {...D} />
         <line x1={C2R} y1={R2CY} x2={C3L} y2={R2CY} {...D} />
-
-        {/* ── Junction squares on trunk between rows ────────────────────── */}
-        <JunctionSq cx={TX} cy={Math.round((R0CY + R1CY) / 2)} />
-        <JunctionSq cx={TX} cy={Math.round((R1CY + R2CY) / 2)} />
 
         {/* ── Large coloured squares ────────────────────────────────────── */}
         {GRID.map((sq, i) => (
