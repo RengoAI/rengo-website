@@ -9,7 +9,7 @@ import {
 } from "@/components/layout/marketing-frame";
 import { TOP_NAV_HEIGHT } from "@/components/nav/nav-styles";
 import { HeroGridCanvas } from "@/features/landing/sections/hero-grid-canvas";
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 
 interface LandingHeroProps {
@@ -56,12 +56,10 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
           pb={10}
         >
           <Flex direction="column" align="flex-start" gap={{ base: 5, md: 7 }}>
-            <Box
+            <Text
               as="h1"
-              fontFamily="heading"
+              variant="h1"
               fontWeight={300}
-              // Sized to hold "Your data is your alpha" on a single line; the
-              // vw term keeps it from wrapping between the md and lg stops.
               fontSize={{
                 base: "clamp(28px, 7vw, 36px)",
                 md: "clamp(40px, 5.6vw, 52px)",
@@ -70,38 +68,29 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
               lineHeight={1.02}
               letterSpacing={{ base: "-1px", md: "-2px" }}
               color="indigo.900"
-              maxW="none"
-              whiteSpace={{ base: "normal", md: "nowrap" }}
+              maxW={{ base: "none", md: "820px" }}
               m={0}
             >
-              Your data is{" "}
+              Turn proprietary knowledge into{" "}
               <Box as="span" color="accent.link">
-                your alpha
+                operational leverage
               </Box>
-            </Box>
+            </Text>
 
             <Box
               as="p"
-              fontFamily="heading"
-              fontWeight={350}
-              fontSize={{ base: "26px", md: "32px" }}
-              lineHeight={1.2}
-              letterSpacing="-2px"
-              color="indigo.900"
-              maxW="680px"
+              fontFamily="body"
+              fontWeight={300}
+              fontSize={{ base: "15px", md: "17px" }}
+              lineHeight={1.6}
+              letterSpacing="normal"
+              color="slate.50"
+              maxW="520px"
               m={0}
             >
-              <Box
-                as="span"
-                fontFamily="body"
-                color="slate.50"
-                fontWeight={300}
-                fontSize="16px"
-                lineHeight={1.2}
-                letterSpacing="normal"
-              >
-                Turn proprietary knowledge into operating leverage
-              </Box>
+              Rengo gives your firm a governed data foundation for AI —
+              replacing fragmented manual workflows with firm-wide knowledge
+              that compounds over time.
             </Box>
           </Flex>
 

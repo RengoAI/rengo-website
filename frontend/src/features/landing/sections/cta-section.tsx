@@ -4,7 +4,7 @@ import {
   marketingContentPaddingX,
 } from "@/components/layout/marketing-frame";
 import { MarketingPageWidth } from "@/components/layout/marketing-page-width";
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 
 interface CtaSectionProps {
@@ -110,9 +110,9 @@ export const CtaSection: React.FC<CtaSectionProps> = ({
             w="full"
             textAlign="center"
           >
-            <Box
+            <Text
               as="h2"
-              fontFamily="heading"
+              variant="h2"
               fontWeight={350}
               fontSize={{ base: "26px", md: "36px" }}
               lineHeight={1.2}
@@ -123,7 +123,7 @@ export const CtaSection: React.FC<CtaSectionProps> = ({
               m={0}
             >
               Ready to put AI to work?
-            </Box>
+            </Text>
 
             <Button
               flexShrink={0}

@@ -26,7 +26,7 @@ export const BuiltOnToolsSpotlight: React.FC<{ showCta?: boolean }> = ({
       <Box display="flex" flexDirection="column" gap={3}>
         <Text
           as="h2"
-          fontFamily="heading"
+          variant="h2"
           fontWeight={350}
           fontSize={{ base: "22px", md: "26px" }}
           lineHeight={1.25}
