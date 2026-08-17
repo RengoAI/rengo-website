@@ -61,7 +61,7 @@ const TILES: {
 
 export const AgentsBentoSection: React.FC = () => (
   <>
-    <SectionShell borderTop bg="slate.10" py={{ base: "104px", md: "120px" }}>
+    <SectionShell borderTop bg="slate.10" py={{ base: "144px", md: "160px" }}>
       <Box display="flex" flexDirection="column" gap={{ base: 10, md: "60px" }}>
         <SectionHeading>
           Build your AI advantage
@@ -142,15 +142,15 @@ export const AgentsBentoSection: React.FC = () => (
       </Box>
     </SectionShell>
 
-    <SectionShell borderTop bg="slate.10" py={{ base: "104px", md: "120px" }}>
-      <Box display="flex" flexDirection="column" gap={{ base: 10, md: "60px" }}>
+    <SectionShell borderTop bg="slate.10" py={{ base: "144px", md: "160px" }}>
+      <Box display="flex" flexDirection="column" gap={{ base: "68px", md: "88px" }}>
         <SectionHeading maxW="820px">
           Our engineering principles
           <br />
           <Box as="span" color="indigo.900" fontWeight={300}>
-            We build AI systems for production,{" "}
+            We build AI systems for production, bringing elite engineering{" "}
             <Box as="span" color="accent.link">
-              bringing elite engineering to your business
+              to your business
             </Box>
           </Box>
         </SectionHeading>

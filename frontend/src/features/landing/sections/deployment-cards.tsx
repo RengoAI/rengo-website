@@ -2,11 +2,8 @@ import { Flex, Text, chakra } from "@chakra-ui/react";
 import React from "react";
 
 /**
- * Engineering principles — three horizontal flat cards, each with an icon,
- * title, and caption left-aligned (Figma node 171-184).
- *
- * Previous gradient-field layout replaced; glyph shapes and copy are unchanged.
- * Icon colours updated from white-on-dark to indigo-on-light.
+ * Engineering principles — bordered stacked rows (Figma node 184-1819).
+ * Glyphs and copy are unchanged.
  */
 
 // ─── Icon colours (light-background palette) ──────────────────────────────────
@@ -123,63 +120,64 @@ const CARDS: DeploymentCard[] = [
 ];
 
 // ─── Component ────────────────────────────────────────────────────────────────
-const CARD_BORDER = "#cdddf0";
+const ROW_BG = "#f0f1f2";
 
 export const DeploymentCards: React.FC = () => (
   <Flex
-    border="1px solid"
-    borderColor={CARD_BORDER}
-    borderRadius="4px"
-    overflow="hidden"
-    direction={{ base: "column", md: "row" }}
+    direction="column"
     w="full"
+    overflow="hidden"
+    borderRadius="6px"
+    border="1px solid"
+    borderColor="slate.30"
   >
     {CARDS.map((card, i) => (
       <Flex
         key={card.id}
-        flex="1"
-        minW={0}
-        direction="column"
-        gap="8px"
-        p={{ base: "24px", md: "36px" }}
-        minH={{ base: "auto", md: "209px" }}
-        justify="center"
-        borderLeft={i > 0 ? "1px solid" : undefined}
-        borderColor={i > 0 ? CARD_BORDER : undefined}
+        direction={{ base: "column", md: "row" }}
+        align={{ base: "flex-start", md: "center" }}
+        justify="space-between"
+        gap={{ base: "56px", md: "72px" }}
+        px="24px"
+        py="28px"
+        w="full"
+        bg={ROW_BG}
+        borderTop={i > 0 ? "1px solid" : undefined}
+        borderColor="slate.30"
       >
-        {/* Icon + title group */}
-        <Flex direction="column" gap="8px">
+        <Flex align="center" gap={3} flexShrink={0} minW={{ md: "260px" }}>
           <chakra.svg
-            width="32px"
-            height="32px"
+            width="48px"
+            height="48px"
             viewBox="0 0 48 48"
             aria-hidden
             flexShrink={0}
           >
             {card.glyph}
           </chakra.svg>
-
           <Text
             fontFamily="body"
             fontWeight="medium"
-            fontSize={{ base: "18px", md: "20px" }}
-            lineHeight="1.44"
-            letterSpacing="-0.8px"
-            color="#20283d"
+            fontSize="20px"
+            lineHeight="1.2"
+            letterSpacing="-0.6px"
+            color="indigo.900"
             m={0}
           >
             {card.title}
           </Text>
         </Flex>
 
-        {/* Description */}
         <Text
           fontFamily="body"
           fontWeight="normal"
-          fontSize="16px"
+          fontSize="15px"
           lineHeight="1.4"
-          color="#474a67"
+          color="ink.body"
           m={0}
+          flex="1"
+          minW={0}
+          maxW={{ md: "720px" }}
         >
           {card.caption}
         </Text>

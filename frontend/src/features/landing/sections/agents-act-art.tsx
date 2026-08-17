@@ -1,223 +1,216 @@
 import {
   AudioLines,
   ChartNoAxesCombined,
-  ScanText,
   Table,
   type LucideIcon,
 } from "lucide-react";
 import React from "react";
 
 /**
- * "Structure knowledge" — isometric cube nodes connected by dotted lines to
- * coloured modality pills; label left, icon right, space-between.
+ * "Structure knowledge" bento art.
+ *
+ * Three columns × three rows of coloured data-type squares linked by a
+ * dotted branching trunk. Tiny flat squares travel along the dotted lines
+ * and flow into the coloured squares.
  */
 
-// ─── Cube geometry ────────────────────────────────────────────────────────────
-const TOP_RATIO = 48.0 / 84.2;
-const BODY_RATIO = 48.8 / 42.1;
-const CUBE_R = 12;
-const RULE_SOFT = "#a9b7c6";
+// ─── Square type palette ─────────────────────────────────────────────────────
+type SquareKind = "timeSeries" | "tables" | "audio" | "text";
 
-/**
- * Isometric block whose right-face centre sits at (cx + CUBE_R, midY), so the
- * horizontal dotted connector line leaves from that exact midpoint.
- */
-const ScatterBlock: React.FC<{ cx: number; midY: number }> = ({ cx, midY }) => {
-  const r = CUBE_R;
-  const ry = r * TOP_RATIO;
-  const body = r * BODY_RATIO;
-  const top = midY - body / 2; // top of the vertical face
-  return (
-    <g strokeLinejoin="round" strokeWidth={0.8} stroke={RULE_SOFT}>
-      {/* left face */}
-      <polygon
-        points={`${cx - r},${top} ${cx},${top + ry} ${cx},${top + ry + body} ${cx - r},${top + body}`}
-        fill="rgba(118,140,166,0.12)"
-      />
-      {/* right face */}
-      <polygon
-        points={`${cx + r},${top} ${cx},${top + ry} ${cx},${top + ry + body} ${cx + r},${top + body}`}
-        fill="rgba(118,140,166,0.24)"
-      />
-      {/* top cap */}
-      <polygon
-        points={`${cx},${top - ry} ${cx + r},${top} ${cx},${top + ry} ${cx - r},${top}`}
-        fill="#ffffff"
-      />
-    </g>
-  );
-};
-
-// ─── Modality pill ────────────────────────────────────────────────────────────
-type ModalityKind = "text" | "tables" | "audio" | "timeSeries";
-
-/** Accent colours sourced from the Figma reference (171-1335). */
-const MODALITY: Record<
-  ModalityKind,
-  { Icon: LucideIcon; label: string; bg: string; fg: string }
+const PALETTE: Record<
+  SquareKind,
+  { bg: string; fg: string; label: string; Icon: LucideIcon | null }
 > = {
-  text: {
-    Icon: ScanText,
-    label: "Text",
-    bg: "#d3dde1",
-    fg: "#425366",
-  },
-  tables: {
-    Icon: Table,
-    label: "Tables",
-    bg: "#a4c4b2",
-    fg: "#2a533c",
-  },
-  audio: {
-    Icon: AudioLines,
-    label: "Audio",
-    bg: "#f2e6b5",
-    fg: "#4d3e1a",
-  },
-  timeSeries: {
-    Icon: ChartNoAxesCombined,
-    label: "Time series",
-    bg: "#b3d0d4",
-    fg: "#4d666b",
-  },
+  timeSeries: { bg: "#b3d0d4", fg: "#4d666b", label: "Time series", Icon: ChartNoAxesCombined },
+  tables:     { bg: "#a4c4b2", fg: "#2a533c", label: "Tables",      Icon: Table              },
+  audio:      { bg: "#f2e6b5", fg: "#4d3e1a", label: "Audio",       Icon: AudioLines          },
+  text:       { bg: "#d3dde1", fg: "#818181", label: "Text",         Icon: null               },
 };
 
-const PILL_W = 118;
-const PILL_H = 36;
-const PILL_RX = 5;
-const PILL_ICON_SIZE = 16;
-const PILL_FONT_SIZE = 12;
+// ─── Layout constants ────────────────────────────────────────────────────────
+const SQ  = 50;           // large square side
+const JSQ = 6;            // junction square side
+const PT  = 5;            // particle square side
+const LINE_CLR = "#a9b7c6";
 
-/** Rounded pill with label left and icon right. */
-const ModalityPill: React.FC<{
-  cx: number;
-  cy: number;
-  kind: ModalityKind;
-}> = ({ cx, cy, kind }) => {
-  const { Icon, label, bg, fg } = MODALITY[kind];
-  const x = cx - PILL_W / 2;
-  const y = cy - PILL_H / 2;
+// Column x (left edge of each square) — matches Figma proportions
+const C1X = 10;   // left col
+const C2X = 102;  // middle col  (42px gap from col1 right edge)
+const C3X = 177;  // right col   (25px gap from col2 right edge)
+
+// Row y (top edge of each square)
+const R0Y = 12;
+const R1Y = 82;   // 70px pitch keeps gaps proportional to Figma
+const R2Y = 152;
+
+// Derived edges / centres
+const C1R  = C1X + SQ;       // 60  — col1 right edge
+const C2L  = C2X;            // 102 — col2 left edge
+const C2R  = C2X + SQ;       // 152 — col2 right edge
+const C3L  = C3X;            // 177 — col3 left edge
+const R0CY = R0Y + SQ / 2;   // 37
+const R1CY = R1Y + SQ / 2;   // 107
+const R2CY = R2Y + SQ / 2;   // 177
+
+// Trunk x midpoint between col1 right and col2 left
+const TX = Math.round((C1R + C2L) / 2);  // 81
+
+// ViewBox
+const VB_W = C3X + SQ + 10;   // 237
+const VB_H = R2Y + SQ + 10;   // 212
+
+// ─── Grid definition ─────────────────────────────────────────────────────────
+const GRID: Array<{ col: 0 | 1 | 2; row: 0 | 1 | 2; kind: SquareKind }> = [
+  // Col 0 — left source squares
+  { col: 0, row: 0, kind: "text"       },
+  { col: 0, row: 1, kind: "tables"     },
+  { col: 0, row: 2, kind: "audio"      },
+  // Col 1 — middle typed squares
+  { col: 1, row: 0, kind: "timeSeries" },
+  { col: 1, row: 1, kind: "text"       },
+  { col: 1, row: 2, kind: "tables"     },
+  // Col 2 — right grey squares
+  { col: 2, row: 0, kind: "text"       },
+  { col: 2, row: 1, kind: "text"       },
+  { col: 2, row: 2, kind: "text"       },
+];
+
+const COL_X: [number, number, number] = [C1X, C2X, C3X];
+const ROW_Y: [number, number, number] = [R0Y, R1Y, R2Y];
+
+// ─── Sub-components ──────────────────────────────────────────────────────────
+
+const DataSquare: React.FC<{
+  col: 0 | 1 | 2;
+  row: 0 | 1 | 2;
+  kind: SquareKind;
+}> = ({ col, row, kind }) => {
+  const x = COL_X[col];
+  const y = ROW_Y[row];
+  const { bg, fg, label, Icon } = PALETTE[kind];
+  const LABEL_FS = 7.2;
+  const ICON_SZ  = 12;
+
   return (
     <g>
-      <rect x={x} y={y} width={PILL_W} height={PILL_H} rx={PILL_RX} fill={bg} />
-      <foreignObject
-        x={x}
-        y={y}
-        width={PILL_W}
-        height={PILL_H}
-        xmlns="http://www.w3.org/1999/xhtml"
+      <rect x={x} y={y} width={SQ} height={SQ} rx={1.8} fill={bg} />
+      {/* Label — top-left of square */}
+      <text
+        x={x + 4}
+        y={y + 4 + LABEL_FS}
+        style={{
+          fontFamily: "var(--rengo-fonts-body, system-ui, sans-serif)",
+          fontSize: `${LABEL_FS}px`,
+          fontWeight: 400,
+          fill: fg,
+          letterSpacing: "-0.36px",
+        }}
       >
-        <div
-          style={{
-            boxSizing: "border-box",
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            padding: "0 10px",
-          }}
+        {label}
+      </text>
+      {/* Icon — bottom-left of square (coloured types only) */}
+      {Icon && (
+        <foreignObject
+          x={x + 3}
+          y={y + SQ - ICON_SZ - 5}
+          width={ICON_SZ}
+          height={ICON_SZ}
         >
-          <span
+          <div
             style={{
-              fontFamily: "var(--rengo-fonts-body, system-ui, sans-serif)",
-              fontSize: `${PILL_FONT_SIZE}px`,
-              fontWeight: 500,
-              lineHeight: "1",
-              letterSpacing: "-0.2px",
-              color: fg,
-              whiteSpace: "nowrap",
+              width: ICON_SZ,
+              height: ICON_SZ,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            {label}
-          </span>
-          <Icon
-            size={PILL_ICON_SIZE}
-            strokeWidth={1.75}
-            color={fg}
-            aria-hidden
-          />
-        </div>
-      </foreignObject>
+            <Icon size={ICON_SZ} strokeWidth={1.5} color={fg} aria-hidden />
+          </div>
+        </foreignObject>
+      )}
     </g>
   );
 };
 
-// ─── Layout constants ─────────────────────────────────────────────────────────
-const VB_W = 380;
-const ROW_PITCH = 54;
-const ROW_TOP_Y = 32;
-const rowCY = (i: number) => ROW_TOP_Y + i * ROW_PITCH;
-
-/** X-centre of the right-side pill column. */
-const PILL_CX = VB_W - 22 - PILL_W / 2; // ≈ 306
-const PILL_LEFT = PILL_CX - PILL_W / 2; // ≈ 254
-
-/**
- * Four cube nodes forming two T-junction pairs (matching Figma 173-1453).
- *
- * Topology:
- *   CUBE_LT ──→ trunk_a ──→ [Text arm]
- *                       └──→ CUBE_MT ──→ [Tables arm]
- *
- *   CUBE_LB ──→ trunk_b ──→ [Audio arm]
- *                       └──→ CUBE_MB ──→ [TimeSeries arm]
- *
- * midY is the right-face centre Y, placing the horizontal connector
- * between the two rows each cube serves.
- */
-const CUBE_LT = { cx: 42, midY: 44 }; // main cube: Text + Tables (between rows 0 & 1)
-const CUBE_LB = { cx: 52, midY: 169 }; // main cube: Audio + TimeSeries (between rows 2 & 3)
-const CUBE_MT = { cx: 196, midY: rowCY(1) }; // junction cube at Tables row
-const CUBE_MB = { cx: 162, midY: rowCY(3) }; // junction cube at TimeSeries row
-
-/** X of the vertical trunk for each cluster. */
-const TRUNK_A_X = 78; // top cluster (Text / Tables)
-const TRUNK_B_X = 134; // bottom cluster (Audio / TimeSeries) — scaled from Figma Vector252
-
-const VB_H = rowCY(3) + ROW_PITCH / 2 + 12; // ≈ 233
+/** Small grey square marking a branching point on the trunk. */
+const JunctionSq: React.FC<{ cx: number; cy: number }> = ({ cx, cy }) => (
+  <rect
+    x={cx - JSQ / 2}
+    y={cy - JSQ / 2}
+    width={JSQ}
+    height={JSQ}
+    fill={LINE_CLR}
+  />
+);
 
 /**
- * All dotted line segments that form the tree.
- * Each entry is [x1, y1, x2, y2].
+ * Tiny square that travels along an SVG path using SMIL animateMotion.
+ * Fades in at the start and out just before the snap-back to hide the reset.
  */
-const TREE_LINES: [number, number, number, number][] = [
-  // ── Top cluster ───────────────────────────────────────────────────────────
-  // Cube_LT right-face → trunk_a (horizontal)
-  [CUBE_LT.cx + CUBE_R, CUBE_LT.midY, TRUNK_A_X, CUBE_LT.midY],
-  // Trunk vertical: Text row → Tables row
-  [TRUNK_A_X, rowCY(0), TRUNK_A_X, rowCY(1)],
-  // Text arm: trunk_a top → Text pill left
-  [TRUNK_A_X, rowCY(0), PILL_LEFT, rowCY(0)],
-  // Tables arm: trunk_a bottom → Cube_MT left face
-  [TRUNK_A_X, rowCY(1), CUBE_MT.cx - CUBE_R, rowCY(1)],
-  // Cube_MT right face → Tables pill left
-  [CUBE_MT.cx + CUBE_R, rowCY(1), PILL_LEFT, rowCY(1)],
+const MovingParticle: React.FC<{
+  path: string;
+  dur: string;
+  begin: string;
+}> = ({ path, dur, begin }) => (
+  /* eslint-disable react/no-unknown-property */
+  <g>
+    <rect
+      x={-PT / 2}
+      y={-PT / 2}
+      width={PT}
+      height={PT}
+      rx={0.5}
+      fill={LINE_CLR}
+    />
+    <animateMotion
+      dur={dur}
+      repeatCount="indefinite"
+      begin={begin}
+      path={path}
+      rotate="none"
+      calcMode="linear"
+    />
+    <animate
+      attributeName="opacity"
+      values="0;1;1;0;0"
+      keyTimes="0;0.06;0.85;0.94;1"
+      dur={dur}
+      repeatCount="indefinite"
+      begin={begin}
+    />
+  </g>
+  /* eslint-enable react/no-unknown-property */
+);
 
-  // ── Bottom cluster ────────────────────────────────────────────────────────
-  // Cube_LB right-face → trunk_b (horizontal)
-  [CUBE_LB.cx + CUBE_R, CUBE_LB.midY, TRUNK_B_X, CUBE_LB.midY],
-  // Trunk vertical: Audio row → TimeSeries row
-  [TRUNK_B_X, rowCY(2), TRUNK_B_X, rowCY(3)],
-  // Audio arm: trunk_b top → Audio pill left
-  [TRUNK_B_X, rowCY(2), PILL_LEFT, rowCY(2)],
-  // TimeSeries arm: trunk_b bottom → Cube_MB left face
-  [TRUNK_B_X, rowCY(3), CUBE_MB.cx - CUBE_R, rowCY(3)],
-  // Cube_MB right face → TimeSeries pill left
-  [CUBE_MB.cx + CUBE_R, rowCY(3), PILL_LEFT, rowCY(3)],
-];
+// ─── Dotted line presentation props ──────────────────────────────────────────
+const D = {
+  stroke: LINE_CLR,
+  strokeWidth: 1,
+  strokeDasharray: "3 3",
+  strokeOpacity: 0.65,
+};
 
-const PILL_ROWS: Array<{ kind: ModalityKind; row: number }> = [
-  { kind: "text", row: 0 },
-  { kind: "tables", row: 1 },
-  { kind: "audio", row: 2 },
-  { kind: "timeSeries", row: 3 },
-];
+// ─── Animation travel paths ───────────────────────────────────────────────────
+// Particles start just outside a large square and end at the left edge of the
+// target square, appearing to flow into it as they fade out.
+
+const DUR       = "3.2s";
+const DUR_SHORT = "2s";
+
+// Col1 → trunk → Col2 (straight, row 0)
+const p_r0_direct = `M ${C1R},${R0CY} H ${TX} H ${C2L}`;
+
+// Col1 → trunk → branch down → Col2 (different row — shows tree routing)
+const p_r0_to_r1 = `M ${C1R},${R0CY} H ${TX} V ${R1CY} H ${C2L}`;
+const p_r1_to_r2 = `M ${C1R},${R1CY} H ${TX} V ${R2CY} H ${C2L}`;
+
+// Col2 → Col3 (short horizontal)
+const p_m_r0 = `M ${C2R},${R0CY} H ${C3L}`;
+const p_m_r1 = `M ${C2R},${R1CY} H ${C3L}`;
 
 // ─── Component ────────────────────────────────────────────────────────────────
-type AgentsActArtProps = {
-  variant?: "tile" | "compact";
-};
+type AgentsActArtProps = { variant?: "tile" | "compact" };
 
 export const AgentsActArt: React.FC<AgentsActArtProps> = ({
   variant = "tile",
@@ -229,8 +222,8 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
       style={{
         position: "relative",
         width: "100%",
-        maxWidth: isCompact ? "220px" : "340px",
-        height: isCompact ? "180px" : "220px",
+        maxWidth: isCompact ? "220px" : "320px",
+        height: isCompact ? "160px" : "200px",
         margin: "0 auto",
       }}
     >
@@ -238,39 +231,48 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
         viewBox={`0 0 ${VB_W} ${VB_H}`}
         preserveAspectRatio="xMidYMid meet"
         role="img"
-        aria-label="Cube nodes connected by a branching dotted-line tree to typed modality pills."
+        aria-label="Three-column grid of data-type squares connected by a branching dotted-line tree with flowing particle squares."
         style={{ display: "block", width: "100%", height: "100%" }}
       >
-        {/* T-junction tree: dotted line segments */}
-        {TREE_LINES.map(([x1, y1, x2, y2], i) => (
-          <line
-            key={i}
-            x1={x1}
-            y1={y1}
-            x2={x2}
-            y2={y2}
-            stroke={RULE_SOFT}
-            strokeWidth={1}
-            strokeDasharray="3 3"
-            strokeOpacity={0.6}
-          />
+        {/* ── Dotted connection lines ───────────────────────────────────── */}
+
+        {/* Col1 right → trunk (horizontal stub per row) */}
+        <line x1={C1R} y1={R0CY} x2={TX} y2={R0CY} {...D} />
+        <line x1={C1R} y1={R1CY} x2={TX} y2={R1CY} {...D} />
+        <line x1={C1R} y1={R2CY} x2={TX} y2={R2CY} {...D} />
+
+        {/* Vertical trunk */}
+        <line x1={TX} y1={R0CY} x2={TX} y2={R2CY} {...D} />
+
+        {/* Trunk → Col2 left (horizontal stub per row) */}
+        <line x1={TX} y1={R0CY} x2={C2L} y2={R0CY} {...D} />
+        <line x1={TX} y1={R1CY} x2={C2L} y2={R1CY} {...D} />
+        <line x1={TX} y1={R2CY} x2={C2L} y2={R2CY} {...D} />
+
+        {/* Col2 right → Col3 left */}
+        <line x1={C2R} y1={R0CY} x2={C3L} y2={R0CY} {...D} />
+        <line x1={C2R} y1={R1CY} x2={C3L} y2={R1CY} {...D} />
+        <line x1={C2R} y1={R2CY} x2={C3L} y2={R2CY} {...D} />
+
+        {/* ── Junction squares on trunk between rows ────────────────────── */}
+        <JunctionSq cx={TX} cy={Math.round((R0CY + R1CY) / 2)} />
+        <JunctionSq cx={TX} cy={Math.round((R1CY + R2CY) / 2)} />
+
+        {/* ── Large coloured squares ────────────────────────────────────── */}
+        {GRID.map((sq, i) => (
+          <DataSquare key={i} col={sq.col} row={sq.row} kind={sq.kind} />
         ))}
 
-        {/* Isometric cube nodes */}
-        <ScatterBlock cx={CUBE_LT.cx} midY={CUBE_LT.midY} />
-        <ScatterBlock cx={CUBE_LB.cx} midY={CUBE_LB.midY} />
-        <ScatterBlock cx={CUBE_MT.cx} midY={CUBE_MT.midY} />
-        <ScatterBlock cx={CUBE_MB.cx} midY={CUBE_MB.midY} />
+        {/* ── Animated particle squares (5 total) ──────────────────────── */}
 
-        {/* Coloured modality pills */}
-        {PILL_ROWS.map(({ kind, row }) => (
-          <ModalityPill
-            key={kind}
-            cx={PILL_CX}
-            cy={rowCY(row)}
-            kind={kind}
-          />
-        ))}
+        {/* Left → Middle */}
+        <MovingParticle path={p_r0_direct} dur={DUR}       begin="0s"    />
+        <MovingParticle path={p_r0_to_r1}  dur={DUR}       begin="-1.1s" />
+        <MovingParticle path={p_r1_to_r2}  dur={DUR}       begin="-2.1s" />
+
+        {/* Middle → Right */}
+        <MovingParticle path={p_m_r0}      dur={DUR_SHORT} begin="-0.5s" />
+        <MovingParticle path={p_m_r1}      dur={DUR_SHORT} begin="-1.5s" />
       </svg>
     </div>
   );

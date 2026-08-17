@@ -82,21 +82,24 @@ export const AppTopNav: React.FC = () => {
               borderRightStyle="solid"
               borderRightColor={marketingLayoutBorderColor}
             />
-            <Flex
+            <Box
               flex="1"
               minW={0}
               px={marketingContentPaddingX}
+              display="grid"
+              gridTemplateColumns={{ base: "1fr auto", md: "1fr auto 1fr" }}
               alignItems="center"
-              justifyContent="space-between"
             >
-              <Logo color="indigo.900" homeLink />
+              <Flex justify="flex-start" minW={0}>
+                <Logo color="indigo.900" homeLink />
+              </Flex>
 
-              {/* Desktop nav */}
               <Flex
                 as="nav"
                 gap="6px"
                 display={{ base: "none", md: "flex" }}
                 align="center"
+                justify="center"
               >
                 <SolutionsNavMenu
                   navColor={navColor}
@@ -108,51 +111,51 @@ export const AppTopNav: React.FC = () => {
                 />
               </Flex>
 
-              {/* Desktop CTAs */}
-              <Flex
-                gap="6px"
-                alignItems="center"
-                display={{ base: "none", md: "flex" }}
-              >
-                <Button
-                  variant="ghost"
-                  color={navColor}
-                  _hover={{ bg: "transparent", color: navHoverColor }}
-                  onClick={() =>
-                    window.open("https://app.rengoai.com/", "_blank")
-                  }
-                  {...topNavCtaStyles}
-                  h="34px"
-                  minH="34px"
+              <Flex justify="flex-end" minW={0}>
+                <Flex
+                  gap="6px"
+                  alignItems="center"
+                  display={{ base: "none", md: "flex" }}
                 >
-                  Log in
-                </Button>
-                <Button
-                  bg="indigo.900"
-                  color="slate.10"
-                  onClick={() =>
-                    window.open("mailto:sales@rengoai.com", "_blank")
-                  }
-                  {...topNavCtaStyles}
-                  {...ctaButtonHoverProps}
-                >
-                  Get Started
-                </Button>
-              </Flex>
+                  <Button
+                    variant="ghost"
+                    color={navColor}
+                    _hover={{ bg: "transparent", color: navHoverColor }}
+                    onClick={() =>
+                      window.open("https://app.rengoai.com/", "_blank")
+                    }
+                    {...topNavCtaStyles}
+                    h="34px"
+                    minH="34px"
+                  >
+                    Log in
+                  </Button>
+                  <Button
+                    bg="indigo.900"
+                    color="slate.10"
+                    onClick={() =>
+                      window.open("mailto:sales@rengoai.com", "_blank")
+                    }
+                    {...topNavCtaStyles}
+                    {...ctaButtonHoverProps}
+                  >
+                    Get Started
+                  </Button>
+                </Flex>
 
-              {/* Mobile hamburger */}
-              <IconButton
-                display={{ base: "flex", md: "none" }}
-                aria-label="Open menu"
-                variant="ghost"
-                size="sm"
-                color="indigo.900"
-                _hover={{ bg: "transparent" }}
-                onClick={() => setDrawerOpen(true)}
-              >
-                <Menu size={22} />
-              </IconButton>
-            </Flex>
+                <IconButton
+                  display={{ base: "flex", md: "none" }}
+                  aria-label="Open menu"
+                  variant="ghost"
+                  size="sm"
+                  color="indigo.900"
+                  _hover={{ bg: "transparent" }}
+                  onClick={() => setDrawerOpen(true)}
+                >
+                  <Menu size={22} />
+                </IconButton>
+              </Flex>
+            </Box>
             <Box
               display={{ base: "none", md: "block" }}
               w={MARKETING_GUTTER_WIDTH}

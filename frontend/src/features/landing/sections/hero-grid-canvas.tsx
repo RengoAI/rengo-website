@@ -2,7 +2,7 @@ import { Box } from "@chakra-ui/react";
 import React, { useEffect, useRef } from "react";
 
 /** Diamond edge length in px. The field repeats every 2× this. */
-const TILE = 60;
+const TILE = 48;
 const PERIOD = TILE * 2;
 const ANGLE = Math.PI / 6;
 const COS = Math.cos(ANGLE);
@@ -14,6 +14,20 @@ const DRIFT = 9;
 const HOVER_RADIUS = 3.5;
 /** Peak scale multiplier for the hovered cell itself. */
 const CELL_MAX_SCALE = 0.30;
+/**
+ * Max shrink for surrounding cells (fraction of original size).
+ * Nearest cells shrink this much; farther cells shrink less; Perlin noise adds
+ * organic variation so no two cells move by the same amount.
+ */
+const SURROUND_MAX_SHRINK = 0.18;
+/** ms to wait after hover enters a cell before the animation activates. */
+const HOVER_DELAY_MS = 0;
+/** ms over which the animation eases from 0 → 1 after the delay. */
+const ANIM_IN_MS = 280;
+/** ms for the fade-out when the pointer leaves. */
+const ANIM_OUT_MS = 180;
+/** Number of previously visited cells whose labels appear in the trail. */
+const TRAIL_LENGTH = 5;
 /** Perlin spatial and temporal frequencies. */
 const NOISE_SPACE = 0.38;
 const NOISE_TIME = 0.30;
@@ -144,6 +158,12 @@ const cellAt = (
   return best;
 };
 
+/** Smoothstep easing: t → 0‥1 ease-in-out (clamped). */
+const smoothstep = (t: number) => {
+  const c = Math.max(0, Math.min(1, t));
+  return c * c * (3 - 2 * c);
+};
+
 // ── Component ────────────────────────────────────────────────────────────────
 export const HeroGridCanvas: React.FC = () => {
   const gridRef  = useRef<HTMLCanvasElement>(null);
@@ -165,13 +185,28 @@ export const HeroGridCanvas: React.FC = () => {
     ).matches;
 
     let width = 0, height = 0;
-    let offset  = 0;   // accumulated drift
-    let elapsed = 0;   // accumulated time in seconds
+    let offset  = 0;   // accumulated drift (px)
+    let elapsed = 0;   // accumulated time (seconds)
     let pointer: { x: number; y: number } | null = null;
-    let hovCell: { gx: number; gy: number } | null = null;
     let visible = true;
     let frame   = 0;
     let lastTime = performance.now();
+
+    // Hover animation state ──────────────────────────────────────────────────
+    /** Cell whose animation we are currently driving (persists during exit). */
+    let animCell: { gx: number; gy: number } | null = null;
+    /** performance.now() when the pointer first entered animCell. */
+    let enterTime = 0;
+    /**
+     * 0 → 1 animation progress.
+     * Stays 0 for the first HOVER_DELAY_MS ms, then eases to 1 over ANIM_IN_MS,
+     * then decays back to 0 over ANIM_OUT_MS when the pointer leaves.
+     */
+    let animProg = 0;
+    /** Last TRAIL_LENGTH cells visited, newest first. */
+    let trail: Array<{ gx: number; gy: number }> = [];
+    /** Shared 0→1 opacity multiplier for the entire trail. */
+    let trailAlpha = 0;
 
     // ── Grid layer ──────────────────────────────────────────────────────────
     const drawGrid = () => {
@@ -179,7 +214,7 @@ export const HeroGridCanvas: React.FC = () => {
       gCtx.clearRect(0, 0, width, height);
       gCtx.strokeStyle = GRID_LINE;
       gCtx.lineWidth   = 1;
-      gCtx.setLineDash([3, 3]);
+      gCtx.setLineDash([1, 1]);
 
       const shift = offset % PERIOD;
       const span  = Math.ceil(Math.max(width, height) / (TILE * SIN)) + 2;
@@ -204,80 +239,141 @@ export const HeroGridCanvas: React.FC = () => {
     };
 
     // ── Hover layer ─────────────────────────────────────────────────────────
-    const drawHover = (t: number) => {
+    /**
+     * Draws the hover animation driven by `prog` (0 → 1):
+     *  - Surrounding cells: shrink with Perlin noise as a per-cell coefficient.
+     *    A bg-colour fill covers the original diamond area first, then the shrunk
+     *    outline is redrawn — making the contraction visually clear against the
+     *    fixed grid beneath.
+     *  - Hovered cell (drawn last, on top): expands with an animated gradient.
+     *    Finance label fades in once prog > 0.6.
+     */
+    const drawHover = (t: number, prog: number) => {
       hCtx.clearRect(0, 0, width, height);
-      if (!hovCell) return;
+      if (prog <= 0.001 || !animCell) return;
 
-      const { gx: hgx, gy: hgy } = hovCell;
+      const { gx: hgx, gy: hgy } = animCell;
       const ox = offset % PERIOD;
       const R  = Math.ceil(HOVER_RADIUS) + 1;
 
       hCtx.save();
-      hCtx.setLineDash([]); // solid borders on all affected diamonds
+      hCtx.setLineDash([]);
 
+      // ── Pass 1: surrounding cells shrink ──────────────────────────────────
       for (let dgx = -R; dgx <= R; dgx++) {
         for (let dgy = -R; dgy <= R; dgy++) {
+          if (dgx === 0 && dgy === 0) continue;
           const dist = Math.sqrt(dgx * dgx + dgy * dgy);
           if (dist > HOVER_RADIUS) continue;
 
           const gx = hgx + dgx;
           const gy = hgy + dgy;
           const [cx, cy] = cellCenter(width, height, gx, gy, ox);
-          const isHov    = dgx === 0 && dgy === 0;
+          const falloff   = Math.max(0, 1 - dist / HOVER_RADIUS);
 
-          // Perlin: each cell gets independent organic scale variation
+          // Perlin noise as a per-cell transformation coefficient
           const n = (noise2(
             gx * NOISE_SPACE + t * NOISE_TIME,
             gy * NOISE_SPACE - t * NOISE_TIME * 0.65,
           ) + 1) / 2; // 0 → 1
 
-          const falloff  = Math.max(0, 1 - dist / HOVER_RADIUS);
-          const scaleMod = falloff * falloff * (0.4 + 0.6 * n);
-          const s        = 1 + scaleMod * CELL_MAX_SCALE * (isHov ? 1.0 : 0.55);
+          // Nearest cells shrink most; noise adds organic irregularity
+          const shrinkCoef = falloff * falloff * (0.35 + 0.65 * n);
+          const s = Math.max(0.68, 1 - prog * SURROUND_MAX_SHRINK * shrinkCoef);
 
-          // Draw scaled diamond path
-          const corners = diamond(cx, cy, s);
+          // Step A: flood full-size diamond with bg colour to erase grid lines
+          //         inside it — makes the contraction legible.
+          const fullC = diamond(cx, cy, 1.0);
           hCtx.beginPath();
-          hCtx.moveTo(corners[0][0], corners[0][1]);
-          for (let i = 1; i < corners.length; i++)
-            hCtx.lineTo(corners[i][0], corners[i][1]);
+          hCtx.moveTo(fullC[0][0], fullC[0][1]);
+          for (let i = 1; i < fullC.length; i++) hCtx.lineTo(fullC[i][0], fullC[i][1]);
           hCtx.closePath();
-
-          if (isHov) {
-            // Soft animated gradient: direction and intensity driven by Perlin
-            const angle = noise2(t * 0.42, hgx * 0.18 + hgy * 0.21) * Math.PI * 2;
-            const r     = TILE * COS * s;
-            const grd   = hCtx.createLinearGradient(
-              cx + Math.cos(angle) * r, cy + Math.sin(angle) * r,
-              cx - Math.cos(angle) * r, cy - Math.sin(angle) * r,
-            );
-            const intensity =
-              0.10 + 0.09 * ((noise2(t * 0.65 + 5, hgx * 0.3 + hgy * 0.2) + 1) / 2);
-            grd.addColorStop(0,    `rgba(${HOVER_RGB}, 0)`);
-            grd.addColorStop(0.28, `rgba(${HOVER_RGB}, ${(intensity * 0.5).toFixed(3)})`);
-            grd.addColorStop(0.62, `rgba(${HOVER_RGB}, ${intensity.toFixed(3)})`);
-            grd.addColorStop(1,    `rgba(${HOVER_RGB}, 0)`);
-            hCtx.fillStyle = grd;
-          } else {
-            // Surrounding cells: very faint grey, noise-modulated
-            hCtx.fillStyle = `rgba(169,183,198,${(falloff * 0.065 * n).toFixed(3)})`;
-          }
+          hCtx.fillStyle = `rgba(245,245,246,${(falloff * prog * 0.86).toFixed(3)})`;
           hCtx.fill();
 
-          // Hairline border — very faint so it reinforces shape without distracting
-          hCtx.strokeStyle = `rgba(169,183,198,${(falloff * 0.14 * n).toFixed(3)})`;
-          hCtx.lineWidth   = 0.6;
+          // Step B: redraw the shrunk outline (same colour as the grid)
+          const shrC = diamond(cx, cy, s);
+          hCtx.beginPath();
+          hCtx.moveTo(shrC[0][0], shrC[0][1]);
+          for (let i = 1; i < shrC.length; i++) hCtx.lineTo(shrC[i][0], shrC[i][1]);
+          hCtx.closePath();
+          hCtx.strokeStyle = `rgba(169,183,198,${(falloff * 0.55 * prog).toFixed(3)})`;
+          hCtx.lineWidth   = 1;
           hCtx.stroke();
         }
       }
 
-      // Finance label at centre of hovered cell
-      const [hcx, hcy] = cellCenter(width, height, hgx, hgy, ox);
-      hCtx.font          = '7px "Chivo Mono","Geist Mono",monospace';
-      hCtx.textAlign     = "center";
-      hCtx.textBaseline  = "middle";
-      hCtx.fillStyle     = "rgba(130,152,175,0.58)";
-      hCtx.fillText(cellLabel(hgx, hgy), hcx, hcy);
+      // ── Pass 2: trail labels (oldest → newest so newest is on top) ────────
+      if (trailAlpha > 0.002) {
+        hCtx.font         = '7px "Chivo Mono","Geist Mono",monospace';
+        hCtx.textAlign    = "center";
+        hCtx.textBaseline = "middle";
+
+        for (let idx = trail.length - 1; idx >= 0; idx--) {
+          const { gx, gy } = trail[idx];
+          const [cx, cy]   = cellCenter(width, height, gx, gy, ox);
+          // ageFactor: 0 (newest) → ~0.85, TRAIL_LENGTH-1 (oldest) → ~0.17
+          const ageFactor  = 1 - (idx + 1) / (TRAIL_LENGTH + 1);
+          const labelAlpha = ageFactor * trailAlpha * 0.65;
+          if (labelAlpha < 0.003) continue;
+
+          // Faint diamond fill to ground the text
+          const corners = diamond(cx, cy, 1.0);
+          hCtx.beginPath();
+          hCtx.moveTo(corners[0][0], corners[0][1]);
+          for (let i = 1; i < corners.length; i++) hCtx.lineTo(corners[i][0], corners[i][1]);
+          hCtx.closePath();
+          hCtx.fillStyle = `rgba(${HOVER_RGB}, ${(ageFactor * 0.055 * trailAlpha).toFixed(3)})`;
+          hCtx.fill();
+
+          // Finance label
+          hCtx.fillStyle = `rgba(130,152,175,${labelAlpha.toFixed(3)})`;
+          hCtx.fillText(cellLabel(gx, gy), cx, cy);
+        }
+      }
+
+      // ── Pass 3: hovered cell expands on top ───────────────────────────────
+      {
+        const [cx, cy] = cellCenter(width, height, hgx, hgy, ox);
+        const s        = 1 + prog * CELL_MAX_SCALE;
+        const corners  = diamond(cx, cy, s);
+
+        hCtx.beginPath();
+        hCtx.moveTo(corners[0][0], corners[0][1]);
+        for (let i = 1; i < corners.length; i++) hCtx.lineTo(corners[i][0], corners[i][1]);
+        hCtx.closePath();
+
+        // Animated gradient: direction and intensity driven by Perlin
+        const angle = noise2(t * 0.42, hgx * 0.18 + hgy * 0.21) * Math.PI * 2;
+        const r     = TILE * COS * s;
+        const grd   = hCtx.createLinearGradient(
+          cx + Math.cos(angle) * r, cy + Math.sin(angle) * r,
+          cx - Math.cos(angle) * r, cy - Math.sin(angle) * r,
+        );
+        const intensity =
+          prog * (0.10 + 0.09 * ((noise2(t * 0.65 + 5, hgx * 0.3 + hgy * 0.2) + 1) / 2));
+        grd.addColorStop(0,    `rgba(${HOVER_RGB}, 0)`);
+        grd.addColorStop(0.28, `rgba(${HOVER_RGB}, ${(intensity * 0.5).toFixed(3)})`);
+        grd.addColorStop(0.62, `rgba(${HOVER_RGB}, ${intensity.toFixed(3)})`);
+        grd.addColorStop(1,    `rgba(${HOVER_RGB}, 0)`);
+        hCtx.fillStyle = grd;
+        hCtx.fill();
+
+        // Hairline border
+        hCtx.strokeStyle = `rgba(169,183,198,${(0.28 * prog).toFixed(3)})`;
+        hCtx.lineWidth   = 0.6;
+        hCtx.stroke();
+
+        // Finance label — fades in after prog crosses 0.6
+        const labelAlpha = Math.max(0, (prog - 0.6) / 0.4) * 0.58;
+        if (labelAlpha > 0.001) {
+          hCtx.font         = '7px "Chivo Mono","Geist Mono",monospace';
+          hCtx.textAlign    = "center";
+          hCtx.textBaseline = "middle";
+          hCtx.fillStyle    = `rgba(130,152,175,${labelAlpha.toFixed(3)})`;
+          hCtx.fillText(cellLabel(hgx, hgy), cx, cy);
+        }
+      }
 
       hCtx.restore();
     };
@@ -294,11 +390,49 @@ export const HeroGridCanvas: React.FC = () => {
 
       drawGrid();
 
-      hovCell = pointer
+      // Resolve which cell is under the pointer this frame
+      const curCell = pointer
         ? cellAt(width, height, pointer.x, pointer.y, offset % PERIOD)
         : null;
 
-      drawHover(elapsed);
+      if (curCell) {
+        const changed =
+          !animCell ||
+          animCell.gx !== curCell.gx ||
+          animCell.gy !== curCell.gy;
+
+        if (changed) {
+          // Push outgoing cell to the front of the trail, cap at TRAIL_LENGTH
+          if (animCell) {
+            trail = [{ gx: animCell.gx, gy: animCell.gy }, ...trail].slice(0, TRAIL_LENGTH);
+          }
+          // Pointer entered a new cell — reset the delay timer and progress
+          animCell  = { gx: curCell.gx, gy: curCell.gy };
+          enterTime = now;
+          animProg  = 0;
+        } else {
+          // Same cell: advance progress only after the HOVER_DELAY_MS window
+          const waited = now - enterTime - HOVER_DELAY_MS;
+          animProg = waited > 0
+            ? smoothstep(Math.min(1, waited / ANIM_IN_MS))
+            : 0;
+        }
+        // Trail fades in quickly while any cell is hovered
+        trailAlpha = Math.min(1, trailAlpha + delta / 80);
+      } else {
+        // Pointer left — fade out everything, then clear state
+        if (animProg > 0) {
+          animProg = Math.max(0, animProg - delta / ANIM_OUT_MS);
+        }
+        trailAlpha = Math.max(0, trailAlpha - delta / ANIM_OUT_MS);
+        if (animProg <= 0) {
+          animCell   = null;
+          trail      = [];
+          trailAlpha = 0;
+        }
+      }
+
+      drawHover(elapsed, animProg);
     };
 
     const resize = () => {
@@ -324,7 +458,7 @@ export const HeroGridCanvas: React.FC = () => {
       pointer =
         x >= 0 && x <= r.width && y >= 0 && y <= r.height ? { x, y } : null;
     };
-    const onLeave = () => { pointer = null; hovCell = null; };
+    const onLeave = () => { pointer = null; };
 
     resize();
     window.addEventListener("resize", resize);

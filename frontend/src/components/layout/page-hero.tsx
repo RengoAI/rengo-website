@@ -92,61 +92,25 @@ export const PageHero: React.FC<PageHeroProps> = ({
           w="full"
         >
           {eyebrow && (
-            <Text
-              fontFamily="mono"
-              fontSize="xs"
-              letterSpacing="0.18em"
-              textTransform="uppercase"
-              color="slate.50"
-              m={0}
-            >
+            <Text variant="overline" m={0}>
               {eyebrow}
             </Text>
           )}
 
-          <Box
-            as="h1"
-            fontFamily="heading"
-            fontWeight={300}
-            fontSize={{
-              base: "clamp(30px, 7.6vw, 40px)",
-              md: "clamp(44px, 6.6vw, 62px)",
-              lg: "clamp(52px, 5.8vw, 72px)",
-            }}
-            lineHeight={1.02}
-            letterSpacing={{ base: "-1.5px", md: "-3px" }}
-            color="indigo.900"
-            maxW="none"
-            whiteSpace={{ base: "normal", md: "nowrap" }}
-            m={0}
-            textAlign="left"
-          >
+          <Text as="h1" variant="h1" maxW="none" m={0}>
             {headline}
-          </Box>
+          </Text>
 
           {subtext && (
-            <Box
+            <Text
               as="p"
-              fontFamily="heading"
-              fontWeight={350}
-              fontSize={{ base: "24px", md: "30px" }}
-              lineHeight={1.2}
-              letterSpacing="-2px"
-              color="indigo.900"
+              variant="body"
+              color="slate.50"
               maxW={subtextMaxW}
               m={0}
-              textAlign="left"
             >
-              <Box
-                as="span"
-                color="slate.50"
-                fontWeight={300}
-                fontSize={{ base: "18px", md: "26px" }}
-                lineHeight={1.2}
-              >
-                {subtext}
-              </Box>
-            </Box>
+              {subtext}
+            </Text>
           )}
         </Flex>
 

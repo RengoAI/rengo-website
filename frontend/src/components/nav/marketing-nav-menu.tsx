@@ -137,24 +137,6 @@ export const MarketingNavMenu: React.FC<MarketingNavMenuProps> = ({
           onMouseLeave={scheduleClose}
           overflow="hidden"
         >
-          <Box
-            px={7}
-            py={3}
-            bg="slate.10"
-            borderBottom="1px solid"
-            borderColor={marketingLayoutBorderColor}
-          >
-            <Text
-              fontFamily="body"
-              fontSize="14px"
-              fontWeight="medium"
-              lineHeight="16px"
-              color="ink.body"
-              m={0}
-            >
-              {label}
-            </Text>
-          </Box>
           <Flex direction="column" align="stretch">
             {items.map((item) => (
               <Box

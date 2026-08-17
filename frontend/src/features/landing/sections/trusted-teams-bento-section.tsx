@@ -140,7 +140,7 @@ export const TrustedTeamsBentoSection: React.FC = () => {
   const { ref, revealed } = useRevealOnScroll();
 
   return (
-    <SectionShell borderTop bg="slate.10" py={{ base: "104px", md: "120px" }}>
+    <SectionShell borderTop bg="slate.10" py={{ base: "144px", md: "160px" }}>
       <Box display="flex" flexDirection="column" gap={{ base: 10, md: "60px" }}>
         <SectionHeading maxW="720px">
           Trusted by teams deploying AI

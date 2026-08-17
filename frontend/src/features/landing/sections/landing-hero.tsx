@@ -59,16 +59,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
             <Text
               as="h1"
               variant="h1"
-              fontWeight={300}
-              fontSize={{
-                base: "clamp(28px, 7vw, 36px)",
-                md: "clamp(40px, 5.6vw, 52px)",
-                lg: "clamp(48px, 5vw, 60px)",
-              }}
-              lineHeight={1.02}
-              letterSpacing={{ base: "-1px", md: "-2px" }}
-              color="indigo.900"
-              maxW={{ base: "none", md: "820px" }}
+              maxW={{ base: "none", md: "590px" }}
               m={0}
             >
               Turn proprietary knowledge into{" "}

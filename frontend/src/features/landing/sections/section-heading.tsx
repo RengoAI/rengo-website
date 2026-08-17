@@ -48,11 +48,6 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
     <Text
       as="h2"
       variant="h2"
-      fontWeight={350}
-      fontSize={{ base: "28px", md: "36px" }}
-      lineHeight={{ base: "32px", md: "40px" }}
-      letterSpacing="-0.72px"
-      color="indigo.900"
       m={0}
       pl={flushToRim || !showAccent ? 0 : sectionHeadingTextPl}
     >
