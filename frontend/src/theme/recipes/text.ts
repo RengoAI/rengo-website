@@ -5,36 +5,42 @@ export const textRecipe = defineRecipe({
   variants: {
     variant: {
       h1: {
-        fontSize: "4xl",
+        fontFamily: "heading",
+        fontSize: "3xl",
         fontWeight: "normal",
-        lineHeight: "3rem",
+        lineHeight: "1.25rem",
         textColor: "gray.800",
       },
       h2: {
-        fontSize: "3xl",
+        fontFamily: "heading",
+        fontSize: "2xl",
         fontWeight: "normal",
         lineHeight: "2.4375rem",
         textColor: "gray.800",
       },
       h3: {
-        fontSize: "2xl",
+        fontFamily: "heading",
+        fontSize: "xl",
         fontWeight: "normal",
         lineHeight: "1.8125rem",
         textColor: "gray.800",
       },
       h4: {
+        fontFamily: "heading",
         fontSize: "xl",
         fontWeight: "normal",
         lineHeight: "1.5rem",
         textColor: "gray.800",
       },
       h5: {
+        fontFamily: "heading",
         fontSize: "lg",
         fontWeight: "normal",
         lineHeight: "1.375rem",
         textColor: "gray.800",
       },
       h6: {
+        fontFamily: "heading",
         fontSize: "md",
         fontWeight: "normal",
         lineHeight: "1.25rem",
