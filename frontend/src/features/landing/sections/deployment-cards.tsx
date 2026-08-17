@@ -1,4 +1,4 @@
-import { Flex, Text, chakra } from "@chakra-ui/react";
+import { Box, Flex, Text, chakra } from "@chakra-ui/react";
 import React from "react";
 
 /**
@@ -9,7 +9,6 @@ import React from "react";
 // ─── Icon colours (light-background palette) ──────────────────────────────────
 const ICON_900 = "#124476"; // indigo.700 — strongest
 const ICON_600 = "#3169a8"; // primary_400
-const ICON_300 = "#88aad4"; // primary_200 — lightest accent
 
 // ─── Loop glyph (Compound knowledge) ─────────────────────────────────────────
 const LOOP = { cx: 24, cy: 24, r: 15 };
@@ -26,40 +25,49 @@ const loopPoint = (deg: number) => {
 
 const BAR_YS = [12, 22, 32] as const;
 const BAR_CYCLE = "3.6s";
+const BAR_A = "#B3D0D4";
+const BAR_B = "#6DB9C6";
+const BAR_C = "#608187";
 
 const FoundationBarsGlyph: React.FC = () => (
-  <chakra.g
-    css={{
-      "@keyframes rengo-bar-cycle": {
-        "0%, 100%": { fill: ICON_300 },
-        "33.333%": { fill: ICON_600 },
-        "66.666%": { fill: ICON_900 },
-      },
-      "@media (prefers-reduced-motion: reduce)": {
-        "& rect": { animation: "none" },
-      },
-    }}
-  >
-    {BAR_YS.map((y, i) => (
-      <chakra.rect
-        key={y}
-        x="10"
-        y={y}
-        width="28"
-        height="7"
-        rx="1.5"
-        fill={i === 0 ? ICON_300 : i === 1 ? ICON_600 : ICON_900}
-        style={{
-          animation: `rengo-bar-cycle ${BAR_CYCLE} ease-in-out infinite`,
-          animationDelay: `${-i * 1.2}s`,
-        }}
-      />
-    ))}
-  </chakra.g>
+  <>
+    <style>{`
+      @keyframes rengo-bar-cycle {
+        0%, 100% { fill: ${BAR_A}; }
+        33.333% { fill: ${BAR_B}; }
+        66.666% { fill: ${BAR_C}; }
+      }
+      .rengo-bar-cycle {
+        animation: rengo-bar-cycle ${BAR_CYCLE} ease-in infinite;
+      }
+      .rengo-bar-cycle-1 { animation-delay: -1.2s; }
+      .rengo-bar-cycle-2 { animation-delay: -2.4s; }
+      @media (prefers-reduced-motion: reduce) {
+        .rengo-bar-cycle { animation: none !important; }
+      }
+    `}</style>
+    <g>
+      {BAR_YS.map((y, i) => (
+        <rect
+          key={y}
+          className={`rengo-bar-cycle rengo-bar-cycle-${i}`}
+          x="10"
+          y={y}
+          width="28"
+          height="7"
+          rx="1.5"
+        />
+      ))}
+    </g>
+  </>
 );
 
+const LOOP_A = "#92D1AE";
+const LOOP_B = "#446959";
+const LOOP_C = "#A4C4B2";
+
 const ApplyLearningsLoopGlyph: React.FC = () => {
-  const legColors = [ICON_300, ICON_600, ICON_900, ICON_300];
+  const legColors = [LOOP_A, LOOP_B, LOOP_C, LOOP_A];
   const legs = LOOP_NODE_DEG.map((deg, i) => {
     const from = loopPoint(deg + LOOP_GAP_DEG);
     const toDeg = deg + 90 - LOOP_GAP_DEG;
@@ -96,12 +104,53 @@ const ApplyLearningsLoopGlyph: React.FC = () => {
   );
 };
 
+const DOT_R = 1.6;
+const DOT_GAP = (2 * 48) / 80;
+const DOT_STEP = DOT_R * 2 + DOT_GAP;
+const DOT_XS = [24 - DOT_STEP, 24, 24 + DOT_STEP] as const;
+
+const OwnCodeGlyph: React.FC = () => (
+  <>
+    <path
+      d="M18 16 L10 24 L18 32"
+      fill="none"
+      stroke={ICON_900}
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M30 16 L38 24 L30 32"
+      fill="none"
+      stroke={ICON_600}
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    {DOT_XS.map((x, i) => (
+      <circle key={x} cx={x} cy="24" r={DOT_R} fill={ICON_900}>
+        <animate
+          attributeName="cy"
+          values="24;19.5;24"
+          dur="1.8s"
+          begin={`${i * 0.16}s`}
+          repeatCount="indefinite"
+          calcMode="spline"
+          keyTimes="0;0.68;1"
+          keySplines="0.42 0 1 1;0.7 0 1 1"
+        />
+      </circle>
+    ))}
+  </>
+);
+
 // ─── Card data ────────────────────────────────────────────────────────────────
 interface DeploymentCard {
   id: string;
   title: string;
   caption: string;
   glyph: React.ReactNode;
+  spin?: boolean;
 }
 
 const CARDS: DeploymentCard[] = [
@@ -117,29 +166,11 @@ const CARDS: DeploymentCard[] = [
     title: "Own what you build",
     caption:
       "Applications tailored to your workflows, owned in your repository and built to evolve with you.",
-    glyph: (
-      <>
-        <path
-          d="M18 16 L10 24 L18 32"
-          fill="none"
-          stroke={ICON_900}
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M30 16 L38 24 L30 32"
-          fill="none"
-          stroke={ICON_600}
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </>
-    ),
+    glyph: <OwnCodeGlyph />,
   },
   {
     id: "applied-ai",
+    spin: true,
     title: "Compound knowledge",
     caption:
       "Capture the context behind every decision so the next workflow benefits from the last.",
@@ -211,15 +242,37 @@ export const DeploymentCards: React.FC = () => (
           </Flex>
         </Flex>
 
-        <chakra.svg
-          width="80px"
-          height="80px"
-          viewBox="0 0 48 48"
-          aria-hidden
+        <Box
           flexShrink={0}
+          w="80px"
+          h="80px"
+          className={card.spin ? "rengo-loop-spin" : undefined}
         >
-          {card.glyph}
-        </chakra.svg>
+          {card.spin ? (
+            <style>{`
+              @keyframes rengo-loop-spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+              }
+              .rengo-loop-spin {
+                animation: rengo-loop-spin 12s linear infinite;
+                transform-origin: center;
+              }
+              @media (prefers-reduced-motion: reduce) {
+                .rengo-loop-spin { animation: none !important; }
+              }
+            `}</style>
+          ) : null}
+          <chakra.svg
+            width="80px"
+            height="80px"
+            viewBox="0 0 48 48"
+            aria-hidden
+            display="block"
+          >
+            {card.glyph}
+          </chakra.svg>
+        </Box>
       </Flex>
     ))}
   </Flex>
