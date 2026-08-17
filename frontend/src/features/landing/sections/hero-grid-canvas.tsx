@@ -339,36 +339,6 @@ export const HeroGridCanvas: React.FC = () => {
         h="full"
       />
 
-      {/*
-        Blurs and lightens the grid behind the headline (and the nav band above it)
-        so serif type stays crisp. On narrow viewports the ellipse is still tighter
-        on the sides so the moving grid stays visible lower in the hero.
-      */}
-      <Box
-        position="absolute"
-        inset={0}
-        pointerEvents="none"
-        css={{
-          "@media (max-width: 47.99em)": {
-            backdropFilter: "blur(12px)",
-            WebkitBackdropFilter: "blur(12px)",
-            backgroundColor: "rgba(245, 245, 246, 0.5)",
-            maskImage:
-              "radial-gradient(ellipse 58% 52% at 12% 22%, black 54%, transparent 84%)",
-            WebkitMaskImage:
-              "radial-gradient(ellipse 58% 52% at 12% 22%, black 54%, transparent 84%)",
-          },
-          "@media (min-width: 48em)": {
-            backdropFilter: "blur(14px)",
-            WebkitBackdropFilter: "blur(14px)",
-            backgroundColor: "rgba(245, 245, 246, 0.72)",
-            maskImage:
-              "radial-gradient(ellipse 60% 72% at 18% 24%, black 58%, transparent 100%)",
-            WebkitMaskImage:
-              "radial-gradient(ellipse 60% 72% at 18% 24%, black 58%, transparent 100%)",
-          },
-        }}
-      />
     </Box>
   );
 };
