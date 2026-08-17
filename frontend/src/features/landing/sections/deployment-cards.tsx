@@ -146,7 +146,6 @@ export const DeploymentCards: React.FC = () => (
         justify="center"
         borderLeft={i > 0 ? "1px solid" : undefined}
         borderColor={i > 0 ? CARD_BORDER : undefined}
-        boxShadow="0px 4px 16px 0px rgba(12,29,52,0.04)"
       >
         {/* Icon + title group */}
         <Flex direction="column" gap="8px">
