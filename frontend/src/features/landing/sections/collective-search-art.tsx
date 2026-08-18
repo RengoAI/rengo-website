@@ -1,130 +1,187 @@
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
-import { ArrowRight, Sparkle } from "lucide-react";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 /**
- * "Unlock collective intelligence" — a question put to what the firm knows.
+ * "Unlock collective intelligence" bento art.
  *
- * A search field over source-backed results: the way you reach collective
- * knowledge is by asking it something, so the tile shows the asking. Replaces a
- * growing-stack figure that read as one dataset getting bigger over time —
- * which said nothing about the knowledge being shared, and duplicated what
- * "Structure knowledge" already shows.
+ * Base: static Animation3.svg (document stack + three source-logo tiles).
+ * Overlay: animated dotted connector lines + travelling cube markers,
+ *          exactly matching the DeploymentDiagram style.
  *
- * Presentational only. The field is a styled Box rather than an <input>: a real
- * input inside decorative bento art would take keyboard focus and read as
- * interactive to a screen reader, so the whole figure is aria-hidden instead.
+ * Connector topology (SVG coords, viewBox 0 0 344 381):
+ *   card bottom (y=150, x=172)
+ *       │  ← center vertical
+ *   y=221 ───────────── junction
+ *       │               │
+ *   left branch      right branch
+ *   x=71,y=246       x=273,y=246
+ *       │                 │
+ *   left logo tile   right logo tile
+ *   (center logo = x=172, direct vertical)
  */
 
-const QUERY = "Our perspective on…";
-const GLYPH_STROKE = "#768ca6"; // slate.50 — sparkle
-const ARROW_STROKE = "#425366"; // slate.100
-const INK = "#124476"; // indigo.700
+// ─── Scoped styles ────────────────────────────────────────────────────────────
+const STYLES = `
+  /* Dotted connector lines — identical spec to AgentsActArt */
+  .cs-dot {
+    fill: none;
+    stroke: #597299;
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+  }
+  .cs-link { opacity: 0.65; }
 
-/** Same vendor chips as connect-systems-art — search spans model providers. */
-const PROVIDER_TILES = [
-  { id: "claude", label: "Claude", src: "/logos/claude.png", maxH: "16px" },
-  {
-    id: "copilot",
-    label: "Copilot",
-    src: "/logos/copilot.png",
-    maxH: "16px",
-  },
-  { id: "openai", label: "OpenAI", src: "/logos/open-ai.png", maxH: "18px" },
-] as const;
+  /* Cube marker: invisible by default; CSS motion path drives it */
+  .cs-cube { opacity: 0; offset-rotate: 0deg; }
 
+  @keyframes cs-cubeRun {
+    0%   { offset-distance: 0%;   opacity: 0; }
+    4%   { opacity: 1; }
+    92%  { opacity: 1; }
+    100% { offset-distance: 100%; opacity: 0; }
+  }
+  @keyframes cs-linkPulse {
+    0%   { opacity: 0.65; }
+    40%  { opacity: 1; }
+    100% { opacity: 0.65; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .cs-run .cs-cube {
+      animation-name: cs-cubeRun;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      will-change: offset-distance, opacity;
+    }
+    /* Center: straight down 95 px — shorter path, shorter duration */
+    .cs-run .cs-c1 {
+      animation-duration: 2.2s;
+      animation-delay: 0.3s;
+      offset-path: path("M172,151 L172,246");
+    }
+    /* Left branch: down 70 px + left 101 px + down 25 px = ~196 px */
+    .cs-run .cs-c2 {
+      animation-duration: 3.4s;
+      animation-delay: 0.6s;
+      offset-path: path("M172,151 L172,221 L71,221 L71,246");
+    }
+    /* Right branch: mirror of left */
+    .cs-run .cs-c3 {
+      animation-duration: 3.4s;
+      animation-delay: 1.0s;
+      offset-path: path("M172,151 L172,221 L273,221 L273,246");
+    }
+    /* Connectors pulse after everything settles */
+    .cs-run .cs-link { animation: cs-linkPulse 1.6s ease-in-out 5s both; }
+    .cs-run .cs-l1   { animation-delay: 5.0s; }
+    .cs-run .cs-l2   { animation-delay: 5.2s; }
+    .cs-run .cs-l3   { animation-delay: 5.4s; }
+    .cs-run .cs-l4   { animation-delay: 5.6s; }
+    .cs-run .cs-l5   { animation-delay: 5.8s; }
+  }
+`;
+
+// ─── Component ────────────────────────────────────────────────────────────────
 type CollectiveSearchArtProps = {
   variant?: "tile" | "compact";
 };
 
-export const CollectiveSearchArt: React.FC<CollectiveSearchArtProps> = ({
-  variant = "tile",
-}) => {
-  const isCompact = variant === "compact";
-  const tileSize = isCompact ? "32px" : "40px";
-  const vendorGap = isCompact ? 1.5 : 2;
+export const CollectiveSearchArt: React.FC<CollectiveSearchArtProps> = () => {
+  const wrapRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    function play() {
+      if (!el) return;
+      el.classList.remove("cs-run");
+      void el.offsetWidth; // force reflow to reset animations
+      el.classList.add("cs-run");
+    }
+    play();
+    const id = setInterval(play, 10000);
+    return () => clearInterval(id);
+  }, []);
+
+  // Both the <img> and overlay <svg> get the same transform so they stay
+  // in perfect registration regardless of container size.
+  const sharedTransform: React.CSSProperties = {
+    transform: "scale(1.1)",
+    transformOrigin: "center",
+  };
 
   return (
-    <Box w="full" maxW="100%" mx="auto" aria-hidden>
-      <Flex
-        align="center"
-        gap={2}
-        bg="white"
-        border="1px solid"
-        borderColor="slate.30"
-        borderRadius="8px"
-        pl={isCompact ? 2.5 : 3}
-        pr={isCompact ? 3 : 4}
-        py={isCompact ? 2 : 2.5}
-        minH={isCompact ? "36px" : "44px"}
-        minW={0}
-        boxShadow="0 8px 24px rgba(33, 48, 68, 0.08)"
-        w="full"
-      >
-        <Flex align="center" gap={isCompact ? 2.5 : 3} flex="1" minW={0}>
-          <Box color={GLYPH_STROKE} display="flex" flexShrink={0}>
-            <Sparkle size={13} strokeWidth={2.25} />
-          </Box>
-          <Text
-            fontFamily="body"
-            fontSize={isCompact ? "9px" : "10px"}
-            lineHeight="12px"
-            letterSpacing="-0.2px"
-            color={INK}
-            flex="1"
-            minW={0}
-            whiteSpace="nowrap"
-            overflow="hidden"
-            textOverflow="ellipsis"
-            m={0}
-          >
-            {QUERY}
-          </Text>
-        </Flex>
-        <Flex
-          w={isCompact ? "12px" : "16px"}
-          h={isCompact ? "12px" : "16px"}
-          align="center"
-          justify="center"
-          flexShrink={0}
-        >
-          <ArrowRight
-            size={isCompact ? 12 : 13}
-            strokeWidth={1.75}
-            color={ARROW_STROKE}
-            aria-hidden
-          />
-        </Flex>
-      </Flex>
+    <div
+      ref={wrapRef}
+      style={{ position: "relative", width: "100%", height: "100%" }}
+    >
+      <style>{STYLES}</style>
 
-      <Flex align="center" justify="center" gap={vendorGap} mt={2.5}>
-        {PROVIDER_TILES.map((vendor) => (
-          <Box
-            key={vendor.id}
-            w={tileSize}
-            h={tileSize}
-            flexShrink={0}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            bg="slate.10"
-            border="1px solid"
-            borderColor="slate.30"
-            borderRadius="6px"
-            boxShadow="0 6px 18px rgba(33, 48, 68, 0.08)"
-          >
-            <Image
-              src={vendor.src}
-              alt=""
-              maxH={vendor.maxH}
-              maxW="28px"
-              w="auto"
-              h="auto"
-              objectFit="contain"
-            />
-          </Box>
-        ))}
-      </Flex>
-    </Box>
+      {/* ── Base static SVG ──────────────────────────────────────────────── */}
+      <img
+        src="/animations/animation3.svg"
+        alt=""
+        aria-hidden
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "contain",
+          display: "block",
+          ...sharedTransform,
+        }}
+      />
+
+      {/* ── Animated overlay (same viewBox → same coordinate space) ─────── */}
+      <svg
+        viewBox="0 0 344 381"
+        preserveAspectRatio="xMidYMid meet"
+        aria-hidden
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          overflow: "visible",
+          pointerEvents: "none",
+          ...sharedTransform,
+        }}
+      >
+        {/*
+          Mask the original tiny-rect connector dots (drawn in Animation3.svg
+          with filled micro-rectangles rather than stroke-dasharray).
+          Fill matches the bento tile background: #F0F1F2.
+        */}
+        {/* Center vertical (x≈171-173, y 151→246) */}
+        <rect x="170" y="151" width="5" height="96" fill="#F0F1F2" />
+        {/* Left vertical segment (x≈70-72, y 220→247) */}
+        <rect x="69"  y="220" width="4" height="27" fill="#F0F1F2" />
+        {/* Left horizontal segment (y≈219-223, x 68→174) */}
+        <rect x="68"  y="219" width="107" height="4" fill="#F0F1F2" />
+        {/* Right vertical segment (x≈271-275, y 220→247) */}
+        <rect x="271" y="220" width="4"  height="27" fill="#F0F1F2" />
+        {/* Right horizontal segment (y≈219-223, x 170→276) */}
+        <rect x="170" y="219" width="107" height="4" fill="#F0F1F2" />
+
+        {/*
+          New dotted connector lines.
+          stroke-dasharray: 3 3 — identical to .dp-dot in DeploymentDiagram.
+        */}
+        {/* Center vertical: card bottom → center logo tile */}
+        <line className="cs-dot cs-link cs-l1" x1="172" y1="151" x2="172" y2="246" />
+        {/* Left vertical: junction → left logo tile */}
+        <line className="cs-dot cs-link cs-l2" x1="71"  y1="221" x2="71"  y2="246" />
+        {/* Left horizontal: left junction → center junction */}
+        <line className="cs-dot cs-link cs-l3" x1="71"  y1="221" x2="172" y2="221" />
+        {/* Right horizontal: center junction → right junction */}
+        <line className="cs-dot cs-link cs-l4" x1="172" y1="221" x2="273" y2="221" />
+        {/* Right vertical: junction → right logo tile */}
+        <line className="cs-dot cs-link cs-l5" x1="273" y1="221" x2="273" y2="246" />
+
+        {/* Tiny #597299 cube markers — one per connector path */}
+        <g className="cs-cube cs-c1"><rect fill="#597299" x="-2.5" y="-2.5" width="5" height="5" /></g>
+        <g className="cs-cube cs-c2"><rect fill="#597299" x="-2.5" y="-2.5" width="5" height="5" /></g>
+        <g className="cs-cube cs-c3"><rect fill="#597299" x="-2.5" y="-2.5" width="5" height="5" /></g>
+      </svg>
+    </div>
   );
 };

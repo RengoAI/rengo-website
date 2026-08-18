@@ -1,7 +1,6 @@
 import {
   MARKETING_GUTTER_WIDTH,
   marketingContentPaddingX,
-  marketingLayoutBorderColor,
 } from "@/components/layout/marketing-frame";
 import { MarketingPageWidth } from "@/components/layout/marketing-page-width";
 import { rootRoute } from "@/app/app-routes";
@@ -21,7 +20,14 @@ interface FooterColProps {
 
 const FooterCol: React.FC<FooterColProps> = ({ title, children }) => (
   <Flex direction="column" gap={2} minW={{ base: "auto", sm: "128px" }}>
-    <Text fontSize="sm" color="indigo.900" lineHeight="short" mb={1}>
+    <Text
+      fontFamily="body"
+      fontWeight="light"
+      fontSize="sm"
+      color="slate.30"
+      lineHeight="short"
+      mb={1}
+    >
       {title}
     </Text>
     {children}
@@ -54,10 +60,10 @@ const FooterLink: React.FC<{
 export const AppFooter: React.FC = () => (
   <Box
     as="footer"
-    bg="slate.10"
-    color="indigo.900"
+    bg="panel.900"
+    color="slate.30"
     borderTop="1px solid"
-    borderColor={marketingLayoutBorderColor}
+    borderColor="panel.footerBorder"
     pt={16}
     pb={10}
   >
@@ -78,7 +84,7 @@ export const AppFooter: React.FC = () => (
             gapY={12}
           >
             <Box flexShrink={0}>
-              <Logo color="indigo.900" homeLink />
+              <Logo color="slate.30" homeLink />
             </Box>
 
             <Flex
@@ -129,8 +135,10 @@ export const AppFooter: React.FC = () => (
             gapY={4}
           >
             <Text
+              fontFamily="body"
+              fontWeight="light"
               fontSize="xs"
-              color="slate.50"
+              color="slate.30"
               lineHeight="short"
               m={0}
               textAlign="right"

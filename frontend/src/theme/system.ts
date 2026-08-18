@@ -23,6 +23,12 @@ const config = defineConfig({
       // Match the marketing canvas so the scrollbar gutter isn't pure white
       bg: "slate.10",
     },
+    // Ensure all semantic heading elements use the heading font token directly.
+    // This acts as a safety net independent of Chakra style prop resolution,
+    // which only runs after React mounts.
+    "h1, h2, h3, h4, h5, h6": {
+      fontFamily: "var(--rengo-fonts-heading)",
+    },
     body: {
       WebkitFontSmoothing: "auto",
     } as any,
@@ -73,8 +79,10 @@ const config = defineConfig({
     },
     // Footer link styles using token CSS variables
     ".footer-link": {
-      color: "var(--rengo-colors-slate-50)",
+      color: "var(--rengo-colors-slate-30)",
       textDecoration: "none",
+      fontFamily: "var(--rengo-fonts-body)",
+      fontWeight: 300,
       fontSize: "14px",
       lineHeight: "20px",
       cursor: "pointer",
@@ -82,7 +90,7 @@ const config = defineConfig({
       display: "block",
     },
     ".footer-link:hover": {
-      color: "var(--rengo-colors-ink-body)",
+      color: "var(--rengo-colors-white)",
     },
     // React-PDF styling to match provided HTML/CSS example
     ".react-pdf__Document": {

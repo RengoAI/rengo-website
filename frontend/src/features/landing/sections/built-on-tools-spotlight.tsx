@@ -26,7 +26,7 @@ export const BuiltOnToolsSpotlight: React.FC<{ showCta?: boolean }> = ({
       <Box display="flex" flexDirection="column" gap={3}>
         <Text
           as="h2"
-          fontFamily="heading"
+          variant="h2"
           fontWeight={350}
           fontSize={{ base: "22px", md: "26px" }}
           lineHeight={1.25}
@@ -63,12 +63,12 @@ export const BuiltOnToolsSpotlight: React.FC<{ showCta?: boolean }> = ({
           color="indigo.900"
           fontFamily="body"
           fontSize="11px"
-          fontWeight="medium"
+          fontWeight="light"
           letterSpacing="0.08em"
           textTransform="uppercase"
           borderRadius="3px"
           bg="white"
-          _hover={{ bg: "slate.20", borderColor: "slate.40" }}
+          _hover={{ bg: "slate.30", borderColor: "slate.50" }}
         >
           <RouterLink to="/solutions/data-infrastructure">
             <ButtonArrowLabel iconSize={11}>Learn more</ButtonArrowLabel>

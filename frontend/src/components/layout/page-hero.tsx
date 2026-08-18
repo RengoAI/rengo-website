@@ -1,14 +1,11 @@
-import {
-  ctaButtonHoverWithArrowProps,
-  ButtonArrowLabel,
-} from "@/components/ui/button-arrow-label";
 import { MarketingPageWidth } from "@/components/layout/marketing-page-width";
+import { MarketingCtaButton } from "@/components/ui/marketing-cta-button";
 import {
   MARKETING_GUTTER_WIDTH,
   marketingContentPaddingX,
 } from "@/components/layout/marketing-frame";
 import { TOP_NAV_HEIGHT } from "@/components/nav/nav-styles";
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 
 interface PageHeroProps {
@@ -92,80 +89,33 @@ export const PageHero: React.FC<PageHeroProps> = ({
           w="full"
         >
           {eyebrow && (
-            <Text
-              fontFamily="mono"
-              fontSize="xs"
-              letterSpacing="0.18em"
-              textTransform="uppercase"
-              color="slate.50"
-              m={0}
-            >
+            <Text variant="overline" m={0}>
               {eyebrow}
             </Text>
           )}
 
-          <Box
-            as="h1"
-            fontFamily="heading"
-            fontWeight={300}
-            fontSize={{
-              base: "clamp(30px, 7.6vw, 40px)",
-              md: "clamp(44px, 6.6vw, 62px)",
-              lg: "clamp(52px, 5.8vw, 72px)",
-            }}
-            lineHeight={1.02}
-            letterSpacing={{ base: "-1.5px", md: "-3px" }}
-            color="indigo.900"
-            maxW="none"
-            whiteSpace={{ base: "normal", md: "nowrap" }}
-            m={0}
-            textAlign="left"
-          >
+          <Text as="h1" variant="h1" maxW="none" m={0}>
             {headline}
-          </Box>
+          </Text>
 
           {subtext && (
-            <Box
+            <Text
               as="p"
-              fontFamily="heading"
-              fontWeight={350}
-              fontSize={{ base: "24px", md: "30px" }}
-              lineHeight={1.2}
-              letterSpacing="-2px"
-              color="indigo.900"
+              variant="body"
+              color="slate.50"
               maxW={subtextMaxW}
               m={0}
-              textAlign="left"
             >
-              <Box
-                as="span"
-                color="slate.50"
-                fontWeight={300}
-                fontSize={{ base: "18px", md: "26px" }}
-                lineHeight={1.2}
-              >
-                {subtext}
-              </Box>
-            </Box>
+              {subtext}
+            </Text>
           )}
         </Flex>
 
-        <Button
-          alignSelf="flex-start"
-          bg="indigo.900"
-          color="slate.10"
-          px={8}
-          py={3.5}
-          h="auto"
-          fontFamily="body"
-          fontSize="14px"
-          fontWeight="normal"
-          lineHeight="21px"
-          onClick={onCtaClick}
-          {...ctaButtonHoverWithArrowProps}
-        >
-          <ButtonArrowLabel>{ctaLabel}</ButtonArrowLabel>
-        </Button>
+        <Box alignSelf="flex-start">
+          <MarketingCtaButton onClick={onCtaClick}>
+            {ctaLabel}
+          </MarketingCtaButton>
+        </Box>
       </Flex>
       <Box
         display={{ base: "none", md: "block" }}

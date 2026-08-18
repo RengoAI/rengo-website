@@ -78,8 +78,8 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
       >
         <Box
           px={marketingPageMarginX}
-          minH="64px"
-          h="64px"
+          minH="48px"
+          h="48px"
           display="flex"
           alignItems="center"
           justifyContent="space-between"
@@ -148,7 +148,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
                     <Text
                       fontFamily="body"
                       fontSize="14px"
-                      fontWeight="medium"
+                      fontWeight="light"
                       lineHeight="16px"
                       color="indigo.900"
                       m={0}
@@ -179,7 +179,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
                   <Text
                     fontFamily="body"
                     fontSize="14px"
-                    fontWeight="medium"
+                    fontWeight="light"
                     lineHeight="16px"
                     color="indigo.900"
                     m={0}

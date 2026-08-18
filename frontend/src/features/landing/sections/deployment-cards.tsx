@@ -2,45 +2,17 @@ import { Box, Flex, Text, chakra } from "@chakra-ui/react";
 import React from "react";
 
 /**
- * Deployment pillars as Mintlify-style feature cards: a tall tile with a
- * tinted gradient field, a centred white logo plate, and a caption underneath.
- *
- * Card metrics follow Mintlify's "Enabling the next generation of startups"
- * row — ~341×390 tiles, 6px radius, overflow hidden — recoloured onto the
- * Rengo palette rather than their per-brand hues.
+ * Engineering principles — card grid with illustrated headers.
+ * Glyphs and copy are unchanged.
  */
 
-/** Card field gradients — lighter primary ramp on slate.10 section. */
-const FIELD_INDIGO_700 = "#124476";
-const FIELD_PRIMARY_500 = "#1a4f8a";
-const FIELD_PRIMARY_300 = "#5585be";
-const FIELD_PRIMARY_400 = "#3169a8";
-const FIELD_PRIMARY_200 = "#88aad4";
-const FIELD_PRIMARY_100 = "#c3d4eb";
+// ─── Icon colours (light-background palette) ──────────────────────────────────
+const ICON_900 = "#124476"; // indigo.700 — strongest
+const ICON_600 = "#3169a8"; // primary_400
 
-/** Glyph colors — slate / white ramp (matches bento tiles and marketing neutrals). */
-const GLYPH_WHITE = "#ffffff";
-const GLYPH_SLATE_20 = "#eaedee";
-const GLYPH_SLATE_30 = "#d3dde1";
-const GLYPH_SLATE_40 = "#a9b7c6";
-
-/**
- * Apply-learnings plate: the AGM deck's learning-loop mark reduced to logo scale.
- *
- * Ported from rengo/sales `slides-agm/act-04-rengo-ai/learning-loop.jsx` — four
- * gapped clockwise legs (ingest → draft → decide → learn), each ending in an
- * arrowhead that hands off to the next, so the ring reads as a loop rather than
- * a circle. The deck's four beats become four legs only: labels and ring nodes
- * drop away, and the value ramp collapses to the palette here, with the return
- * leg lightest so the eye closes the circle without the hand-back competing
- * with the work.
- */
+// ─── Loop glyph (Compound knowledge) ─────────────────────────────────────────
 const LOOP = { cx: 24, cy: 24, r: 15 };
-/** Leg start angles in SVG degrees, clockwise from the top (deck: NODE_DEG). */
 const LOOP_NODE_DEG = [-90, 0, 90, 180];
-/** Each leg stops this far short of the next one. With the deck's ring nodes
- *  dropped, the gap has nothing to clear and only has to keep an arrowhead from
- *  touching the tail behind it — so it runs tighter than the deck's 8°. */
 const LOOP_GAP_DEG = 7;
 
 const loopPoint = (deg: number) => {
@@ -51,13 +23,51 @@ const loopPoint = (deg: number) => {
   };
 };
 
+const BAR_YS = [12, 22, 32] as const;
+const BAR_CYCLE = "3.6s";
+const BAR_A = "#B3D0D4";
+const BAR_B = "#6DB9C6";
+const BAR_C = "#608187";
+
+const FoundationBarsGlyph: React.FC = () => (
+  <>
+    <style>{`
+      @keyframes rengo-bar-cycle {
+        0%, 100% { fill: ${BAR_A}; }
+        33.333% { fill: ${BAR_B}; }
+        66.666% { fill: ${BAR_C}; }
+      }
+      .rengo-bar-cycle {
+        animation: rengo-bar-cycle ${BAR_CYCLE} ease-in infinite;
+      }
+      .rengo-bar-cycle-1 { animation-delay: -1.2s; }
+      .rengo-bar-cycle-2 { animation-delay: -2.4s; }
+      @media (prefers-reduced-motion: reduce) {
+        .rengo-bar-cycle { animation: none !important; }
+      }
+    `}</style>
+    <g>
+      {BAR_YS.map((y, i) => (
+        <rect
+          key={y}
+          className={`rengo-bar-cycle rengo-bar-cycle-${i}`}
+          x="10"
+          y={y}
+          width="28"
+          height="7"
+          rx="0.5"
+        />
+      ))}
+    </g>
+  </>
+);
+
+const LOOP_A = "#92D1AE";
+const LOOP_B = "#446959";
+const LOOP_C = "#A4C4B2";
+
 const ApplyLearningsLoopGlyph: React.FC = () => {
-  const legColors = [
-    GLYPH_SLATE_20,
-    GLYPH_SLATE_30,
-    GLYPH_WHITE,
-    GLYPH_SLATE_20,
-  ];
+  const legColors = [LOOP_A, LOOP_B, LOOP_C, LOOP_A];
   const legs = LOOP_NODE_DEG.map((deg, i) => {
     const from = loopPoint(deg + LOOP_GAP_DEG);
     const toDeg = deg + 90 - LOOP_GAP_DEG;
@@ -79,7 +89,7 @@ const ApplyLearningsLoopGlyph: React.FC = () => {
           fill="none"
           stroke={color}
           strokeWidth="2.2"
-          strokeLinecap="round"
+          strokeLinecap="butt"
         />
       ))}
       {legs.map(({ key, arrow, color }) => (
@@ -94,15 +104,53 @@ const ApplyLearningsLoopGlyph: React.FC = () => {
   );
 };
 
+const DOT_R = 1.6;
+const DOT_GAP = (2 * 48) / 80;
+const DOT_STEP = DOT_R * 2 + DOT_GAP;
+const DOT_XS = [24 - DOT_STEP, 24, 24 + DOT_STEP] as const;
+
+const OwnCodeGlyph: React.FC = () => (
+  <>
+    <path
+      d="M18 16 L10 24 L18 32"
+      fill="none"
+      stroke={ICON_900}
+      strokeWidth="2.5"
+      strokeLinecap="butt"
+      strokeLinejoin="miter"
+    />
+    <path
+      d="M30 16 L38 24 L30 32"
+      fill="none"
+      stroke={ICON_600}
+      strokeWidth="2.5"
+      strokeLinecap="butt"
+      strokeLinejoin="miter"
+    />
+    {DOT_XS.map((x, i) => (
+      <circle key={x} cx={x} cy="24" r={DOT_R} fill={ICON_900}>
+        <animate
+          attributeName="cy"
+          values="24;19.5;24"
+          dur="1.8s"
+          begin={`${i * 0.16}s`}
+          repeatCount="indefinite"
+          calcMode="spline"
+          keyTimes="0;0.68;1"
+          keySplines="0.42 0 1 1;0.7 0 1 1"
+        />
+      </circle>
+    ))}
+  </>
+);
+
+// ─── Card data ────────────────────────────────────────────────────────────────
 interface DeploymentCard {
   id: string;
   title: string;
   caption: string;
-  /** Gradient stops for the card field. */
-  from: string;
-  to: string;
-  /** Simple glyph drawn on the centre plate. */
   glyph: React.ReactNode;
+  spin?: boolean;
 }
 
 const CARDS: DeploymentCard[] = [
@@ -110,153 +158,132 @@ const CARDS: DeploymentCard[] = [
     id: "infrastructure",
     title: "Shared foundation",
     caption:
-      "Connect your data, systems, and workflows to a governed foundation that every application and agent can build on.",
-    from: FIELD_INDIGO_700,
-    to: FIELD_PRIMARY_400,
-    glyph: (
-      <>
-        <rect
-          x="10"
-          y="12"
-          width="28"
-          height="7"
-          rx="1.5"
-          fill={GLYPH_SLATE_40}
-        />
-        <rect
-          x="10"
-          y="22"
-          width="28"
-          height="7"
-          rx="1.5"
-          fill={GLYPH_SLATE_20}
-        />
-        <rect x="10" y="32" width="28" height="7" rx="1.5" fill={GLYPH_WHITE} />
-      </>
-    ),
+      "Connect your data, systems, and workflows to a foundation for every application and agent.",
+    glyph: <FoundationBarsGlyph />,
   },
   {
     id: "own-code",
     title: "Own what you build",
     caption:
-      "Applications and integrations tailored to your workflows, owned in your repository and built to evolve with you.",
-    from: FIELD_PRIMARY_500,
-    to: FIELD_PRIMARY_200,
-    glyph: (
-      <>
-        <path
-          d="M18 16 L10 24 L18 32"
-          fill="none"
-          stroke={GLYPH_WHITE}
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M30 16 L38 24 L30 32"
-          fill="none"
-          stroke={GLYPH_SLATE_30}
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </>
-    ),
+      "Applications tailored to your workflows, owned in your repository and built to evolve with you.",
+    glyph: <OwnCodeGlyph />,
   },
   {
     id: "applied-ai",
+    spin: true,
     title: "Compound knowledge",
     caption:
-      "Work shouldn’t start from scratch. Capture the context behind every decision so the next workflow benefits from the last.",
-    from: FIELD_PRIMARY_300,
-    to: FIELD_PRIMARY_100,
+      "Capture the context behind every decision so the next workflow benefits from the last.",
     glyph: <ApplyLearningsLoopGlyph />,
   },
 ];
 
-/** Flat gradient field behind the centre plate. */
-const CardField: React.FC<{ from: string; to: string }> = ({ from, to }) => {
-  const id = React.useId();
-  return (
-    <chakra.svg
-      viewBox="0 0 340 300"
-      preserveAspectRatio="none"
-      position="absolute"
-      inset={0}
-      w="full"
-      h="full"
-      aria-hidden
-    >
-      <defs>
-        <linearGradient id={`g-${id}`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor={from} />
-          <stop offset="1" stopColor={to} />
-        </linearGradient>
-      </defs>
-      <rect width="340" height="300" fill={`url(#g-${id})`} />
-    </chakra.svg>
-  );
+// ─── Card grid backgrounds ────────────────────────────────────────────────────
+const CARD_BG: Record<string, string> = {
+  infrastructure: "#E6F2F3", // soft teal — echoes the bar glyph colours
+  "own-code":     "#EBF0F8", // soft indigo — echoes the bracket glyph colours
+  "applied-ai":   "#EAF4EE", // soft green — echoes the loop glyph colours
 };
 
-export const DeploymentCards: React.FC = () => (
-  <Flex
-    direction={{ base: "column", md: "row" }}
-    gap={{ base: 6, md: 4 }}
-    w="full"
-    align="stretch"
-  >
-    {CARDS.map((card) => (
-      <Flex key={card.id} direction="column" gap={4} flex="1" minW={0}>
-        <Box
-          position="relative"
-          w="full"
-          h={{ base: "300px", md: "380px" }}
-          borderRadius="3px"
+const CARD_BORDER: Record<string, string> = {
+  infrastructure: "#D5E8EA",
+  "own-code":     "#DCE4F0",
+  "applied-ai":   "#D8EBDE",
+};
+
+// ─── Card grid layout ─────────────────────────────────────────────────────────
+/**
+ * Alternative presentation of the three engineering principles:
+ * each principle becomes a card with a large illustrated graphic on a solid
+ * colour background at the top and the title + description below.
+ */
+export const EngineeringPrinciplesCards: React.FC = () => (
+  <>
+    {/* Spin animation — only injected once, shared by all cards in this layout */}
+    <style>{`
+      @keyframes rengo-loop-spin-card {
+        from { transform: rotate(0deg); }
+        to   { transform: rotate(360deg); }
+      }
+      .rengo-loop-spin-card {
+        animation: rengo-loop-spin-card 12s linear infinite;
+        transform-origin: center;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .rengo-loop-spin-card { animation: none !important; }
+      }
+    `}</style>
+
+    <Flex
+      direction={{ base: "column", md: "row" }}
+      gap={2}
+      w="full"
+      align="stretch"
+    >
+      {CARDS.map((card) => (
+        <Flex
+          key={card.id}
+          direction="column"
+          flex="1"
+          borderRadius="4px"
           overflow="hidden"
-          border="1px solid"
-          borderColor="slate.30"
         >
-          <CardField from={card.from} to={card.to} />
-
-          <Flex position="absolute" inset={0} align="center" justify="center">
-            {/* `chakra.svg` rather than `Box as="svg"`: Box's props do not
-                include SVG attributes, so `viewBox` failed to type-check.
-                chakra.svg keeps the responsive width/height props. */}
-            <chakra.svg
-              width={{ base: "64px", md: "72px" }}
-              height={{ base: "64px", md: "72px" }}
-              viewBox="0 0 48 48"
-              aria-hidden
-            >
-              {card.glyph}
-            </chakra.svg>
+          {/* ── Graphic area ── */}
+          <Flex
+            align="center"
+            justify="center"
+            h="240px"
+            flexShrink={0}
+            bg={CARD_BG[card.id]}
+            border="1px solid"
+            borderColor={CARD_BORDER[card.id]}
+            borderRadius="4px"
+          >
+            <Box className={card.spin ? "rengo-loop-spin-card" : undefined}>
+              <chakra.svg
+                width="120px"
+                height="120px"
+                viewBox="0 0 48 48"
+                aria-hidden
+                display="block"
+              >
+                {card.glyph}
+              </chakra.svg>
+            </Box>
           </Flex>
-        </Box>
 
-        <Flex direction="column" gap={3}>
-          <Text
-            as="h3"
-            fontFamily="heading"
-            fontWeight={350}
-            fontSize={{ base: "18px", md: "22px" }}
-            lineHeight={1.2}
-            letterSpacing="-0.72px"
-            color="indigo.900"
-            m={0}
+          {/* ── Text area ── */}
+          <Flex
+            direction="column"
+            gap={1.5}
+            p={5}
+            pl={2}
+            flex="1"
           >
-            {card.title}
-          </Text>
-          <Text
-            fontFamily="body"
-            fontSize="16px"
-            lineHeight="24px"
-            color="slate.50"
-            m={0}
-          >
-            {card.caption}
-          </Text>
+            <Text
+              fontFamily="body"
+              fontWeight="medium"
+              fontSize="17px"
+              lineHeight="1.2"
+              letterSpacing="-0.4px"
+              color="indigo.900"
+              m={0}
+            >
+              {card.title}
+            </Text>
+            <Text
+              fontFamily="body"
+              fontWeight="normal"
+              fontSize="14px"
+              lineHeight="1.5"
+              color="ink.body"
+              m={0}
+            >
+              {card.caption}
+            </Text>
+          </Flex>
         </Flex>
-      </Flex>
-    ))}
-  </Flex>
+      ))}
+    </Flex>
+  </>
 );

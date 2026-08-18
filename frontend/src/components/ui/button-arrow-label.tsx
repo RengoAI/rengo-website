@@ -2,35 +2,16 @@ import { Box, Flex } from "@chakra-ui/react";
 import { ArrowRight } from "lucide-react";
 import React from "react";
 
-const ctaHoverOverlayLayer = {
-  position: "relative" as const,
-  overflow: "hidden",
-  _before: {
-    content: '""',
-    position: "absolute",
-    inset: 0,
-    borderRadius: "inherit",
-    bg: "whiteAlpha.300",
-    opacity: 0,
-    transition: "opacity 0.2s ease",
-    pointerEvents: "none",
-    zIndex: 0,
-  },
+const ctaHoverFill = {
+  transition: "background 0.2s ease, color 0.2s ease",
   _hover: {
-    _before: {
-      opacity: 1,
-    },
-  },
-  css: {
-    "& > *": {
-      position: "relative",
-      zIndex: 1,
-    },
+    bg: "accent.link",
+    color: "white",
   },
 };
 
-/** Light white overlay on hover — keeps the button fill visible underneath. */
-export const ctaButtonHoverProps = ctaHoverOverlayLayer;
+/** Bright blue fill on hover (`accent.link` / #0071E3). */
+export const ctaButtonHoverProps = ctaHoverFill;
 
 /** Spread on parent Button (or link styled as button) to slide the arrow on hover. */
 export const buttonArrowHoverProps = {
@@ -42,11 +23,10 @@ export const buttonArrowHoverProps = {
 } as const;
 
 export const ctaButtonHoverWithArrowProps = {
-  ...ctaHoverOverlayLayer,
+  ...ctaHoverFill,
   _hover: {
-    _before: {
-      opacity: 1,
-    },
+    bg: "accent.link",
+    color: "white",
     "& [data-arrow]": {
       transform: "translateX(4px)",
     },

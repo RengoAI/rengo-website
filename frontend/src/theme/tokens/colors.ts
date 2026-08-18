@@ -241,7 +241,7 @@ export const colors = defineTokens.colors({
   },
   // Neutral ramp for marketing surfaces (Figma greys)
   slate: {
-    10: { value: "#f5f5f6" },
+    10: { value: "#FAFAFA" },
     20: { value: "#eaedee" },
     25: { value: "#dee5e7" },
     30: { value: "#d3dde1" },
