@@ -75,12 +75,14 @@ export const AppTopNav: React.FC = () => {
         <MarketingPageWidth>
           <Flex w="full" align="stretch" {...topNavRowProps}>
             <Box
+              display={{ base: "none", md: "block" }}
+              w={MARKETING_GUTTER_WIDTH}
+              flexShrink={0}
+            />
+            <Box
               flex="1"
               minW={0}
-              px={{
-                base: marketingContentPaddingX.base,
-                md: `calc(${MARKETING_GUTTER_WIDTH} + var(--chakra-spacing-7))`,
-              }}
+              px={marketingContentPaddingX}
               display="grid"
               gridTemplateColumns={{ base: "1fr auto", md: "1fr auto 1fr" }}
               alignItems="center"
@@ -155,6 +157,11 @@ export const AppTopNav: React.FC = () => {
                 </IconButton>
               </Flex>
             </Box>
+            <Box
+              display={{ base: "none", md: "block" }}
+              w={MARKETING_GUTTER_WIDTH}
+              flexShrink={0}
+            />
           </Flex>
         </MarketingPageWidth>
       </Box>
