@@ -5,12 +5,12 @@ import React, { useEffect, useRef } from "react";
  * cubes connected by organic zigzag dotted lines.
  *
  * Animation sequence:
- *  0.2 – 0.85 s   satellite cubes fade in (staggered) — start in dark blue
+ *  0.2 – 0.85 s   satellite cubes fade in once (staggered) and stay visible
  *  0.85 – 6.55 s  small blue bullet segment travels from each satellite to the cluster
  *  5.85 – 7.05 s  satellite cubes turn grey as their segment arrives
  *  7.0 – 9.15 s   dotted lines pulse
  *
- * Total sequence ≈ 9 s; replays every 12 s.
+ * Total sequence ≈ 9 s; wire/pulse replays every 12 s. Cubes stay put.
  */
 
 // ─── scoped styles ────────────────────────────────────────────────────────────
@@ -43,7 +43,7 @@ const STYLES = `
   .dp-cube { opacity: 0; offset-rotate: 0deg; }
 
   .dp-link  { opacity: .65; }
-  .dp-node  { opacity: 0; }
+  .dp-node  { opacity: 1; }
 
   @keyframes dp-satToGrey  { to   { fill: #D3DDE1; } }
   @keyframes dp-nodeIn  { from { opacity: 0; } to { opacity: 1; } }
@@ -61,12 +61,16 @@ const STYLES = `
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    /* satellites fade in staggered */
-    .dp-run .dp-node { animation: dp-nodeIn .6s ease-out both; }
-    .dp-run .dp-n1   { animation-delay: .2s;  }
-    .dp-run .dp-n2   { animation-delay: .45s; }
-    .dp-run .dp-n3   { animation-delay: .6s;  }
-    .dp-run .dp-n4   { animation-delay: .85s; }
+    /* satellites fade in once, then stay — not tied to the looping .dp-run */
+    .dp-iso .dp-node { opacity: 0; }
+    .dp-ready .dp-node {
+      opacity: 1;
+      animation: dp-nodeIn .6s ease-out both;
+    }
+    .dp-ready .dp-n1   { animation-delay: .2s;  }
+    .dp-ready .dp-n2   { animation-delay: .45s; }
+    .dp-ready .dp-n3   { animation-delay: .6s;  }
+    .dp-ready .dp-n4   { animation-delay: .85s; }
 
     /* grey bullet segment drifts gently from satellite → cluster (5 s each) */
     .dp-run .dp-w1 { animation: dp-wireRun 5s linear .85s  both; }
@@ -142,6 +146,7 @@ export const DeploymentDiagram: React.FC<DeploymentDiagramProps> = ({
       el.classList.remove("dp-run");
       void el.offsetWidth; // force reflow so CSS resets
       el.classList.add("dp-run");
+      el.classList.add("dp-ready"); // cubes fade in once and stay
     }
 
     play();

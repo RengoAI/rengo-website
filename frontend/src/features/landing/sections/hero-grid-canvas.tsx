@@ -27,7 +27,7 @@ const ANIM_IN_MS = 280;
 /** ms for the fade-out when the pointer leaves. */
 const ANIM_OUT_MS = 180;
 /** Number of previously visited cells whose labels appear in the trail. */
-const TRAIL_LENGTH = 8;
+const TRAIL_LENGTH = 12;
 /** Perlin spatial and temporal frequencies. */
 const NOISE_SPACE = 0.38;
 const NOISE_TIME = 0.30;

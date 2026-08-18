@@ -2,7 +2,7 @@ import { Box, Flex, Text, chakra } from "@chakra-ui/react";
 import React from "react";
 
 /**
- * Engineering principles — bordered stacked rows (Figma node 184-1819).
+ * Engineering principles — card grid with illustrated headers.
  * Glyphs and copy are unchanged.
  */
 
@@ -178,52 +178,89 @@ const CARDS: DeploymentCard[] = [
   },
 ];
 
-// ─── Component ────────────────────────────────────────────────────────────────
-const ROW_BG = "#F0F1F2";
+// ─── Card grid backgrounds ────────────────────────────────────────────────────
+const CARD_BG: Record<string, string> = {
+  infrastructure: "#E6F2F3", // soft teal — echoes the bar glyph colours
+  "own-code":     "#EBF0F8", // soft indigo — echoes the bracket glyph colours
+  "applied-ai":   "#EAF4EE", // soft green — echoes the loop glyph colours
+};
 
-export const DeploymentCards: React.FC = () => (
-  <Flex
-    direction="column"
-    w="full"
-    overflow="hidden"
-    borderRadius="4px"
-    border="1px solid"
-    borderColor="slate.30"
-  >
-    {CARDS.map((card, i) => (
-      <Flex
-        key={card.id}
-        direction="row"
-        align="center"
-        justify="space-between"
-        gap={{ base: 4, md: 6 }}
-        px="24px"
-        py="28px"
-        w="full"
-        bg={ROW_BG}
-        borderTop={i > 0 ? "1px solid" : undefined}
-        borderColor="slate.30"
-      >
-        <Flex align="flex-start" gap={3} flex="1" minW={0}>
-          <Text
-            fontFamily="body"
-            fontWeight="light"
-            fontSize="12px"
-            lineHeight="24px"
-            color="slate.40"
+// ─── Card grid layout ─────────────────────────────────────────────────────────
+/**
+ * Alternative presentation of the three engineering principles:
+ * each principle becomes a card with a large illustrated graphic on a solid
+ * colour background at the top and the title + description below.
+ */
+export const EngineeringPrinciplesCards: React.FC = () => (
+  <>
+    {/* Spin animation — only injected once, shared by all cards in this layout */}
+    <style>{`
+      @keyframes rengo-loop-spin-card {
+        from { transform: rotate(0deg); }
+        to   { transform: rotate(360deg); }
+      }
+      .rengo-loop-spin-card {
+        animation: rengo-loop-spin-card 12s linear infinite;
+        transform-origin: center;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .rengo-loop-spin-card { animation: none !important; }
+      }
+    `}</style>
+
+    <Flex
+      direction={{ base: "column", md: "row" }}
+      gap={2}
+      w="full"
+      align="stretch"
+    >
+      {CARDS.map((card) => (
+        <Flex
+          key={card.id}
+          direction="column"
+          flex="1"
+          borderRadius="4px"
+          border="1px solid"
+          borderColor="slate.30"
+          overflow="hidden"
+        >
+          {/* ── Graphic area ── */}
+          <Flex
+            align="center"
+            justify="center"
+            h="200px"
             flexShrink={0}
-            w="16px"
-            m={0}
+            bg={CARD_BG[card.id]}
           >
-            {i + 1}
-          </Text>
-          <Flex direction="column" align="flex-start" gap={0.5} minW={0}>
+            <Box className={card.spin ? "rengo-loop-spin-card" : undefined}>
+              <chakra.svg
+                width="120px"
+                height="120px"
+                viewBox="0 0 48 48"
+                aria-hidden
+                display="block"
+              >
+                {card.glyph}
+              </chakra.svg>
+            </Box>
+          </Flex>
+
+          {/* ── Text area ── */}
+          <Flex
+            direction="column"
+            gap={1.5}
+            p={5}
+            flex="1"
+            bg="white"
+            borderTop="1px solid"
+            borderColor="slate.30"
+          >
             <Text
               fontFamily="body"
               fontWeight="medium"
-              fontSize="20px"
+              fontSize="17px"
               lineHeight="1.2"
-              letterSpacing="-0.6px"
+              letterSpacing="-0.4px"
               color="indigo.900"
               m={0}
             >
@@ -232,8 +269,8 @@ export const DeploymentCards: React.FC = () => (
             <Text
               fontFamily="body"
               fontWeight="normal"
-              fontSize="15px"
-              lineHeight="1.4"
+              fontSize="14px"
+              lineHeight="1.5"
               color="ink.body"
               m={0}
             >
@@ -241,39 +278,7 @@ export const DeploymentCards: React.FC = () => (
             </Text>
           </Flex>
         </Flex>
-
-        <Box
-          flexShrink={0}
-          w="80px"
-          h="80px"
-          className={card.spin ? "rengo-loop-spin" : undefined}
-        >
-          {card.spin ? (
-            <style>{`
-              @keyframes rengo-loop-spin {
-                from { transform: rotate(0deg); }
-                to { transform: rotate(360deg); }
-              }
-              .rengo-loop-spin {
-                animation: rengo-loop-spin 12s linear infinite;
-                transform-origin: center;
-              }
-              @media (prefers-reduced-motion: reduce) {
-                .rengo-loop-spin { animation: none !important; }
-              }
-            `}</style>
-          ) : null}
-          <chakra.svg
-            width="80px"
-            height="80px"
-            viewBox="0 0 48 48"
-            aria-hidden
-            display="block"
-          >
-            {card.glyph}
-          </chakra.svg>
-        </Box>
-      </Flex>
-    ))}
-  </Flex>
+      ))}
+    </Flex>
+  </>
 );

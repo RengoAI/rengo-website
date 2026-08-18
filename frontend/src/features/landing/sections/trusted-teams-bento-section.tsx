@@ -66,7 +66,7 @@ const TestimonialCard: React.FC<{
 }> = ({ item, index, revealed }) => (
   <Box
     as="figure"
-    bg="slate.30"
+    bg="blue.100"
     border="1px solid"
     borderColor="blue.200"
     borderRadius="4px"

@@ -1,5 +1,6 @@
 import {
   ButtonArrowLabel,
+  ctaButtonHoverProps,
   ctaButtonHoverWithArrowProps,
 } from "@/components/ui/button-arrow-label";
 import { Button } from "@chakra-ui/react";
@@ -39,12 +40,14 @@ interface MarketingCtaButtonProps {
   children: React.ReactNode;
   onClick: () => void;
   size?: MarketingCtaSize;
+  showArrow?: boolean;
 }
 
 export const MarketingCtaButton: React.FC<MarketingCtaButtonProps> = ({
   children,
   onClick,
   size = "md",
+  showArrow = true,
 }) => {
   const s = SIZE[size];
 
@@ -61,9 +64,13 @@ export const MarketingCtaButton: React.FC<MarketingCtaButtonProps> = ({
       fontWeight="light"
       lineHeight={s.lineHeight}
       onClick={onClick}
-      {...ctaButtonHoverWithArrowProps}
+      {...(showArrow ? ctaButtonHoverWithArrowProps : ctaButtonHoverProps)}
     >
-      <ButtonArrowLabel iconSize={s.iconSize}>{children}</ButtonArrowLabel>
+      {showArrow ? (
+        <ButtonArrowLabel iconSize={s.iconSize}>{children}</ButtonArrowLabel>
+      ) : (
+        children
+      )}
     </Button>
   );
 };

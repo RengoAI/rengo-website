@@ -6,7 +6,7 @@ import { BentoIsoImage } from "@/features/landing/sections/bento-iso-image";
 import { CollectiveSearchArt } from "@/features/landing/sections/collective-search-art";
 import { DeploymentDiagram } from "@/features/landing/sections/deployment-diagram";
 import { ExistingToolsArt } from "@/features/landing/sections/existing-tools-art";
-import { DeploymentCards } from "@/features/landing/sections/deployment-cards";
+import { EngineeringPrinciplesCards } from "@/features/landing/sections/deployment-cards";
 import { SectionHeading } from "@/features/landing/sections/section-heading";
 import { SectionShell } from "@/features/landing/sections/section-shell";
 import { Box, Grid, GridItem, Text } from "@chakra-ui/react";
@@ -66,7 +66,7 @@ export const AgentsBentoSection: React.FC = () => (
         <SectionHeading>
           Build your AI advantage
           <br />
-          <Box as="span" color="indigo.900" fontWeight={300}>
+          <Box as="span" color="slate.50" fontWeight={300}>
             Applications and agents tailored to your team
           </Box>
         </SectionHeading>
@@ -147,15 +147,13 @@ export const AgentsBentoSection: React.FC = () => (
         <SectionHeading maxW="820px">
           Our engineering principles
           <br />
-          <Box as="span" color="indigo.900" fontWeight={300}>
-            We build AI systems for production, bringing elite engineering{" "}
-            <Box as="span" color="accent.link">
-              to your business
-            </Box>
+          <Box as="span" color="slate.50" fontWeight={300}>
+            We build AI systems for production, bringing elite engineering to
+            your business
           </Box>
         </SectionHeading>
 
-        <DeploymentCards />
+        <EngineeringPrinciplesCards />
       </Box>
     </SectionShell>
   </>
