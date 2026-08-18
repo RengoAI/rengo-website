@@ -26,13 +26,6 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
     overflow="hidden"
   >
     <HeroGridCanvas />
-    <Box
-      position="absolute"
-      inset="0 0 auto"
-      h="50%"
-      pointerEvents="none"
-      bg="linear-gradient(to bottom, {colors.slate.10}, transparent)"
-    />
 
     <MarketingPageWidth
       flex="1"
@@ -63,25 +56,16 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
             direction="column"
             align="flex-start"
             gap={{ base: 6, md: 8 }}
-            position="relative"
             w="full"
             maxW={{ base: "100%", md: "780px" }}
             py={{ base: 6, md: 8 }}
             pr={{ base: 4, md: 8 }}
-            _before={{
-              content: '""',
-              position: "absolute",
-              inset: "-32% -40% -36% -56%",
-              zIndex: 0,
-              pointerEvents: "none",
-              background:
-                "radial-gradient(ellipse 88% 72% at 52% 42%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.58) 24%, rgba(255, 255, 255, 0.28) 46%, rgba(255, 255, 255, 0.08) 68%, rgba(255, 255, 255, 0) 86%)",
-            }}
-            css={{
-              "& > *": { position: "relative", zIndex: 1 },
-            }}
           >
-            <Flex direction="column" align="flex-start" gap={{ base: 2, md: 3 }}>
+            <Flex
+              direction="column"
+              align="flex-start"
+              gap={{ base: 2, md: 3 }}
+            >
               <Text
                 as="h1"
                 variant="h1"
