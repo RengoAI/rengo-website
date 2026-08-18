@@ -10,8 +10,7 @@ import React from "react";
  * "Structure knowledge" bento art.
  *
  * Three columns × three rows of coloured data-type squares linked by a
- * dotted branching trunk. Tiny flat squares travel along the dotted lines
- * and flow into the coloured squares.
+ * dotted branching trunk.
  */
 
 // ─── Square type palette ─────────────────────────────────────────────────────
@@ -29,7 +28,6 @@ const PALETTE: Record<
 
 // ─── Layout constants ────────────────────────────────────────────────────────
 const SQ  = 50;           // large square side
-const PT  = 5;            // particle square side
 const LINE_CLR = "#597299";
 
 // Column x (left edge of each square) — matches Figma proportions
@@ -132,45 +130,6 @@ const DataSquare: React.FC<{
   );
 };
 
-/**
- * Tiny square that travels along an SVG path using SMIL animateMotion.
- * Fades in at the start and out just before the snap-back to hide the reset.
- */
-const MovingParticle: React.FC<{
-  path: string;
-  dur: string;
-  begin: string;
-}> = ({ path, dur, begin }) => (
-  /* eslint-disable react/no-unknown-property */
-  <g>
-    <rect
-      x={-PT / 2}
-      y={-PT / 2}
-      width={PT}
-      height={PT}
-      rx={0.5}
-      fill={LINE_CLR}
-    />
-    <animateMotion
-      dur={dur}
-      repeatCount="indefinite"
-      begin={begin}
-      path={path}
-      rotate="none"
-      calcMode="linear"
-    />
-    <animate
-      attributeName="opacity"
-      values="0;1;1;0;0"
-      keyTimes="0;0.06;0.85;0.94;1"
-      dur={dur}
-      repeatCount="indefinite"
-      begin={begin}
-    />
-  </g>
-  /* eslint-enable react/no-unknown-property */
-);
-
 // ─── Dotted line presentation props ──────────────────────────────────────────
 const D = {
   stroke: LINE_CLR,
@@ -178,24 +137,6 @@ const D = {
   strokeDasharray: "3 3",
   strokeOpacity: 0.65,
 };
-
-// ─── Animation travel paths ───────────────────────────────────────────────────
-// Particles start just outside a large square and end at the left edge of the
-// target square, appearing to flow into it as they fade out.
-
-const DUR       = "3.2s";
-const DUR_SHORT = "2s";
-
-// Col1 → trunk → Col2 (straight, row 0)
-const p_r0_direct = `M ${C1R},${R0CY} H ${TX} H ${C2L}`;
-
-// Col1 → trunk → branch down → Col2 (different row — shows tree routing)
-const p_r0_to_r1 = `M ${C1R},${R0CY} H ${TX} V ${R1CY} H ${C2L}`;
-const p_r1_to_r2 = `M ${C1R},${R1CY} H ${TX} V ${R2CY} H ${C2L}`;
-
-// Col2 → Col3 (short horizontal)
-const p_m_r0 = `M ${C2R},${R0CY} H ${C3L}`;
-const p_m_r1 = `M ${C2R},${R1CY} H ${C3L}`;
 
 // ─── Component ────────────────────────────────────────────────────────────────
 type AgentsActArtProps = { variant?: "tile" | "compact" };
@@ -219,7 +160,7 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
         viewBox={`0 0 ${VB_W} ${VB_H}`}
         preserveAspectRatio="xMidYMid meet"
         role="img"
-        aria-label="Three-column grid of data-type squares connected by a branching dotted-line tree with flowing particle squares."
+        aria-label="Three-column grid of data-type squares connected by a branching dotted-line tree."
         style={{ display: "block", width: "100%", height: "100%" }}
       >
         {/* ── Dotted connection lines ───────────────────────────────────── */}
@@ -246,17 +187,6 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
         {GRID.map((sq, i) => (
           <DataSquare key={i} col={sq.col} row={sq.row} kind={sq.kind} />
         ))}
-
-        {/* ── Animated particle squares (5 total) ──────────────────────── */}
-
-        {/* Left → Middle */}
-        <MovingParticle path={p_r0_direct} dur={DUR}       begin="0s"    />
-        <MovingParticle path={p_r0_to_r1}  dur={DUR}       begin="-1.1s" />
-        <MovingParticle path={p_r1_to_r2}  dur={DUR}       begin="-2.1s" />
-
-        {/* Middle → Right */}
-        <MovingParticle path={p_m_r0}      dur={DUR_SHORT} begin="-0.5s" />
-        <MovingParticle path={p_m_r1}      dur={DUR_SHORT} begin="-1.5s" />
       </svg>
     </div>
   );

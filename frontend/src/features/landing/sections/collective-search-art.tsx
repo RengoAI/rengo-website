@@ -21,10 +21,10 @@ import React, { useEffect, useRef } from "react";
 
 // ─── Scoped styles ────────────────────────────────────────────────────────────
 const STYLES = `
-  /* Dotted connector lines — identical spec to DeploymentDiagram */
+  /* Dotted connector lines — identical spec to AgentsActArt */
   .cs-dot {
     fill: none;
-    stroke: #A9B7C6;
+    stroke: #597299;
     stroke-width: 1;
     stroke-dasharray: 3 3;
   }

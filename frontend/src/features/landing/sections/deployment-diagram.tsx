@@ -5,9 +5,8 @@ import React, { useEffect, useRef } from "react";
  * cubes connected by organic zigzag dotted lines.
  *
  * Animation sequence:
- *  0.2 – 0.85 s   satellite cubes fade in once (staggered) and stay visible
+ *  0.2 – 0.85 s   satellite cubes fade in once (staggered) and stay dark blue
  *  0.85 – 6.55 s  small blue bullet segment travels from each satellite to the cluster
- *  5.85 – 7.05 s  satellite cubes turn grey as their segment arrives
  *  7.0 – 9.15 s   dotted lines pulse
  *
  * Total sequence ≈ 9 s; wire/pulse replays every 12 s. Cubes stay put.
@@ -28,7 +27,7 @@ const STYLES = `
     stroke-width: 1;
     stroke-dasharray: 3 3;
   }
-  /* satellite cube faces — start dark blue, animate to grey */
+  /* satellite cube faces — stay dark blue */
   .dp-sat   { fill: #5A759A; stroke: #A9B7C6; stroke-width: 1; }
   /* travelling grey segment drawn over each dotted guide */
   .dp-wire  {
@@ -45,7 +44,6 @@ const STYLES = `
   .dp-link  { opacity: .65; }
   .dp-node  { opacity: 1; }
 
-  @keyframes dp-satToGrey  { to   { fill: #D3DDE1; } }
   @keyframes dp-nodeIn  { from { opacity: 0; } to { opacity: 1; } }
   @keyframes dp-wireRun { from { stroke-dashoffset: 0.06; } to { stroke-dashoffset: -1; } }
   @keyframes dp-cubeRun {
@@ -77,12 +75,6 @@ const STYLES = `
     .dp-run .dp-w2 { animation: dp-wireRun 5s linear 1.15s both; }
     .dp-run .dp-w3 { animation: dp-wireRun 5s linear 1.3s  both; }
     .dp-run .dp-w4 { animation: dp-wireRun 5s linear 1.55s both; }
-
-    /* satellite faces turn grey exactly when their segment arrives (start + 5 s) */
-    .dp-run .dp-n1 .dp-sat { animation: dp-satToGrey .5s ease 5.85s both; }
-    .dp-run .dp-n2 .dp-sat { animation: dp-satToGrey .5s ease 6.15s both; }
-    .dp-run .dp-n3 .dp-sat { animation: dp-satToGrey .5s ease 6.3s  both; }
-    .dp-run .dp-n4 .dp-sat { animation: dp-satToGrey .5s ease 6.55s both; }
 
     /* tiny #597299 cube rides the leading edge of each wire segment */
     .dp-run .dp-cube {
@@ -193,7 +185,7 @@ export const DeploymentDiagram: React.FC<DeploymentDiagramProps> = ({
           pathLength="1" strokeDasharray="0.06 2" strokeDashoffset="0.06"
           points={WIRE_POINTS.w4} />
 
-        {/* ── Satellite cubes — fade in blue, turn grey when wire arrives ───── */}
+        {/* ── Satellite cubes — fade in and stay dark blue ─────────────────── */}
         <g className="dp-node dp-n1">
           <polygon className="dp-sat" points="102,100 120,110 120,132 102,122" />
           <polygon className="dp-sat" points="120,110 138,100 138,122 120,132" />

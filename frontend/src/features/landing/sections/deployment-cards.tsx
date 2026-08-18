@@ -55,7 +55,7 @@ const FoundationBarsGlyph: React.FC = () => (
           y={y}
           width="28"
           height="7"
-          rx="1.5"
+          rx="0.5"
         />
       ))}
     </g>
@@ -89,7 +89,7 @@ const ApplyLearningsLoopGlyph: React.FC = () => {
           fill="none"
           stroke={color}
           strokeWidth="2.2"
-          strokeLinecap="round"
+          strokeLinecap="butt"
         />
       ))}
       {legs.map(({ key, arrow, color }) => (
@@ -116,16 +116,16 @@ const OwnCodeGlyph: React.FC = () => (
       fill="none"
       stroke={ICON_900}
       strokeWidth="2.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+      strokeLinecap="butt"
+      strokeLinejoin="miter"
     />
     <path
       d="M30 16 L38 24 L30 32"
       fill="none"
       stroke={ICON_600}
       strokeWidth="2.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+      strokeLinecap="butt"
+      strokeLinejoin="miter"
     />
     {DOT_XS.map((x, i) => (
       <circle key={x} cx={x} cy="24" r={DOT_R} fill={ICON_900}>
@@ -185,6 +185,12 @@ const CARD_BG: Record<string, string> = {
   "applied-ai":   "#EAF4EE", // soft green — echoes the loop glyph colours
 };
 
+const CARD_BORDER: Record<string, string> = {
+  infrastructure: "#D5E8EA",
+  "own-code":     "#DCE4F0",
+  "applied-ai":   "#D8EBDE",
+};
+
 // ─── Card grid layout ─────────────────────────────────────────────────────────
 /**
  * Alternative presentation of the three engineering principles:
@@ -220,17 +226,18 @@ export const EngineeringPrinciplesCards: React.FC = () => (
           direction="column"
           flex="1"
           borderRadius="4px"
-          border="1px solid"
-          borderColor="slate.30"
           overflow="hidden"
         >
           {/* ── Graphic area ── */}
           <Flex
             align="center"
             justify="center"
-            h="200px"
+            h="240px"
             flexShrink={0}
             bg={CARD_BG[card.id]}
+            border="1px solid"
+            borderColor={CARD_BORDER[card.id]}
+            borderRadius="4px"
           >
             <Box className={card.spin ? "rengo-loop-spin-card" : undefined}>
               <chakra.svg
@@ -250,10 +257,8 @@ export const EngineeringPrinciplesCards: React.FC = () => (
             direction="column"
             gap={1.5}
             p={5}
+            pl={2}
             flex="1"
-            bg="white"
-            borderTop="1px solid"
-            borderColor="slate.30"
           >
             <Text
               fontFamily="body"

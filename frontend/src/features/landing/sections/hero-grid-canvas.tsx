@@ -48,10 +48,15 @@ const GRID_LINE = "rgba(169, 183, 198, 0.85)";
 const HOVER_RGB = "108, 149, 203";
 
 const LABELS = [
-  "EBITDA_24", "NET_REV",  "CAGR_Q3",  "ARR_YTD",  "FCF_TTM",
-  "GROSS_MRG", "EV_EBITDA","P_E_RATIO", "ROCE_Q4",  "NWC_Q4",
-  "CAPEX_23",  "D_E_RATIO","IRR_Q3",   "MOIC_3X",  "LTV_CAC",
-  "NET_NRR",   "OPEX_MRG", "RULE_40",
+  // Logistics
+  "ON_TIME%",  "FILL_RATE", "LOAD_UTIL", "ORDER_ACC", "INV_TURN",
+  // Manufacturing
+  "OEE_PCT",   "YIELD_Q4",  "SCRAP_RT",  "UPH_LINE",
+  // Retail
+  "CONV_RATE", "SELLTHRU",  "AOV_WK",    "STOCKOUT",  "GM_ROI",
+  // Finance
+  "EBITDA_24", "NET_REV",   "CAGR_Q3",   "FCF_TTM",   "GROSS_MRG",
+  "ROCE_Q4",   "IRR_Q3",    "LTV_CAC",   "NET_NRR",   "OPEX_MRG",
 ];
 
 // ── Classic 2-D Perlin noise (fixed permutation for determinism) ─────────────
