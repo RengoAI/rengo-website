@@ -1,6 +1,6 @@
 import { SectionHeading } from "@/features/landing/sections/section-heading";
 import { Box, Flex, Grid, Text } from "@chakra-ui/react";
-import { BookOpenText } from "lucide-react";
+import { UserRound } from "lucide-react";
 import React from "react";
 import { SectionShell } from "./section-shell";
 
@@ -70,7 +70,7 @@ const TestimonialCard: React.FC<{
     border="1px solid"
     borderColor="blue.200"
     borderRadius="4px"
-    p="36px"
+    p="28px"
     display="flex"
     flexDirection="column"
     justifyContent="center"
@@ -96,7 +96,7 @@ const TestimonialCard: React.FC<{
           fontSize="16px"
           fontWeight="normal"
           lineHeight={1.4}
-          color="gray.600"
+          color="indigo.700"
           m={0}
           w="full"
         >
@@ -115,19 +115,19 @@ const TestimonialCard: React.FC<{
           bg="blue.300"
           color="indigo.900"
         >
-          <BookOpenText size={12} strokeWidth={2} />
+          <UserRound size={12} strokeWidth={2} />
         </Flex>
         <Box
           as="figcaption"
           fontSize="16px"
           lineHeight={1.2}
-          letterSpacing="-0.8px"
+          letterSpacing="normal"
           whiteSpace="nowrap"
         >
-          <Text fontWeight="medium" color="indigo.900" m={0}>
+          <Text fontWeight="light" color="indigo.900" m={0}>
             {item.role}
           </Text>
-          <Text fontWeight="normal" color="slate.50" m={0}>
+          <Text fontWeight="light" color="slate.50" m={0}>
             {item.organization}
           </Text>
         </Box>
@@ -153,7 +153,7 @@ export const TrustedTeamsBentoSection: React.FC = () => {
             md: "repeat(2, minmax(0, 1fr))",
             lg: "repeat(3, minmax(0, 1fr))",
           }}
-          gap={{ base: 2, md: 4 }}
+          gap={2}
           w="full"
         >
           {TESTIMONIALS.map((item, index) => (
