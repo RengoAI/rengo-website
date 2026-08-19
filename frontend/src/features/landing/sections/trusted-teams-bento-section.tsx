@@ -1,5 +1,5 @@
 import { SectionHeading } from "@/features/landing/sections/section-heading";
-import { Box, Flex, Grid, Text } from "@chakra-ui/react";
+import { Box, Grid, Text } from "@chakra-ui/react";
 import { UserRound } from "lucide-react";
 import React from "react";
 import { SectionShell } from "./section-shell";
@@ -66,20 +66,21 @@ const TestimonialCard: React.FC<{
 }> = ({ item, index, revealed }) => (
   <Box
     as="figure"
-    bg="blue.100"
+    bg="slate.20"
     border="1px solid"
-    borderColor="blue.200"
-    borderRadius="4px"
-    p="28px"
+    borderColor="slate.30"
+    borderRadius="6px"
+    p={4}
     display="flex"
     flexDirection="column"
-    justifyContent="center"
-    boxShadow="0 4px 8px rgba(12, 29, 52, 0.04)"
+    gap={8}
+    h="264px"
+    overflow="hidden"
     opacity={revealed ? 1 : 0}
     transform={revealed ? "translateY(0)" : "translateY(14px)"}
     transition={`opacity ${ENTRANCE_MS}ms ease, transform ${ENTRANCE_MS}ms ease, border-color 0.2s ease`}
     transitionDelay={revealed ? `${index * STAGGER_MS}ms` : "0ms"}
-    _hover={{ borderColor: "blue.300" }}
+    _hover={{ borderColor: "slate.40" }}
     css={{
       "@media (prefers-reduced-motion: reduce)": {
         opacity: 1,
@@ -88,51 +89,63 @@ const TestimonialCard: React.FC<{
       },
     }}
   >
-    <Flex direction="column" align="flex-start" gap={8} w="full">
-      <Flex align="center" w="full" h="252px" flexShrink={0}>
-        <Text
-          as="blockquote"
-          fontFamily="body"
-          fontSize="16px"
-          fontWeight="normal"
-          lineHeight={1.4}
-          color="indigo.700"
-          m={0}
-          w="full"
-        >
-          “{item.quote}”
-        </Text>
-      </Flex>
-      <Flex align="flex-start" gap={2} w="full">
-        <Flex
-          align="center"
-          justify="center"
+    <Box display="flex" flexDirection="column" gap={6} flex="1" minH={0}>
+      <Box as="figcaption" display="flex" alignItems="center" gap={2.5} minW={0}>
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
           flexShrink={0}
-          w="24px"
-          h="24px"
-          p="6px"
-          borderRadius="full"
-          bg="blue.300"
+          w="36px"
+          h="36px"
+          borderRadius="6px"
+          bg="slate.30"
           color="indigo.900"
         >
-          <UserRound size={12} strokeWidth={2} />
-        </Flex>
-        <Box
-          as="figcaption"
-          fontSize="16px"
-          lineHeight={1.2}
-          letterSpacing="normal"
-          whiteSpace="nowrap"
-        >
-          <Text fontWeight="light" color="indigo.900" m={0}>
+          <UserRound size={16} strokeWidth={1.75} aria-hidden />
+        </Box>
+        <Box display="flex" flexDirection="column" minW={0}>
+          <Text
+            fontSize="14px"
+            lineHeight="20px"
+            fontWeight={500}
+            letterSpacing="-0.1px"
+            color="indigo.900"
+            m={0}
+            truncate
+          >
             {item.role}
           </Text>
-          <Text fontWeight="light" color="slate.50" m={0}>
+          <Text
+            fontSize="14px"
+            lineHeight="20px"
+            fontWeight="normal"
+            color="slate.50"
+            m={0}
+            truncate
+          >
             {item.organization}
           </Text>
         </Box>
-      </Flex>
-    </Flex>
+      </Box>
+      <Text
+        as="blockquote"
+        fontSize="14px"
+        lineHeight="24px"
+        color="slate.50"
+        m={0}
+        flex="1"
+        minH={0}
+        css={{
+          display: "-webkit-box",
+          WebkitLineClamp: 6,
+          WebkitBoxOrient: "vertical",
+          overflow: "hidden",
+        }}
+      >
+        {item.quote}
+      </Text>
+    </Box>
   </Box>
 );
 
@@ -140,7 +153,7 @@ export const TrustedTeamsBentoSection: React.FC = () => {
   const { ref, revealed } = useRevealOnScroll();
 
   return (
-    <SectionShell borderTop bg="slate.10" py={{ base: "144px", md: "160px" }}>
+    <SectionShell borderTop bg="slate.10" py={{ base: 16, md: "80px" }}>
       <Box display="flex" flexDirection="column" gap={{ base: 10, md: "60px" }}>
         <SectionHeading maxW="720px">
           Trusted by teams deploying AI
@@ -153,7 +166,7 @@ export const TrustedTeamsBentoSection: React.FC = () => {
             md: "repeat(2, minmax(0, 1fr))",
             lg: "repeat(3, minmax(0, 1fr))",
           }}
-          gap={2}
+          gap={{ base: 2, md: 4 }}
           w="full"
         >
           {TESTIMONIALS.map((item, index) => (

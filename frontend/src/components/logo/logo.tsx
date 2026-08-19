@@ -25,14 +25,14 @@ export const Logo: React.FC<LogoProps> = ({
   homeLink = false,
 }) => {
   const wordmark = (
-    <Text fontSize="18px" fontFamily="heading" color={color}>
+    <Text fontSize="xl" fontFamily="heading" color={color}>
       rengo ai
     </Text>
   );
 
   return (
-    <Flex alignItems="center" justify="flex-start" gap={1.5}>
-      <Sun size={15} color={LOGO_ICON_COLOR[color]} />
+    <Flex alignItems="center" justify="flex-start" gap={2}>
+      <Sun size={18} color={LOGO_ICON_COLOR[color]} />
       {!isCollapsed &&
         (homeLink ? (
           <Link to={rootRoute({}).$} style={{ textDecoration: "none" }}>
