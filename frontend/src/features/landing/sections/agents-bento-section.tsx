@@ -33,19 +33,19 @@ const TILES: {
   row: string;
 }[] = [
   {
-    label: "Connect with your systems",
+    label: "Connect your systems",
     art: { kind: "deployment" },
     col: "1 / span 8",
     row: "1",
   },
   {
-    label: "Control who has access",
+    label: "Control access",
     art: { kind: "roles" },
     col: "9 / span 4",
     row: "1",
   },
   {
-    label: "Structure knowledge",
+    label: "Structure your knowledge",
     art: { kind: "agentsAct" },
     col: "1 / span 4",
     row: "2",
@@ -57,7 +57,7 @@ const TILES: {
     row: "2",
   },
   {
-    label: "Reduce days of work to hours",
+    label: "Accelerate every workflow",
     art: { kind: "timeSavings" },
     col: "9 / span 4",
     row: "2",

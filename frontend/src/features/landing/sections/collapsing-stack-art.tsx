@@ -1,7 +1,7 @@
 import React from "react";
 
 /**
- * "Reduce days of work to hours" bento art.
+ * "Accelerate every workflow" bento art.
  *
  * Inline SVG from collapsing_stack_grey_to_blue_dissolve.svg.
  * 26 isometric sheets (--i 0–25) driven by CSS custom-property stagger:
