@@ -6,7 +6,7 @@ import React, { useEffect, useRef } from "react";
  *
  * Animation sequence:
  *  0.2 – 0.85 s   satellite cubes fade in once (staggered) and stay dark blue
- *  0.85 – 6.55 s  small blue bullet segment travels from each satellite to the cluster
+ *  0.85 – 6.55 s  small blue cube travels from each satellite to the cluster
  *  7.0 – 9.15 s   dotted lines pulse
  *
  * Total sequence ≈ 9 s; wire/pulse replays every 12 s. Cubes stay put.
@@ -29,23 +29,13 @@ const STYLES = `
   }
   /* satellite cube faces — stay dark blue */
   .dp-sat   { fill: #5A759A; stroke: #A9B7C6; stroke-width: 1; }
-  /* travelling grey segment drawn over each dotted guide */
-  .dp-wire  {
-    fill: none;
-    stroke: #C0CDD5;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  /* leading-edge cube: invisible by default; CSS motion path drives it */
+  /* travelling cube: invisible by default; CSS motion path drives it */
   .dp-cube { opacity: 0; offset-rotate: 0deg; }
 
   .dp-link  { opacity: .65; }
   .dp-node  { opacity: 1; }
 
   @keyframes dp-nodeIn  { from { opacity: 0; } to { opacity: 1; } }
-  @keyframes dp-wireRun { from { stroke-dashoffset: 0.06; } to { stroke-dashoffset: -1; } }
   @keyframes dp-cubeRun {
     0%   { offset-distance: 0%;   opacity: 0; }
     3%   { opacity: 1; }
@@ -70,13 +60,7 @@ const STYLES = `
     .dp-ready .dp-n3   { animation-delay: .6s;  }
     .dp-ready .dp-n4   { animation-delay: .85s; }
 
-    /* grey bullet segment drifts gently from satellite → cluster (5 s each) */
-    .dp-run .dp-w1 { animation: dp-wireRun 5s linear .85s  both; }
-    .dp-run .dp-w2 { animation: dp-wireRun 5s linear 1.15s both; }
-    .dp-run .dp-w3 { animation: dp-wireRun 5s linear 1.3s  both; }
-    .dp-run .dp-w4 { animation: dp-wireRun 5s linear 1.55s both; }
-
-    /* tiny #597299 cube rides the leading edge of each wire segment */
+    /* tiny #597299 cube travels from satellite → cluster (5 s each) */
     .dp-run .dp-cube {
       animation-name: dp-cubeRun;
       animation-duration: 5s;
@@ -110,7 +94,7 @@ const STYLES = `
   }
 `;
 
-// shared zigzag waypoints — used for both the dotted guide and the blue wire
+// shared zigzag waypoints — used for the dotted guide lines
 const WIRE_POINTS = {
   w1: "129,127 184,158 212,142 242,159 221,171 250,187",
   w2: "551,137 513,158 468,133 445,146 415,163",
@@ -171,20 +155,6 @@ export const DeploymentDiagram: React.FC<DeploymentDiagramProps> = ({
         <polyline className="dp-dot dp-link dp-l3" points={WIRE_POINTS.w3} />
         <polyline className="dp-dot dp-link dp-l4" points={WIRE_POINTS.w4} />
 
-        {/* ── Grey bullet segment: 6% of path length, 200% gap; cube leads it ─ */}
-        <polyline className="dp-wire dp-w1"
-          pathLength="1" strokeDasharray="0.06 2" strokeDashoffset="0.06"
-          points={WIRE_POINTS.w1} />
-        <polyline className="dp-wire dp-w2"
-          pathLength="1" strokeDasharray="0.06 2" strokeDashoffset="0.06"
-          points={WIRE_POINTS.w2} />
-        <polyline className="dp-wire dp-w3"
-          pathLength="1" strokeDasharray="0.06 2" strokeDashoffset="0.06"
-          points={WIRE_POINTS.w3} />
-        <polyline className="dp-wire dp-w4"
-          pathLength="1" strokeDasharray="0.06 2" strokeDashoffset="0.06"
-          points={WIRE_POINTS.w4} />
-
         {/* ── Satellite cubes — fade in and stay dark blue ─────────────────── */}
         <g className="dp-node dp-n1">
           <polygon className="dp-sat" points="102,100 120,110 120,132 102,122" />
@@ -207,7 +177,7 @@ export const DeploymentDiagram: React.FC<DeploymentDiagramProps> = ({
           <polygon className="dp-sat" points="570,225 588,235 570,245 552,235" />
         </g>
 
-        {/* ── Bullet squares: flat #597299 square at leading edge of each wire ─ */}
+        {/* ── Travelling squares: flat #597299 cube along each zigzag path ─ */}
         <g className="dp-cube dp-c1"><rect fill="#597299" x="-3" y="-3" width="6" height="6" /></g>
         <g className="dp-cube dp-c2"><rect fill="#597299" x="-3" y="-3" width="6" height="6" /></g>
         <g className="dp-cube dp-c3"><rect fill="#597299" x="-3" y="-3" width="6" height="6" /></g>
