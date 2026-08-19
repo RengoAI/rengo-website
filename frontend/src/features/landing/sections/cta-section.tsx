@@ -2,10 +2,6 @@ import {
   ctaButtonHoverWithArrowProps,
   ButtonArrowLabel,
 } from "@/components/ui/button-arrow-label";
-import {
-  sectionHeadingMarginLeft,
-  sectionHeadingTextPl,
-} from "@/components/layout/marketing-frame";
 import { Box, Button, Flex } from "@chakra-ui/react";
 import React from "react";
 import { SectionShell } from "./section-shell";
@@ -25,17 +21,15 @@ export const CtaSection: React.FC<CtaSectionProps> = ({
     py={{ base: 10, md: 12 }}
   >
     <Flex
-      direction={{ base: "column", md: "row" }}
+      direction="column"
       align="center"
-      justify={{ base: "center", md: "space-between" }}
-      gap={{ base: 8, md: 10 }}
+      justify="center"
+      gap={{ base: 6, md: 8 }}
       w="full"
-      textAlign={{ base: "center", md: "left" }}
+      textAlign="center"
     >
       <Box
         as="h2"
-        ml={sectionHeadingMarginLeft}
-        pl={sectionHeadingTextPl}
         fontFamily="heading"
         fontWeight={350}
         fontSize={{ base: "26px", md: "36px" }}
