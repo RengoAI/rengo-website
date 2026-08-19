@@ -2,12 +2,11 @@ import { Box, Flex, Text, chakra } from "@chakra-ui/react";
 import React from "react";
 
 /**
- * Deployment pillars as Mintlify-style feature cards: a tall tile with a
- * tinted gradient field, a centred white logo plate, and a caption underneath.
+ * Deployment pillars as Mintlify-style feature cards: a tinted gradient
+ * field, a centred glyph, and a caption underneath.
  *
- * Card metrics follow Mintlify's "Enabling the next generation of startups"
- * row — ~341×390 tiles, 6px radius, overflow hidden — recoloured onto the
- * Rengo palette rather than their per-brand hues.
+ * Card metrics follow Mintlify's "Latest updates" tiles — ~328×311 media
+ * field — recoloured onto the Rengo palette rather than their per-brand hues.
  */
 
 /** Card field gradients — lighter primary ramp on slate.10 section. */
@@ -210,7 +209,7 @@ export const DeploymentCards: React.FC = () => (
         <Box
           position="relative"
           w="full"
-          h={{ base: "300px", md: "380px" }}
+          h={{ base: "240px", md: "312px" }}
           borderRadius="3px"
           overflow="hidden"
           border="1px solid"

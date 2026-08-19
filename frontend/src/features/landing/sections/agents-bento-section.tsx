@@ -180,10 +180,10 @@ export const AgentsBentoSection: React.FC = () => (
 
             <Box py={{ base: 8, md: 12 }}>
               <SectionHeading maxW="820px">
-                Engineer AI for production
+                Deploy AI on your terms
                 <br />
                 <Box as="span" color="slate.50" fontWeight={300}>
-                  Reliable, scalable systems built for your business
+                  Maintain sovereignty over your data
                 </Box>
               </SectionHeading>
             </Box>

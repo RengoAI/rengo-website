@@ -156,7 +156,7 @@ export const TrustedTeamsBentoSection: React.FC = () => {
     <SectionShell borderTop bg="slate.10" py={{ base: 16, md: "80px" }}>
       <Box display="flex" flexDirection="column" gap={{ base: 10, md: "60px" }}>
         <SectionHeading maxW="720px">
-          Trusted by teams deploying AI
+          Trusted by teams adopting AI
         </SectionHeading>
 
         <Grid
