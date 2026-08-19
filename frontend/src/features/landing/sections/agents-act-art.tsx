@@ -7,10 +7,11 @@ import {
 import React from "react";
 
 /**
- * "Structure knowledge" bento art.
+ * "Structure your knowledge" bento art.
  *
- * Three columns × three rows of coloured data-type squares linked by a
- * dotted branching trunk.
+ * Three columns × three rows of data-type squares linked by a dotted
+ * branching trunk. Fills stay on the marketing slate / ice-blue ramp used
+ * by the other bento tiles (no green or yellow).
  */
 
 // ─── Square type palette ─────────────────────────────────────────────────────
@@ -20,10 +21,10 @@ const PALETTE: Record<
   SquareKind,
   { bg: string; fg: string; label: string; Icon: LucideIcon | null }
 > = {
-  timeSeries: { bg: "#A8D4FF", fg: "#4d666b", label: "Time series", Icon: ChartNoAxesCombined },
-  tables:     { bg: "#a4c4b2", fg: "#2a533c", label: "Tables",      Icon: Table              },
-  audio:      { bg: "#f2e6b5", fg: "#4d3e1a", label: "Audio",       Icon: AudioLines          },
-  text:       { bg: "#d3dde1", fg: "#818181", label: "Text",         Icon: null               },
+  timeSeries: { bg: "#A8D4FF", fg: "#124476", label: "Time series", Icon: ChartNoAxesCombined },
+  tables:     { bg: "#A9B7C6", fg: "#425366", label: "Tables",      Icon: Table              },
+  audio:      { bg: "#FAFAFA", fg: "#768CA6", label: "Audio",       Icon: AudioLines          },
+  text:       { bg: "#D3DDE1", fg: "#768CA6", label: "Text",         Icon: null               },
 };
 
 // ─── Layout constants ────────────────────────────────────────────────────────
