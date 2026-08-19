@@ -7,9 +7,24 @@
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <!--
+      Noto Serif is declared directly so it loads regardless of any Google Fonts
+      cache state. The same font is also requested via Google Fonts below as a
+      secondary source; whichever resolves first wins.
+    -->
+    <link rel="preload" href="/fonts/noto-serif-latin-variable.woff2" as="font" type="font/woff2" crossorigin />
+    <style>
+      @font-face {
+        font-family: 'Noto Serif';
+        font-style: normal;
+        font-weight: 300 500;
+        font-display: swap;
+        src: url('/fonts/noto-serif-latin-variable.woff2') format('woff2');
+      }
+    </style>
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;500&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&family=Noto+Serif:wght@300;350;400;500&family=Space+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;500&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&family=Noto+Serif:wght@300..500&family=Space+Mono:wght@400;700&display=swap"
     />
     <title>Rengo AI</title>
     <!-- Reb2b Tracking -->
@@ -26,9 +41,9 @@
           .parentNode.insertBefore(s, document.getElementsByTagName("script")[0]);
       })("DNXY8HDJ3DO0");
     </script>
-    <script nonce="ena5Ul0L1OFgf4ox9BNOaA==" type="module" crossorigin src="/assets/index-Wja4a1QA.js"></script>
-    <link rel="modulepreload" crossorigin href="/assets/vendor-Vs1Fv8tY.js">
-    <link rel="modulepreload" crossorigin href="/assets/react-vendor-DDR3Y0LH.js">
+    <script nonce="ena5Ul0L1OFgf4ox9BNOaA==" type="module" crossorigin src="/assets/index-BIz9YRpl.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/vendor-CLhEOMZV.js">
+    <link rel="modulepreload" crossorigin href="/assets/react-vendor-3NtyUnm1.js">
   </head>
   <body>
     <div id="root"></div>
