@@ -68,7 +68,7 @@ const GRID: Array<{ col: 0 | 1 | 2; row: 0 | 1 | 2; kind: SquareKind }> = [
   { col: 1, row: 2, kind: "tables"     },
   // Col 2 — right grey squares
   { col: 2, row: 0, kind: "text"       },
-  { col: 2, row: 1, kind: "text"       },
+  { col: 2, row: 1, kind: "timeSeries" },
   { col: 2, row: 2, kind: "text"       },
 ];
 
