@@ -94,11 +94,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
             </Text>
           )}
 
-          <Flex
-            direction="column"
-            align="flex-start"
-            gap={{ base: 2, md: 3 }}
-          >
+          <Flex direction="column" align="flex-start" gap={{ base: 2, md: 3 }}>
             <Text as="h1" variant="h1" maxW="none" m={0}>
               {headline}
             </Text>

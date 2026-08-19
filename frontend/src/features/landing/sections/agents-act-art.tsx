@@ -21,56 +21,61 @@ const PALETTE: Record<
   SquareKind,
   { bg: string; fg: string; label: string; Icon: LucideIcon | null }
 > = {
-  timeSeries: { bg: "#A8D4FF", fg: "#124476", label: "Time series", Icon: ChartNoAxesCombined },
-  tables:     { bg: "#A9B7C6", fg: "#425366", label: "Tables",      Icon: Table              },
-  audio:      { bg: "#FAFAFA", fg: "#768CA6", label: "Audio",       Icon: AudioLines          },
-  text:       { bg: "#D3DDE1", fg: "#768CA6", label: "Text",         Icon: null               },
+  timeSeries: {
+    bg: "#A8D4FF",
+    fg: "#124476",
+    label: "Time series",
+    Icon: ChartNoAxesCombined,
+  },
+  tables: { bg: "#A9B7C6", fg: "#425366", label: "Tables", Icon: Table },
+  audio: { bg: "#FAFAFA", fg: "#768CA6", label: "Audio", Icon: AudioLines },
+  text: { bg: "#D3DDE1", fg: "#768CA6", label: "Text", Icon: null },
 };
 
 // ─── Layout constants ────────────────────────────────────────────────────────
-const SQ  = 50;           // large square side
+const SQ = 50; // large square side
 const LINE_CLR = "#597299";
 
 // Column x (left edge of each square) — matches Figma proportions
-const C1X = 10;   // left col
-const C2X = 102;  // middle col  (42px gap from col1 right edge)
-const C3X = 177;  // right col   (25px gap from col2 right edge)
+const C1X = 10; // left col
+const C2X = 102; // middle col  (42px gap from col1 right edge)
+const C3X = 177; // right col   (25px gap from col2 right edge)
 
 // Row y (top edge of each square)
 const R0Y = 12;
-const R1Y = 82;   // 70px pitch keeps gaps proportional to Figma
+const R1Y = 82; // 70px pitch keeps gaps proportional to Figma
 const R2Y = 152;
 
 // Derived edges / centres
-const C1R  = C1X + SQ;       // 60  — col1 right edge
-const C2L  = C2X;            // 102 — col2 left edge
-const C2R  = C2X + SQ;       // 152 — col2 right edge
-const C3L  = C3X;            // 177 — col3 left edge
-const R0CY = R0Y + SQ / 2;   // 37
-const R1CY = R1Y + SQ / 2;   // 107
-const R2CY = R2Y + SQ / 2;   // 177
+const C1R = C1X + SQ; // 60  — col1 right edge
+const C2L = C2X; // 102 — col2 left edge
+const C2R = C2X + SQ; // 152 — col2 right edge
+const C3L = C3X; // 177 — col3 left edge
+const R0CY = R0Y + SQ / 2; // 37
+const R1CY = R1Y + SQ / 2; // 107
+const R2CY = R2Y + SQ / 2; // 177
 
 // Trunk x midpoint between col1 right and col2 left
-const TX = Math.round((C1R + C2L) / 2);  // 81
+const TX = Math.round((C1R + C2L) / 2); // 81
 
 // ViewBox
-const VB_W = C3X + SQ + 10;   // 237
-const VB_H = R2Y + SQ + 10;   // 212
+const VB_W = C3X + SQ + 10; // 237
+const VB_H = R2Y + SQ + 10; // 212
 
 // ─── Grid definition ─────────────────────────────────────────────────────────
 const GRID: Array<{ col: 0 | 1 | 2; row: 0 | 1 | 2; kind: SquareKind }> = [
   // Col 0 — left source squares
-  { col: 0, row: 0, kind: "text"       },
-  { col: 0, row: 1, kind: "tables"     },
-  { col: 0, row: 2, kind: "audio"      },
+  { col: 0, row: 0, kind: "text" },
+  { col: 0, row: 1, kind: "tables" },
+  { col: 0, row: 2, kind: "audio" },
   // Col 1 — middle typed squares
   { col: 1, row: 0, kind: "timeSeries" },
-  { col: 1, row: 1, kind: "text"       },
-  { col: 1, row: 2, kind: "tables"     },
+  { col: 1, row: 1, kind: "text" },
+  { col: 1, row: 2, kind: "tables" },
   // Col 2 — right grey squares
-  { col: 2, row: 0, kind: "text"       },
+  { col: 2, row: 0, kind: "text" },
   { col: 2, row: 1, kind: "timeSeries" },
-  { col: 2, row: 2, kind: "text"       },
+  { col: 2, row: 2, kind: "text" },
 ];
 
 const COL_X: [number, number, number] = [C1X, C2X, C3X];
@@ -87,7 +92,7 @@ const DataSquare: React.FC<{
   const y = ROW_Y[row];
   const { bg, fg, label, Icon } = PALETTE[kind];
   const LABEL_FS = 7.2;
-  const ICON_SZ  = 12;
+  const ICON_SZ = 12;
 
   return (
     <g>

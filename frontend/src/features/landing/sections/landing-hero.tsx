@@ -79,12 +79,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
                 </Box>
               </Text>
 
-              <Box
-                as="p"
-                {...marketingHeroDescriptionProps}
-                maxW="880px"
-                m={0}
-              >
+              <Box as="p" {...marketingHeroDescriptionProps} maxW="880px" m={0}>
                 Turn proprietary knowledge into operating leverage
               </Box>
             </Flex>

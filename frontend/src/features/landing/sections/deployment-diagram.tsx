@@ -117,13 +117,13 @@ export const DeploymentDiagram: React.FC<DeploymentDiagramProps> = ({
     const el = wrapRef.current;
     if (!el) return;
 
-    function play() {
+    const play = () => {
       if (!el) return;
       el.classList.remove("dp-run");
-      void el.offsetWidth; // force reflow so CSS resets
+      el.getBoundingClientRect(); // force reflow so CSS resets
       el.classList.add("dp-run");
       el.classList.add("dp-ready"); // cubes fade in once and stay
-    }
+    };
 
     play();
     const id = setInterval(play, 12000);
@@ -147,7 +147,12 @@ export const DeploymentDiagram: React.FC<DeploymentDiagramProps> = ({
         preserveAspectRatio="xMidYMid meet"
         role="img"
         aria-label="Four small cubes connected by dotted zigzag lines to a cluster of isometric prisms."
-        style={{ display: "block", width: "100%", height: "100%", overflow: "visible" }}
+        style={{
+          display: "block",
+          width: "100%",
+          height: "100%",
+          overflow: "visible",
+        }}
       >
         {/* ── Static dotted guide lines (always visible, low opacity) ──────── */}
         <polyline className="dp-dot dp-link dp-l1" points={WIRE_POINTS.w1} />
@@ -157,79 +162,204 @@ export const DeploymentDiagram: React.FC<DeploymentDiagramProps> = ({
 
         {/* ── Satellite cubes — fade in and stay dark blue ─────────────────── */}
         <g className="dp-node dp-n1">
-          <polygon className="dp-sat" points="102,100 120,110 120,132 102,122" />
-          <polygon className="dp-sat" points="120,110 138,100 138,122 120,132" />
-          <polygon className="dp-sat" points="120,90  138,100 120,110 102,100" />
+          <polygon
+            className="dp-sat"
+            points="102,100 120,110 120,132 102,122"
+          />
+          <polygon
+            className="dp-sat"
+            points="120,110 138,100 138,122 120,132"
+          />
+          <polygon
+            className="dp-sat"
+            points="120,90  138,100 120,110 102,100"
+          />
         </g>
         <g className="dp-node dp-n2">
-          <polygon className="dp-sat" points="542,110 560,120 560,142 542,132" />
-          <polygon className="dp-sat" points="560,120 578,110 578,132 560,142" />
-          <polygon className="dp-sat" points="560,100 578,110 560,120 542,110" />
+          <polygon
+            className="dp-sat"
+            points="542,110 560,120 560,142 542,132"
+          />
+          <polygon
+            className="dp-sat"
+            points="560,120 578,110 578,132 560,142"
+          />
+          <polygon
+            className="dp-sat"
+            points="560,100 578,110 560,120 542,110"
+          />
         </g>
         <g className="dp-node dp-n3">
-          <polygon className="dp-sat" points="92,240  110,250 110,272  92,262"  />
-          <polygon className="dp-sat" points="110,250 128,240 128,262 110,272"  />
-          <polygon className="dp-sat" points="110,230 128,240 110,250  92,240"  />
+          <polygon
+            className="dp-sat"
+            points="92,240  110,250 110,272  92,262"
+          />
+          <polygon
+            className="dp-sat"
+            points="110,250 128,240 128,262 110,272"
+          />
+          <polygon
+            className="dp-sat"
+            points="110,230 128,240 110,250  92,240"
+          />
         </g>
         <g className="dp-node dp-n4">
-          <polygon className="dp-sat" points="552,235 570,245 570,267 552,257" />
-          <polygon className="dp-sat" points="570,245 588,235 588,257 570,267" />
-          <polygon className="dp-sat" points="570,225 588,235 570,245 552,235" />
+          <polygon
+            className="dp-sat"
+            points="552,235 570,245 570,267 552,257"
+          />
+          <polygon
+            className="dp-sat"
+            points="570,245 588,235 588,257 570,267"
+          />
+          <polygon
+            className="dp-sat"
+            points="570,225 588,235 570,245 552,235"
+          />
         </g>
 
         {/* ── Travelling squares: flat #597299 cube along each zigzag path ─ */}
-        <g className="dp-cube dp-c1"><rect fill="#597299" x="-3" y="-3" width="6" height="6" /></g>
-        <g className="dp-cube dp-c2"><rect fill="#597299" x="-3" y="-3" width="6" height="6" /></g>
-        <g className="dp-cube dp-c3"><rect fill="#597299" x="-3" y="-3" width="6" height="6" /></g>
-        <g className="dp-cube dp-c4"><rect fill="#597299" x="-3" y="-3" width="6" height="6" /></g>
+        <g className="dp-cube dp-c1">
+          <rect fill="#597299" x="-3" y="-3" width="6" height="6" />
+        </g>
+        <g className="dp-cube dp-c2">
+          <rect fill="#597299" x="-3" y="-3" width="6" height="6" />
+        </g>
+        <g className="dp-cube dp-c3">
+          <rect fill="#597299" x="-3" y="-3" width="6" height="6" />
+        </g>
+        <g className="dp-cube dp-c4">
+          <rect fill="#597299" x="-3" y="-3" width="6" height="6" />
+        </g>
 
         {/* ── Static cluster: 9 filled prisms ─────────────────────────────── */}
         <g>
-          <polygon className="dp-stack" points="310,153 340,170 340,204 310,187" />
-          <polygon className="dp-stack" points="340,170 370,153 370,187 340,204" />
-          <polygon className="dp-stack" points="340,136 370,153 340,170 310,153" />
+          <polygon
+            className="dp-stack"
+            points="310,153 340,170 340,204 310,187"
+          />
+          <polygon
+            className="dp-stack"
+            points="340,170 370,153 370,187 340,204"
+          />
+          <polygon
+            className="dp-stack"
+            points="340,136 370,153 340,170 310,153"
+          />
         </g>
         <g>
-          <polygon className="dp-stack" points="340,136 370,153 370,221 340,204" />
-          <polygon className="dp-stack" points="370,153 400,136 400,204 370,221" />
-          <polygon className="dp-stack" points="370,119 400,136 370,153 340,136" />
+          <polygon
+            className="dp-stack"
+            points="340,136 370,153 370,221 340,204"
+          />
+          <polygon
+            className="dp-stack"
+            points="370,153 400,136 400,204 370,221"
+          />
+          <polygon
+            className="dp-stack"
+            points="370,119 400,136 370,153 340,136"
+          />
         </g>
         <g>
-          <polygon className="dp-stack" points="280,148 310,165 310,221 280,204" />
-          <polygon className="dp-stack" points="310,165 340,148 340,204 310,221" />
-          <polygon className="dp-stack" points="310,131 340,148 310,165 280,148" />
+          <polygon
+            className="dp-stack"
+            points="280,148 310,165 310,221 280,204"
+          />
+          <polygon
+            className="dp-stack"
+            points="310,165 340,148 340,204 310,221"
+          />
+          <polygon
+            className="dp-stack"
+            points="310,131 340,148 310,165 280,148"
+          />
         </g>
         <g>
-          <polygon className="dp-stack" points="370,171 400,188 400,238 370,221" />
-          <polygon className="dp-stack" points="400,188 430,171 430,221 400,238" />
-          <polygon className="dp-stack" points="400,154 430,171 400,188 370,171" />
+          <polygon
+            className="dp-stack"
+            points="370,171 400,188 400,238 370,221"
+          />
+          <polygon
+            className="dp-stack"
+            points="400,188 430,171 430,221 400,238"
+          />
+          <polygon
+            className="dp-stack"
+            points="400,154 430,171 400,188 370,171"
+          />
         </g>
         <g>
-          <polygon className="dp-stack" points="310,131 340,148 340,238 310,221" />
-          <polygon className="dp-stack" points="340,148 370,131 370,221 340,238" />
-          <polygon className="dp-stack" points="340,114 370,131 340,148 310,131" />
+          <polygon
+            className="dp-stack"
+            points="310,131 340,148 340,238 310,221"
+          />
+          <polygon
+            className="dp-stack"
+            points="340,148 370,131 370,221 340,238"
+          />
+          <polygon
+            className="dp-stack"
+            points="340,114 370,131 340,148 310,131"
+          />
         </g>
         <g>
-          <polygon className="dp-stack" points="250,153 280,170 280,238 250,221" />
-          <polygon className="dp-stack" points="280,170 310,153 310,221 280,238" />
-          <polygon className="dp-stack" points="280,136 310,153 280,170 250,153" />
+          <polygon
+            className="dp-stack"
+            points="250,153 280,170 280,238 250,221"
+          />
+          <polygon
+            className="dp-stack"
+            points="280,170 310,153 310,221 280,238"
+          />
+          <polygon
+            className="dp-stack"
+            points="280,136 310,153 280,170 250,153"
+          />
         </g>
         <g>
-          <polygon className="dp-stack" points="340,204 370,221 370,255 340,238" />
-          <polygon className="dp-stack" points="370,221 400,204 400,238 370,255" />
-          <polygon className="dp-stack" points="370,187 400,204 370,221 340,204" />
+          <polygon
+            className="dp-stack"
+            points="340,204 370,221 370,255 340,238"
+          />
+          <polygon
+            className="dp-stack"
+            points="370,221 400,204 400,238 370,255"
+          />
+          <polygon
+            className="dp-stack"
+            points="370,187 400,204 370,221 340,204"
+          />
         </g>
         <g>
-          <polygon className="dp-stack" points="280,196 310,213 310,255 280,238" />
-          <polygon className="dp-stack" points="310,213 340,196 340,238 310,255" />
-          <polygon className="dp-stack" points="310,179 340,196 310,213 280,196" />
+          <polygon
+            className="dp-stack"
+            points="280,196 310,213 310,255 280,238"
+          />
+          <polygon
+            className="dp-stack"
+            points="310,213 340,196 340,238 310,255"
+          />
+          <polygon
+            className="dp-stack"
+            points="310,179 340,196 310,213 280,196"
+          />
         </g>
 
         {/* ── 9th cluster prism — bottom-centre slot ───────────────────────── */}
         <g>
-          <polygon className="dp-stack" points="310,195 340,212 340,272 310,255" />
-          <polygon className="dp-stack" points="340,212 370,195 370,255 340,272" />
-          <polygon className="dp-stack" points="340,178 370,195 340,212 310,195" />
+          <polygon
+            className="dp-stack"
+            points="310,195 340,212 340,272 310,255"
+          />
+          <polygon
+            className="dp-stack"
+            points="340,212 370,195 370,255 340,272"
+          />
+          <polygon
+            className="dp-stack"
+            points="340,178 370,195 340,212 310,195"
+          />
         </g>
       </svg>
     </div>

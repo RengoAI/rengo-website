@@ -23,24 +23,26 @@ import React from "react";
  */
 
 // ─── colour palette ──────────────────────────────────────────────────────────
-const GREY_FILL    = "rgb(205, 215, 222)";
-const BLUE_FILL    = "rgb(169, 212, 254)";
-const STROKE       = "rgb(121, 142, 167)";
+const GREY_FILL = "rgb(205, 215, 222)";
+const BLUE_FILL = "rgb(169, 212, 254)";
+const STROKE = "rgb(121, 142, 167)";
 const GUIDE_STROKE = "rgb(169, 183, 198)";
 
 // ─── sheet geometry ──────────────────────────────────────────────────────────
-const SHEETS        = 26;
-const SPREAD_STEP   = 9;   // px between sheets when spread
-const COMPRESS_STEP = 2;   // px between sheets when compressed
+const SHEETS = 26;
+const SPREAD_STEP = 9; // px between sheets when spread
+const COMPRESS_STEP = 2; // px between sheets when compressed
 // Indicator line spans from base (y=330) to top of spread (y=85)
-const INDICATOR_TOP    = 330 - (SHEETS - 1) * SPREAD_STEP;  // 85
-const INDICATOR_HEIGHT = (SHEETS - 1) * SPREAD_STEP;         // 245
-const COMPRESS_K = ((SHEETS - 1) * COMPRESS_STEP / INDICATOR_HEIGHT).toFixed(3); // ≈ 0.286
+const INDICATOR_TOP = 330 - (SHEETS - 1) * SPREAD_STEP; // 85
+const INDICATOR_HEIGHT = (SHEETS - 1) * SPREAD_STEP; // 245
+const COMPRESS_K = (((SHEETS - 1) * COMPRESS_STEP) / INDICATOR_HEIGHT).toFixed(
+  3,
+); // ≈ 0.286
 
 // Ghost diamond: top is at INDICATOR_TOP, diamond half-height = 34
-const GHOST_CENTER_Y = INDICATOR_TOP;                  // 85
-const GHOST_PEAK_Y   = INDICATOR_TOP - 34;             // 51
-const GHOST_TROUGH_Y = INDICATOR_TOP + 34;             // 119
+const GHOST_CENTER_Y = INDICATOR_TOP; // 85
+const GHOST_PEAK_Y = INDICATOR_TOP - 34; // 51
+const GHOST_TROUGH_Y = INDICATOR_TOP + 34; // 119
 // Back-corner guide ends at the back trough of the ghost diamond (y = INDICATOR_TOP + 34)
 
 const STYLES = `
@@ -93,9 +95,36 @@ export const CollapsingStackArt: React.FC = () => (
       strokeDasharray="2 4"
       opacity={0.55}
     />
-    <line x1="210" y1="330" x2="210" y2={GHOST_CENTER_Y} stroke={GUIDE_STROKE} strokeWidth={1} strokeDasharray="2 4" opacity={0.55} />
-    <line x1="470" y1="330" x2="470" y2={GHOST_CENTER_Y} stroke={GUIDE_STROKE} strokeWidth={1} strokeDasharray="2 4" opacity={0.55} />
-    <line x1="340" y1="364" x2="340" y2={GHOST_TROUGH_Y} stroke={GUIDE_STROKE} strokeWidth={1} strokeDasharray="2 4" opacity={0.55} />
+    <line
+      x1="210"
+      y1="330"
+      x2="210"
+      y2={GHOST_CENTER_Y}
+      stroke={GUIDE_STROKE}
+      strokeWidth={1}
+      strokeDasharray="2 4"
+      opacity={0.55}
+    />
+    <line
+      x1="470"
+      y1="330"
+      x2="470"
+      y2={GHOST_CENTER_Y}
+      stroke={GUIDE_STROKE}
+      strokeWidth={1}
+      strokeDasharray="2 4"
+      opacity={0.55}
+    />
+    <line
+      x1="340"
+      y1="364"
+      x2="340"
+      y2={GHOST_TROUGH_Y}
+      stroke={GUIDE_STROKE}
+      strokeWidth={1}
+      strokeDasharray="2 4"
+      opacity={0.55}
+    />
 
     {/* 36 animated sheets */}
     {Array.from({ length: SHEETS }, (_, i) => (
@@ -111,14 +140,24 @@ export const CollapsingStackArt: React.FC = () => (
 
     {/* right-side height indicator */}
     <line
-      x1="530" y1="330" x2="530" y2={INDICATOR_TOP}
+      x1="530"
+      y1="330"
+      x2="530"
+      y2={INDICATOR_TOP}
       className="cs-indicator"
       stroke={STROKE}
       strokeWidth={1}
       strokeDasharray="2 4"
     />
     {/* fixed end-caps */}
-    <line x1="522" y1={INDICATOR_TOP} x2="538" y2={INDICATOR_TOP} stroke={STROKE} strokeWidth={1} />
-    <line x1="522" y1="330"           x2="538" y2="330"           stroke={STROKE} strokeWidth={1} />
+    <line
+      x1="522"
+      y1={INDICATOR_TOP}
+      x2="538"
+      y2={INDICATOR_TOP}
+      stroke={STROKE}
+      strokeWidth={1}
+    />
+    <line x1="522" y1="330" x2="538" y2="330" stroke={STROKE} strokeWidth={1} />
   </svg>
 );

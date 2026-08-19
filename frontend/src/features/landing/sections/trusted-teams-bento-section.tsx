@@ -90,7 +90,13 @@ const TestimonialCard: React.FC<{
     }}
   >
     <Box display="flex" flexDirection="column" gap={6} flex="1" minH={0}>
-      <Box as="figcaption" display="flex" alignItems="center" gap={2.5} minW={0}>
+      <Box
+        as="figcaption"
+        display="flex"
+        alignItems="center"
+        gap={2.5}
+        minW={0}
+      >
         <Box
           display="flex"
           alignItems="center"

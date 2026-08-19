@@ -45,7 +45,9 @@ const useTypedChars = (text: string, active: boolean) => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     if (reduce || !active) {
       setCount(reduce ? text.length : 0);
       return;

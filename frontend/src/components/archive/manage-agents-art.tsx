@@ -18,15 +18,15 @@ import React from "react";
  */
 
 // ─── colours ────────────────────────────────────────────────────────────────
-const BG_IDLE      = "#e0e5e6";
-const BG_LOADING   = "#ffffff";
+const BG_IDLE = "#e0e5e6";
+const BG_LOADING = "#ffffff";
 const BG_COMPLETED = "#C9DCD1";
-const RING_COLOR   = "#d3dde1";   // 1 px inset shadow used as border in loading state
-const RULE_SOFT    = "#a9b7c6";
+const RING_COLOR = "#d3dde1"; // 1 px inset shadow used as border in loading state
+const RULE_SOFT = "#a9b7c6";
 
 // ─── layout constants ────────────────────────────────────────────────────────
 const CONNECTOR_H = 14;
-const ICON_SIZE   = 13;
+const ICON_SIZE = 13;
 
 // ─── styles injected once into the DOM ───────────────────────────────────────
 const CARD_STYLES = `
@@ -78,7 +78,11 @@ const CARD_STYLES = `
   .manage-card-3 { animation: mgCard3 9s ease-in-out infinite; animation-fill-mode: both; }
 `;
 
-const CARD_CLASSES = ["manage-card-1", "manage-card-2", "manage-card-3"] as const;
+const CARD_CLASSES = [
+  "manage-card-1",
+  "manage-card-2",
+  "manage-card-3",
+] as const;
 
 // ─── types ───────────────────────────────────────────────────────────────────
 type Step = {
@@ -195,7 +199,9 @@ export const ManageAgentsArt: React.FC<ManageAgentsArtProps> = ({
                   color={s.color}
                   aria-hidden
                   style={{ flexShrink: 0 }}
-                  className={s.Icon === Loader2 ? "manage-loader-spin" : undefined}
+                  className={
+                    s.Icon === Loader2 ? "manage-loader-spin" : undefined
+                  }
                 />
               )}
             </Flex>
