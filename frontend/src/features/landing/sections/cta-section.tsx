@@ -15,16 +15,12 @@ export const CtaSection: React.FC<CtaSectionProps> = ({
   onTalkToSales,
   borderTop = true,
 }) => (
-  <SectionShell
-    borderTop={borderTop}
-    bg="slate.10"
-    py={{ base: 16, md: "80px" }}
-  >
+  <SectionShell borderTop={borderTop} bg="slate.10" py={{ base: 10, md: 12 }}>
     <Flex
       direction="column"
       align="center"
       justify="center"
-      gap={{ base: 8, md: 10 }}
+      gap={{ base: 6, md: 8 }}
       w="full"
       textAlign="center"
     >

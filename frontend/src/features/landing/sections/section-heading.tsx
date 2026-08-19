@@ -2,7 +2,7 @@ import {
   sectionHeadingMarginLeft,
   sectionHeadingTextPl,
 } from "@/components/layout/marketing-frame";
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 
 type SectionHeadingProps = {
@@ -45,18 +45,13 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
         borderRadius="1px"
       />
     ) : null}
-    <Box
+    <Text
       as="h2"
-      fontFamily="heading"
-      fontWeight={350}
-      fontSize={{ base: "28px", md: "36px" }}
-      lineHeight={{ base: "32px", md: "40px" }}
-      letterSpacing="-0.72px"
-      color="indigo.900"
+      variant="h2"
       m={0}
       pl={flushToRim || !showAccent ? 0 : sectionHeadingTextPl}
     >
       {children}
-    </Box>
+    </Text>
   </Box>
 );

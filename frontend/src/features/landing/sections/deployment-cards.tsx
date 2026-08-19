@@ -2,12 +2,11 @@ import { Box, Flex, Text, chakra } from "@chakra-ui/react";
 import React from "react";
 
 /**
- * Deployment pillars as Mintlify-style feature cards: a tall tile with a
- * tinted gradient field, a centred white logo plate, and a caption underneath.
+ * Deployment pillars as Mintlify-style feature cards: a tinted gradient
+ * field, a centred glyph, and a caption underneath.
  *
- * Card metrics follow Mintlify's "Enabling the next generation of startups"
- * row — ~341×390 tiles, 6px radius, overflow hidden — recoloured onto the
- * Rengo palette rather than their per-brand hues.
+ * Card metrics follow Mintlify's "Latest updates" tiles — ~328×311 media
+ * field — recoloured onto the Rengo palette rather than their per-brand hues.
  */
 
 /** Card field gradients — lighter primary ramp on slate.10 section. */
@@ -110,7 +109,7 @@ const CARDS: DeploymentCard[] = [
     id: "infrastructure",
     title: "Shared foundation",
     caption:
-      "Connect your data, systems, and workflows to a governed foundation that every application and agent can build on.",
+      "Connect your data, systems, and workflows once. Then build every AI application on top.",
     from: FIELD_INDIGO_700,
     to: FIELD_PRIMARY_400,
     glyph: (
@@ -139,7 +138,7 @@ const CARDS: DeploymentCard[] = [
     id: "own-code",
     title: "Own what you build",
     caption:
-      "Applications and integrations tailored to your workflows, owned in your repository and built to evolve with you.",
+      "Applications and integrations, built for your workflows and owned by your team.",
     from: FIELD_PRIMARY_500,
     to: FIELD_PRIMARY_200,
     glyph: (
@@ -167,7 +166,7 @@ const CARDS: DeploymentCard[] = [
     id: "applied-ai",
     title: "Compound knowledge",
     caption:
-      "Work shouldn’t start from scratch. Capture the context behind every decision so the next workflow benefits from the last.",
+      "Capture context as you work so every workflow gets smarter over time.",
     from: FIELD_PRIMARY_300,
     to: FIELD_PRIMARY_100,
     glyph: <ApplyLearningsLoopGlyph />,
@@ -210,7 +209,7 @@ export const DeploymentCards: React.FC = () => (
         <Box
           position="relative"
           w="full"
-          h={{ base: "300px", md: "380px" }}
+          h={{ base: "240px", md: "312px" }}
           borderRadius="3px"
           overflow="hidden"
           border="1px solid"

@@ -1,5 +1,6 @@
 import { SectionHeading } from "@/features/landing/sections/section-heading";
 import { Box, Grid, Text } from "@chakra-ui/react";
+import { UserRound } from "lucide-react";
 import React from "react";
 import { SectionShell } from "./section-shell";
 
@@ -88,30 +89,50 @@ const TestimonialCard: React.FC<{
       },
     }}
   >
-    <Box display="flex" flexDirection="column" gap={8} flex="1" minH={0}>
-      <Box display="flex" flexDirection="column" gap={1} minW={0}>
-        <Text
-          as="figcaption"
-          fontSize="14px"
-          lineHeight="20px"
-          fontWeight={500}
-          letterSpacing="-0.1px"
+    <Box display="flex" flexDirection="column" gap={6} flex="1" minH={0}>
+      <Box
+        as="figcaption"
+        display="flex"
+        alignItems="center"
+        gap={2.5}
+        minW={0}
+      >
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          flexShrink={0}
+          w="36px"
+          h="36px"
+          borderRadius="6px"
+          bg="slate.30"
           color="indigo.900"
-          m={0}
-          truncate
         >
-          {item.role}
-        </Text>
-        <Text
-          fontSize="14px"
-          lineHeight="20px"
-          fontWeight="normal"
-          color="slate.50"
-          m={0}
-          truncate
-        >
-          {item.organization}
-        </Text>
+          <UserRound size={16} strokeWidth={1.75} aria-hidden />
+        </Box>
+        <Box display="flex" flexDirection="column" minW={0}>
+          <Text
+            fontSize="14px"
+            lineHeight="20px"
+            fontWeight={500}
+            letterSpacing="-0.1px"
+            color="indigo.900"
+            m={0}
+            truncate
+          >
+            {item.role}
+          </Text>
+          <Text
+            fontSize="14px"
+            lineHeight="20px"
+            fontWeight="normal"
+            color="slate.50"
+            m={0}
+            truncate
+          >
+            {item.organization}
+          </Text>
+        </Box>
       </Box>
       <Text
         as="blockquote"
@@ -141,7 +162,7 @@ export const TrustedTeamsBentoSection: React.FC = () => {
     <SectionShell borderTop bg="slate.10" py={{ base: 16, md: "80px" }}>
       <Box display="flex" flexDirection="column" gap={{ base: 10, md: "60px" }}>
         <SectionHeading maxW="720px">
-          Trusted by teams deploying AI
+          Trusted by teams adopting AI
         </SectionHeading>
 
         <Grid

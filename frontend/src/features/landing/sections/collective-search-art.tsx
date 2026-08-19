@@ -1,6 +1,6 @@
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import { ArrowRight, Sparkle } from "lucide-react";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 /**
  * "Unlock collective intelligence" — a question put to what the firm knows.
@@ -17,9 +17,63 @@ import React from "react";
  */
 
 const QUERY = "Our perspective on…";
-const GLYPH_STROKE = "#768ca6"; // slate.50 — sparkle
+const SPARKLE = "#0071E3";
 const ARROW_STROKE = "#425366"; // slate.100
 const INK = "#124476"; // indigo.700
+const CHAR_MS = 70;
+const HOLD_MS = 2200;
+
+const useInView = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.35 },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  return { ref, inView };
+};
+
+const useTypedChars = (text: string, active: boolean) => {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    const reduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (reduce || !active) {
+      setCount(reduce ? text.length : 0);
+      return;
+    }
+
+    let i = 0;
+    let timer = 0;
+    const type = () => {
+      i += 1;
+      if (i <= text.length) {
+        setCount(i);
+        timer = window.setTimeout(type, CHAR_MS);
+      } else {
+        timer = window.setTimeout(() => {
+          i = 0;
+          setCount(0);
+          timer = window.setTimeout(type, 320);
+        }, HOLD_MS);
+      }
+    };
+    timer = window.setTimeout(type, 280);
+    return () => window.clearTimeout(timer);
+  }, [text, active]);
+
+  return count;
+};
 
 /** Same vendor chips as connect-systems-art — search spans model providers. */
 const PROVIDER_TILES = [
@@ -43,9 +97,11 @@ export const CollectiveSearchArt: React.FC<CollectiveSearchArtProps> = ({
   const isCompact = variant === "compact";
   const tileSize = isCompact ? "32px" : "40px";
   const vendorGap = isCompact ? 1.5 : 2;
+  const { ref, inView } = useInView();
+  const visibleCount = useTypedChars(QUERY, inView);
 
   return (
-    <Box w="full" maxW="100%" mx="auto" aria-hidden>
+    <Box ref={ref} w="full" maxW="100%" mx="auto" aria-hidden>
       <Flex
         align="center"
         gap={2}
@@ -60,9 +116,32 @@ export const CollectiveSearchArt: React.FC<CollectiveSearchArtProps> = ({
         minW={0}
         boxShadow="0 8px 24px rgba(33, 48, 68, 0.08)"
         w="full"
+        css={{
+          "@keyframes rengo-sparkle-spin": {
+            to: { transform: "rotate(360deg)" },
+          },
+          "@keyframes rengo-sparkle-glow": {
+            "0%, 100%": {
+              filter: "drop-shadow(0 0 2px rgba(0, 113, 227, 0.4))",
+            },
+            "50%": {
+              filter: "drop-shadow(0 0 7px rgba(0, 113, 227, 0.95))",
+            },
+          },
+          "@media (prefers-reduced-motion: reduce)": {
+            "& [data-sparkle]": { animation: "none" },
+          },
+        }}
       >
         <Flex align="center" gap={isCompact ? 2.5 : 3} flex="1" minW={0}>
-          <Box color={GLYPH_STROKE} display="flex" flexShrink={0}>
+          <Box
+            data-sparkle
+            color={SPARKLE}
+            display="flex"
+            flexShrink={0}
+            animation="rengo-sparkle-spin 5.5s linear infinite, rengo-sparkle-glow 2.2s ease-in-out infinite"
+            style={{ animationPlayState: inView ? "running" : "paused" }}
+          >
             <Sparkle size={13} strokeWidth={2.25} />
           </Box>
           <Text
@@ -75,17 +154,26 @@ export const CollectiveSearchArt: React.FC<CollectiveSearchArtProps> = ({
             minW={0}
             whiteSpace="nowrap"
             overflow="hidden"
-            textOverflow="ellipsis"
             m={0}
           >
-            {QUERY}
+            {QUERY.split("").map((char, i) => (
+              <Box
+                as="span"
+                key={`${char}-${i}`}
+                display="inline"
+                opacity={i < visibleCount ? 1 : 0}
+                transition="opacity 280ms ease"
+              >
+                {char === " " ? "\u00a0" : char}
+              </Box>
+            ))}
           </Text>
         </Flex>
         <Flex
           w={isCompact ? "12px" : "16px"}
           h={isCompact ? "12px" : "16px"}
           align="center"
-          justify="center"
+          justifyContent="center"
           flexShrink={0}
         >
           <ArrowRight

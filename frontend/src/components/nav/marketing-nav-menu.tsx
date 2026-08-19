@@ -21,7 +21,6 @@ export const MarketingNavMenu: React.FC<MarketingNavMenuProps> = ({
   label,
   items,
   navColor,
-  navHoverColor,
 }) => {
   const [open, setOpen] = useState(false);
   const closeTimer = useRef<number | null>(null);
@@ -98,18 +97,19 @@ export const MarketingNavMenu: React.FC<MarketingNavMenuProps> = ({
           gap={1}
           px="10px"
           py="4px"
-          color={open ? "slate.10" : navColor}
-          bg={open ? "indigo.900" : "transparent"}
-          transition="background 150ms ease, color 150ms ease"
+          color={open ? "accent.link" : navColor}
+          bg="transparent"
+          transition="color 150ms ease"
           _hover={{
-            color: open ? "slate.10" : navHoverColor,
-            bg: open ? "indigo.900" : "transparent",
+            color: "accent.link",
+            bg: "transparent",
           }}
         >
           {label}
           <Box
             as="span"
             display="inline-flex"
+            color="slate.40"
             transition="transform 150ms ease"
             transform={open ? "rotate(180deg)" : "rotate(0deg)"}
           >
@@ -137,24 +137,6 @@ export const MarketingNavMenu: React.FC<MarketingNavMenuProps> = ({
           onMouseLeave={scheduleClose}
           overflow="hidden"
         >
-          <Box
-            px={7}
-            py={3}
-            bg="slate.10"
-            borderBottom="1px solid"
-            borderColor={marketingLayoutBorderColor}
-          >
-            <Text
-              fontFamily="body"
-              fontSize="14px"
-              fontWeight="medium"
-              lineHeight="16px"
-              color="ink.body"
-              m={0}
-            >
-              {label}
-            </Text>
-          </Box>
           <Flex direction="column" align="stretch">
             {items.map((item) => (
               <Box

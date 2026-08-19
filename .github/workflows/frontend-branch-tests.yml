@@ -32,5 +32,10 @@ jobs:
       - name: Setup node
         uses: ./.github/actions/node-setup
 
+      # Text recipe variants (e.g. <Text variant="h1">) only type-check after
+      # `chakra typegen`. Mirror the Lint workflow so tsc sees those types.
+      - name: Auto-generate code
+        run: pnpm run gen
+
       - name: Run lint
         run: pnpm run lint

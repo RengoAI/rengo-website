@@ -1,229 +1,164 @@
 import {
   AudioLines,
   ChartNoAxesCombined,
-  ScanText,
   Table,
   type LucideIcon,
 } from "lucide-react";
 import React from "react";
 
 /**
- * "Structure knowledge" — unstructured isometric blocks on the left, the same
- * modalities as typed tiles in the ordered frame on the right.
+ * "Structure your knowledge" bento art.
+ *
+ * Three columns × three rows of data-type squares linked by a dotted
+ * branching trunk. Fills stay on the marketing slate / ice-blue ramp used
+ * by the other bento tiles (no green or yellow).
  */
 
-const TOP_RATIO = 48.0 / 84.2;
-const BODY_RATIO = 48.8 / 42.1;
-const CUBE_R = 15;
+// ─── Square type palette ─────────────────────────────────────────────────────
+type SquareKind = "timeSeries" | "tables" | "audio" | "text";
 
-/** Isometric block for the scattered (unordered) half. */
-const ScatterBlock: React.FC<{ cx: number; cy: number }> = ({ cx, cy }) => {
-  const r = CUBE_R;
-  const ry = r * TOP_RATIO;
-  const body = r * BODY_RATIO;
-  return (
-    <g
-      strokeLinejoin="round"
-      strokeWidth={Math.max(0.8, r * 0.05)}
-      stroke={RULE_SOFT}
-    >
-      <polygon
-        points={`${cx - r},${cy} ${cx},${cy + ry} ${cx},${cy + ry + body} ${cx - r},${cy + body}`}
-        fill="rgba(118,140,166,0.12)"
-      />
-      <polygon
-        points={`${cx + r},${cy} ${cx},${cy + ry} ${cx},${cy + ry + body} ${cx + r},${cy + body}`}
-        fill="rgba(118,140,166,0.24)"
-      />
-      <polygon
-        points={`${cx},${cy - ry} ${cx + r},${cy} ${cx},${cy + ry} ${cx - r},${cy}`}
-        fill="#ffffff"
-      />
-    </g>
-  );
+const PALETTE: Record<
+  SquareKind,
+  { bg: string; fg: string; label: string; Icon: LucideIcon | null }
+> = {
+  timeSeries: {
+    bg: "#A8D4FF",
+    fg: "#124476",
+    label: "Time series",
+    Icon: ChartNoAxesCombined,
+  },
+  tables: { bg: "#A9B7C6", fg: "#425366", label: "Tables", Icon: Table },
+  audio: { bg: "#FAFAFA", fg: "#768CA6", label: "Audio", Icon: AudioLines },
+  text: { bg: "#D3DDE1", fg: "#768CA6", label: "Text", Icon: null },
 };
 
-const RULE_SOFT = "#a9b7c6";
-const GLYPH_STROKE = "#768ca6";
-const TAG_INK = "#124476"; // indigo.700 — matches ManageAgentsArt step labels
-/** Bento vendor-tile styling (slate.10 surface, slate.30 border, 8px radius). */
-const TILE_FILL = "#f5f5f6";
-const TILE_BORDER = "#d3dde1";
+// ─── Layout constants ────────────────────────────────────────────────────────
+const SQ = 50; // large square side
+const LINE_CLR = "#597299";
 
-const VB_W = 380;
-/** Sized to read like the 54px vendor chips in the bento, scaled to this figure. */
-const TILE_SIZE = 36;
-const TILE_RX = 6;
+// Column x (left edge of each square) — matches Figma proportions
+const C1X = 10; // left col
+const C2X = 102; // middle col  (42px gap from col1 right edge)
+const C3X = 177; // right col   (25px gap from col2 right edge)
 
-type ModalityKind = "audio" | "tables" | "text" | "timeSeries";
+// Row y (top edge of each square)
+const R0Y = 12;
+const R1Y = 82; // 70px pitch keeps gaps proportional to Figma
+const R2Y = 152;
 
-const MODALITY_ICONS: Record<ModalityKind, LucideIcon> = {
-  audio: AudioLines,
-  tables: Table,
-  text: ScanText,
-  timeSeries: ChartNoAxesCombined,
-};
+// Derived edges / centres
+const C1R = C1X + SQ; // 60  — col1 right edge
+const C2L = C2X; // 102 — col2 left edge
+const C2R = C2X + SQ; // 152 — col2 right edge
+const C3L = C3X; // 177 — col3 left edge
+const R0CY = R0Y + SQ / 2; // 37
+const R1CY = R1Y + SQ / 2; // 107
+const R2CY = R2Y + SQ / 2; // 177
 
-const MODALITY_ICON_SIZE = 18;
-const TAG_LINE_HEIGHT = 12;
-const TAG_GAP = 10;
+// Trunk x midpoint between col1 right and col2 left
+const TX = Math.round((C1R + C2L) / 2); // 81
 
-const ModalityTag: React.FC<{
-  x: number;
-  y: number;
-  children: string;
-  fontSize: number;
-}> = ({ x, y, children, fontSize }) => (
-  <foreignObject
-    x={x}
-    y={y - TAG_LINE_HEIGHT / 2}
-    width={132}
-    height={TAG_LINE_HEIGHT}
-    xmlns="http://www.w3.org/1999/xhtml"
-  >
-    <p
-      className="rengo-text"
-      style={{
-        margin: 0,
-        fontFamily: "var(--chakra-fonts-body, system-ui, sans-serif)",
-        fontSize: `${fontSize}px`,
-        fontWeight: 500,
-        lineHeight: `${TAG_LINE_HEIGHT}px`,
-        letterSpacing: "-0.2px",
-        color: TAG_INK,
-        whiteSpace: "nowrap",
-      }}
-    >
-      {children}
-    </p>
-  </foreignObject>
-);
+// ViewBox
+const VB_W = C3X + SQ + 10; // 237
+const VB_H = R2Y + SQ + 10; // 212
 
-const ModalityTile: React.FC<{
-  cx: number;
-  cy: number;
-  kind: ModalityKind;
-  shadowFilterId?: string;
-}> = ({ cx, cy, kind, shadowFilterId }) => {
-  const half = TILE_SIZE / 2;
-  const Icon = MODALITY_ICONS[kind];
+// ─── Grid definition ─────────────────────────────────────────────────────────
+const GRID: Array<{ col: 0 | 1 | 2; row: 0 | 1 | 2; kind: SquareKind }> = [
+  // Col 0 — left source squares
+  { col: 0, row: 0, kind: "text" },
+  { col: 0, row: 1, kind: "tables" },
+  { col: 0, row: 2, kind: "audio" },
+  // Col 1 — middle typed squares
+  { col: 1, row: 0, kind: "timeSeries" },
+  { col: 1, row: 1, kind: "text" },
+  { col: 1, row: 2, kind: "tables" },
+  // Col 2 — right grey squares
+  { col: 2, row: 0, kind: "text" },
+  { col: 2, row: 1, kind: "timeSeries" },
+  { col: 2, row: 2, kind: "text" },
+];
+
+const COL_X: [number, number, number] = [C1X, C2X, C3X];
+const ROW_Y: [number, number, number] = [R0Y, R1Y, R2Y];
+
+// ─── Sub-components ──────────────────────────────────────────────────────────
+
+const DataSquare: React.FC<{
+  col: 0 | 1 | 2;
+  row: 0 | 1 | 2;
+  kind: SquareKind;
+}> = ({ col, row, kind }) => {
+  const x = COL_X[col];
+  const y = ROW_Y[row];
+  const { bg, fg, label, Icon } = PALETTE[kind];
+  const LABEL_FS = 7.2;
+  const ICON_SZ = 12;
+
   return (
-    <g filter={shadowFilterId ? `url(#${shadowFilterId})` : undefined}>
-      <rect
-        x={cx - half}
-        y={cy - half}
-        width={TILE_SIZE}
-        height={TILE_SIZE}
-        rx={TILE_RX}
-        fill={TILE_FILL}
-        stroke={TILE_BORDER}
-        strokeWidth={1}
-      />
-      <foreignObject
-        x={cx - half}
-        y={cy - half}
-        width={TILE_SIZE}
-        height={TILE_SIZE}
-        xmlns="http://www.w3.org/1999/xhtml"
+    <g>
+      <rect x={x} y={y} width={SQ} height={SQ} rx={1.8} fill={bg} />
+      {/* Label — top-left of square */}
+      <text
+        x={x + 4}
+        y={y + 4 + LABEL_FS}
+        style={{
+          fontFamily: "var(--rengo-fonts-body, system-ui, sans-serif)",
+          fontSize: `${LABEL_FS}px`,
+          fontWeight: 400,
+          fill: fg,
+          letterSpacing: "-0.36px",
+        }}
       >
-        <div
-          style={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+        {label}
+      </text>
+      {/* Icon — bottom-left of square (coloured types only) */}
+      {Icon && (
+        <foreignObject
+          x={x + 3}
+          y={y + SQ - ICON_SZ - 5}
+          width={ICON_SZ}
+          height={ICON_SZ}
         >
-          <Icon
-            size={MODALITY_ICON_SIZE}
-            strokeWidth={1.75}
-            color={GLYPH_STROKE}
-            aria-hidden
-          />
-        </div>
-      </foreignObject>
+          <div
+            style={{
+              width: ICON_SZ,
+              height: ICON_SZ,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Icon size={ICON_SZ} strokeWidth={1.5} color={fg} aria-hidden />
+          </div>
+        </foreignObject>
+      )}
     </g>
   );
 };
 
-const ROW_PAD_Y = 12;
-const ROW_PITCH = TILE_SIZE + 2 * ROW_PAD_Y;
-const FRAME_MARGIN_Y = 18;
-
-const ROW_TOP_Y = FRAME_MARGIN_Y + ROW_PITCH / 2;
-
-const GRID_X = 172;
-const GRID_W = 156;
-const GRID_PAD_X = 16;
-
-const ROW_X = GRID_X + GRID_PAD_X + TILE_SIZE / 2;
-
-const TILE_HALF = TILE_SIZE / 2;
-
-const BLOCKS = [
-  {
-    id: "a",
-    kind: "audio" as ModalityKind,
-    from: { x: 22, y: 28 },
-    tag: "Audio",
-  },
-  {
-    id: "b",
-    kind: "tables" as ModalityKind,
-    from: { x: 58, y: 88 },
-    tag: "Tables",
-  },
-  {
-    id: "c",
-    kind: "text" as ModalityKind,
-    from: { x: 16, y: 148 },
-    tag: "Text",
-  },
-  {
-    id: "d",
-    kind: "timeSeries" as ModalityKind,
-    from: { x: 62, y: 212 },
-    tag: "Time series",
-  },
-].map((b, i) => ({
-  ...b,
-  to: { x: ROW_X, y: ROW_TOP_Y + i * ROW_PITCH },
-}));
-
-const SCATTER_RIGHT_EDGE = Math.max(...BLOCKS.map((b) => b.from.x)) + CUBE_R;
-const DIVIDER_X = (SCATTER_RIGHT_EDGE + GRID_X) / 2;
-
-const rowCentre = (i: number) => ROW_TOP_Y + i * ROW_PITCH;
-
-const ROW_RULES = [0, 1, 2].map((i) => (rowCentre(i) + rowCentre(i + 1)) / 2);
-
-const GRID_Y = rowCentre(0) - ROW_PITCH / 2;
-const GRID_H = rowCentre(3) + ROW_PITCH / 2 - GRID_Y;
-const VB_H = GRID_Y + GRID_H + FRAME_MARGIN_Y;
-
-const CONTENT_LEFT = Math.min(...BLOCKS.map((b) => b.from.x)) - CUBE_R;
-const CONTENT_RIGHT = GRID_X + GRID_W;
-const CENTRE_SHIFT = VB_W / 2 - (CONTENT_LEFT + CONTENT_RIGHT) / 2;
-
-type AgentsActArtProps = {
-  variant?: "tile" | "compact";
+// ─── Dotted line presentation props ──────────────────────────────────────────
+const D = {
+  stroke: LINE_CLR,
+  strokeWidth: 1,
+  strokeDasharray: "3 3",
+  strokeOpacity: 0.65,
 };
+
+// ─── Component ────────────────────────────────────────────────────────────────
+type AgentsActArtProps = { variant?: "tile" | "compact" };
 
 export const AgentsActArt: React.FC<AgentsActArtProps> = ({
   variant = "tile",
 }) => {
-  const tileShadowId = `act-tile-shadow-${React.useId().replace(/:/g, "")}`;
   const isCompact = variant === "compact";
-  const tagFontSize = isCompact ? 9 : 10;
 
   return (
     <div
       style={{
         position: "relative",
         width: "100%",
-        maxWidth: variant === "compact" ? "220px" : "340px",
-        height: variant === "compact" ? "180px" : "220px",
+        maxWidth: isCompact ? "220px" : "320px",
+        height: isCompact ? "160px" : "200px",
         margin: "0 auto",
       }}
     >
@@ -231,88 +166,33 @@ export const AgentsActArt: React.FC<AgentsActArtProps> = ({
         viewBox={`0 0 ${VB_W} ${VB_H}`}
         preserveAspectRatio="xMidYMid meet"
         role="img"
-        aria-label="Scattered blocks on the left, the same modalities as ordered rows on the right."
+        aria-label="Three-column grid of data-type squares connected by a branching dotted-line tree."
         style={{ display: "block", width: "100%", height: "100%" }}
       >
-        <defs>
-          <filter
-            id={tileShadowId}
-            x="-40%"
-            y="-40%"
-            width="180%"
-            height="180%"
-          >
-            <feDropShadow
-              dx="0"
-              dy="4"
-              stdDeviation="6"
-              floodColor="#213048"
-              floodOpacity="0.1"
-            />
-          </filter>
-        </defs>
+        {/* ── Dotted connection lines ───────────────────────────────────── */}
 
-        <g transform={`translate(${CENTRE_SHIFT} 0)`}>
-          <g>
-            <rect
-              x={GRID_X}
-              y={GRID_Y}
-              width={GRID_W}
-              height={GRID_H}
-              rx={3}
-              fill="none"
-              stroke={RULE_SOFT}
-              strokeOpacity={0.5}
-              strokeDasharray="3 3"
-            />
-            {ROW_RULES.map((y) => (
-              <line
-                key={y}
-                x1={GRID_X + GRID_PAD_X}
-                x2={GRID_X + GRID_W - GRID_PAD_X}
-                y1={y}
-                y2={y}
-                stroke={RULE_SOFT}
-                strokeOpacity={0.4}
-              />
-            ))}
-            {BLOCKS.map((b, i) => (
-              <ModalityTile
-                key={`to-${b.id}`}
-                cx={b.to.x}
-                cy={rowCentre(i)}
-                kind={b.kind}
-                shadowFilterId={tileShadowId}
-              />
-            ))}
-            {BLOCKS.map((b, i) => (
-              <ModalityTag
-                key={`tag-${b.id}`}
-                x={b.to.x + TILE_HALF + TAG_GAP}
-                y={rowCentre(i)}
-                fontSize={tagFontSize}
-              >
-                {b.tag}
-              </ModalityTag>
-            ))}
-          </g>
+        {/* Col1 right → trunk (horizontal stub per row) */}
+        <line x1={C1R} y1={R0CY} x2={TX} y2={R0CY} {...D} />
+        <line x1={C1R} y1={R1CY} x2={TX} y2={R1CY} {...D} />
+        <line x1={C1R} y1={R2CY} x2={TX} y2={R2CY} {...D} />
 
-          <line
-            x1={DIVIDER_X}
-            x2={DIVIDER_X}
-            y1={GRID_Y}
-            y2={GRID_Y + GRID_H}
-            stroke={RULE_SOFT}
-            strokeOpacity={0.55}
-            strokeWidth={1.25}
-          />
+        {/* Vertical trunk */}
+        <line x1={TX} y1={R0CY} x2={TX} y2={R2CY} {...D} />
 
-          <g>
-            {BLOCKS.map((b) => (
-              <ScatterBlock key={`from-${b.id}`} cx={b.from.x} cy={b.from.y} />
-            ))}
-          </g>
-        </g>
+        {/* Trunk → Col2 left (horizontal stub per row) */}
+        <line x1={TX} y1={R0CY} x2={C2L} y2={R0CY} {...D} />
+        <line x1={TX} y1={R1CY} x2={C2L} y2={R1CY} {...D} />
+        <line x1={TX} y1={R2CY} x2={C2L} y2={R2CY} {...D} />
+
+        {/* Col2 right → Col3 left */}
+        <line x1={C2R} y1={R0CY} x2={C3L} y2={R0CY} {...D} />
+        <line x1={C2R} y1={R1CY} x2={C3L} y2={R1CY} {...D} />
+        <line x1={C2R} y1={R2CY} x2={C3L} y2={R2CY} {...D} />
+
+        {/* ── Large coloured squares ────────────────────────────────────── */}
+        {GRID.map((sq, i) => (
+          <DataSquare key={i} col={sq.col} row={sq.row} kind={sq.kind} />
+        ))}
       </svg>
     </div>
   );

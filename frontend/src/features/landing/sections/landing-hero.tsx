@@ -1,15 +1,13 @@
-import {
-  ctaButtonHoverWithArrowProps,
-  ButtonArrowLabel,
-} from "@/components/ui/button-arrow-label";
 import { MarketingPageWidth } from "@/components/layout/marketing-page-width";
 import {
   MARKETING_GUTTER_WIDTH,
   marketingContentPaddingX,
+  marketingHeroDescriptionProps,
 } from "@/components/layout/marketing-frame";
 import { TOP_NAV_HEIGHT } from "@/components/nav/nav-styles";
+import { MarketingCtaButton } from "@/components/ui/marketing-cta-button";
 import { HeroGridCanvas } from "@/features/landing/sections/hero-grid-canvas";
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 
 interface LandingHeroProps {
@@ -55,69 +53,41 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
           pt={`calc(${TOP_NAV_HEIGHT}px + var(--chakra-spacing-10))`}
           pb={10}
         >
-          <Flex direction="column" align="flex-start" gap={{ base: 5, md: 7 }}>
-            <Box
-              as="h1"
-              fontFamily="heading"
-              fontWeight={300}
-              // Sized to hold "Your data is your alpha" on a single line; the
-              // vw term keeps it from wrapping between the md and lg stops.
-              fontSize={{
-                base: "clamp(32px, 8.2vw, 42px)",
-                md: "clamp(48px, 7vw, 66px)",
-                lg: "clamp(58px, 6.2vw, 78px)",
-              }}
-              lineHeight={1.02}
-              letterSpacing={{ base: "-1.5px", md: "-3px" }}
-              color="indigo.900"
-              maxW="none"
-              whiteSpace={{ base: "normal", md: "nowrap" }}
-              m={0}
+          <Flex
+            direction="column"
+            align="flex-start"
+            gap={{ base: 6, md: 8 }}
+            w="full"
+            maxW={{ base: "100%", md: "880px" }}
+            py={{ base: 6, md: 8 }}
+            pr={{ base: 4, md: 8 }}
+          >
+            <Flex
+              direction="column"
+              align="flex-start"
+              gap={{ base: 2, md: 3 }}
             >
-              Your data is{" "}
-              <Box as="span" color="accent.link">
-                your alpha
-              </Box>
-            </Box>
-
-            <Box
-              as="p"
-              fontFamily="heading"
-              fontWeight={350}
-              fontSize={{ base: "26px", md: "32px" }}
-              lineHeight={1.2}
-              letterSpacing="-2px"
-              color="indigo.900"
-              maxW="680px"
-              m={0}
-            >
-              <Box
-                as="span"
-                color="slate.50"
-                fontWeight={300}
-                fontSize={{ base: "20px", md: "28px" }}
-                lineHeight={1.2}
+              <Text
+                as="h1"
+                variant="h1"
+                maxW={{ base: "none", md: "720px" }}
+                m={0}
               >
+                Your data is{" "}
+                <Box as="span" color="accent.link">
+                  your alpha
+                </Box>
+              </Text>
+
+              <Box as="p" {...marketingHeroDescriptionProps} maxW="880px" m={0}>
                 Turn proprietary knowledge into operating leverage
               </Box>
-            </Box>
-          </Flex>
+            </Flex>
 
-          <Button
-            bg="indigo.900"
-            color="slate.10"
-            px={8}
-            py={3.5}
-            h="auto"
-            fontFamily="body"
-            fontSize="14px"
-            fontWeight="normal"
-            lineHeight="21px"
-            onClick={onCtaClick}
-            {...ctaButtonHoverWithArrowProps}
-          >
-            <ButtonArrowLabel>Get Started</ButtonArrowLabel>
-          </Button>
+            <MarketingCtaButton onClick={onCtaClick}>
+              Get Started
+            </MarketingCtaButton>
+          </Flex>
         </Flex>
       </Box>
       <Box

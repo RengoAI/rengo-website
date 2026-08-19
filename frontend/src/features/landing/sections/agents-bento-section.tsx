@@ -7,8 +7,8 @@ import {
 } from "@/components/layout/marketing-frame";
 import { AccessRolesArt } from "@/features/landing/sections/access-roles-art";
 import { AgentsActArt } from "@/features/landing/sections/agents-act-art";
-import { ManageAgentsArt } from "@/features/landing/sections/manage-agents-art";
 import { BentoIsoImage } from "@/features/landing/sections/bento-iso-image";
+import { CollapsingStackArt } from "@/features/landing/sections/collapsing-stack-art";
 import { CollectiveSearchArt } from "@/features/landing/sections/collective-search-art";
 import { DeploymentDiagram } from "@/features/landing/sections/deployment-diagram";
 import { ExistingToolsArt } from "@/features/landing/sections/existing-tools-art";
@@ -24,7 +24,7 @@ type TileArt =
   | { kind: "existingTools" }
   | { kind: "deployment" }
   | { kind: "agentsAct" }
-  | { kind: "manageAgents" };
+  | { kind: "timeSavings" };
 
 const TILES: {
   label: string;
@@ -33,32 +33,32 @@ const TILES: {
   row: string;
 }[] = [
   {
-    label: "Connect with your systems",
+    label: "Connect your systems",
     art: { kind: "deployment" },
     col: "1 / span 8",
     row: "1",
   },
   {
-    label: "Control who has access",
+    label: "Control access",
     art: { kind: "roles" },
     col: "9 / span 4",
     row: "1",
   },
   {
-    label: "Manage automations",
-    art: { kind: "manageAgents" },
-    col: "1 / span 4",
-    row: "2",
-  },
-  {
-    label: "Structure knowledge",
+    label: "Structure your knowledge",
     art: { kind: "agentsAct" },
-    col: "5 / span 4",
+    col: "1 / span 4",
     row: "2",
   },
   {
     label: "Unlock collective intelligence",
     art: { kind: "collectiveSearch" },
+    col: "5 / span 4",
+    row: "2",
+  },
+  {
+    label: "Accelerate every workflow",
+    art: { kind: "timeSavings" },
     col: "9 / span 4",
     row: "2",
   },
@@ -158,8 +158,8 @@ export const AgentsBentoSection: React.FC = () => (
                       <DeploymentDiagram size="tile" />
                     ) : tile.art.kind === "agentsAct" ? (
                       <AgentsActArt />
-                    ) : tile.art.kind === "manageAgents" ? (
-                      <ManageAgentsArt />
+                    ) : tile.art.kind === "timeSavings" ? (
+                      <CollapsingStackArt />
                     ) : (
                       <BentoIsoImage src={tile.art.src} />
                     )}
@@ -180,11 +180,10 @@ export const AgentsBentoSection: React.FC = () => (
 
             <Box py={{ base: 8, md: 12 }}>
               <SectionHeading maxW="820px">
-                Our engineering principles
+                Deploy AI on your terms
                 <br />
                 <Box as="span" color="slate.50" fontWeight={300}>
-                  We build AI systems for production, bringing elite engineering
-                  to your business
+                  Maintain sovereignty over your data
                 </Box>
               </SectionHeading>
             </Box>

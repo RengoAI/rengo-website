@@ -9,11 +9,11 @@ export const topNavRowProps = {
   h: "64px",
 } as const;
 
-/** Desktop nav links / dropdown triggers (14px medium, 4×10 padding, full 64px row). */
+/** Desktop nav links / dropdown triggers (14px light, 4×10 padding, full 64px row). */
 export const topNavLinkStyles = {
   fontFamily: "body",
   fontSize: "14px",
-  fontWeight: "medium",
+  fontWeight: "light",
   lineHeight: "16px",
   h: "64px",
   minH: "64px",
@@ -27,7 +27,7 @@ export const topNavLinkStyles = {
 export const topNavCtaStyles = {
   fontFamily: "body",
   fontSize: "14px",
-  fontWeight: "medium",
+  fontWeight: "light",
   lineHeight: "16px",
   h: "34px",
   minH: "34px",

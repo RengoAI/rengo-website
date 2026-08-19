@@ -1,14 +1,12 @@
-import {
-  ctaButtonHoverWithArrowProps,
-  ButtonArrowLabel,
-} from "@/components/ui/button-arrow-label";
 import { MarketingPageWidth } from "@/components/layout/marketing-page-width";
+import { MarketingCtaButton } from "@/components/ui/marketing-cta-button";
 import {
   MARKETING_GUTTER_WIDTH,
   marketingContentPaddingX,
+  marketingHeroDescriptionProps,
 } from "@/components/layout/marketing-frame";
 import { TOP_NAV_HEIGHT } from "@/components/nav/nav-styles";
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 
 interface PageHeroProps {
@@ -37,7 +35,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
   ctaLabel,
   onCtaClick,
   eyebrow,
-  subtextMaxW = "680px",
+  subtextMaxW = "880px",
   background,
   // Fills the first screen. `svh` tracks the *small* viewport height so
   // mobile browsers with a retracting URL bar don't clip the CTA on load.
@@ -78,7 +76,6 @@ export const PageHero: React.FC<PageHeroProps> = ({
         zIndex={1}
         direction="column"
         justify="center"
-        gap={7}
         flex="1"
         minW={0}
         px={marketingContentPaddingX}
@@ -87,85 +84,39 @@ export const PageHero: React.FC<PageHeroProps> = ({
       >
         <Flex
           direction="column"
-          gap={{ base: 5, md: 7 }}
+          gap={{ base: 6, md: 8 }}
           align="flex-start"
           w="full"
         >
           {eyebrow && (
-            <Text
-              fontFamily="mono"
-              fontSize="xs"
-              letterSpacing="0.18em"
-              textTransform="uppercase"
-              color="slate.50"
-              m={0}
-            >
+            <Text variant="overline" m={0}>
               {eyebrow}
             </Text>
           )}
 
-          <Box
-            as="h1"
-            fontFamily="heading"
-            fontWeight={300}
-            fontSize={{
-              base: "clamp(30px, 7.6vw, 40px)",
-              md: "clamp(44px, 6.6vw, 62px)",
-              lg: "clamp(52px, 5.8vw, 72px)",
-            }}
-            lineHeight={1.02}
-            letterSpacing={{ base: "-1.5px", md: "-3px" }}
-            color="indigo.900"
-            maxW="none"
-            whiteSpace={{ base: "normal", md: "nowrap" }}
-            m={0}
-            textAlign="left"
-          >
-            {headline}
-          </Box>
+          <Flex direction="column" align="flex-start" gap={{ base: 2, md: 3 }}>
+            <Text as="h1" variant="h1" maxW="none" m={0}>
+              {headline}
+            </Text>
 
-          {subtext && (
-            <Box
-              as="p"
-              fontFamily="heading"
-              fontWeight={350}
-              fontSize={{ base: "24px", md: "30px" }}
-              lineHeight={1.2}
-              letterSpacing="-2px"
-              color="indigo.900"
-              maxW={subtextMaxW}
-              m={0}
-              textAlign="left"
-            >
+            {subtext && (
               <Box
-                as="span"
-                color="slate.50"
-                fontWeight={300}
-                fontSize={{ base: "18px", md: "26px" }}
-                lineHeight={1.2}
+                as="p"
+                {...marketingHeroDescriptionProps}
+                maxW={subtextMaxW}
+                m={0}
               >
                 {subtext}
               </Box>
-            </Box>
-          )}
-        </Flex>
+            )}
+          </Flex>
 
-        <Button
-          alignSelf="flex-start"
-          bg="indigo.900"
-          color="slate.10"
-          px={8}
-          py={3.5}
-          h="auto"
-          fontFamily="body"
-          fontSize="14px"
-          fontWeight="normal"
-          lineHeight="21px"
-          onClick={onCtaClick}
-          {...ctaButtonHoverWithArrowProps}
-        >
-          <ButtonArrowLabel>{ctaLabel}</ButtonArrowLabel>
-        </Button>
+          <Box alignSelf="flex-start">
+            <MarketingCtaButton onClick={onCtaClick}>
+              {ctaLabel}
+            </MarketingCtaButton>
+          </Box>
+        </Flex>
       </Flex>
       <Box
         display={{ base: "none", md: "block" }}
