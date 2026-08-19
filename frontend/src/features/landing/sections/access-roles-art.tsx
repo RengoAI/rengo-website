@@ -6,8 +6,8 @@ const ACCESS_ROLES: {
   outlined?: boolean;
   accentColor?: string;
 }[] = [
-  { role: "Viewer", accentColor: "#A4C4B2" },
-  { role: "Admin", outlined: true, accentColor: "#F2E6B5" },
+  { role: "Viewer" },
+  { role: "Admin", outlined: true },
   { role: "Editor" },
 ];
 
@@ -52,6 +52,7 @@ export const AccessRolesArt: React.FC<AccessRolesArtProps> = ({
             minH={variant === "compact" ? "34px" : "40px"}
             pl={variant === "compact" ? 2.5 : 3}
             pr={variant === "compact" ? 3 : 4}
+            bg={isAdmin ? "slate.10" : undefined}
             border="1px solid"
             borderColor="slate.30"
             borderRight={variant === "compact" ? undefined : "none"}
