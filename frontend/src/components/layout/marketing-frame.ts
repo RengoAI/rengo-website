@@ -37,6 +37,16 @@ export const marketingCardBorderColor = "slate.30";
 /** Buttons and controls — matches bento tile corner radius. */
 export const marketingControlBorderRadius = "3px";
 
+/** Hero subtext under h1 — landing and solutions share this. */
+export const marketingHeroDescriptionProps = {
+  fontFamily: "body",
+  fontWeight: 300,
+  fontSize: { base: "20px", md: "22px" },
+  lineHeight: 1.4,
+  letterSpacing: "normal",
+  color: "slate.50",
+} as const;
+
 /**
  * Section headings: pull the title block to the content rim so the accent
  * stays flush with the left border (independent of title text inset below).

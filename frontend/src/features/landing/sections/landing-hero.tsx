@@ -2,6 +2,7 @@ import { MarketingPageWidth } from "@/components/layout/marketing-page-width";
 import {
   MARKETING_GUTTER_WIDTH,
   marketingContentPaddingX,
+  marketingHeroDescriptionProps,
 } from "@/components/layout/marketing-frame";
 import { TOP_NAV_HEIGHT } from "@/components/nav/nav-styles";
 import { MarketingCtaButton } from "@/components/ui/marketing-cta-button";
@@ -57,7 +58,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
             align="flex-start"
             gap={{ base: 6, md: 8 }}
             w="full"
-            maxW={{ base: "100%", md: "780px" }}
+            maxW={{ base: "100%", md: "880px" }}
             py={{ base: 6, md: 8 }}
             pr={{ base: 4, md: 8 }}
           >
@@ -69,28 +70,22 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
               <Text
                 as="h1"
                 variant="h1"
-                maxW={{ base: "none", md: "590px" }}
+                maxW={{ base: "none", md: "720px" }}
                 m={0}
               >
-                Turn proprietary knowledge into{" "}
+                Your data is{" "}
                 <Box as="span" color="accent.link">
-                  operational leverage
+                  your alpha
                 </Box>
               </Text>
 
               <Box
                 as="p"
-                fontFamily="body"
-                fontWeight={300}
-                fontSize={{ base: "16px", md: "17px" }}
-                lineHeight={1.4}
-                letterSpacing="normal"
-                color="slate.50"
-                maxW="780px"
+                {...marketingHeroDescriptionProps}
+                maxW="880px"
                 m={0}
               >
-                Replace fragmented workflows with a governed AI data foundation
-                that compounds.
+                Turn proprietary knowledge into operating leverage
               </Box>
             </Flex>
 

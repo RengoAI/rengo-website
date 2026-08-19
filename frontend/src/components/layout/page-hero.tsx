@@ -3,6 +3,7 @@ import { MarketingCtaButton } from "@/components/ui/marketing-cta-button";
 import {
   MARKETING_GUTTER_WIDTH,
   marketingContentPaddingX,
+  marketingHeroDescriptionProps,
 } from "@/components/layout/marketing-frame";
 import { TOP_NAV_HEIGHT } from "@/components/nav/nav-styles";
 import { Box, Flex, Text } from "@chakra-ui/react";
@@ -34,7 +35,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
   ctaLabel,
   onCtaClick,
   eyebrow,
-  subtextMaxW = "680px",
+  subtextMaxW = "880px",
   background,
   // Fills the first screen. `svh` tracks the *small* viewport height so
   // mobile browsers with a retracting URL bar don't clip the CTA on load.
@@ -75,7 +76,6 @@ export const PageHero: React.FC<PageHeroProps> = ({
         zIndex={1}
         direction="column"
         justify="center"
-        gap={7}
         flex="1"
         minW={0}
         px={marketingContentPaddingX}
@@ -84,7 +84,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
       >
         <Flex
           direction="column"
-          gap={{ base: 5, md: 7 }}
+          gap={{ base: 6, md: 8 }}
           align="flex-start"
           w="full"
         >
@@ -94,28 +94,33 @@ export const PageHero: React.FC<PageHeroProps> = ({
             </Text>
           )}
 
-          <Text as="h1" variant="h1" maxW="none" m={0}>
-            {headline}
-          </Text>
-
-          {subtext && (
-            <Text
-              as="p"
-              variant="body"
-              color="slate.50"
-              maxW={subtextMaxW}
-              m={0}
-            >
-              {subtext}
+          <Flex
+            direction="column"
+            align="flex-start"
+            gap={{ base: 2, md: 3 }}
+          >
+            <Text as="h1" variant="h1" maxW="none" m={0}>
+              {headline}
             </Text>
-          )}
-        </Flex>
 
-        <Box alignSelf="flex-start">
-          <MarketingCtaButton onClick={onCtaClick}>
-            {ctaLabel}
-          </MarketingCtaButton>
-        </Box>
+            {subtext && (
+              <Box
+                as="p"
+                {...marketingHeroDescriptionProps}
+                maxW={subtextMaxW}
+                m={0}
+              >
+                {subtext}
+              </Box>
+            )}
+          </Flex>
+
+          <Box alignSelf="flex-start">
+            <MarketingCtaButton onClick={onCtaClick}>
+              {ctaLabel}
+            </MarketingCtaButton>
+          </Box>
+        </Flex>
       </Flex>
       <Box
         display={{ base: "none", md: "block" }}
