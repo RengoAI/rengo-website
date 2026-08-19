@@ -110,7 +110,7 @@ const CARDS: DeploymentCard[] = [
     id: "infrastructure",
     title: "Shared foundation",
     caption:
-      "Connect your data, systems, and workflows to a governed foundation that every application and agent can build on.",
+      "Connect your data, systems, and workflows once. Then build every AI application on top.",
     from: FIELD_INDIGO_700,
     to: FIELD_PRIMARY_400,
     glyph: (
@@ -139,7 +139,7 @@ const CARDS: DeploymentCard[] = [
     id: "own-code",
     title: "Own what you build",
     caption:
-      "Applications and integrations tailored to your workflows, owned in your repository and built to evolve with you.",
+      "Applications and integrations, built for your workflows and owned by your team.",
     from: FIELD_PRIMARY_500,
     to: FIELD_PRIMARY_200,
     glyph: (
@@ -167,7 +167,7 @@ const CARDS: DeploymentCard[] = [
     id: "applied-ai",
     title: "Compound knowledge",
     caption:
-      "Work shouldn’t start from scratch. Capture the context behind every decision so the next workflow benefits from the last.",
+      "Capture context as you work so every workflow gets smarter over time.",
     from: FIELD_PRIMARY_300,
     to: FIELD_PRIMARY_100,
     glyph: <ApplyLearningsLoopGlyph />,

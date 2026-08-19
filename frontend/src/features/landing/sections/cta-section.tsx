@@ -18,15 +18,16 @@ export const CtaSection: React.FC<CtaSectionProps> = ({
   <SectionShell
     borderTop={borderTop}
     bg="slate.10"
-    py={{ base: 16, md: "80px" }}
+    py={{ base: 10, md: 12 }}
+    px={{ base: 8, md: 9 }}
   >
     <Flex
-      direction="column"
+      direction={{ base: "column", md: "row" }}
       align="center"
-      justify="center"
+      justify={{ base: "center", md: "space-between" }}
       gap={{ base: 8, md: 10 }}
       w="full"
-      textAlign="center"
+      textAlign={{ base: "center", md: "left" }}
     >
       <Box
         as="h2"
