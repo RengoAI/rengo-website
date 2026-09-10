@@ -24,6 +24,7 @@ export const rootRoute = route(
       {},
       {
         index: route("/", {}, {}),
+        softwareEngineerRedirect: route("/software-engineer", {}, {}),
         role: route(
           "/:roleId",
           {

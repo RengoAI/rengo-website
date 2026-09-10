@@ -1,5 +1,5 @@
 import { CareersLayout } from "@/features/careers/careers-layout";
-import { RouteObject } from "react-router-dom";
+import { Navigate, RouteObject } from "react-router-dom";
 
 export const careersRoutes: RouteObject = {
   id: "careers",
@@ -19,10 +19,15 @@ export const careersRoutes: RouteObject = {
       },
     },
     {
+      id: "softwareEngineerRedirect",
+      path: "software-engineer",
+      element: <Navigate to="/careers" replace />,
+    },
+    {
       id: "careersRole",
       path: ":roleId",
       handle: {
-        pageTitle: "Software Engineer",
+        pageTitle: "Careers",
       },
       lazy: async () => {
         const { JobListingPage } = await import(
