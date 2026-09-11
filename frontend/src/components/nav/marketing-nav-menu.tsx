@@ -40,7 +40,9 @@ export const MarketingNavMenu: React.FC<MarketingNavMenuProps> = ({
 
   const scheduleClose = () => {
     clearCloseTimer();
-    closeTimer.current = window.setTimeout(() => setOpen(false), 120);
+    // Long enough to forgive the pointer clipping a corner on its way from the
+    // trigger down into the panel, short enough not to feel stuck open.
+    closeTimer.current = window.setTimeout(() => setOpen(false), 180);
   };
 
   useEffect(() => () => clearCloseTimer(), []);
@@ -109,8 +111,8 @@ export const MarketingNavMenu: React.FC<MarketingNavMenuProps> = ({
           <Box
             as="span"
             display="inline-flex"
-            color="slate.40"
-            transition="transform 150ms ease"
+            color={open ? "accent.link" : "slate.40"}
+            transition="transform 200ms cubic-bezier(0.4, 0, 0.2, 1), color 150ms ease"
             transform={open ? "rotate(180deg)" : "rotate(0deg)"}
           >
             <ChevronDown size={14} strokeWidth={2} />
@@ -118,58 +120,78 @@ export const MarketingNavMenu: React.FC<MarketingNavMenuProps> = ({
         </Flex>
       </Box>
 
-      {open && (
-        <Box
-          position="absolute"
-          top="100%"
-          left={0}
-          w="max-content"
-          minW="210px"
-          maxW="calc(100vw - 48px)"
-          bg="white"
-          border="1px solid"
-          borderColor={marketingLayoutBorderColor}
-          borderRadius={0}
-          zIndex={110}
-          boxShadow="0 12px 40px rgba(17, 24, 39, 0.12)"
-          role="menu"
-          onMouseEnter={openMenu}
-          onMouseLeave={scheduleClose}
-          overflow="hidden"
-        >
-          <Flex direction="column" align="stretch">
-            {items.map((item) => (
-              <Box
-                key={item.id}
-                asChild
-                display="block"
-                px={7}
-                py={3}
-                textDecoration="none"
-                _hover={{ bg: "slate.10", textDecoration: "none" }}
+      {/*
+        Kept mounted so opening and closing can both animate; `hidden` keeps it
+        out of the accessibility tree and off the pointer while closed. The nav
+        is transparent over the hero's moving gradient now, so the panel eases
+        in and sits on a translucent, blurred ground rather than appearing
+        instantly as a hard white rectangle.
+      */}
+      <Box
+        position="absolute"
+        top="calc(100% - 1px)"
+        left={0}
+        w="max-content"
+        minW="210px"
+        maxW="calc(100vw - 48px)"
+        bg="white/85"
+        backdropFilter="blur(12px)"
+        border="1px solid"
+        borderColor={marketingLayoutBorderColor}
+        borderRadius="md"
+        zIndex={110}
+        boxShadow="0 16px 40px rgba(17, 24, 39, 0.10)"
+        role="menu"
+        aria-hidden={!open}
+        hidden={!open}
+        onMouseEnter={openMenu}
+        onMouseLeave={scheduleClose}
+        overflow="hidden"
+        opacity={open ? 1 : 0}
+        transform={open ? "translateY(0)" : "translateY(-4px)"}
+        pointerEvents={open ? "auto" : "none"}
+        transition="opacity 160ms ease, transform 160ms ease"
+        css={{
+          // `hidden` sets `display: none`, which would skip the transition —
+          // the attribute is kept for semantics and overridden for layout.
+          "&[hidden]": { display: "block" },
+          "@media (prefers-reduced-motion: reduce)": { transition: "none" },
+        }}
+      >
+        <Flex direction="column" align="stretch">
+          {items.map((item) => (
+            <Box
+              key={item.id}
+              asChild
+              display="block"
+              px={7}
+              py={3}
+              textDecoration="none"
+              transition="background-color 120ms ease, color 120ms ease"
+              _hover={{ bg: "primary.25", textDecoration: "none" }}
+            >
+              <Link
+                to={item.path}
+                role="menuitem"
+                tabIndex={open ? undefined : -1}
+                onClick={() => setOpen(false)}
               >
-                <Link
-                  to={item.path}
-                  role="menuitem"
-                  onClick={() => setOpen(false)}
+                <Text
+                  fontFamily="body"
+                  fontSize="14px"
+                  fontWeight="medium"
+                  lineHeight="16px"
+                  color="indigo.900"
+                  m={0}
+                  whiteSpace="nowrap"
                 >
-                  <Text
-                    fontFamily="body"
-                    fontSize="14px"
-                    fontWeight="medium"
-                    lineHeight="16px"
-                    color="indigo.900"
-                    m={0}
-                    whiteSpace="nowrap"
-                  >
-                    {item.title}
-                  </Text>
-                </Link>
-              </Box>
-            ))}
-          </Flex>
-        </Box>
-      )}
+                  {item.title}
+                </Text>
+              </Link>
+            </Box>
+          ))}
+        </Flex>
+      </Box>
     </Box>
   );
 };

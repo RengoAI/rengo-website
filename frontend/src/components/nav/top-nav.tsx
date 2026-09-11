@@ -36,6 +36,21 @@ export const AppTopNav: React.FC = () => {
     setDrawerOpen(false);
   }, [location.pathname]);
 
+  // The header overlays the hero, whose drifting grid and mesh wash run up
+  // behind it, so at the top of the page it carries no background of its own.
+  // Once the hero scrolls away there is nothing behind the links but body
+  // copy, so the backdrop comes back to keep them legible.
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    // Roughly the nav's own height: enough that the swap lands after the
+    // header has cleared its starting position, not on the first pixel.
+    const onScroll = () => setScrolled(window.scrollY > TOP_NAV_HEIGHT);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [location.pathname]);
+
   // Every marketing hero is light under the refresh, so the nav no longer
   // swaps treatments per route.
   const navColor = "indigo.900";
@@ -68,8 +83,8 @@ export const AppTopNav: React.FC = () => {
         right={0}
         zIndex={100}
         borderBottom="1px solid"
-        borderColor={marketingLayoutBorderColor}
-        bg="slate.10/90"
+        borderColor={scrolled ? marketingLayoutBorderColor : "transparent"}
+        bg={scrolled ? "slate.10/90" : "transparent"}
         style={{ transition: "background 200ms ease, border-color 200ms ease" }}
       >
         <MarketingPageWidth>
@@ -123,12 +138,9 @@ export const AppTopNav: React.FC = () => {
                     {...topNavCtaStyles}
                     h="34px"
                     minH="34px"
-                    border="1px solid"
-                    borderColor="slate.30"
                     _hover={{
                       bg: "transparent",
                       color: navHoverColor,
-                      borderColor: "slate.40",
                     }}
                   >
                     Log in

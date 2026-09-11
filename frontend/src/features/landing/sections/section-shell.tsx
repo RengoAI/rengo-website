@@ -23,6 +23,16 @@ interface SectionShellProps extends React.PropsWithChildren {
   py?: Record<string, number | string> | number | string;
   id?: string;
   scrollMarginTop?: string | number;
+  /**
+   * Fill for the content column only. Unlike `bg`, which spans the viewport,
+   * this stops at the ruled gutters so the colour stays inside the section.
+   */
+  contentBg?: string;
+  /**
+   * Decorative layer painted behind the content column, clipped to it. Like
+   * `contentBg`, it stays inside the gutters rather than spanning the viewport.
+   */
+  contentBackground?: React.ReactNode;
 }
 
 /**
@@ -39,6 +49,8 @@ export const SectionShell: React.FC<SectionShellProps> = ({
   py = { base: 16, md: 24 },
   id,
   scrollMarginTop,
+  contentBg,
+  contentBackground,
 }) => (
   <Box
     as="section"
@@ -63,6 +75,7 @@ export const SectionShell: React.FC<SectionShellProps> = ({
         <Box
           flex="1"
           minW={0}
+          bg={contentBg}
           px={px === false ? 0 : px}
           py={py}
           borderLeftWidth={{ base: "1px", md: 0 }}
@@ -71,8 +84,17 @@ export const SectionShell: React.FC<SectionShellProps> = ({
           borderRightStyle="solid"
           borderLeftColor={marketingLayoutBorderColor}
           borderRightColor={marketingLayoutBorderColor}
+          position={contentBackground ? "relative" : undefined}
+          overflow={contentBackground ? "hidden" : undefined}
         >
-          {children}
+          {contentBackground}
+          {contentBackground ? (
+            <Box position="relative" zIndex={1}>
+              {children}
+            </Box>
+          ) : (
+            children
+          )}
         </Box>
         <Box
           display={{ base: "none", md: "block" }}
