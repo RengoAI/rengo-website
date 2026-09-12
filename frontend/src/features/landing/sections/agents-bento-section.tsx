@@ -206,8 +206,17 @@ export const AgentsBentoSection: React.FC = () => (
       borderColor={marketingLayoutBorderColor}
     />
 
-    <MarketingPageWidth variant="content" py={{ base: 10, md: 12 }}>
-      <DeploymentCards />
-    </MarketingPageWidth>
+    {/*
+      The deployment cards sit in their own band, tinted to pick up the hero
+      gradient's tone. A flat fill rather than the gradient itself: each card
+      already carries its own gradient field, so a moving wash behind them
+      would compete. The fill runs the full viewport width, so the band reads
+      as its own stripe rather than as a panel inside the content column.
+    */}
+    <Box bg="primary.25">
+      <MarketingPageWidth variant="content" py={{ base: 10, md: 12 }}>
+        <DeploymentCards />
+      </MarketingPageWidth>
+    </Box>
   </Box>
 );

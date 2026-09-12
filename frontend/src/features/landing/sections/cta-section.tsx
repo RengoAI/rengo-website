@@ -2,6 +2,7 @@ import {
   ctaButtonHoverWithArrowProps,
   ButtonArrowLabel,
 } from "@/components/ui/button-arrow-label";
+import { HeroGridCanvas } from "@/features/landing/sections/hero-grid-canvas";
 import { Box, Button, Flex } from "@chakra-ui/react";
 import React from "react";
 import { SectionShell } from "./section-shell";
@@ -15,7 +16,18 @@ export const CtaSection: React.FC<CtaSectionProps> = ({
   onTalkToSales,
   borderTop = true,
 }) => (
-  <SectionShell borderTop={borderTop} bg="slate.10" py={{ base: 10, md: 12 }}>
+  // The tint and the field both sit on the content column, not the section:
+  // `bg` on the shell spans the full viewport and would carry them out past
+  // the ruled gutters into the neighbouring sections. The band variant of the
+  // hero field is fainter and cleared through the middle, so the centred copy
+  // keeps its own space.
+  <SectionShell
+    borderTop={borderTop}
+    bg="slate.10"
+    py={{ base: 10, md: 12 }}
+    contentBg="primary.25"
+    contentBackground={<HeroGridCanvas variant="band" />}
+  >
     <Flex
       direction="column"
       align="center"
