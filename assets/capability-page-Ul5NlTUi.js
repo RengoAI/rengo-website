@@ -1,0 +1,2 @@
+import{j as o,B as a}from"./react-vendor-BOEarVbu.js";import{P as t}from"./page-hero-BuWbq2qE.js";import{H as r}from"./hero-grid-canvas-CEWakjIw.js";import"./vendor-uBS87IUf.js";import"./index-CQw87wIv.js";const i=()=>window.open("mailto:sales@rengoai.com","_blank","noopener,noreferrer"),b=({capability:e})=>o.jsx(a,{fontFamily:"body",bg:"slate.10",children:o.jsx(t,{headline:e.title,subtext:e.lede,ctaLabel:"Get started",onCtaClick:i,background:o.jsx(r,{})})});export{b as CapabilityPage};
+//# sourceMappingURL=capability-page-Ul5NlTUi.js.map
