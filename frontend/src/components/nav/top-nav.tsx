@@ -85,6 +85,7 @@ export const AppTopNav: React.FC = () => {
         borderBottom="1px solid"
         borderColor={scrolled ? marketingLayoutBorderColor : "transparent"}
         bg={scrolled ? "slate.10/90" : "transparent"}
+        backdropFilter="blur(12px)"
         style={{ transition: "background 200ms ease, border-color 200ms ease" }}
       >
         <MarketingPageWidth>
