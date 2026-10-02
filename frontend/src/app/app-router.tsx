@@ -9,7 +9,6 @@ import { solutionsRoutes } from "@/features/solutions/solutions-routes";
 import { createBrowserRouter, RouteObject } from "react-router-dom";
 
 export const ALL_ROUTES: RouteObject[] = [
-  landingRoutes,
   legalRoutes,
   careersRoutes,
   companyRoute,
@@ -18,10 +17,22 @@ export const ALL_ROUTES: RouteObject[] = [
 ];
 
 export const appRouter = createBrowserRouter([
+  // Landing routes are standalone — no global nav or footer on the marketing homepage.
+  landingRoutes,
   {
     id: "root",
     element: <AppRoot />,
     children: [...ALL_ROUTES],
+  },
+  {
+    id: "landingV2",
+    path: "/v2",
+    lazy: async () => {
+      const { LandingPageV2 } = await import(
+        "@/features/landing/landing-page-v2"
+      );
+      return { Component: LandingPageV2 };
+    },
   },
   {
     id: "notFound",

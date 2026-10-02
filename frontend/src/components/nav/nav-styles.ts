@@ -1,12 +1,13 @@
-/** Fixed header height (64px row + 1px border). */
+/** Fixed header height (64px row + 0.5rem bottom padding + 1px border). */
 import { marketingControlBorderRadius } from "@/components/layout/marketing-frame";
 
-export const TOP_NAV_HEIGHT = 65;
+export const TOP_NAV_HEIGHT = 73;
 
 export const topNavRowProps = {
-  py: 0,
-  minH: "64px",
-  h: "64px",
+  pt: 0,
+  pb: "0.5rem",
+  minH: "72px",
+  h: "72px",
 } as const;
 
 /** Desktop nav links / dropdown triggers (14px light, 4×10 padding, full 64px row). */

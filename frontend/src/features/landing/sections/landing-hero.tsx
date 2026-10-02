@@ -4,7 +4,6 @@ import {
   marketingContentPaddingX,
   marketingHeroDescriptionProps,
 } from "@/components/layout/marketing-frame";
-import { TOP_NAV_HEIGHT } from "@/components/nav/nav-styles";
 import { MarketingCtaButton } from "@/components/ui/marketing-cta-button";
 import { HeroGridCanvas } from "@/features/landing/sections/hero-grid-canvas";
 import { Box, Flex, Text } from "@chakra-ui/react";
@@ -48,9 +47,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onCtaClick }) => (
           textAlign="left"
           gap={{ base: 8, md: 10 }}
           flex="1"
-          // The header is fixed and overlays this section, so offset the top
-          // padding by its height to keep the copy optically centred.
-          pt={`calc(${TOP_NAV_HEIGHT}px + var(--chakra-spacing-10))`}
+          pt={10}
           pb={10}
         >
           <Flex
