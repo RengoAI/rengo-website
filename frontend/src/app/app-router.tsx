@@ -6,6 +6,7 @@ import { companyRoute } from "@/features/company/company-routes";
 import { landingRoutes } from "@/features/landing/landing-routes";
 import { legalRoutes } from "@/features/legal/legal-routes";
 import { solutionsRoutes } from "@/features/solutions/solutions-routes";
+import { styleguideRoutes } from "@/features/styleguide/styleguide-routes";
 import { createBrowserRouter, RouteObject } from "react-router-dom";
 
 export const ALL_ROUTES: RouteObject[] = [
@@ -15,6 +16,7 @@ export const ALL_ROUTES: RouteObject[] = [
   companyRoute,
   solutionsRoutes,
   blogRoutes,
+  styleguideRoutes,
 ];
 
 export const appRouter = createBrowserRouter([

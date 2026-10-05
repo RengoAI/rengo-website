@@ -1,5 +1,6 @@
 import { colors } from "@/theme/tokens/colors";
 import { fonts } from "@/theme/tokens/fonts";
+import { layoutSizes, layoutSpacing } from "@/theme/tokens/layout";
 import { shadows } from "@/theme/tokens/shadows";
 import {
   createSystem,
@@ -11,6 +12,7 @@ import { recipes } from "./recipes";
 import { semanticColors } from "./semantic-tokens/colors";
 import { semanticShadows } from "./semantic-tokens/shadows";
 import { slotRecipes } from "./slot-recipes";
+import { textStyles } from "./text-styles";
 
 const config = defineConfig({
   preflight: true,
@@ -127,10 +129,13 @@ const config = defineConfig({
   theme: {
     recipes,
     slotRecipes,
+    textStyles,
     tokens: {
       colors,
       shadows,
       fonts,
+      spacing: layoutSpacing,
+      sizes: layoutSizes,
     },
     semanticTokens: {
       colors: semanticColors,

@@ -232,6 +232,82 @@ export const colors = defineTokens.colors({
   brand: {
     highlight: { value: "#3B8BE0" },
   },
+
+  // ---------------------------------------------------------------------
+  // Brand primitives (Figma: Rengo Marketing Site, node 427:2286 "Color").
+  //
+  // The five named brand colours are the anchors; every step marked
+  // `← brand` is an exact Figma value. The rest are interpolated around
+  // the anchor at constant hue, varying lightness with a slight
+  // saturation lift toward the dark end so the deep steps stay chromatic
+  // rather than going muddy.
+  //
+  // Ramps are a flat 8 steps, 100 (lightest) → 800 (darkest). No
+  // half-steps. Sky and Maroon are single brand colours used as accents,
+  // so they are flat tokens rather than ramps.
+  // ---------------------------------------------------------------------
+
+  /** Light surfaces: page, nav, cards, footer. Warm, barely-there neutrals. */
+  canvas: {
+    0: { value: "#FFFFFF" },
+    50: { value: "#FAFBF9" }, // footer
+    100: { value: "#FAFAFA" }, // nav + section surface ← brand (Supporting Neutral)
+    200: { value: "#F6F6F6" }, // page
+    300: { value: "#F5F5F6" }, // inset chip ← brand (gray #F5F5F5)
+    400: { value: "#EDEDEE" },
+    500: { value: "#D5D5D5" }, // hairline border
+  },
+
+  /** Rengo blue — the primary. Anchored at 500. */
+  rengo: {
+    100: { value: "#F1F4F9" },
+    200: { value: "#DBE4F0" },
+    300: { value: "#B8C8E0" },
+    400: { value: "#7D9AC5" },
+    500: { value: "#43679B" }, // ← brand (Rengo blue)
+    600: { value: "#355582" },
+    700: { value: "#284267" },
+    800: { value: "#192A43" },
+  },
+
+  /**
+   * Silver — the desaturated cousin of Rengo blue. Same hue (~215°) at
+   * roughly a third of the saturation, which is what makes it read as a
+   * cool grey rather than a blue. Anchored at 200.
+   */
+  silver: {
+    100: { value: "#F2F4F8" },
+    200: { value: "#D4DCE7" }, // ← brand (Silver)
+    300: { value: "#B8C4D5" },
+    400: { value: "#95A5BB" },
+    500: { value: "#7386A0" },
+    600: { value: "#59687D" },
+    700: { value: "#404A59" },
+    800: { value: "#2B323B" },
+  },
+
+  /**
+   * Neutrals, built out from Soot Black. Carries a slight blue cast
+   * (~208°, ~11% saturation) inherited from the anchor, so it sits with
+   * the blues instead of fighting them the way a pure grey would.
+   */
+  soot: {
+    100: { value: "#F1F2F4" },
+    200: { value: "#DDE1E3" },
+    300: { value: "#BCC2C8" },
+    400: { value: "#949FA8" },
+    500: { value: "#6B7985" },
+    600: { value: "#4B555D" },
+    700: { value: "#30373D" }, // ← brand (Soot Black)
+    800: { value: "#151718" }, // ← brand (Soot)
+  },
+
+  /** Sky — light blue accent. Flat: one value, used as itself. */
+  sky: { value: "#B0C7EB" },
+
+  /** Maroon — the single warm accent. Flat, and sparing by design. */
+  crimson: { value: "#7F364D" },
+
   // Marketing site palette (Figma: Rengo Marketing Site)
   indigo: {
     // Indigo1 — primary headline / ink
