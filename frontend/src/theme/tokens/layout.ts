@@ -17,9 +17,18 @@ export const GRID_GUTTER = "16px";
 /** Global left/right padding for every content section, nav, and footer. */
 export const SECTION_GUTTER = "36px";
 
+/** Global top/bottom padding for a content section. */
+export const SECTION_GUTTER_Y = "100px";
+
 export const layoutSpacing = defineTokens.spacing({
   /** Global section inset — use as `px="gutter"`. */
   gutter: { value: SECTION_GUTTER },
+  /** Global section top/bottom rhythm — use as `py="gutterY"`. */
+  gutterY: { value: SECTION_GUTTER_Y },
+  /** Tighter vertical rhythm, for bands that sit closer together. */
+  gutterYTight: { value: "80px" },
+  /** Tightest, for the logo strip. */
+  gutterYCompact: { value: "60px" },
   /** Grid column gap — use as `gap="gridGutter"`. */
   gridGutter: { value: GRID_GUTTER },
 });
