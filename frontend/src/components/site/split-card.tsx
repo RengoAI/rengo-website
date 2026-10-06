@@ -28,7 +28,7 @@ export const SplitCard: React.FC<SplitCardProps> = ({
     h="472px"
     px="20px"
     borderLeftWidth="1px"
-    borderLeftStyle="dashed"
+    borderLeftStyle="dotted"
     borderLeftColor="site.border.dashedOnDark"
     {...rest}
   >
@@ -61,7 +61,7 @@ export const MetricCard: React.FC<
         w="full"
       >
         {icon}
-        <Text textStyle="display.lg" color="site.fg.onDark" w="full">
+        <Text textStyle="d2" color="site.fg.onDark" w="full">
           {value}
         </Text>
         <Text textStyle="label" color="site.fg.onDark" w="full">
@@ -85,7 +85,7 @@ export const TestimonialCard: React.FC<
     py="8px"
     borderLeftColor="site.border.dashedOnTint"
     top={
-      <Text textStyle="display.sm" color="site.fg.strong" w="full">
+      <Text textStyle="d5" color="site.fg.strong" w="full">
         {quote}
       </Text>
     }

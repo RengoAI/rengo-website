@@ -28,7 +28,7 @@ export const ComplianceCard: React.FC<ComplianceCardProps> = ({
     h="full"
     p="20px"
     borderWidth="1px"
-    borderStyle="dashed"
+    borderStyle="dotted"
     borderColor="site.border.onDark"
     {...rest}
   >
@@ -50,13 +50,7 @@ export const ComplianceCard: React.FC<ComplianceCardProps> = ({
       gap="16px"
       w="full"
     >
-      <Text
-        textStyle="display.sm"
-        fontWeight={300}
-        lineHeight="1.1"
-        color="site.fg.onDark"
-        w="full"
-      >
+      <Text textStyle="d5" lineHeight="1.1" color="site.fg.onDark" w="full">
         {title}
       </Text>
       <Text textStyle="label" color="site.fg.onDarkMuted" maxW="215px">

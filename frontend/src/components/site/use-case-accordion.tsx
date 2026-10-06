@@ -43,7 +43,7 @@ export const UseCaseAccordion: React.FC<{ items: UseCase[] }> = ({ items }) => {
             textAlign="left"
             py="20px"
             borderTopWidth="1px"
-            borderTopStyle="dashed"
+            borderTopStyle="dotted"
             borderTopColor="site.border.dashed"
             cursor="pointer"
             transition="background 150ms ease"
@@ -67,7 +67,7 @@ export const UseCaseAccordion: React.FC<{ items: UseCase[] }> = ({ items }) => {
               justifyContent="center"
               gap="20px"
             >
-              <Text textStyle="display.md" color="site.fg.DEFAULT" w="full">
+              <Text textStyle="d4" color="site.fg" w="full">
                 {item.title}
               </Text>
               {isOpen && item.body && (

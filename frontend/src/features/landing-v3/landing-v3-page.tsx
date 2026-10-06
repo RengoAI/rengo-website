@@ -222,7 +222,12 @@ export const LandingV3Page: React.FC = () => (
             flexDirection="column"
             alignItems="center"
           >
-            <Text textStyle="h3" color="site.fg.DEFAULT" textAlign="center">
+            <Text
+              textStyle="h3"
+              letterSpacing="-0.04em"
+              color="site.fg"
+              textAlign="center"
+            >
               Building your intelligent data layer
               <Box as="span" color="site.accent">
                 _
@@ -230,6 +235,7 @@ export const LandingV3Page: React.FC = () => (
             </Text>
             <Text
               textStyle="body.md"
+              fontWeight={300}
               lineHeight="1.2"
               color="site.fg.muted"
               textAlign="center"
@@ -271,7 +277,9 @@ export const LandingV3Page: React.FC = () => (
     </Box>
 
     {/* --- The problem & vision ------------------------------------------ */}
-    <Section grid bg="site.bg.surface">
+    {/* pb runs 40px past the standard rhythm to open up the gap before the
+        solution section. Overrides Section's py, which `rest` spreads after. */}
+    <Section grid bg="site.bg.surface" pb="140px">
       <GridCol
         span={12}
         display="flex"
@@ -279,7 +287,7 @@ export const LandingV3Page: React.FC = () => (
         alignItems="flex-start"
         gap="40px"
       >
-        <Text textStyle="h4" color="site.fg.strong" maxW="785px">
+        <Text textStyle="h5" color="site.fg.strong" maxW="785px">
           Firms have spent decades making the numbers in their databases
           reliable. But much of what a firm actually knows{" "}
           <Box as="span" color="site.accent">
@@ -288,7 +296,7 @@ export const LandingV3Page: React.FC = () => (
         </Text>
       </GridCol>
       <GridCol span={4} display="flex" alignItems="flex-start">
-        <Text textStyle="body.md" color="site.fg.DEFAULT">
+        <Text textStyle="body.sm" color="site.fg">
           Meeting conversations, the memos in a shared drive, the deal terms
           hidden in emails - never reaches a database.
           <br />
@@ -314,25 +322,29 @@ export const LandingV3Page: React.FC = () => (
     {/* --- Solution ------------------------------------------------------- */}
     <Section grid rhythm="tight" bg="site.bg.surface">
       <GridCol
-        span={6}
+        span={4}
         display="flex"
         flexDirection="column"
-        justifyContent="center"
         alignItems="flex-start"
+        // Sits on the graphic's centre line rather than stretching to its
+        // 1040px height.
+        alignSelf="center"
         gap="20px"
       >
-        <Text textStyle="h4" color="site.fg.strong" w="full">
+        <Text textStyle="h5" color="site.fg.strong" w="full">
           To solve this, we build an agent-ready, unified data foundation.
         </Text>
         <Text textStyle="body.sm" lineHeight="1.25" color="site.fg.strong">
           We connect your source systems, structure them into permission-ed
           ontology, and build applications and agents for your work.
         </Text>
-        <ArrowLink href="#" underline color="site.fg.max" gap="12px">
+        <ArrowLink href="#" fontFamily="body" color="site.fg.strong" gap="12px">
           Read more
         </ArrowLink>
       </GridCol>
-      <GridCol span={10} position="relative" h="1040px">
+      {/* Starts at 7, leaving columns 5–6 empty between the copy and the
+          graphic. */}
+      <GridCol span={10} start={7} position="relative" h="1040px">
         <Box position="absolute" inset={0} mixBlendMode="multiply" aria-hidden>
           <Image
             src={`${ART}solution-graphic.png`}
@@ -372,7 +384,7 @@ export const LandingV3Page: React.FC = () => (
         gap="40px"
         pb="24px"
       >
-        <Text textStyle="h4" color="site.fg.strong">
+        <Text textStyle="h5" color="site.fg.strong">
           And manage your systems from
           <Box as="span" color="site.accent">
             {" "}
@@ -392,7 +404,12 @@ export const LandingV3Page: React.FC = () => (
             to tailor these systems to your firm&rsquo;s data, tool stack, and
             steward the deployment.
           </Text>
-          <ArrowLink href="#" underline color="site.fg.max" gap="12px">
+          <ArrowLink
+            href="#"
+            fontFamily="body"
+            color="site.fg.strong"
+            gap="12px"
+          >
             Our Applied AI
           </ArrowLink>
         </Box>
@@ -405,7 +422,7 @@ export const LandingV3Page: React.FC = () => (
     {/* --- Use cases ------------------------------------------------------ */}
     <Section grid bg="site.bg.surface">
       <GridCol span={16} pb="40px">
-        <Text textStyle="h4" color="site.fg.strong" maxW="325px">
+        <Text textStyle="h3" color="site.fg.strong" maxW="325px">
           How your workflows could be agent-driven
         </Text>
       </GridCol>
@@ -423,7 +440,15 @@ export const LandingV3Page: React.FC = () => (
         justifyContent="space-between"
         alignSelf="stretch"
       >
-        <Text textStyle="h4" color="site.fg.onDark" maxW="321px">
+        {/* Light rather than Regular — on the dark bands the heading sits at
+            reversed contrast, where a Regular reads a step heavier than the
+            same weight does on a light surface. */}
+        <Text
+          textStyle="h3"
+          fontWeight={300}
+          color="site.fg.onDark"
+          maxW="321px"
+        >
           How our system performs
         </Text>
         <Text textStyle="label" color="site.fg.onDarkSubtle" maxW="224px">
@@ -441,7 +466,7 @@ export const LandingV3Page: React.FC = () => (
     {/* --- Testimonials ----------------------------------------------------- */}
     <Section grid bg="site.bg.tint">
       <GridCol span={16} pb="40px">
-        <Text textStyle="h4" color="site.fg.strong" maxW="296px">
+        <Text textStyle="h3" color="site.fg.strong" maxW="296px">
           Our customers in their own words
         </Text>
       </GridCol>
@@ -457,7 +482,13 @@ export const LandingV3Page: React.FC = () => (
     {/* --- Security --------------------------------------------------------- */}
     <Section bg="site.bg.dark">
       <Box pb="60px">
-        <Text textStyle="h4" lineHeight="1" color="site.fg.onDark" maxW="389px">
+        <Text
+          textStyle="h4"
+          fontWeight={300}
+          lineHeight="1"
+          color="site.fg.onDark"
+          maxW="389px"
+        >
           We are compliant with rigorous security standards
         </Text>
       </Box>
@@ -535,7 +566,7 @@ export const LandingV3Page: React.FC = () => (
               <Text
                 id="outro-heading"
                 textStyle="h1"
-                color="site.fg.max"
+                color="site.fg.strong"
                 maxW="496px"
               >
                 Ready to make your data{" "}

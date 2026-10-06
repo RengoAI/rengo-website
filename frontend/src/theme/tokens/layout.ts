@@ -15,7 +15,7 @@ export const GRID_COLUMNS = 16;
 export const GRID_GUTTER = "16px";
 
 /** Global left/right padding for every content section, nav, and footer. */
-export const SECTION_GUTTER = "36px";
+export const SECTION_GUTTER = "40px";
 
 /** Global top/bottom padding for a content section. */
 export const SECTION_GUTTER_Y = "100px";

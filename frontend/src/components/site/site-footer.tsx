@@ -25,7 +25,7 @@ export const SiteFooter: React.FC = () => (
           letterSpacing="-0.05em"
           lineHeight="1"
           textTransform="lowercase"
-          color="site.fg.DEFAULT"
+          color="site.fg"
           whiteSpace="nowrap"
         >
           rengo_ai
@@ -45,7 +45,7 @@ export const SiteFooter: React.FC = () => (
             textStyle="body.sm"
             letterSpacing="0"
             lineHeight="1.5"
-            color="site.fg.DEFAULT"
+            color="site.fg"
             whiteSpace="nowrap"
             cursor="pointer"
             transition="opacity 150ms ease"
@@ -56,7 +56,7 @@ export const SiteFooter: React.FC = () => (
         ))}
       </GridCol>
       <GridCol span={4} display="flex" justifyContent="flex-end">
-        <Text textStyle="mono" color="site.fg.DEFAULT" whiteSpace="nowrap">
+        <Text textStyle="mono" color="site.fg" whiteSpace="nowrap">
           © 2026 Rengo AI
         </Text>
       </GridCol>

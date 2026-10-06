@@ -26,7 +26,7 @@ export const SiteNav: React.FC = () => (
       <GridCol span={12} display="flex" alignItems="center" gap="40px" minW={0}>
         <Text
           fontFamily="heading"
-          fontSize="0.875rem"
+          fontSize="1.0588rem" // 16.94px — the 14px wordmark, up 21% (10% twice)
           fontWeight={500}
           letterSpacing="-0.05em"
           lineHeight="1"
@@ -41,8 +41,8 @@ export const SiteNav: React.FC = () => (
             <chakra.a
               key={link}
               href="#"
-              textStyle="label"
-              fontWeight={500}
+              textStyle="body.sm"
+              fontWeight={300}
               letterSpacing="0"
               textTransform="capitalize"
               color="site.fg.strong"

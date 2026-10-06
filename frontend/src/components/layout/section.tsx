@@ -3,7 +3,7 @@ import { Box, type BoxProps } from "@chakra-ui/react";
 import React from "react";
 
 /**
- * A full-bleed horizontal band carrying the global gutters: 36px left/right,
+ * A full-bleed horizontal band carrying the global gutters: 40px left/right,
  * 100px top/bottom.
  *
  * Every content section, the nav, and the footer sit in one of these so their

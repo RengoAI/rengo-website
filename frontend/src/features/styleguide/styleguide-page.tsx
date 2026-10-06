@@ -41,17 +41,27 @@ const TYPE_SPECIMENS: {
     sample: "An agent-ready data foundation",
   },
   {
-    style: "display.lg",
+    style: "d1",
+    label: "Serrif 60 / -0.04em / 1.0",
+    sample: "Ready to make your data your alpha?",
+  },
+  {
+    style: "d2",
     label: "Serrif 44 / -0.04em / 1.0",
     sample: "26 % time saved",
   },
   {
-    style: "display.md",
+    style: "d3",
+    label: "Serrif 36 / -0.035em / 1.0",
+    sample: "Building your intelligent data layer",
+  },
+  {
+    style: "d4",
     label: "Serrif 26 / -0.03em / 1.0",
     sample: "Compare new deals without rebuilding context",
   },
   {
-    style: "display.sm",
+    style: "d5",
     label: "Serrif 20 / -0.02em / 1.25",
     sample: "“The platform does the heavy lifting.”",
   },
@@ -177,7 +187,7 @@ export const StyleguidePage: React.FC = () => (
 
     {/* --- Typography -------------------------------------------------- */}
     <Section mb="100px">
-      <Heading note="Geist carries the structural headings and all body copy. Serrif is the display voice, reserved for pull quotes, stat figures, and accordion titles.">
+      <Heading note="Two scales at matching sizes: h1–h5 in Geist Regular for structural headings, d1–d5 in Serrif Light for the display voice. Serrif runs looser at every step — it carries more weight, so the same tracking would close its counters up.">
         Type scale
       </Heading>
       <Box
@@ -290,7 +300,7 @@ export const StyleguidePage: React.FC = () => (
 
     {/* --- Grid --------------------------------------------------------- */}
     <Section mb="100px">
-      <Heading note="16 columns, 16px gap, inside the global 36px section gutter. Anything that needs to line up claims its width with GridCol span, never its own width.">
+      <Heading note="16 columns, 16px gap, inside the global 40px section gutter. Anything that needs to line up claims its width with GridCol span, never its own width.">
         Layout grid
       </Heading>
       <Grid mb={8}>
@@ -347,10 +357,10 @@ export const StyleguidePage: React.FC = () => (
           mt={3}
           maxW="48ch"
         >
-          Full-bleed background, content inset by the same 36px gutter as every
+          Full-bleed background, content inset by the same 40px gutter as every
           light section above it.
         </Text>
-        <Text textStyle="display.lg" color="site.fg.onDark" mt={8}>
+        <Text textStyle="d2" color="site.fg.onDark" mt={8}>
           1 month
         </Text>
       </Section>
