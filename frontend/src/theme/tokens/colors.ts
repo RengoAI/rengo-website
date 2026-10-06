@@ -276,14 +276,14 @@ export const colors = defineTokens.colors({
    * cool grey rather than a blue. Anchored at 200.
    */
   silver: {
-    100: { value: "#F2F4F8" },
+    100: { value: "#E8EDF4" }, // ← brand (problem band)
     200: { value: "#D4DCE7" }, // ← brand (Silver)
     300: { value: "#B8C4D5" },
     400: { value: "#95A5BB" },
     500: { value: "#7386A0" },
     600: { value: "#59687D" },
     700: { value: "#404A59" },
-    800: { value: "#2B323B" },
+    800: { value: "#20242B" }, // ← brand (dark band)
   },
 
   /**

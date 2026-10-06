@@ -26,7 +26,7 @@ export const SplitCard: React.FC<SplitCardProps> = ({
     justifyContent="space-between"
     alignItems="flex-start"
     h="472px"
-    px="20px"
+    px="16px"
     borderLeftWidth="1px"
     borderLeftStyle="dotted"
     borderLeftColor="site.border.dashedOnDark"
@@ -48,7 +48,7 @@ export const MetricCard: React.FC<
 > = ({ index, value, caption, icon, ...rest }) => (
   <SplitCard
     top={
-      <Text textStyle="label" color="site.fg.onDark">
+      <Text textStyle="label" color="site.fg.onDarkSubtle">
         {index}
       </Text>
     }
@@ -64,7 +64,12 @@ export const MetricCard: React.FC<
         <Text textStyle="d2" color="site.fg.onDark" w="full">
           {value}
         </Text>
-        <Text textStyle="label" color="site.fg.onDark" w="full">
+        <Text
+          textStyle="label"
+          fontWeight={300}
+          color="site.fg.onDark"
+          w="full"
+        >
           {caption}
         </Text>
       </Box>

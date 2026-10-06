@@ -14,9 +14,6 @@ import React from "react";
 
 const ART = "/img/rebrand/";
 
-/** The design frame. Decorative art is positioned against this width. */
-const FRAME = "1424px";
-
 const USE_CASES: UseCase[] = [
   {
     audience: "Deal team",
@@ -102,9 +99,9 @@ const COMPLIANCE = [
 
 /** Labelled tick marks running down the left edge of the solution diagram. */
 const DIAGRAM_ANNOTATIONS: [string, number][] = [
-  ["Applications", 148],
-  ["Your systems", 382],
-  ["Agents", 615],
+  ["Applications", 129],
+  ["Your systems", 363],
+  ["Agents", 596],
 ];
 
 export const LandingV3Page: React.FC = () => (
@@ -119,101 +116,6 @@ export const LandingV3Page: React.FC = () => (
       bg="site.bg.surface"
       overflow="hidden"
     >
-      {/*
-        Decorative mesh, three overlapping crops of the same render. Pinned to
-        a centred frame of the design width so the composition holds; it is
-        atmosphere, so it is allowed to crop on narrower viewports.
-      */}
-      <Box
-        position="absolute"
-        left="50%"
-        transform="translateX(-50%)"
-        w={FRAME}
-        h="full"
-        pointerEvents="none"
-        aria-hidden
-      >
-        <Box
-          position="absolute"
-          left="123px"
-          top="286px"
-          w="1190px"
-          h="626px"
-          overflow="hidden"
-          mixBlendMode="luminosity"
-        >
-          <Image src={`${ART}hero-mesh.png`} alt="" w="100%" h="108.45%" />
-        </Box>
-        {/*
-          The two side crops are rotated a quarter turn. The rotation has to
-          sit on an inner box whose width and height are swapped relative to
-          the slot it fills — rotating the slot itself would swap its bounding
-          box and throw the position off.
-        */}
-        <Box
-          position="absolute"
-          left="911px"
-          top="470px"
-          w="463px"
-          h="363px"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          mixBlendMode="luminosity"
-        >
-          <Box
-            position="relative"
-            flex="none"
-            w="363px"
-            h="463px"
-            overflow="hidden"
-            transform="rotate(90deg)"
-          >
-            <Image
-              src={`${ART}hero-mesh.png`}
-              alt=""
-              position="absolute"
-              top={0}
-              left="-167.85%"
-              w="308.01%"
-              h="100%"
-              maxW="none"
-            />
-          </Box>
-        </Box>
-        <Box
-          position="absolute"
-          left="49px"
-          top="485px"
-          w="367px"
-          h="281px"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          mixBlendMode="darken"
-        >
-          <Box
-            position="relative"
-            flex="none"
-            w="281px"
-            h="367px"
-            overflow="hidden"
-            transform="rotate(90deg)"
-          >
-            <Image
-              src={`${ART}hero-mesh.png`}
-              alt=""
-              position="absolute"
-              top={0}
-              left="-196.53%"
-              w="360.62%"
-              h="134.33%"
-              maxW="none"
-            />
-          </Box>
-        </Box>
-      </Box>
-
       <Section rhythm="none" position="relative" zIndex={1} pt="94px">
         <Grid>
           <GridCol
@@ -234,16 +136,14 @@ export const LandingV3Page: React.FC = () => (
               </Box>
             </Text>
             <Text
-              textStyle="body.md"
-              fontWeight={300}
-              lineHeight="1.2"
-              color="site.fg.muted"
+              textStyle="body.sm"
+              color="site.fg"
               textAlign="center"
               w="465px"
               maxW="full"
               mt="19px"
             >
-              We&rsquo;re the embedded partner that builds the data intelligence
+              Rengo is the embedded partner that builds the data intelligence
               layer for AI systems to learn and act from your firm&rsquo;s
               knowledge.
             </Text>
@@ -277,25 +177,19 @@ export const LandingV3Page: React.FC = () => (
     </Box>
 
     {/* --- The problem & vision ------------------------------------------ */}
-    {/* pb runs 40px past the standard rhythm to open up the gap before the
-        solution section. Overrides Section's py, which `rest` spreads after. */}
-    <Section grid bg="site.bg.surface" pb="140px">
-      <GridCol
-        span={12}
-        display="flex"
-        flexDirection="column"
-        alignItems="flex-start"
-        gap="40px"
-      >
+    {/* Held open to the design's 661px band; the copy only fills the top. */}
+    <Section grid bg="site.bg.tintSubtle" minH="661px">
+      <GridCol span={12}>
         <Text textStyle="h5" color="site.fg.strong" maxW="785px">
           Firms have spent decades making the numbers in their databases
-          reliable. But much of what a firm actually knows{" "}
+          reliable, connect their tools, and standardize workflows. But much of
+          what a firm actually knows{" "}
           <Box as="span" color="site.accent">
             never reaches a database.
           </Box>
         </Text>
       </GridCol>
-      <GridCol span={4} display="flex" alignItems="flex-start">
+      <GridCol span={4}>
         <Text textStyle="body.sm" color="site.fg">
           Meeting conversations, the memos in a shared drive, the deal terms
           hidden in emails - never reaches a database.
@@ -320,109 +214,123 @@ export const LandingV3Page: React.FC = () => (
     </Section>
 
     {/* --- Solution ------------------------------------------------------- */}
-    <Section grid rhythm="tight" bg="site.bg.surface">
+    <Section grid rhythm="tight" bg="site.bg.dark">
       <GridCol
         span={4}
         display="flex"
         flexDirection="column"
         alignItems="flex-start"
         // Sits on the graphic's centre line rather than stretching to its
-        // 1040px height.
+        // full height.
         alignSelf="center"
-        gap="20px"
+        gap="16px"
       >
-        <Text textStyle="h5" color="site.fg.strong" w="full">
+        <Text textStyle="h4" fontWeight={300} color="site.fg.onDark">
           To solve this, we build an agent-ready, unified data foundation.
         </Text>
-        <Text textStyle="body.sm" lineHeight="1.25" color="site.fg.strong">
+        <Text textStyle="body.sm" fontWeight={300} color="site.fg.onDarkSubtle">
           We connect your source systems, structure them into permission-ed
           ontology, and build applications and agents for your work.
         </Text>
-        <ArrowLink href="#" fontFamily="body" color="site.fg.strong" gap="12px">
-          Read more
-        </ArrowLink>
       </GridCol>
-      {/* Starts at 7, leaving columns 5–6 empty between the copy and the
-          graphic. */}
-      <GridCol span={10} start={7} position="relative" h="1040px">
-        <Box position="absolute" inset={0} mixBlendMode="multiply" aria-hidden>
+      <GridCol span={10} position="relative" h="869px">
+        {/* Multiplied onto the dark band, the light render recedes to a
+            dark-on-dark line drawing. */}
+        <Box
+          position="absolute"
+          left="186px"
+          top={0}
+          w="728px"
+          h="full"
+          overflow="hidden"
+          mixBlendMode="multiply"
+          aria-hidden
+        >
           <Image
             src={`${ART}solution-graphic.png`}
             alt=""
             position="absolute"
-            left="42.5px"
-            top={0}
-            w="871px"
-            h="1040px"
+            left="4%"
+            top="-3.99%"
+            w="full"
+            h="103.97%"
             maxW="none"
-            mixBlendMode="luminosity"
           />
         </Box>
         {DIAGRAM_ANNOTATIONS.map(([label, top]) => (
-          <Box key={label} position="absolute" left="45.5px" top={`${top}px`}>
+          <Box
+            key={label}
+            position="absolute"
+            left="130px"
+            // Every rule ends at the same x, so a shorter label gets a
+            // longer rule.
+            w="256px"
+            top={`${top}px`}
+            display="flex"
+            alignItems="center"
+            gap="8px"
+          >
             <Text
               textStyle="caption"
+              fontFamily="display"
               textTransform="capitalize"
-              color="site.accent"
+              color="site.fg.onDark"
               whiteSpace="nowrap"
             >
               {label}
             </Text>
-            <Image src={`${ART}rule.svg`} alt="" w="185px" mt="9px" />
+            <Box
+              flex="1"
+              borderTopWidth="1px"
+              borderTopStyle="dotted"
+              borderTopColor="site.border.dashedOnDark"
+            />
           </Box>
         ))}
       </GridCol>
     </Section>
 
     {/* --- About the FDE service ------------------------------------------ */}
-    <Section grid bg="site.bg.surface">
+    <Section grid rhythm="tight" bg="site.bg.dark">
       <GridCol
-        span={16}
+        span={5}
         display="flex"
+        flexDirection="column"
         alignItems="flex-start"
-        justifyContent="space-between"
-        gap="40px"
+        gap="16px"
         pb="24px"
       >
-        <Text textStyle="h5" color="site.fg.strong">
-          And manage your systems from
+        <Text
+          textStyle="h4"
+          fontWeight={300}
+          color="site.fg.onDark"
+          maxW="340px"
+        >
+          We manage your systems from
           <Box as="span" color="site.accent">
             {" "}
             strategy → execution
           </Box>
         </Text>
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="flex-start"
-          gap="20px"
-          w="357px"
-          flexShrink={0}
+        <Text
+          textStyle="body.sm"
+          fontWeight={300}
+          color="site.fg.onDarkSubtle"
+          maxW="330px"
         >
-          <Text textStyle="body.sm" lineHeight="1.25" color="site.fg.strong">
-            We bring elite engineering and operate in a forward deployment model
-            to tailor these systems to your firm&rsquo;s data, tool stack, and
-            steward the deployment.
-          </Text>
-          <ArrowLink
-            href="#"
-            fontFamily="body"
-            color="site.fg.strong"
-            gap="12px"
-          >
-            Our Applied AI
-          </ArrowLink>
-        </Box>
+          We bring elite engineering and operate in a forward deployment model
+          to tailor these systems to your firm&rsquo;s data, tool stack, and
+          steward the deployment.
+        </Text>
       </GridCol>
-      <GridCol span={16}>
-        <Box h="374px" bg="site.bg.tint" />
-      </GridCol>
+      {/* Reserved for the FDE illustration. */}
+      <GridCol span={16} h="374px" />
     </Section>
 
     {/* --- Use cases ------------------------------------------------------ */}
     <Section grid bg="site.bg.surface">
       <GridCol span={16} pb="40px">
-        <Text textStyle="h3" color="site.fg.strong" maxW="325px">
+        <Text textStyle="h3" color="site.fg.strong" maxW="360px">
           How your workflows could be agent-driven
         </Text>
       </GridCol>
@@ -434,11 +342,11 @@ export const LandingV3Page: React.FC = () => (
     {/* --- How we perform -------------------------------------------------- */}
     <Section grid rhythm="tight" bg="site.bg.dark">
       <GridCol
-        span={4}
+        span={16}
         display="flex"
         flexDirection="column"
-        justifyContent="space-between"
-        alignSelf="stretch"
+        alignItems="flex-start"
+        gap="20px"
       >
         {/* Light rather than Regular — on the dark bands the heading sits at
             reversed contrast, where a Regular reads a step heavier than the
@@ -451,11 +359,18 @@ export const LandingV3Page: React.FC = () => (
         >
           How our system performs
         </Text>
-        <Text textStyle="label" color="site.fg.onDarkSubtle" maxW="224px">
+        <Text
+          textStyle="label"
+          fontWeight={300}
+          color="site.fg.onDarkSubtle"
+          maxW="224px"
+        >
           *Comparison between workflows using our system vs traditional tool
           stack.
         </Text>
       </GridCol>
+      {/* Deliberately empty: the cards start a quarter of the way in. */}
+      <GridCol span={4} />
       {METRICS.map((metric) => (
         <GridCol key={metric.index} span={3}>
           <MetricCard {...metric} />
@@ -466,9 +381,15 @@ export const LandingV3Page: React.FC = () => (
     {/* --- Testimonials ----------------------------------------------------- */}
     <Section grid bg="site.bg.tint">
       <GridCol span={16} pb="40px">
-        <Text textStyle="h3" color="site.fg.strong" maxW="296px">
-          Our customers in their own words
-        </Text>
+        <Box display="flex" flexDirection="column" gap="8px">
+          <Text textStyle="h3" color="site.fg.strong" maxW="296px">
+            Our customers in their own words
+          </Text>
+          <Text textStyle="label" color="site.fg.subtle" maxW="224px">
+            *Comparison between workflows using our system vs traditional tool
+            stack.
+          </Text>
+        </Box>
       </GridCol>
       {/* Deliberately empty: the row of quotes starts a third of the way in. */}
       <GridCol span={4} />
@@ -487,7 +408,6 @@ export const LandingV3Page: React.FC = () => (
           fontWeight={300}
           lineHeight="1"
           color="site.fg.onDark"
-          maxW="389px"
         >
           We are compliant with rigorous security standards
         </Text>
@@ -504,8 +424,8 @@ export const LandingV3Page: React.FC = () => (
     {/* --- Logos ------------------------------------------------------------ */}
     <Section grid rhythm="compact" bg="site.bg.dark">
       <GridCol span={3} display="flex" alignItems="center">
-        <Text textStyle="label" fontWeight={300} color="site.fg.onDarkMuted">
-          Bringing industry experience from major institutions
+        <Text textStyle="label" fontWeight={300} color="site.fg.onDarkFaint">
+          Bring industry experience from
         </Text>
       </GridCol>
       <GridCol span={13} display="flex" alignItems="center">
@@ -516,6 +436,9 @@ export const LandingV3Page: React.FC = () => (
           h="74px"
           objectFit="contain"
           mixBlendMode="plus-lighter"
+          // The logos are white; at this opacity plus-lighter lands them on
+          // roughly soot.500, the same grey as the label.
+          opacity={0.32}
         />
       </GridCol>
     </Section>
@@ -531,7 +454,9 @@ export const LandingV3Page: React.FC = () => (
       {/*
         In Figma this hangs off the grid column rather than the band, so its
         -50/-99 offsets are relative to the 40px/100px inset — which lands it
-        just outside the left edge and flush with the top.
+        just outside the left edge and flush with the top. It runs to the right
+        edge at any width, never narrower than the design's 1443px; height
+        follows the image's aspect ratio and the band clips the overflow.
       */}
       <Image
         src={`${ART}hero-mesh.png`}
@@ -539,10 +464,10 @@ export const LandingV3Page: React.FC = () => (
         position="absolute"
         left="-10px"
         top="1px"
-        w="1443px"
-        h="702px"
+        w="calc(100% + 10px)"
+        minW="1443px"
+        h="auto"
         maxW="none"
-        objectFit="cover"
         mixBlendMode="hard-light"
         pointerEvents="none"
         aria-hidden
@@ -565,7 +490,7 @@ export const LandingV3Page: React.FC = () => (
             >
               <Text
                 id="outro-heading"
-                textStyle="h1"
+                textStyle="d1"
                 color="site.fg.strong"
                 maxW="496px"
               >
@@ -574,8 +499,9 @@ export const LandingV3Page: React.FC = () => (
                   your alpha?
                 </Box>
               </Text>
-              <Text textStyle="body.sm" lineHeight="1.1" color="site.fg.muted">
-                some outro bye text
+              <Text textStyle="body.sm" color="site.fg" maxW="372px">
+                Your workflows are complex. Managing the data behind them
+                doesn&rsquo;t have to be. We are here to help.
               </Text>
             </Box>
             <Box

@@ -13,9 +13,9 @@ export type UseCase = {
 };
 
 /**
- * The use-case list. Every row is the same three-part grid — label, title,
- * art — and opening a row simply narrows the title column to make room for
- * the art rather than changing the layout.
+ * The use-case list. Every row is the same three-part grid — label (5),
+ * title (10), art — and opening a row simply narrows the title column to 7
+ * to make room for the 4-column art rather than changing the layout.
  *
  * Rows are separated by a dashed rule on their top edge, so the list reads as
  * one ruled block rather than as a stack of separate cards.
@@ -49,11 +49,13 @@ export const UseCaseAccordion: React.FC<{ items: UseCase[] }> = ({ items }) => {
             transition="background 150ms ease"
             _hover={{ bg: "blackAlpha.50" }}
           >
-            <GridCol span={4}>
+            <GridCol span={5}>
               <Text
                 textStyle="label"
+                fontFamily="display"
+                letterSpacing="0"
                 textTransform="capitalize"
-                color="site.fg.strong"
+                color="site.fg.muted"
                 lineHeight="1.1"
               >
                 {item.audience}
@@ -61,17 +63,16 @@ export const UseCaseAccordion: React.FC<{ items: UseCase[] }> = ({ items }) => {
             </GridCol>
 
             <GridCol
-              span={isOpen && item.art ? 8 : 12}
+              span={isOpen && item.art ? 7 : 10}
               display="flex"
               flexDirection="column"
-              justifyContent="center"
               gap="20px"
             >
-              <Text textStyle="d4" color="site.fg" w="full">
+              <Text textStyle="h5" color="site.fg" w="full">
                 {item.title}
               </Text>
               {isOpen && item.body && (
-                <Text textStyle="body.sm" color="site.fg.muted" w="full">
+                <Text textStyle="body.sm" color="site.fg" w="full">
                   {item.body}
                 </Text>
               )}
@@ -83,9 +84,7 @@ export const UseCaseAccordion: React.FC<{ items: UseCase[] }> = ({ items }) => {
                 display="flex"
                 flexDirection="column"
                 alignItems="flex-end"
-                justifyContent="center"
                 h="290px"
-                px="26px"
               >
                 <DataMeshDiagram />
               </GridCol>

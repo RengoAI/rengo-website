@@ -2,9 +2,8 @@ import { Box, type BoxProps } from "@chakra-ui/react";
 import React from "react";
 
 /**
- * The recurring "label  →" link. Always set in Serrif — in this design the
- * arrow links are the one piece of interface type that uses the display face,
- * which is what makes them read as editorial rather than as buttons.
+ * The recurring "label  →" link, and the label inside every button. Set in
+ * Geist like the rest of the interface type.
  *
  * The gap between label and arrow is wide and deliberate; in Figma it is
  * literally spelled with runs of spaces.
@@ -29,10 +28,7 @@ export const ArrowLink: React.FC<ArrowLinkProps> = ({
     display="inline-flex"
     alignItems="center"
     gap={gap}
-    // textStyle carries its own fontFamily, so the display face has to be set
-    // after it or the body face wins.
     textStyle="body.sm"
-    fontFamily="display"
     textDecoration={underline ? "underline" : "none"}
     textUnderlineOffset="3px"
     cursor="pointer"

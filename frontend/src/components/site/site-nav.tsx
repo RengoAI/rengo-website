@@ -17,8 +17,10 @@ export const SiteNav: React.FC = () => (
     position="sticky"
     top={0}
     zIndex={10}
-    bg="site.bg.surface"
-    backdropFilter="blur(2px)"
+    // Translucent so content scrolling underneath shows through, softened
+    // by the blur.
+    bg="site.bg.surface/80"
+    backdropFilter="blur(6px)"
     py="16px"
     minH="52px"
   >
@@ -42,7 +44,6 @@ export const SiteNav: React.FC = () => (
               key={link}
               href="#"
               textStyle="body.sm"
-              fontWeight={300}
               letterSpacing="0"
               textTransform="capitalize"
               color="site.fg.strong"

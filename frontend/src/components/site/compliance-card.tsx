@@ -53,7 +53,12 @@ export const ComplianceCard: React.FC<ComplianceCardProps> = ({
       <Text textStyle="d5" lineHeight="1.1" color="site.fg.onDark" w="full">
         {title}
       </Text>
-      <Text textStyle="label" color="site.fg.onDarkMuted" maxW="215px">
+      <Text
+        textStyle="label"
+        fontWeight={300}
+        color="site.fg.onDarkMuted"
+        maxW="215px"
+      >
         {description}
       </Text>
     </Box>

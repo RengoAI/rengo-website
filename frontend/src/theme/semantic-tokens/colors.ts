@@ -436,13 +436,15 @@ export const semanticColors = defineSemanticTokens.colors({
       /** Recessed chips and wells. */
       inset: { value: "{colors.canvas.300}" },
       /** The dark bands: performance, security, logos. */
-      dark: { value: "{colors.soot.700}" },
+      dark: { value: "{colors.silver.800}" },
       /** Controls on a dark band. */
       darkRaised: { value: "{colors.soot.800}" },
       /** Cool tinted band — testimonials. */
       tint: { value: "{colors.silver.200}" },
       /** Brighter blue band. */
       tintSky: { value: "{colors.sky}" },
+      /** Palest blue band — the problem statement. */
+      tintSubtle: { value: "{colors.silver.100}" },
       /** Filled brand surface — primary buttons. */
       brand: { value: "{colors.rengo.500}" },
     },
@@ -459,6 +461,8 @@ export const semanticColors = defineSemanticTokens.colors({
       onDark: { value: "{colors.canvas.0}" },
       onDarkMuted: { value: "{colors.soot.300}" },
       onDarkSubtle: { value: "{colors.soot.400}" },
+      /** Quietest type on a dark band — the logo strip. */
+      onDarkFaint: { value: "{colors.soot.500}" },
       /** Type on a filled brand surface. */
       onBrand: { value: "{colors.canvas.0}" },
     },
