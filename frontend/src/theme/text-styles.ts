@@ -35,7 +35,7 @@ export const textStyles = defineTextStyles({
   h2: {
     value: {
       fontFamily: "body",
-      fontSize: "2.75rem", // 44px
+      fontSize: "2.5rem", // 44px
       fontWeight: "400",
       letterSpacing: "-0.05em",
       lineHeight: "1.05",
@@ -44,9 +44,9 @@ export const textStyles = defineTextStyles({
   h3: {
     value: {
       fontFamily: "body",
-      fontSize: "2.25rem", // 36px
+      fontSize: "2.125rem", // 34px
       fontWeight: "400",
-      letterSpacing: "-0.02em",
+      letterSpacing: "-0.04em",
       lineHeight: "1",
     },
   },
@@ -94,7 +94,7 @@ export const textStyles = defineTextStyles({
       fontFamily: "display",
       fontSize: "2.25rem", // 36px
       fontWeight: "300",
-      letterSpacing: "-0.035em",
+      letterSpacing: "-0.04em",
       lineHeight: "1",
     },
   },
@@ -123,7 +123,7 @@ export const textStyles = defineTextStyles({
         fontFamily: "body",
         fontSize: "1rem", // 16px
         fontWeight: "400",
-        letterSpacing: "-0.04em",
+        letterSpacing: "-0.02em",
         lineHeight: "1.4",
       },
     },
@@ -145,7 +145,7 @@ export const textStyles = defineTextStyles({
       fontSize: "0.75rem", // 12px
       fontWeight: "400",
       letterSpacing: "0.02em",
-      lineHeight: "1.2",
+      lineHeight: "1.25",
     },
   },
   /** 10px annotation, the smallest type in the design. */
@@ -155,7 +155,7 @@ export const textStyles = defineTextStyles({
       fontSize: "0.625rem", // 10px
       fontWeight: "300",
       letterSpacing: "0.02em",
-      lineHeight: "1",
+      lineHeight: "1.15",
     },
   },
   /** 11px Geist Mono — copyright, metadata. */

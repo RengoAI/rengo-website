@@ -34,6 +34,12 @@ import React from "react";
  * apart (centre to centre), with the dots split evenly between them.
  * `layerGap` overrides how far under the copy the (first) line forms.
  *
+ * `plane` replaces the lines with a 2D target: a cols × rows dot grid laid
+ * across a parallelogram (a flat sheet seen in perspective), given by three
+ * corners in fractions of the hero. The plane sits behind the copy, so dots
+ * that settle under the copy are held back to keep the text clean, and the
+ * sheet itself fills in faintly as it forms.
+ *
  * Click the hero (or press R) to restart.
  */
 
@@ -101,7 +107,10 @@ type Dot = {
   vy: number;
   delay: number;
   tx: number;
-  /** Offset of this dot's line below the first one, px. */
+  /**
+   * Offset of this dot's line below the first one, px — or, with a plane,
+   * its absolute target y.
+   */
   ty: number;
   /** This dot's light blue, [r, g, b]. */
   shade: number[];
@@ -165,6 +174,66 @@ const assignSlots = (
   }
 };
 
+/** A parallelogram target: corners as [x, y] fractions of the hero. */
+export type Plane = {
+  cols: number;
+  rows: number;
+  bottomLeft: [number, number];
+  bottomRight: [number, number];
+  topLeft: [number, number];
+};
+
+/**
+ * Grid slots across the plane. Same rule as the lines: a dot's starting x
+ * picks its column (along the bottom edge), and within a column the dot
+ * that starts highest takes the far row — so dots travel the short way in.
+ */
+const assignPlane = (dots: Dot[], w: number, h: number, plane: Plane) => {
+  const { cols, rows, bottomLeft: bl, bottomRight: br, topLeft: tl } = plane;
+  const ux = (br[0] - bl[0]) * w;
+  const uy = (br[1] - bl[1]) * h;
+  const vx = (tl[0] - bl[0]) * w;
+  const vy = (tl[1] - bl[1]) * h;
+  const byX = [...dots].sort((a, b) => a.x - b.x);
+  for (let col = 0; col < cols; col++) {
+    const u = (col + 0.5) / cols;
+    byX
+      .slice(col * rows, (col + 1) * rows)
+      .sort((a, b) => a.y - b.y)
+      .forEach((d, i) => {
+        const v = 1 - (i + 0.5) / rows; // top of the column = far edge
+        d.tx = bl[0] * w + u * ux + v * vx;
+        d.ty = bl[1] * h + u * uy + v * vy;
+      });
+  }
+};
+
+/** The plane's outline as a path, for its faint fill. */
+const planePath = (w: number, h: number, plane: Plane) => {
+  const { bottomLeft: bl, bottomRight: br, topLeft: tl } = plane;
+  const path = new Path2D();
+  path.moveTo(bl[0] * w, bl[1] * h);
+  path.lineTo(br[0] * w, br[1] * h);
+  path.lineTo((br[0] + tl[0] - bl[0]) * w, (br[1] + tl[1] - bl[1]) * h);
+  path.lineTo(tl[0] * w, tl[1] * h);
+  path.closePath();
+  return path;
+};
+
+/**
+ * The clearing behind the copy: a soft oval hugging the text, not the
+ * copy's full column, so the plane reads as continuous. Dots at its centre
+ * are held back to UNDER_COPY of their strength and come back to full by
+ * its rim. Half-width covers the 526px title; half-height is the copy's own
+ * plus a margin.
+ */
+const UNDER_COPY = 0.15;
+const CLEAR_RX = 330;
+const CLEAR_MARGIN_Y = 44;
+/** The sheet's fill when fully formed — the screenshot's pale grey plane. */
+const PLANE_FILL = parseToRgba(INK.canvas400);
+const PLANE_FILL_ALPHA = 0.55;
+
 export const LayerHero: React.FC<{
   lines?: number;
   lineGap?: number;
@@ -174,13 +243,21 @@ export const LayerHero: React.FC<{
   layerGap?: number;
   /** Offset each line's slots so the lines read horizontally. */
   shift?: boolean;
+  /** Settle into a 2D plane instead of lines; overrides lines and dots. */
+  plane?: Plane;
 }> = ({
   lines = 1,
   lineGap = 0,
   dots = NUM_DOTS,
   layerGap = LAYER_GAP,
   shift = false,
+  plane,
 }) => {
+  const count = plane ? plane.cols * plane.rows : dots;
+  const place = (all: Dot[], w: number, h: number) =>
+    plane
+      ? assignPlane(all, w, h, plane)
+      : assignSlots(all, w, lines, lineGap, shift);
   const copy = React.useRef<HTMLDivElement>(null);
   const sim = React.useRef({
     dots: [] as Dot[],
@@ -209,7 +286,7 @@ export const LayerHero: React.FC<{
     const s = sim.current;
 
     if (s.restart) {
-      s.dots = Array.from({ length: dots }, () => ({
+      s.dots = Array.from({ length: count }, () => ({
         x: Math.random() * w,
         y: Math.random() * h,
         vx: 0,
@@ -222,27 +299,61 @@ export const LayerHero: React.FC<{
         head: 0,
         count: 0,
       }));
-      assignSlots(s.dots, w, lines, lineGap, shift);
+      place(s.dots, w, h);
       s.start = t;
       s.restart = false;
       ctx.clearRect(0, 0, w, h);
     } else if (resized) {
-      assignSlots(s.dots, w, lines, lineGap, shift);
+      place(s.dots, w, h);
       ctx.clearRect(0, 0, w, h);
     }
 
     const c = copy.current;
-    const layerY = c ? c.offsetTop + c.offsetHeight + layerGap : h * 0.5;
+    // With a plane, targets are absolute; with lines, they hang off layerY.
+    const layerY = plane
+      ? 0
+      : c
+        ? c.offsetTop + c.offsetHeight + layerGap
+        : h * 0.5;
+    // The clearing behind the copy: 0 at its centre, 1 at and past its rim.
+    const clear =
+      plane && c
+        ? {
+            cx: c.offsetLeft + c.offsetWidth / 2,
+            cy: c.offsetTop + c.offsetHeight / 2,
+            ry: c.offsetHeight / 2 + CLEAR_MARGIN_Y,
+          }
+        : null;
+    const openness = (d: Dot) => {
+      if (!clear) return 1;
+      const ex = (d.tx - clear.cx) / CLEAR_RX;
+      const ey = (d.ty - clear.cy) / clear.ry;
+      const r = Math.sqrt(ex * ex + ey * ey);
+      const t = Math.min(Math.max((r - 0.55) / 0.45, 0), 1);
+      return t * t * (3 - 2 * t);
+    };
+    const underCopy = (d: Dot) => lerp(UNDER_COPY, 1, openness(d));
 
     // Reduced motion: skip the journey, show the formed layer.
     if (reduced) {
       ctx.clearRect(0, 0, w, h);
+      if (plane) {
+        ctx.fillStyle = rgba(
+          PLANE_FILL[0],
+          PLANE_FILL[1],
+          PLANE_FILL[2],
+          PLANE_FILL_ALPHA,
+        );
+        ctx.fill(planePath(w, h, plane));
+      }
       for (const d of s.dots) {
+        ctx.globalAlpha = underCopy(d);
         ctx.fillStyle = `rgb(${d.shade[0]},${d.shade[1]},${d.shade[2]})`;
         ctx.beginPath();
         ctx.arc(d.tx, layerY + d.ty, DOT_SIZE / 2, 0, Math.PI * 2);
         ctx.fill();
       }
+      ctx.globalAlpha = 1;
       return;
     }
 
@@ -255,6 +366,17 @@ export const LayerHero: React.FC<{
     const elapsed = t - s.start;
     const global = Math.min(Math.max(elapsed / DURATION, 0), 1);
     const z = elapsed * TIME_SCALE;
+
+    // The sheet fills in under the dots as the plane forms.
+    if (plane) {
+      ctx.fillStyle = rgba(
+        PLANE_FILL[0],
+        PLANE_FILL[1],
+        PLANE_FILL[2],
+        PLANE_FILL_ALPHA * easeOutCubic(global) ** 2,
+      );
+      ctx.fill(planePath(w, h, plane));
+    }
 
     for (const d of s.dots) {
       // Per-dot eased progress (staggered so they arrive gradually).
@@ -290,7 +412,9 @@ export const LayerHero: React.FC<{
 
       // Dots come up to full strength as they join the layer — on a light
       // ground, the sketch's "darken".
-      const k = lerp(DRIFT_STRENGTH, 1, p);
+      // Under the copy, a dot fades back as it settles rather than landing
+      // on the type.
+      const k = lerp(DRIFT_STRENGTH, 1, p) * lerp(1, underCopy(d), p);
       ctx.fillStyle = `rgb(${lerp(GROUND[0], d.shade[0], k)},${lerp(
         GROUND[1],
         d.shade[1],
@@ -299,7 +423,9 @@ export const LayerHero: React.FC<{
 
       // The trail: oldest first, each step back one RETAIN dimmer.
       const r = DOT_SIZE / 2;
-      for (let age = d.count; age >= 1; age--) {
+      // A settled dot's trail has collapsed onto it; skip the redraw.
+      const still = p > 0.99 && Math.abs(d.vx) + Math.abs(d.vy) < 0.02;
+      for (let age = still ? 0 : d.count; age >= 1; age--) {
         const i = (d.head - age + TRAIL_LEN) % TRAIL_LEN;
         ctx.globalAlpha = RETAIN ** age;
         ctx.fillRect(d.trail[i * 2] - r, d.trail[i * 2 + 1] - r, r * 2, r * 2);

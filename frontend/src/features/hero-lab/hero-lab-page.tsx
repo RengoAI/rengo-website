@@ -33,6 +33,21 @@ const StrataHero: React.FC = () => <LayerHero lines={4} lineGap={4} />;
 const SedimentHero: React.FC = () => (
   <LayerHero lines={20} lineGap={4} dots={3000} layerGap={60} shift />
 );
+/**
+ * Sediment's dots, settling into a sheet instead of a bed: the parallelogram
+ * from the v3 hero mesh (corners measured off a screenshot of it).
+ */
+const PlaneHero: React.FC = () => (
+  <LayerHero
+    plane={{
+      cols: 72,
+      rows: 48,
+      bottomLeft: [0.02, 0.92],
+      bottomRight: [0.56, 0.85],
+      topLeft: [0.46, 0.12],
+    }}
+  />
+);
 
 const VARIANTS: Variant[] = [
   {
@@ -152,6 +167,27 @@ const VARIANTS: Variant[] = [
     ],
     layout:
       "Copy as in Layer and Strata, centred on columns 4–13 with the dark CTA below. The top line forms 60px under the CTA and the band runs 76px deep (twenty lines, 4px centre to centre).",
+  },
+  {
+    id: "7",
+    name: "Plane",
+    reference:
+      "p5.js sketch — dots coalescing into a layer (06), settling into the v3 mesh's plane",
+    Hero: PlaneHero,
+    source:
+      "Sediment (06) with a 2D target: 3,456 dots (72 × 48) settle into an even dot grid across a parallelogram, a flat sheet seen in perspective, the shape of the plane in the v3 hero mesh. Same flow field, timing, easing, stagger and palette.",
+    concept: [
+      "The knowledge drifts out of the currents of day-to-day work and settles into one surface: a plane with extent in both directions, every piece in its own place on a shared grid. It is the data layer seen as ground you can build on, not a line under the copy.",
+      "Slots are handed out by where each dot starts: x picks the column along the near edge, and within a column the dot that starts highest takes the far row, so dots travel the short way in. The sheet's pale fill comes up as the grid forms. Dots that land in a soft oval around the copy fade back so the text stays clean while the plane still reads as one surface. Click the hero (or press R) to run it again.",
+    ],
+    legend: [
+      ["Drifting dots", "Knowledge moving through day-to-day work"],
+      ["Flow field", "The currents: email, meetings, drives"],
+      ["The plane", "The data layer as a surface, one slot per piece"],
+      ["Strengthening", "Loose to trusted as each piece joins"],
+    ],
+    layout:
+      "Copy as in Layer, Strata and Sediment: centred on columns 4–13 with the dark CTA below. The plane runs corner to corner behind it, from the bottom-left to the top-right, and the copy sits on the sheet near its centre.",
   },
 ];
 
