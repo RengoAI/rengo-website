@@ -47,8 +47,10 @@ export const MetricCard: React.FC<
   }
 > = ({ index, value, caption, icon, ...rest }) => (
   <SplitCard
+    // Two steps darker than `dashedOnDark` (soot.500): a quieter rule.
+    borderLeftColor="soot.700"
     top={
-      <Text textStyle="label" color="site.fg.onDarkSubtle">
+      <Text textStyle="label" color="site.fg.onDarkFaint">
         {index}
       </Text>
     }
@@ -67,7 +69,7 @@ export const MetricCard: React.FC<
         <Text
           textStyle="label"
           fontWeight={300}
-          color="site.fg.onDark"
+          color="site.fg.onDarkFaint"
           w="full"
         >
           {caption}
@@ -88,6 +90,7 @@ export const TestimonialCard: React.FC<
 > = ({ quote, avatarSrc, attribution, ...rest }) => (
   <SplitCard
     py="8px"
+    px="20px"
     borderLeftColor="site.border.dashedOnTint"
     top={
       <Text textStyle="d5" color="site.fg.strong" w="full">

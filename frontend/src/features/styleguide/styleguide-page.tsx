@@ -27,7 +27,7 @@ const TYPE_SPECIMENS: {
   },
   {
     style: "h3",
-    label: "36 / -0.05em / 1.0",
+    label: "32 / -0.02em / 1.1",
     sample: "Building your intelligent data layer",
   },
   {

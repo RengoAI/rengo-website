@@ -1,7 +1,7 @@
 import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import { ArrowLink } from "@/components/site/arrow-link";
-import { ComplianceCard } from "@/components/site/compliance-card";
+import { ComplianceCardGroup } from "@/components/site/compliance-card";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
 import { MetricCard, TestimonialCard } from "@/components/site/split-card";
@@ -347,7 +347,7 @@ const SolutionSection: React.FC = () => {
             gap="16px"
           >
             <Text textStyle="h4" fontWeight={300} color="site.fg.onDark">
-              To solve this, we build an agent-ready, unified data foundation.
+              To solve this, we build an agentic and unified data foundation.
             </Text>
             <Text
               textStyle="body.sm"
@@ -398,6 +398,16 @@ const SolutionSection: React.FC = () => {
           to tailor these systems to your firm&rsquo;s data, tool stack, and
           steward the deployment.
         </Text>
+        {/* 24px on top of the column's 16px gap: 40px below the copy. */}
+        <ArrowLink
+          href="#"
+          mt="24px"
+          color="site.fg.onDark"
+          fontWeight={300}
+          gap="12px"
+        >
+          Learn more
+        </ArrowLink>
       </GridCol>
     </Section>
   );
@@ -518,8 +528,8 @@ export const LandingV3Page: React.FC = () => (
     {/* --- Use cases ------------------------------------------------------ */}
     <Section grid bg="site.bg.surface">
       <GridCol span={16} pb="40px">
-        <Text textStyle="h3" color="site.fg.strong" maxW="360px">
-          How your workflows could be agent-driven
+        <Text textStyle="h3" color="site.fg.strong" maxW="320px">
+          Agentic workflows that we unlock for you
         </Text>
       </GridCol>
       <GridCol span={16}>
@@ -543,9 +553,9 @@ export const LandingV3Page: React.FC = () => (
           textStyle="h3"
           fontWeight={300}
           color="site.fg.onDark"
-          maxW="321px"
+          maxW="320px"
         >
-          How our system performs
+          How our system performs today
         </Text>
         <Text
           textStyle="label"
@@ -592,21 +602,15 @@ export const LandingV3Page: React.FC = () => (
     <Section bg="site.bg.dark">
       <Box pb="60px">
         <Text
-          textStyle="h4"
+          textStyle="h3"
           fontWeight={300}
-          lineHeight="1"
           color="site.fg.onDark"
+          maxW="375px"
         >
           We are compliant with rigorous security standards
         </Text>
       </Box>
-      <Grid h="240px">
-        {COMPLIANCE.map((card) => (
-          <GridCol key={card.title} span={4}>
-            <ComplianceCard {...card} />
-          </GridCol>
-        ))}
-      </Grid>
+      <ComplianceCardGroup items={COMPLIANCE} h="240px" />
     </Section>
 
     {/* --- Logos ------------------------------------------------------------ */}

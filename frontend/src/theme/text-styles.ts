@@ -44,10 +44,10 @@ export const textStyles = defineTextStyles({
   h3: {
     value: {
       fontFamily: "body",
-      fontSize: "2.125rem", // 34px
+      fontSize: "2rem", // 32px
       fontWeight: "400",
-      letterSpacing: "-0.04em",
-      lineHeight: "1",
+      letterSpacing: "-0.02em",
+      lineHeight: "1.1",
     },
   },
   h4: {

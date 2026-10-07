@@ -1,10 +1,11 @@
+import { Grid, GridCol, type GridProps } from "@/components/layout/grid";
 import { Box, type BoxProps, Image, Text } from "@chakra-ui/react";
 import React from "react";
 
 /**
- * Security band tile. Fully dashed rather than rule-on-one-edge like
- * `SplitCard`, and bottom-aligned so the four titles sit on a shared
- * baseline regardless of how long the copy above them runs.
+ * Security band tile, bottom-aligned so the titles sit on a shared baseline
+ * regardless of how long the copy above them runs. It draws no border of its
+ * own: `ComplianceCardGroup` frames the tiles as one container.
  */
 export type ComplianceCardProps = BoxProps & {
   title: string;
@@ -27,9 +28,6 @@ export const ComplianceCard: React.FC<ComplianceCardProps> = ({
     justifyContent="flex-end"
     h="full"
     p="20px"
-    borderWidth="1px"
-    borderStyle="dotted"
-    borderColor="site.border.onDark"
     {...rest}
   >
     {badgeSrc && (
@@ -63,4 +61,38 @@ export const ComplianceCard: React.FC<ComplianceCardProps> = ({
       </Text>
     </Box>
   </Box>
+);
+
+/**
+ * The security band's tiles as one dashed container: a frame around the
+ * whole group, split into four-column tiles by single shared dividers, with
+ * no gutters between them.
+ */
+export type ComplianceCardGroupProps = GridProps & {
+  items: ComplianceCardProps[];
+};
+
+export const ComplianceCardGroup: React.FC<ComplianceCardGroupProps> = ({
+  items,
+  ...rest
+}) => (
+  <Grid
+    gap={0}
+    borderWidth="1px"
+    borderStyle="dotted"
+    borderColor="site.border.onDark"
+    {...rest}
+  >
+    {items.map((item, i) => (
+      <GridCol
+        key={item.title}
+        span={4}
+        borderLeftWidth={i === 0 ? 0 : "1px"}
+        borderLeftStyle="dotted"
+        borderLeftColor="site.border.onDark"
+      >
+        <ComplianceCard {...item} />
+      </GridCol>
+    ))}
+  </Grid>
 );
