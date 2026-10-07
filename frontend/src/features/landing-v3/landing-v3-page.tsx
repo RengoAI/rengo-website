@@ -97,12 +97,311 @@ const COMPLIANCE = [
   },
 ];
 
-/** Labelled tick marks running down the left edge of the solution diagram. */
+/**
+ * Labelled tick marks running down the left edge of the solution diagram, at a
+ * % of the diagram's height.
+ */
 const DIAGRAM_ANNOTATIONS: [string, number][] = [
-  ["Applications", 129],
-  ["Your systems", 363],
-  ["Agents", 596],
+  ["Applications", 14.8],
+  ["Agents", 41.8],
+  ["Data ontology", 68.6],
 ];
+
+// Source sizes (w, h in px) of the trimmed layer renders. Every layer renders
+// at the same width; each overlaps the top 25% of the one beneath it.
+const SOLUTION_LAYER_SIZES: [number, number][] = [
+  [1008, 642],
+  [1018, 629],
+  [1059, 733],
+];
+const SOLUTION_LAYER_OVERLAP = 0.25;
+
+// Layer heights and tops in units of the shared layer width.
+const SOLUTION_LAYER_ASPECTS = SOLUTION_LAYER_SIZES.map(([w, h]) => h / w);
+const SOLUTION_LAYER_TOPS = SOLUTION_LAYER_ASPECTS.reduce<number[]>(
+  (tops, aspect, i) =>
+    i === 0
+      ? [0]
+      : [
+          ...tops,
+          tops[i - 1] +
+            SOLUTION_LAYER_ASPECTS[i - 1] -
+            aspect * SOLUTION_LAYER_OVERLAP,
+        ],
+  [],
+);
+const SOLUTION_STACK_ASPECT =
+  SOLUTION_LAYER_TOPS[SOLUTION_LAYER_TOPS.length - 1] +
+  SOLUTION_LAYER_ASPECTS[SOLUTION_LAYER_ASPECTS.length - 1];
+
+const SOLUTION_LAYERS = SOLUTION_LAYER_TOPS.map((top, i) => ({
+  src: `solution-layer-${i + 1}.png`,
+  top: `${(top / SOLUTION_STACK_ASPECT) * 100}%`,
+  // Layer 1 sits in front, layer 3 at the back.
+  zIndex: SOLUTION_LAYER_SIZES.length - i,
+}));
+
+// The diagram is scroll-driven: the copy pins while the diagram column
+// scrolls up past it, and each layer rises into place as a function of
+// progress (0 = the section has scrolled SOLUTION_START_PX past the viewport
+// top, 1 = the copy is about to release). These are each layer's
+// [start, end] progress.
+const LAYER_SCROLL_WINDOWS: [number, number][] = [
+  [0, 0.4],
+  [0.3, 0.7],
+  [0.6, 1],
+];
+const SOLUTION_START_PX = 0;
+const LAYER_RISE_PX = 160;
+const LABEL_RISE_PX = 40;
+// Space above the diagram, so it starts low in the viewport when the copy pins
+// and moves in from below while the copy holds.
+const SOLUTION_SCROLL_ROOM = "70vh";
+// The stack's base height fits the viewport below the nav (~52px) and above
+// the section's bottom padding (80px), less 24px of breathing room top and
+// bottom. SOLUTION_GRAPHIC_SCALE enlarges it from there; above 1 the stack is
+// taller than the viewport and scrolls past the pinned copy.
+const SOLUTION_GRAPHIC_SCALE = 1.5;
+const SOLUTION_STACK_HEIGHT = `calc(${SOLUTION_GRAPHIC_SCALE} * (min(869px, 100vh - 140px) - 48px))`;
+const SOLUTION_STAGE_HEIGHT = `calc(${SOLUTION_STACK_HEIGHT} + 48px)`;
+
+const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
+const easeOutCubic = (x: number) => 1 - (1 - x) ** 3;
+
+/** Hidden until scroll drives it in; shown as-is for reduced motion. */
+const scrollRevealProps = (rise: number) => ({
+  opacity: 0,
+  transform: `translateY(${rise}px)`,
+  willChange: "opacity, transform",
+  css: {
+    "@media (prefers-reduced-motion: reduce)": {
+      opacity: 1,
+      transform: "none",
+    },
+  },
+});
+
+/** The layered solution graphic and its annotations, driven by scroll. */
+const SolutionDiagram: React.FC<{
+  /** The cell the pinned copy travels in; the build-up ends as it releases. */
+  trackRef: React.RefObject<HTMLDivElement>;
+}> = ({ trackRef }) => {
+  const stageRef = React.useRef<HTMLDivElement>(null);
+  const layerRefs = React.useRef<(HTMLImageElement | null)[]>([]);
+  const labelRefs = React.useRef<(HTMLDivElement | null)[]>([]);
+
+  React.useEffect(() => {
+    // Reduced motion keeps the static, fully shown diagram from the CSS.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      // The copy releases when its cell's bottom reaches the viewport bottom.
+      const track = trackRef.current;
+      const section = track?.closest("section");
+      if (!track || !section) return;
+      const scrolled = -section.getBoundingClientRect().top;
+      const untilRelease =
+        track.getBoundingClientRect().bottom - window.innerHeight;
+      const progress = clamp01(
+        (scrolled - SOLUTION_START_PX) /
+          (scrolled + untilRelease - SOLUTION_START_PX),
+      );
+
+      LAYER_SCROLL_WINDOWS.forEach(([start, end], i) => {
+        const eased = easeOutCubic(clamp01((progress - start) / (end - start)));
+        const apply = (node: HTMLElement | null, rise: number) => {
+          if (!node) return;
+          node.style.opacity = String(eased);
+          node.style.transform = `translateY(${(1 - eased) * rise}px)`;
+        };
+        apply(layerRefs.current[i], LAYER_RISE_PX);
+        apply(labelRefs.current[i], LABEL_RISE_PX);
+      });
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+    };
+  }, [trackRef]);
+
+  return (
+    // Once built, the stack pins: 76px down (below the nav) when it fits the
+    // viewport, otherwise with its bottom 24px above the viewport bottom. It
+    // holds until the end of its column, as the FDE copy comes up beside it.
+    <Box
+      ref={stageRef}
+      position="sticky"
+      top={`min(76px, calc(100vh - ${SOLUTION_STAGE_HEIGHT} - 24px))`}
+      h={SOLUTION_STAGE_HEIGHT}
+    >
+      {/* The stack is sized to the stage's height, centred vertically and
+          pushed to its right edge, so every layer shows in full. `isolation`
+          keeps the layer z-indices below the annotations. */}
+      <Box
+        position="absolute"
+        right={0}
+        top="50%"
+        h={SOLUTION_STACK_HEIGHT}
+        aspectRatio={1 / SOLUTION_STACK_ASPECT}
+        transform="translateY(-50%)"
+        isolation="isolate"
+        aria-hidden
+      >
+        {SOLUTION_LAYERS.map(({ src, top, zIndex }, i) => (
+          <Image
+            key={src}
+            ref={(node) => {
+              layerRefs.current[i] = node;
+            }}
+            src={`${ART}${src}`}
+            alt=""
+            position="absolute"
+            left={0}
+            top={top}
+            w="full"
+            h="auto"
+            maxW="none"
+            zIndex={zIndex}
+            {...scrollRevealProps(LAYER_RISE_PX)}
+          />
+        ))}
+      </Box>
+      {DIAGRAM_ANNOTATIONS.map(([label, top], i) => (
+        <Box
+          key={label}
+          ref={(node: HTMLDivElement | null) => {
+            labelRefs.current[i] = node;
+          }}
+          position="absolute"
+          left="130px"
+          // Every rule ends at the same x, so a shorter label gets a
+          // longer rule.
+          w="256px"
+          top={`${top}%`}
+          display="flex"
+          alignItems="center"
+          gap="8px"
+          {...scrollRevealProps(LABEL_RISE_PX)}
+        >
+          <Text
+            textStyle="caption"
+            fontFamily="display"
+            fontVariantCaps="all-small-caps"
+            color="site.fg.onDarkSubtle"
+            whiteSpace="nowrap"
+          >
+            {label}
+          </Text>
+          <Box
+            flex="1"
+            borderTopWidth="1px"
+            borderTopStyle="dotted"
+            borderTopColor="site.border.dashedOnDark"
+          />
+        </Box>
+      ))}
+    </Box>
+  );
+};
+
+/**
+ * The solution diagram and the FDE copy share one dark band. The solution copy
+ * pins while the layered stack scrolls up and builds; the stack then pins
+ * while the solution copy moves on, until the FDE copy has come up beside it.
+ */
+const SolutionSection: React.FC = () => {
+  const copyTrackRef = React.useRef<HTMLDivElement>(null);
+
+  return (
+    <Section
+      grid
+      rhythm="tight"
+      bg="site.bg.dark"
+      gridProps={{
+        // Row 1 is the solution copy's pinned stretch; row 2 the FDE copy.
+        gridTemplateRows: `calc(${SOLUTION_SCROLL_ROOM} + ${SOLUTION_STAGE_HEIGHT}) auto`,
+      }}
+    >
+      <GridCol span={4} gridRow={1}>
+        {/* Fills the row; the copy inside stays pinned at the viewport's
+            centre while the diagram scrolls up and builds. */}
+        <Box ref={copyTrackRef} h="full">
+          <Box
+            position="sticky"
+            top={0}
+            h="100vh"
+            display="flex"
+            flexDirection="column"
+            alignItems="flex-start"
+            justifyContent="center"
+            gap="16px"
+          >
+            <Text textStyle="h4" fontWeight={300} color="site.fg.onDark">
+              To solve this, we build an agent-ready, unified data foundation.
+            </Text>
+            <Text
+              textStyle="body.sm"
+              fontWeight={300}
+              color="site.fg.onDarkSubtle"
+            >
+              We connect your source systems, structure them into permission-ed
+              ontology, and build applications and agents for your work.
+            </Text>
+          </Box>
+        </Box>
+      </GridCol>
+      {/* Spans both rows, so the pinned stack holds through the FDE copy. */}
+      <GridCol span={12} gridRow="1 / span 2" pt={SOLUTION_SCROLL_ROOM}>
+        <SolutionDiagram trackRef={copyTrackRef} />
+      </GridCol>
+      <GridCol
+        span={4}
+        gridRow={2}
+        display="flex"
+        flexDirection="column"
+        alignItems="flex-start"
+        gap="16px"
+        pt="160px"
+        // Extra room below keeps the stack pinned while the FDE copy rises
+        // further up the viewport.
+        pb="274px"
+      >
+        <Text
+          textStyle="h4"
+          fontWeight={300}
+          color="site.fg.onDark"
+          maxW="340px"
+        >
+          We manage your systems from
+          <Box as="span" color="site.accent">
+            {" "}
+            strategy → deployment
+          </Box>
+        </Text>
+        <Text
+          textStyle="body.sm"
+          fontWeight={300}
+          color="site.fg.onDarkSubtle"
+          maxW="330px"
+        >
+          We bring elite engineering and operate in a forward deployment model
+          to tailor these systems to your firm&rsquo;s data, tool stack, and
+          steward the deployment.
+        </Text>
+      </GridCol>
+    </Section>
+  );
+};
 
 export const LandingV3Page: React.FC = () => (
   <Box bg="site.bg.page">
@@ -213,119 +512,8 @@ export const LandingV3Page: React.FC = () => (
       </GridCol>
     </Section>
 
-    {/* --- Solution ------------------------------------------------------- */}
-    <Section grid rhythm="tight" bg="site.bg.dark">
-      <GridCol
-        span={4}
-        display="flex"
-        flexDirection="column"
-        alignItems="flex-start"
-        // Sits on the graphic's centre line rather than stretching to its
-        // full height.
-        alignSelf="center"
-        gap="16px"
-      >
-        <Text textStyle="h4" fontWeight={300} color="site.fg.onDark">
-          To solve this, we build an agent-ready, unified data foundation.
-        </Text>
-        <Text textStyle="body.sm" fontWeight={300} color="site.fg.onDarkSubtle">
-          We connect your source systems, structure them into permission-ed
-          ontology, and build applications and agents for your work.
-        </Text>
-      </GridCol>
-      <GridCol span={10} position="relative" h="869px">
-        {/* Multiplied onto the dark band, the light render recedes to a
-            dark-on-dark line drawing. */}
-        <Box
-          position="absolute"
-          left="186px"
-          top={0}
-          w="728px"
-          h="full"
-          overflow="hidden"
-          mixBlendMode="multiply"
-          aria-hidden
-        >
-          <Image
-            src={`${ART}solution-graphic.png`}
-            alt=""
-            position="absolute"
-            left="4%"
-            top="-3.99%"
-            w="full"
-            h="103.97%"
-            maxW="none"
-          />
-        </Box>
-        {DIAGRAM_ANNOTATIONS.map(([label, top]) => (
-          <Box
-            key={label}
-            position="absolute"
-            left="130px"
-            // Every rule ends at the same x, so a shorter label gets a
-            // longer rule.
-            w="256px"
-            top={`${top}px`}
-            display="flex"
-            alignItems="center"
-            gap="8px"
-          >
-            <Text
-              textStyle="caption"
-              fontFamily="display"
-              textTransform="capitalize"
-              color="site.fg.onDark"
-              whiteSpace="nowrap"
-            >
-              {label}
-            </Text>
-            <Box
-              flex="1"
-              borderTopWidth="1px"
-              borderTopStyle="dotted"
-              borderTopColor="site.border.dashedOnDark"
-            />
-          </Box>
-        ))}
-      </GridCol>
-    </Section>
-
-    {/* --- About the FDE service ------------------------------------------ */}
-    <Section grid rhythm="tight" bg="site.bg.dark">
-      <GridCol
-        span={5}
-        display="flex"
-        flexDirection="column"
-        alignItems="flex-start"
-        gap="16px"
-        pb="24px"
-      >
-        <Text
-          textStyle="h4"
-          fontWeight={300}
-          color="site.fg.onDark"
-          maxW="340px"
-        >
-          We manage your systems from
-          <Box as="span" color="site.accent">
-            {" "}
-            strategy → execution
-          </Box>
-        </Text>
-        <Text
-          textStyle="body.sm"
-          fontWeight={300}
-          color="site.fg.onDarkSubtle"
-          maxW="330px"
-        >
-          We bring elite engineering and operate in a forward deployment model
-          to tailor these systems to your firm&rsquo;s data, tool stack, and
-          steward the deployment.
-        </Text>
-      </GridCol>
-      {/* Reserved for the FDE illustration. */}
-      <GridCol span={16} h="374px" />
-    </Section>
+    {/* --- Solution + About the FDE service ------------------------------ */}
+    <SolutionSection />
 
     {/* --- Use cases ------------------------------------------------------ */}
     <Section grid bg="site.bg.surface">
