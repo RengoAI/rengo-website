@@ -27,6 +27,9 @@ export const ComplianceCard: React.FC<ComplianceCardProps> = ({
     alignItems="flex-start"
     justifyContent="flex-end"
     h="full"
+    // Holds room for the badge once the tiles stack and lose the group's
+    // fixed height.
+    minH={{ base: "160px", md: "200px" }}
     p="20px"
     {...rest}
   >
@@ -54,7 +57,7 @@ export const ComplianceCard: React.FC<ComplianceCardProps> = ({
       <Text
         textStyle="label"
         fontWeight={300}
-        color="site.fg.onDarkMuted"
+        color="site.fg.onDarkSubtle"
         maxW="215px"
       >
         {description}
@@ -64,9 +67,9 @@ export const ComplianceCard: React.FC<ComplianceCardProps> = ({
 );
 
 /**
- * The security band's tiles as one dashed container: a frame around the
- * whole group, split into four-column tiles by single shared dividers, with
- * no gutters between them.
+ * The security band's tiles, each hung off a dotted rule on its left edge —
+ * like the metric cards — rather than framed. Four across on desktop, two by
+ * two on tablet, stacked on mobile.
  */
 export type ComplianceCardGroupProps = GridProps & {
   items: ComplianceCardProps[];
@@ -76,18 +79,12 @@ export const ComplianceCardGroup: React.FC<ComplianceCardGroupProps> = ({
   items,
   ...rest
 }) => (
-  <Grid
-    gap={0}
-    borderWidth="1px"
-    borderStyle="dotted"
-    borderColor="site.border.onDark"
-    {...rest}
-  >
-    {items.map((item, i) => (
+  <Grid rowGap={{ base: "24px", lg: "gridGutter" }} {...rest}>
+    {items.map((item) => (
       <GridCol
         key={item.title}
-        span={4}
-        borderLeftWidth={i === 0 ? 0 : "1px"}
+        span={{ base: 16, md: 8, lg: 4 }}
+        borderLeftWidth="1px"
         borderLeftStyle="dotted"
         borderLeftColor="site.border.onDark"
       >

@@ -254,6 +254,7 @@ export const colors = defineTokens.colors({
     100: { value: "#FAFAFA" }, // nav + section surface ← brand (Supporting Neutral)
     200: { value: "#F6F6F6" }, // page
     300: { value: "#F5F5F6" }, // inset chip ← brand (gray #F5F5F5)
+    350: { value: "#F1F1F2" }, // testimonial cards — halfway from 300 to 400
     400: { value: "#EDEDEE" },
     500: { value: "#D5D5D5" }, // hairline border
   },
@@ -306,7 +307,9 @@ export const colors = defineTokens.colors({
   sky: { value: "#B0C7EB" },
 
   /** Maroon — the single warm accent. Flat, and sparing by design. */
-  crimson: { value: "#7F364D" },
+  // One ramp step (+12 lightness, same hue and saturation) above the
+  // original #7F364D.
+  crimson: { value: "#AA4867" },
 
   // Marketing site palette (Figma: Rengo Marketing Site)
   indigo: {

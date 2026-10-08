@@ -4,12 +4,25 @@ import { ArrowLink } from "@/components/site/arrow-link";
 import { ComplianceCardGroup } from "@/components/site/compliance-card";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
-import { MetricCard, TestimonialCard } from "@/components/site/split-card";
+import { SiteOutro } from "@/components/site/site-outro";
+import {
+  MetricCard,
+  TestimonialCard,
+  type TestimonialWash,
+  WASH_GREY,
+} from "@/components/site/split-card";
 import {
   UseCaseAccordion,
   type UseCase,
 } from "@/components/site/use-case-accordion";
-import { Box, Image, Text } from "@chakra-ui/react";
+import {
+  Box,
+  type BoxProps,
+  Image,
+  Text,
+  useBreakpointValue,
+} from "@chakra-ui/react";
+import { ArrowUpFromDot } from "lucide-react";
 import React from "react";
 
 const ART = "/img/rebrand/";
@@ -51,7 +64,9 @@ const METRICS = [
     index: "4",
     value: "26 % time saved",
     caption: "per LP reporting cycle",
-    icon: <Image src={`${ART}arrow-up-from-dot.svg`} alt="" boxSize="20px" />,
+    // Lucide's own glyph rather than the exported SVG, so it takes the
+    // card's text colour.
+    icon: <ArrowUpFromDot size={20} strokeWidth={1.2} aria-hidden />,
   },
 ];
 
@@ -75,6 +90,14 @@ const TESTIMONIALS = [
     attribution: "CFO at $1.5 billion real estate fund",
   },
 ];
+
+/**
+ * The metrics band is a soft light-grey gradient: #F2F2F2 at the top, easing
+ * into the page surface at the bottom so it melts into the testimonials.
+ */
+const METRICS_WASH = `linear-gradient(180deg, ${WASH_GREY} 0%, var(--rengo-colors-site-bg-surface) 100%)`;
+
+const TESTIMONIAL_WASH_ORDER: TestimonialWash[] = ["plain", "mid", "deep"];
 
 const COMPLIANCE = [
   {
@@ -181,6 +204,145 @@ const scrollRevealProps = (rise: number) => ({
   },
 });
 
+/** The three layer renders, absolutely placed in a stack-sized box. */
+const SolutionLayers: React.FC<{
+  /** Collects each layer for the scroll animation; omit for a static stack. */
+  layerRefs?: React.MutableRefObject<(HTMLImageElement | null)[]>;
+}> = ({ layerRefs }) =>
+  SOLUTION_LAYERS.map(({ src, top, zIndex }, i) => (
+    <Image
+      key={src}
+      ref={(node) => {
+        if (layerRefs) layerRefs.current[i] = node;
+      }}
+      src={`${ART}${src}`}
+      alt=""
+      position="absolute"
+      left={0}
+      top={top}
+      w="full"
+      h="auto"
+      maxW="none"
+      zIndex={zIndex}
+      {...(layerRefs && scrollRevealProps(LAYER_RISE_PX))}
+    />
+  ));
+
+/** A label and its dotted rule, at a % of the diagram's height. */
+const SolutionAnnotation: React.FC<{
+  label: string;
+  top: number;
+  /** The rule always ends at the same x, so this sets the whole width. */
+  left: BoxProps["left"];
+  w: BoxProps["w"];
+  labelRef?: React.Ref<HTMLDivElement>;
+  reveal?: boolean;
+}> = ({ label, top, left, w, labelRef, reveal = false }) => (
+  <Box
+    ref={labelRef}
+    position="absolute"
+    left={left}
+    w={w}
+    top={`${top}%`}
+    display="flex"
+    alignItems="center"
+    gap="8px"
+    {...(reveal && scrollRevealProps(LABEL_RISE_PX))}
+  >
+    <Text
+      textStyle="caption"
+      fontFamily="display"
+      fontVariantCaps="all-small-caps"
+      color="site.fg.onDarkSubtle"
+      whiteSpace="nowrap"
+    >
+      {label}
+    </Text>
+    <Box
+      flex="1"
+      borderTopWidth="1px"
+      borderTopStyle="dotted"
+      borderTopColor="site.border.dashedOnDark"
+    />
+  </Box>
+);
+
+/**
+ * The diagram below `lg`: the finished stack, fully built and in normal flow.
+ * Tablet narrows it and pushes it right so the annotations have room on its
+ * left; mobile drops the annotations and gives the stack the full width.
+ */
+const StaticSolutionDiagram: React.FC = () => (
+  <Box position="relative">
+    <Box
+      position="relative"
+      ml="auto"
+      w={{ base: "full", md: "70%" }}
+      aspectRatio={1 / SOLUTION_STACK_ASPECT}
+      isolation="isolate"
+      aria-hidden
+    >
+      <SolutionLayers />
+    </Box>
+    <Box display={{ base: "none", md: "block" }}>
+      {DIAGRAM_ANNOTATIONS.map(([label, top]) => (
+        <SolutionAnnotation
+          key={label}
+          label={label}
+          top={top}
+          left="0"
+          w="44%"
+        />
+      ))}
+    </Box>
+  </Box>
+);
+
+/**
+ * The logo strip, drifting slowly right to left on a loop. Two copies of the
+ * strip sit end to end and the track slides by one copy's width, so the
+ * second lands exactly where the first began. The ends fade out, so logos
+ * ease in on the right and out on the left rather than being cut off.
+ */
+const LogoMarquee: React.FC = () => (
+  <Box
+    w="full"
+    overflow="hidden"
+    css={{
+      maskImage:
+        "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+    }}
+    // The blend sits here rather than on the images: the track's transform
+    // would isolate them, and they'd blend against nothing and show their
+    // black. The logos are white; at this opacity plus-lighter lands them on
+    // roughly soot.500, the same grey as the label.
+    mixBlendMode="plus-lighter"
+    opacity={0.32}
+  >
+    <Box
+      display="flex"
+      w="max-content"
+      animation="marquee 40s linear infinite"
+      css={{
+        "@media (prefers-reduced-motion: reduce)": { animation: "none" },
+      }}
+    >
+      {[0, 1].map((copy) => (
+        <Image
+          key={copy}
+          src={`${ART}logos-strip.png`}
+          alt={copy === 0 ? "Logos of institutions the team has worked at" : ""}
+          aria-hidden={copy === 1 || undefined}
+          h={{ base: "40px", lg: "74px" }}
+          w="auto"
+          maxW="none"
+          flexShrink={0}
+        />
+      ))}
+    </Box>
+  </Box>
+);
+
 /** The layered solution graphic and its annotations, driven by scroll. */
 const SolutionDiagram: React.FC<{
   /** The cell the pinned copy travels in; the build-up ends as it releases. */
@@ -257,69 +419,83 @@ const SolutionDiagram: React.FC<{
         isolation="isolate"
         aria-hidden
       >
-        {SOLUTION_LAYERS.map(({ src, top, zIndex }, i) => (
-          <Image
-            key={src}
-            ref={(node) => {
-              layerRefs.current[i] = node;
-            }}
-            src={`${ART}${src}`}
-            alt=""
-            position="absolute"
-            left={0}
-            top={top}
-            w="full"
-            h="auto"
-            maxW="none"
-            zIndex={zIndex}
-            {...scrollRevealProps(LAYER_RISE_PX)}
-          />
-        ))}
+        <SolutionLayers layerRefs={layerRefs} />
       </Box>
       {DIAGRAM_ANNOTATIONS.map(([label, top], i) => (
-        <Box
+        <SolutionAnnotation
           key={label}
-          ref={(node: HTMLDivElement | null) => {
+          label={label}
+          top={top}
+          left="130px"
+          w="256px"
+          reveal
+          labelRef={(node) => {
             labelRefs.current[i] = node;
           }}
-          position="absolute"
-          left="130px"
-          // Every rule ends at the same x, so a shorter label gets a
-          // longer rule.
-          w="256px"
-          top={`${top}%`}
-          display="flex"
-          alignItems="center"
-          gap="8px"
-          {...scrollRevealProps(LABEL_RISE_PX)}
-        >
-          <Text
-            textStyle="caption"
-            fontFamily="display"
-            fontVariantCaps="all-small-caps"
-            color="site.fg.onDarkSubtle"
-            whiteSpace="nowrap"
-          >
-            {label}
-          </Text>
-          <Box
-            flex="1"
-            borderTopWidth="1px"
-            borderTopStyle="dotted"
-            borderTopColor="site.border.dashedOnDark"
-          />
-        </Box>
+        />
       ))}
     </Box>
   );
 };
+
+const SolutionCopy: React.FC = () => (
+  <>
+    <Text textStyle="h4" fontWeight={300} color="site.fg.onDark">
+      To solve this, we build an agentic and unified data foundation.
+    </Text>
+    <Text textStyle="body.sm" fontWeight={300} color="site.fg.onDarkSubtle">
+      We connect your source systems, structure them into permission-ed
+      ontology, and build applications and agents for your work.
+    </Text>
+  </>
+);
+
+const FdeCopy: React.FC = () => (
+  <>
+    <Text textStyle="h4" fontWeight={300} color="site.fg.onDark" maxW="340px">
+      We manage your data from
+      <Box as="span" color="site.accent">
+        {" "}
+        strategy → deployment
+      </Box>
+    </Text>
+    <Text
+      textStyle="body.sm"
+      fontWeight={300}
+      color="site.fg.onDarkSubtle"
+      maxW="330px"
+    >
+      We bring elite engineering and operate in a forward deployment model to
+      tailor these systems to your firm&rsquo;s data, tool stack, and steward
+      the deployment.
+    </Text>
+    {/* 24px on top of the column's 16px gap: 40px below the copy. */}
+    <ArrowLink
+      href="/solutions/applied-ai"
+      mt="24px"
+      color="site.fg.onDark"
+      fontWeight={300}
+      gap="12px"
+    >
+      Learn more
+    </ArrowLink>
+  </>
+);
+
+/** Shared by the copy columns: a left-aligned stack 16px apart. */
+const copyColumnProps = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "flex-start",
+  gap: "16px",
+} as const;
 
 /**
  * The solution diagram and the FDE copy share one dark band. The solution copy
  * pins while the layered stack scrolls up and builds; the stack then pins
  * while the solution copy moves on, until the FDE copy has come up beside it.
  */
-const SolutionSection: React.FC = () => {
+const ScrollingSolutionSection: React.FC = () => {
   const copyTrackRef = React.useRef<HTMLDivElement>(null);
 
   return (
@@ -337,26 +513,13 @@ const SolutionSection: React.FC = () => {
             centre while the diagram scrolls up and builds. */}
         <Box ref={copyTrackRef} h="full">
           <Box
+            {...copyColumnProps}
             position="sticky"
             top={0}
             h="100vh"
-            display="flex"
-            flexDirection="column"
-            alignItems="flex-start"
             justifyContent="center"
-            gap="16px"
           >
-            <Text textStyle="h4" fontWeight={300} color="site.fg.onDark">
-              To solve this, we build an agentic and unified data foundation.
-            </Text>
-            <Text
-              textStyle="body.sm"
-              fontWeight={300}
-              color="site.fg.onDarkSubtle"
-            >
-              We connect your source systems, structure them into permission-ed
-              ontology, and build applications and agents for your work.
-            </Text>
+            <SolutionCopy />
           </Box>
         </Box>
       </GridCol>
@@ -367,50 +530,39 @@ const SolutionSection: React.FC = () => {
       <GridCol
         span={4}
         gridRow={2}
-        display="flex"
-        flexDirection="column"
-        alignItems="flex-start"
-        gap="16px"
+        {...copyColumnProps}
         pt="160px"
         // Extra room below keeps the stack pinned while the FDE copy rises
         // further up the viewport.
         pb="274px"
       >
-        <Text
-          textStyle="h4"
-          fontWeight={300}
-          color="site.fg.onDark"
-          maxW="340px"
-        >
-          We manage your systems from
-          <Box as="span" color="site.accent">
-            {" "}
-            strategy → deployment
-          </Box>
-        </Text>
-        <Text
-          textStyle="body.sm"
-          fontWeight={300}
-          color="site.fg.onDarkSubtle"
-          maxW="330px"
-        >
-          We bring elite engineering and operate in a forward deployment model
-          to tailor these systems to your firm&rsquo;s data, tool stack, and
-          steward the deployment.
-        </Text>
-        {/* 24px on top of the column's 16px gap: 40px below the copy. */}
-        <ArrowLink
-          href="#"
-          mt="24px"
-          color="site.fg.onDark"
-          fontWeight={300}
-          gap="12px"
-        >
-          Learn more
-        </ArrowLink>
+        <FdeCopy />
       </GridCol>
     </Section>
   );
+};
+
+/**
+ * Below `lg` there's no room for the copy and the stack side by side, so the
+ * band simply stacks: solution copy, the built diagram, then the FDE copy.
+ */
+const StackedSolutionSection: React.FC = () => (
+  <Section grid rhythm="tight" bg="site.bg.dark" gridProps={{ rowGap: "48px" }}>
+    <GridCol span={{ base: 16, md: 10 }} {...copyColumnProps}>
+      <SolutionCopy />
+    </GridCol>
+    <GridCol span={16}>
+      <StaticSolutionDiagram />
+    </GridCol>
+    <GridCol span={{ base: 16, md: 10 }} {...copyColumnProps}>
+      <FdeCopy />
+    </GridCol>
+  </Section>
+);
+
+const SolutionSection: React.FC = () => {
+  const isDesktop = useBreakpointValue({ base: false, lg: true });
+  return isDesktop ? <ScrollingSolutionSection /> : <StackedSolutionSection />;
 };
 
 export const LandingV3Page: React.FC = () => (
@@ -421,11 +573,16 @@ export const LandingV3Page: React.FC = () => (
     <Box
       as="section"
       position="relative"
-      h="916px"
+      h={{ base: "560px", md: "760px", lg: "916px" }}
       bg="site.bg.surface"
       overflow="hidden"
     >
-      <Section rhythm="none" position="relative" zIndex={1} pt="94px">
+      <Section
+        rhythm="none"
+        position="relative"
+        zIndex={1}
+        pt={{ base: "64px", lg: "94px" }}
+      >
         <Grid>
           <GridCol
             span={16}
@@ -487,18 +644,18 @@ export const LandingV3Page: React.FC = () => (
 
     {/* --- The problem & vision ------------------------------------------ */}
     {/* Held open to the design's 661px band; the copy only fills the top. */}
-    <Section grid bg="site.bg.tintSubtle" minH="661px">
-      <GridCol span={12}>
-        <Text textStyle="h5" color="site.fg.strong" maxW="785px">
+    <Section grid bg="site.bg.tintSubtle" minH={{ lg: "661px" }}>
+      <GridCol span={{ base: 16, lg: 12 }}>
+        <Text textStyle="h4" color="site.fg.strong" maxW="800px">
           Firms have spent decades making the numbers in their databases
-          reliable, connect their tools, and standardize workflows. But much of
-          what a firm actually knows{" "}
+          reliable, connecting their tools, and standardizing workflows. But
+          much of what a firm actually knows{" "}
           <Box as="span" color="site.accent">
             never reaches a database.
           </Box>
         </Text>
       </GridCol>
-      <GridCol span={4}>
+      <GridCol span={{ base: 16, md: 10, lg: 4 }} pt={{ base: "16px", lg: 0 }}>
         <Text textStyle="body.sm" color="site.fg">
           Meeting conversations, the memos in a shared drive, the deal terms
           hidden in emails - never reaches a database.
@@ -527,9 +684,13 @@ export const LandingV3Page: React.FC = () => (
 
     {/* --- Use cases ------------------------------------------------------ */}
     <Section grid bg="site.bg.surface">
-      <GridCol span={16} pb="40px">
-        <Text textStyle="h3" color="site.fg.strong" maxW="320px">
-          Agentic workflows that we unlock for you
+      <GridCol span={16} pb="60px">
+        <Text
+          textStyle="h3"
+          color="site.fg.strong"
+          maxW={{ base: "160px", md: "280px" }}
+        >
+          Unlock agent driven workflows
         </Text>
       </GridCol>
       <GridCol span={16}>
@@ -538,195 +699,100 @@ export const LandingV3Page: React.FC = () => (
     </Section>
 
     {/* --- How we perform -------------------------------------------------- */}
-    <Section grid rhythm="tight" bg="site.bg.dark">
+    <Section grid rhythm="tight" bg={WASH_GREY} bgImage={METRICS_WASH}>
       <GridCol
         span={16}
         display="flex"
         flexDirection="column"
         alignItems="flex-start"
         gap="20px"
+        pb="40px"
       >
-        {/* Light rather than Regular — on the dark bands the heading sits at
-            reversed contrast, where a Regular reads a step heavier than the
-            same weight does on a light surface. */}
         <Text
           textStyle="h3"
-          fontWeight={300}
-          color="site.fg.onDark"
-          maxW="320px"
+          color="site.fg.strong"
+          maxW={{ base: "160px", md: "360px" }}
         >
           How our system performs today
         </Text>
-        <Text
-          textStyle="label"
-          fontWeight={300}
-          color="site.fg.onDarkSubtle"
-          maxW="224px"
-        >
+        <Text textStyle="label" color="soot.600" maxW="280px">
           *Comparison between workflows using our system vs traditional tool
           stack.
         </Text>
       </GridCol>
       {/* Deliberately empty: the cards start a quarter of the way in. */}
-      <GridCol span={4} />
+      <GridCol span={4} display={{ base: "none", lg: "block" }} />
+      {/* Two by two on mobile, four across from tablet up. */}
       {METRICS.map((metric) => (
-        <GridCol key={metric.index} span={3}>
-          <MetricCard {...metric} />
+        <GridCol
+          key={metric.index}
+          span={{ base: 8, md: 4, lg: 3 }}
+          pt={{ base: "24px", lg: 0 }}
+        >
+          <MetricCard
+            {...metric}
+            h={{ base: "240px", md: "320px", lg: "472px" }}
+          />
         </GridCol>
       ))}
     </Section>
 
     {/* --- Testimonials ----------------------------------------------------- */}
-    <Section grid bg="site.bg.tint">
+    <Section grid bg="site.bg.raised">
       <GridCol span={16} pb="40px">
         <Box display="flex" flexDirection="column" gap="8px">
-          <Text textStyle="h3" color="site.fg.strong" maxW="296px">
+          <Text
+            textStyle="h3"
+            color="site.fg.strong"
+            maxW={{ base: "160px", md: "296px" }}
+          >
             Our customers in their own words
-          </Text>
-          <Text textStyle="label" color="site.fg.subtle" maxW="224px">
-            *Comparison between workflows using our system vs traditional tool
-            stack.
           </Text>
         </Box>
       </GridCol>
       {/* Deliberately empty: the row of quotes starts a third of the way in. */}
-      <GridCol span={4} />
-      {TESTIMONIALS.map((testimonial) => (
-        <GridCol key={testimonial.attribution + testimonial.quote} span={4}>
-          <TestimonialCard {...testimonial} />
+      <GridCol span={4} display={{ base: "none", lg: "block" }} />
+      {/* Stacked below `lg`; three across doesn't fit until then. */}
+      {TESTIMONIALS.map((testimonial, i) => (
+        <GridCol
+          key={testimonial.attribution + testimonial.quote}
+          span={{ base: 16, md: 12, lg: 4 }}
+          pb={{ base: "24px", lg: 0 }}
+        >
+          {/* Plain grey first, bluest last, so the row warms into the blue. */}
+          <TestimonialCard {...testimonial} wash={TESTIMONIAL_WASH_ORDER[i]} />
         </GridCol>
       ))}
     </Section>
 
     {/* --- Security --------------------------------------------------------- */}
     <Section bg="site.bg.dark">
-      <Box pb="60px">
+      <Box pb={{ base: "40px", lg: "60px" }}>
         <Text
           textStyle="h3"
           fontWeight={300}
           color="site.fg.onDark"
-          maxW="375px"
+          maxW={{ base: "160px", md: "420px" }}
         >
           We are compliant with rigorous security standards
         </Text>
       </Box>
-      <ComplianceCardGroup items={COMPLIANCE} h="240px" />
+      <ComplianceCardGroup items={COMPLIANCE} h={{ lg: "240px" }} />
     </Section>
 
     {/* --- Logos ------------------------------------------------------------ */}
     <Section grid rhythm="compact" bg="site.bg.dark">
-      <GridCol span={3} display="flex" alignItems="center">
+      <GridCol span={{ base: 16, lg: 3 }} display="flex" alignItems="center">
         <Text textStyle="label" fontWeight={300} color="site.fg.onDarkFaint">
           Bring industry experience from
         </Text>
       </GridCol>
-      <GridCol span={13} display="flex" alignItems="center">
-        <Image
-          src={`${ART}logos-strip.png`}
-          alt="Logos of institutions the team has worked at"
-          w="full"
-          h="74px"
-          objectFit="contain"
-          mixBlendMode="plus-lighter"
-          // The logos are white; at this opacity plus-lighter lands them on
-          // roughly soot.500, the same grey as the label.
-          opacity={0.32}
-        />
+      <GridCol span={{ base: 16, lg: 13 }} display="flex" alignItems="center">
+        <LogoMarquee />
       </GridCol>
     </Section>
 
-    {/* --- Outro ------------------------------------------------------------ */}
-    <Box
-      as="section"
-      position="relative"
-      bg="site.bg.tint"
-      overflow="hidden"
-      aria-labelledby="outro-heading"
-    >
-      {/*
-        In Figma this hangs off the grid column rather than the band, so its
-        -50/-99 offsets are relative to the 40px/100px inset — which lands it
-        just outside the left edge and flush with the top. It runs to the right
-        edge at any width, never narrower than the design's 1443px; height
-        follows the image's aspect ratio and the band clips the overflow.
-      */}
-      <Image
-        src={`${ART}hero-mesh.png`}
-        alt=""
-        position="absolute"
-        left="-10px"
-        top="1px"
-        w="calc(100% + 10px)"
-        minW="1443px"
-        h="auto"
-        maxW="none"
-        mixBlendMode="hard-light"
-        pointerEvents="none"
-        aria-hidden
-      />
-      <Section rhythm="none" position="relative" zIndex={1} py="188px">
-        <Grid>
-          <GridCol
-            span={16}
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            gap="60px"
-          >
-            <Box
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-              gap="20px"
-              textAlign="center"
-            >
-              <Text
-                id="outro-heading"
-                textStyle="d1"
-                color="site.fg.strong"
-                maxW="496px"
-              >
-                Ready to make your data{" "}
-                <Box as="span" color="site.accent">
-                  your alpha?
-                </Box>
-              </Text>
-              <Text textStyle="body.sm" color="site.fg" maxW="372px">
-                Your workflows are complex. Managing the data behind them
-                doesn&rsquo;t have to be. We are here to help.
-              </Text>
-            </Box>
-            <Box
-              as="button"
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-              w="206px"
-              h="49px"
-              px="12px"
-              py="6px"
-              borderRadius="4px"
-              bg="site.bg.darkRaised"
-              cursor="pointer"
-              transition="opacity 150ms ease"
-              _hover={{ opacity: 0.88 }}
-            >
-              <ArrowLink
-                w="full"
-                justifyContent="space-between"
-                fontSize="1.25rem"
-                fontWeight={300}
-                lineHeight="21px"
-                letterSpacing="0"
-                color="canvas.50"
-              >
-                Get in touch
-              </ArrowLink>
-            </Box>
-          </GridCol>
-        </Grid>
-      </Section>
-    </Box>
+    <SiteOutro />
 
     <SiteFooter />
   </Box>

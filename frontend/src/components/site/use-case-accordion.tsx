@@ -15,13 +15,32 @@ export type UseCase = {
 /**
  * The use-case list. Every row is the same three-part grid — label (5),
  * title (10), art — and opening a row simply narrows the title column to 7
- * to make room for the 4-column art rather than changing the layout.
+ * to make room for the 4-column art rather than changing the layout. Below
+ * `lg` the three parts stack instead, label over title over art.
  *
  * Rows are separated by a dashed rule on their top edge, so the list reads as
  * one ruled block rather than as a stack of separate cards.
  */
-export const UseCaseAccordion: React.FC<{ items: UseCase[] }> = ({ items }) => {
-  const [openIndex, setOpenIndex] = React.useState(0);
+export const UseCaseAccordion: React.FC<{
+  items: UseCase[];
+  /**
+   * Start with every row open, and let each row toggle on its own. By default
+   * only the first row is open and opening another closes it.
+   */
+  defaultAllOpen?: boolean;
+}> = ({ items, defaultAllOpen = false }) => {
+  const [openIndices, setOpenIndices] = React.useState<ReadonlySet<number>>(
+    () => new Set(defaultAllOpen ? items.map((_, i) => i) : [0]),
+  );
+
+  const toggle = (i: number) =>
+    setOpenIndices((prev) => {
+      if (!defaultAllOpen) return new Set([i]);
+      const next = new Set(prev);
+      if (next.has(i)) next.delete(i);
+      else next.add(i);
+      return next;
+    });
 
   return (
     <Box
@@ -33,26 +52,27 @@ export const UseCaseAccordion: React.FC<{ items: UseCase[] }> = ({ items }) => {
       overflow="clip"
     >
       {items.map((item, i) => {
-        const isOpen = i === openIndex;
+        const isOpen = openIndices.has(i);
         return (
           <Grid
             key={item.title}
             as="button"
-            onClick={() => setOpenIndex(i)}
+            onClick={() => toggle(i)}
             aria-expanded={isOpen}
             textAlign="left"
+            rowGap="12px"
             py="20px"
             borderTopWidth="1px"
             borderTopStyle="dotted"
             borderTopColor="site.border.dashed"
             cursor="pointer"
             transition="background 150ms ease"
-            _hover={{ bg: "blackAlpha.50" }}
+            _hover={{ bg: "site.bg.tintSubtle" }}
           >
-            <GridCol span={5}>
+            <GridCol span={{ base: 16, lg: 5 }}>
               <Text
                 textStyle="label"
-                fontFamily="display"
+                fontWeight={300}
                 letterSpacing="0"
                 textTransform="capitalize"
                 color="site.fg.muted"
@@ -63,16 +83,18 @@ export const UseCaseAccordion: React.FC<{ items: UseCase[] }> = ({ items }) => {
             </GridCol>
 
             <GridCol
-              span={isOpen && item.art ? 7 : 10}
+              span={{ base: 16, md: 12, lg: isOpen && item.art ? 7 : 10 }}
               display="flex"
               flexDirection="column"
-              gap="20px"
+              gap="10px"
             >
-              <Text textStyle="h5" color="site.fg" w="full">
+              <Text textStyle="h6" color="site.fg" w="full">
                 {item.title}
               </Text>
               {isOpen && item.body && (
-                <Text textStyle="body.sm" color="site.fg" w="full">
+                // A step lighter than body copy (soot.700), so the description
+                // sits back from the title above it.
+                <Text textStyle="body.sm" color="soot.600" w="full">
                   {item.body}
                 </Text>
               )}
@@ -80,11 +102,12 @@ export const UseCaseAccordion: React.FC<{ items: UseCase[] }> = ({ items }) => {
 
             {isOpen && item.art && (
               <GridCol
-                span={4}
+                span={{ base: 16, lg: 4 }}
                 display="flex"
                 flexDirection="column"
-                alignItems="flex-end"
-                h="290px"
+                alignItems={{ base: "flex-start", lg: "flex-end" }}
+                h={{ base: "auto", lg: "290px" }}
+                pt={{ base: "8px", lg: 0 }}
               >
                 <DataMeshDiagram />
               </GridCol>

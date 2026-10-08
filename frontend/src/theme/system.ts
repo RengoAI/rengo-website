@@ -1,6 +1,6 @@
 import { colors } from "@/theme/tokens/colors";
 import { fonts } from "@/theme/tokens/fonts";
-import { layoutSizes, layoutSpacing } from "@/theme/tokens/layout";
+import { layoutSizes, layoutSpacing, layoutVars } from "@/theme/tokens/layout";
 import { shadows } from "@/theme/tokens/shadows";
 import {
   createSystem,
@@ -19,6 +19,8 @@ const config = defineConfig({
   cssVarsPrefix: "rengo",
   cssVarsRoot: ":where(html, .rengo-theme)",
   globalCss: {
+    // Responsive section gutters, read by the `gutter*` spacing tokens.
+    ...layoutVars,
     // Global typography settings
     "html, body": {
       fontVariantNumeric: "lining-nums tabular-nums",
@@ -127,6 +129,13 @@ const config = defineConfig({
     },
   },
   theme: {
+    keyframes: {
+      /** One full loop of a doubled strip: slide left by one copy's width. */
+      marquee: {
+        from: { transform: "translateX(0)" },
+        to: { transform: "translateX(-50%)" },
+      },
+    },
     recipes,
     slotRecipes,
     textStyles,

@@ -18,19 +18,23 @@ export const solutionsRoutes: RouteObject = {
         return { Component: SolutionsPage };
       },
     },
-    ...SOLUTION_CAPABILITIES.map((c) => ({
-      id: `solutions-${c.slug}`,
-      path: c.slug,
-      handle: { pageTitle: c.title },
-      lazy: async () => {
-        const { CapabilityPage } = await import(
-          "@/features/solutions/capability-page"
-        );
-        return {
-          Component: () => <CapabilityPage capability={c} />,
-        };
-      },
-    })),
+    // Applied AI has moved to the rebrand page (see `appliedAiRoutes`), which
+    // sits outside AppRoot, so it is left out here.
+    ...SOLUTION_CAPABILITIES.filter((c) => c.slug !== "applied-ai").map(
+      (c) => ({
+        id: `solutions-${c.slug}`,
+        path: c.slug,
+        handle: { pageTitle: c.title },
+        lazy: async () => {
+          const { CapabilityPage } = await import(
+            "@/features/solutions/capability-page"
+          );
+          return {
+            Component: () => <CapabilityPage capability={c} />,
+          };
+        },
+      }),
+    ),
     /* Earlier URL shapes: two child pages that were each a bare hero, and the
        managed-operations section that has since been dropped. Redirect rather
        than 404 so existing and indexed links still land. */

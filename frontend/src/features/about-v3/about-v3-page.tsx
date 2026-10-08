@@ -37,11 +37,26 @@ const STORY = [
 
 /**
  * A founder row: portrait in columns 8–10, bio in 11–15. Both rows share one
- * grid, so they line up column for column.
+ * grid, so they line up column for column. Tablet moves the pair to the left
+ * edge; mobile stacks the bio under the portrait.
  */
-const FounderRow: React.FC<Founder> = ({ name, role, bio, photoSrc }) => (
+const FounderRow: React.FC<Founder & { isFirst: boolean }> = ({
+  name,
+  role,
+  bio,
+  photoSrc,
+  isFirst,
+}) => (
   <>
-    <GridCol span={3} start={8} display="flex" justifyContent="flex-end">
+    <GridCol
+      span={{ base: 16, md: 5, lg: 3 }}
+      start={{ base: "auto", lg: 8 }}
+      display="flex"
+      justifyContent={{ base: "flex-start", lg: "flex-end" }}
+      // Once stacked, the grid's row gap sits between portrait and bio too;
+      // this keeps the founders themselves further apart.
+      mt={{ base: isFirst ? 0 : "28px", md: 0 }}
+    >
       {/* Fixed at the design size — the source portraits are only ~200px.
           Pushed to the column's right edge so it sits a gutter from the bio. */}
       <Image
@@ -54,7 +69,7 @@ const FounderRow: React.FC<Founder> = ({ name, role, bio, photoSrc }) => (
       />
     </GridCol>
     <GridCol
-      span={5}
+      span={{ base: 16, md: 11, lg: 5 }}
       display="flex"
       flexDirection="column"
       alignItems="flex-start"
@@ -91,12 +106,14 @@ export const AboutV3Page: React.FC = () => (
       rides down past the portraits and lets go exactly where the story
       container below begins.
     */}
-    <Section rhythm="none" pt="80px">
+    <Section rhythm="none" pt={{ base: "48px", lg: "80px" }}>
       <Text
         as="h1"
         textStyle="h3"
         color="site.fg.strong"
-        position="sticky"
+        // Only pinned on desktop: on narrower screens the portraits scroll
+        // right under it, where it would sit on top of them.
+        position={{ base: "static", lg: "sticky" }}
         // Nav (52px) plus the band's 80px top inset — the title pins where it
         // already sits, rather than jumping up under the nav.
         top="132px"
@@ -107,16 +124,20 @@ export const AboutV3Page: React.FC = () => (
           _
         </Box>
       </Text>
-      <Grid rowGap="36px" mt="43px" pb="100px">
-        {FOUNDERS.map((founder) => (
-          <FounderRow key={founder.name} {...founder} />
+      <Grid
+        rowGap={{ base: "20px", md: "36px" }}
+        mt={{ base: "32px", lg: "43px" }}
+        pb={{ base: "64px", lg: "100px" }}
+      >
+        {FOUNDERS.map((founder, i) => (
+          <FounderRow key={founder.name} {...founder} isFirst={i === 0} />
         ))}
       </Grid>
     </Section>
 
     {/* --- Story ----------------------------------------------------------- */}
-    <Section grid rhythm="none" pt="160px" pb="160px">
-      <GridCol span={6}>
+    <Section grid rhythm="none" py={{ base: "80px", md: "120px", lg: "160px" }}>
+      <GridCol span={{ base: 16, md: 12, lg: 6 }}>
         <Box
           display="flex"
           flexDirection="column"

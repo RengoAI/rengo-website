@@ -41,6 +41,11 @@ const TYPE_SPECIMENS: {
     sample: "An agent-ready data foundation",
   },
   {
+    style: "h6",
+    label: "20 / -0.02em / 1.2",
+    sample: "Compare new deals without rebuilding context",
+  },
+  {
     style: "d1",
     label: "Serrif 60 / -0.04em / 1.0",
     sample: "Ready to make your data your alpha?",
@@ -85,7 +90,7 @@ const TYPE_SPECIMENS: {
 const STEPS = [100, 200, 300, 400, 500, 600, 700, 800];
 
 const RAMPS: { name: string; steps: (string | number)[]; note?: string }[] = [
-  { name: "canvas", steps: [0, 50, 100, 200, 300, 400, 500] },
+  { name: "canvas", steps: [0, 50, 100, 200, 300, 350, 400, 500] },
   { name: "rengo", steps: STEPS, note: "500 = Rengo blue" },
   { name: "silver", steps: STEPS, note: "200 = Silver" },
   { name: "soot", steps: STEPS, note: "700 = Soot Black, 800 = Soot" },
@@ -94,7 +99,7 @@ const RAMPS: { name: string; steps: (string | number)[]; note?: string }[] = [
 /** Brand colours used as themselves rather than as a scale. */
 const FLAT_COLORS: { token: string; name: string }[] = [
   { token: "sky", name: "sky — Sky #B0C7EB" },
-  { token: "crimson", name: "crimson — Maroon #7F364D" },
+  { token: "crimson", name: "crimson — Maroon #AA4867" },
 ];
 
 const SEMANTIC_GROUPS: { group: string; tokens: string[] }[] = [
@@ -187,7 +192,7 @@ export const StyleguidePage: React.FC = () => (
 
     {/* --- Typography -------------------------------------------------- */}
     <Section mb="100px">
-      <Heading note="Two scales at matching sizes: h1–h5 in Geist Regular for structural headings, d1–d5 in Serrif Light for the display voice. Serrif runs looser at every step — it carries more weight, so the same tracking would close its counters up.">
+      <Heading note="Two scales at matching sizes: h1–h6 in Geist Regular for structural headings, d1–d5 in Serrif Light for the display voice. Serrif runs looser at every step — it carries more weight, so the same tracking would close its counters up.">
         Type scale
       </Heading>
       <Box

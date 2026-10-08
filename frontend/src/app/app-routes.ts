@@ -40,7 +40,6 @@ export const rootRoute = route(
       {},
       {
         index: route("/", {}, {}),
-        appliedAi: route("/applied-ai", {}, {}),
         dataInfrastructure: route("/data-infrastructure", {}, {}),
         aiDataPlatformRedirect: route("/ai-data-platform", {}, {}),
         customAiApplicationsRedirect: route("/custom-ai-applications", {}, {}),
@@ -69,6 +68,12 @@ export const rootRoute = route(
         ),
       },
     ),
+    styleguide: route("/styleguide", {}, {}),
+    landingV3: route("/v3", {}, {}),
+    aboutV3: route("/v3/about", {}, {}),
+    appliedAi: route("/solutions/applied-ai", {}, {}),
+    platform: route("/solutions/platform", {}, {}),
+    heroLab: route("/v3/heroes", {}, {}),
     notFound: route("/*", {}, {}),
   },
 );
