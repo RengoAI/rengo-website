@@ -1,5 +1,6 @@
 import { SiteNav } from "@/components/site/site-nav";
 import { CoreHero } from "@/features/hero-lab/heroes/core-hero";
+import { GlyphBedHero } from "@/features/hero-lab/heroes/glyph-bed-hero";
 import { LayerHero } from "@/features/hero-lab/heroes/layer-hero";
 import { LedgerHero } from "@/features/hero-lab/heroes/ledger-hero";
 import { SpecimenHero } from "@/features/hero-lab/heroes/specimen-hero";
@@ -39,6 +40,20 @@ const SedimentHero: React.FC = () => (
  */
 const PlaneHero: React.FC = () => (
   <LayerHero
+    plane={{
+      cols: 72,
+      rows: 48,
+      bottomLeft: [0.02, 0.92],
+      bottomRight: [0.56, 0.85],
+      topLeft: [0.46, 0.12],
+    }}
+  />
+);
+
+/** Plane, set in dark letters and digits instead of light dots. */
+const LedgerPlaneHero: React.FC = () => (
+  <LayerHero
+    glyphs
     plane={{
       cols: 72,
       rows: 48,
@@ -188,6 +203,48 @@ const VARIANTS: Variant[] = [
     ],
     layout:
       "Copy as in Layer, Strata and Sediment: centred on columns 4–13 with the dark CTA below. The plane runs corner to corner behind it, from the bottom-left to the top-right, and the copy sits on the sheet near its centre.",
+  },
+  {
+    id: "8",
+    name: "Glyph",
+    reference:
+      "p5.js sketch — dots coalescing into a layer (07), set in characters",
+    Hero: LedgerPlaneHero,
+    source:
+      "Plane (07) with every dot replaced by a mono letter or digit (A–Z, 0–9) in the darker half of the palette: soot 500–700 and silver/Rengo 500–700, half greys and half blues, one swatch per glyph. Same flow field, timing, easing, stagger, plane and clearing. Glyphs carry no trails.",
+    concept: [
+      "The marks are literally the firm's raw material, characters, rather than abstract points. While they drift through the currents of day-to-day work they keep scrambling, unread and unstable; once a glyph settles into its slot on the plane it locks to one character.",
+      "The formed sheet reads as a dense field of records: structured, legible and fixed in place. The darker inks give the plane more weight against the light surface than Plane's pale dots. Click the hero (or press R) to run it again.",
+    ],
+    legend: [
+      ["Scrambling glyphs", "Unstructured knowledge in motion"],
+      ["Flow field", "The currents: email, meetings, drives"],
+      ["Locked glyphs", "Records fixed in the data layer"],
+      ["The plane", "The data layer as a surface, one slot per record"],
+    ],
+    layout:
+      "As Plane: copy centred on columns 4–13 with the dark CTA below, the sheet running corner to corner behind it, and glyphs under the copy held back so the type stays clean.",
+  },
+  {
+    id: "9",
+    name: "Glyph bed",
+    reference:
+      "p5.js sketch — dots coalescing into a layer (08 Glyph, settling as in 06 Sediment)",
+    Hero: GlyphBedHero,
+    source:
+      "Glyph (08) settling into Sediment's (06) bed instead of the plane: 1,800 dark mono characters, drawn only from the letters used in the hero copy (no digits), coalesce into twelve horizontal lines, 150 to a line, under the CTA. Lines are 11px apart rather than Sediment's 4px so the characters don't stack into a smear, and columns stay aligned so the bed reads as rows of type. Same flow field, palette and scramble-then-lock. The opening float is halved: start delays are half as spread (stagger 0.1) and a steeper ease-out brings the pull to half strength twice as soon, while every glyph still lands by 25s.",
+    concept: [
+      "The firm's raw material drifts down out of the currents of day-to-day work, scrambling as it goes, and settles line on line as a bed of fixed records the copy stands on.",
+      "Slots are handed out by where each glyph starts: x picks the column, and within a column the glyph that starts highest takes the top line. Click the hero (or press R) to run it again.",
+    ],
+    legend: [
+      ["Scrambling glyphs", "Unstructured knowledge in motion"],
+      ["Flow field", "The currents: email, meetings, drives"],
+      ["The bed", "The data layer, twelve lines of records"],
+      ["Locked glyphs", "Loose to trusted as each piece joins"],
+    ],
+    layout:
+      "Copy as in Layer and Sediment, centred on columns 4–13 with the dark CTA below. The top line forms 56px under the CTA and the bed runs 121px deep (twelve lines, 11px centre to centre).",
   },
 ];
 

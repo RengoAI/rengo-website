@@ -40,6 +40,12 @@ import React from "react";
  * that settle under the copy are held back to keep the text clean, and the
  * sheet itself fills in faintly as it forms.
  *
+ * `glyphs` swaps each dot for a mono letter or digit drawn from a darker
+ * palette (the deeper soot greys and silver/Rengo blues). A glyph keeps
+ * scrambling while it drifts and locks to one character once it settles,
+ * so the formed plane reads as a sheet of records rather than a dot grid.
+ * `charset` narrows the characters glyphs are drawn from.
+ *
  * Click the hero (or press R) to restart.
  */
 
@@ -100,6 +106,83 @@ const randomShade = () => {
  */
 const DRIFT_STRENGTH = 0.6;
 
+/**
+ * The glyph palette: the darker half of the same two families. Glyphs
+ * take one swatch each, unmixed, so every colour can be pre-rendered once
+ * into an atlas instead of setting a font and fill per glyph per frame.
+ */
+const DARK_GREYS = [INK.soot500, INK.soot600, INK.soot700];
+const DARK_BLUES = [
+  INK.silver500,
+  INK.silver600,
+  INK.silver700,
+  INK.rengo500,
+  INK.rengo600,
+  INK.rengo700,
+];
+const DARK_SWATCHES = [...DARK_GREYS, ...DARK_BLUES];
+const randomSwatch = () =>
+  Math.random() < 0.5
+    ? Math.floor(Math.random() * DARK_GREYS.length)
+    : DARK_GREYS.length + Math.floor(Math.random() * DARK_BLUES.length);
+
+const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+const GLYPH_SIZE = 9; // px, font size
+/** Narrowest glyph spacing along a line; fewer glyphs on narrow screens. */
+const GLYPH_MIN_PITCH = 9.5;
+const GLYPH_CELL = 12; // px, atlas cell (room for ascenders and descenders)
+const GLYPH_FONT = `400 ${GLYPH_SIZE}px "Geist Mono", "Space Mono", ui-monospace, monospace`;
+/** Glyph drift strength: lower than dots', as the darker inks carry more. */
+const GLYPH_DRIFT_STRENGTH = 0.4;
+/** Chance per 60fps frame that a drifting glyph changes character. */
+const SCRAMBLE = 0.08;
+
+/**
+ * Every glyph in every swatch, pre-rendered at device pixel ratio: one row
+ * per swatch, one cell per character.
+ */
+const buildAtlas = (charset: string) => {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const atlas = document.createElement("canvas");
+  atlas.width = Math.ceil(charset.length * GLYPH_CELL * dpr);
+  atlas.height = Math.ceil(DARK_SWATCHES.length * GLYPH_CELL * dpr);
+  const g = atlas.getContext("2d");
+  if (!g) return null;
+  g.scale(dpr, dpr);
+  g.font = GLYPH_FONT;
+  g.textAlign = "center";
+  g.textBaseline = "middle";
+  DARK_SWATCHES.forEach((c, row) => {
+    g.fillStyle = c;
+    [...charset].forEach((ch, col) => {
+      g.fillText(ch, (col + 0.5) * GLYPH_CELL, (row + 0.5) * GLYPH_CELL + 0.5);
+    });
+  });
+  return { canvas: atlas, dpr };
+};
+type Atlas = NonNullable<ReturnType<typeof buildAtlas>>;
+
+const drawGlyph = (
+  ctx: CanvasRenderingContext2D,
+  atlas: Atlas,
+  d: Dot,
+  x: number,
+  y: number,
+) => {
+  const s = GLYPH_CELL * atlas.dpr;
+  ctx.drawImage(
+    atlas.canvas,
+    d.glyph * s,
+    d.swatch * s,
+    s,
+    s,
+    x - GLYPH_CELL / 2,
+    y - GLYPH_CELL / 2,
+    GLYPH_CELL,
+    GLYPH_CELL,
+  );
+};
+
 type Dot = {
   x: number;
   y: number;
@@ -114,6 +197,9 @@ type Dot = {
   ty: number;
   /** This dot's light blue, [r, g, b]. */
   shade: number[];
+  /** Glyph mode: index into DARK_SWATCHES, and into the charset. */
+  swatch: number;
+  glyph: number;
   /** Last TRAIL_LEN positions as x,y pairs, a ring buffer at `head`. */
   trail: Float32Array;
   head: number;
@@ -139,6 +225,17 @@ const TRAIL_LEN = 14; // RETAIN^14 ≈ 3%, past which a trail point is invisible
  * settle at the end, so the layer still finishes at DURATION.
  */
 const easeOutCubic = (t: number) => 1 - (1 - t) ** 3;
+
+/**
+ * The ease-out exponent that makes the pull reach half strength `drift`
+ * times as soon as ease-out-cubic does. Shortens the opening float without
+ * moving the end: every dot still lands by DURATION, just with a longer
+ * gentle settle.
+ */
+const easeExponent = (drift: number) => {
+  const half = (1 - 0.5 ** (1 / 3)) * drift;
+  return Math.log(0.5) / Math.log(1 - half);
+};
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
@@ -228,6 +325,9 @@ const planePath = (w: number, h: number, plane: Plane) => {
  * plus a margin.
  */
 const UNDER_COPY = 0.15;
+/** Darker glyphs need holding back further, and wider, to keep the type clean. */
+const GLYPH_UNDER_COPY = 0.05;
+const GLYPH_CLEAR_RX = 440;
 const CLEAR_RX = 330;
 const CLEAR_MARGIN_Y = 44;
 /** The sheet's fill when fully formed — the screenshot's pale grey plane. */
@@ -245,6 +345,17 @@ export const LayerHero: React.FC<{
   shift?: boolean;
   /** Settle into a 2D plane instead of lines; overrides lines and dots. */
   plane?: Plane;
+  /** Draw dark letters and digits instead of light dots. */
+  glyphs?: boolean;
+  /** Glyph mode: the characters to draw from. Defaults to A–Z and 0–9. */
+  charset?: string;
+  /**
+   * Scales the opening float in the flow field: start delays and the time
+   * for the pull to take hold. 0.5 halves it; 1 is the sketch's timing.
+   */
+  drift?: number;
+  /** The body copy under the headline. */
+  description?: React.ReactNode;
 }> = ({
   lines = 1,
   lineGap = 0,
@@ -252,7 +363,12 @@ export const LayerHero: React.FC<{
   layerGap = LAYER_GAP,
   shift = false,
   plane,
+  glyphs = false,
+  charset = GLYPHS,
+  drift = 1,
+  description = DESCRIPTION,
 }) => {
+  const ease = easeExponent(drift);
   const count = plane ? plane.cols * plane.rows : dots;
   const place = (all: Dot[], w: number, h: number) =>
     plane
@@ -264,6 +380,7 @@ export const LayerHero: React.FC<{
     simplex: new SimplexNoise(7),
     start: 0,
     restart: true,
+    atlas: null as Atlas | null,
   });
   const reduced = React.useMemo(
     () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
@@ -273,6 +390,18 @@ export const LayerHero: React.FC<{
   const restart = React.useCallback(() => {
     sim.current.restart = true;
   }, []);
+
+  // The atlas bakes in the font, so rebuild it once Geist Mono has loaded.
+  React.useEffect(() => {
+    if (!glyphs) return;
+    let live = true;
+    document.fonts?.load(GLYPH_FONT).then(() => {
+      if (live) sim.current.atlas = buildAtlas(charset);
+    });
+    return () => {
+      live = false;
+    };
+  }, [glyphs, charset]);
 
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -286,15 +415,24 @@ export const LayerHero: React.FC<{
     const s = sim.current;
 
     if (s.restart) {
-      s.dots = Array.from({ length: count }, () => ({
+      // Glyph lines keep their characters legible: on a narrow hero, fewer
+      // to a line rather than packed closer.
+      const perLine = Math.ceil(count / lines);
+      const n =
+        glyphs && !plane
+          ? lines * Math.min(perLine, Math.floor(w / GLYPH_MIN_PITCH))
+          : count;
+      s.dots = Array.from({ length: n }, () => ({
         x: Math.random() * w,
         y: Math.random() * h,
         vx: 0,
         vy: 0,
-        delay: Math.random() * STAGGER,
+        delay: Math.random() * STAGGER * drift,
         tx: 0,
         ty: 0,
         shade: randomShade(),
+        swatch: randomSwatch(),
+        glyph: Math.floor(Math.random() * charset.length),
         trail: new Float32Array(TRAIL_LEN * 2),
         head: 0,
         count: 0,
@@ -307,6 +445,9 @@ export const LayerHero: React.FC<{
       place(s.dots, w, h);
       ctx.clearRect(0, 0, w, h);
     }
+
+    if (glyphs && !s.atlas) s.atlas = buildAtlas(charset);
+    const atlas = glyphs ? s.atlas : null;
 
     const c = copy.current;
     // With a plane, targets are absolute; with lines, they hang off layerY.
@@ -326,13 +467,14 @@ export const LayerHero: React.FC<{
         : null;
     const openness = (d: Dot) => {
       if (!clear) return 1;
-      const ex = (d.tx - clear.cx) / CLEAR_RX;
+      const ex = (d.tx - clear.cx) / (glyphs ? GLYPH_CLEAR_RX : CLEAR_RX);
       const ey = (d.ty - clear.cy) / clear.ry;
       const r = Math.sqrt(ex * ex + ey * ey);
       const t = Math.min(Math.max((r - 0.55) / 0.45, 0), 1);
       return t * t * (3 - 2 * t);
     };
-    const underCopy = (d: Dot) => lerp(UNDER_COPY, 1, openness(d));
+    const underCopy = (d: Dot) =>
+      lerp(glyphs ? GLYPH_UNDER_COPY : UNDER_COPY, 1, openness(d));
 
     // Reduced motion: skip the journey, show the formed layer.
     if (reduced) {
@@ -348,6 +490,10 @@ export const LayerHero: React.FC<{
       }
       for (const d of s.dots) {
         ctx.globalAlpha = underCopy(d);
+        if (atlas) {
+          drawGlyph(ctx, atlas, d, d.tx, layerY + d.ty);
+          continue;
+        }
         ctx.fillStyle = `rgb(${d.shade[0]},${d.shade[1]},${d.shade[2]})`;
         ctx.beginPath();
         ctx.arc(d.tx, layerY + d.ty, DOT_SIZE / 2, 0, Math.PI * 2);
@@ -381,7 +527,7 @@ export const LayerHero: React.FC<{
     for (const d of s.dots) {
       // Per-dot eased progress (staggered so they arrive gradually).
       let p = Math.min(Math.max((global - d.delay) / (1 - d.delay), 0), 1);
-      p = easeOutCubic(p);
+      p = 1 - (1 - p) ** ease;
 
       // Flow direction from 3D simplex noise (x, y, time).
       const n = s.simplex.noise3D(d.x * NOISE_SCALE, d.y * NOISE_SCALE, z);
@@ -408,6 +554,19 @@ export const LayerHero: React.FC<{
       if (p === 0) {
         if (d.y < 0) d.y += h;
         if (d.y > h) d.y -= h;
+      }
+
+      if (atlas) {
+        // Glyphs: strength as opacity over the ground, no trails — stacked
+        // characters smear into blots. Drifting glyphs scramble; settled
+        // ones lock.
+        if (p < 0.98 && Math.random() < SCRAMBLE * f) {
+          d.glyph = Math.floor(Math.random() * charset.length);
+        }
+        ctx.globalAlpha =
+          lerp(GLYPH_DRIFT_STRENGTH, 1, p) * lerp(1, underCopy(d), p);
+        drawGlyph(ctx, atlas, d, d.x, d.y);
+        continue;
       }
 
       // Dots come up to full strength as they join the layer — on a light
@@ -440,6 +599,7 @@ export const LayerHero: React.FC<{
       d.head = (d.head + 1) % TRAIL_LEN;
       d.count = Math.min(d.count + 1, TRAIL_LEN);
     }
+    ctx.globalAlpha = 1;
   });
 
   return (
@@ -497,7 +657,7 @@ export const LayerHero: React.FC<{
                 maxW="full"
                 mt="19px"
               >
-                {DESCRIPTION}
+                {description}
               </Text>
               <Box
                 mt="28px"

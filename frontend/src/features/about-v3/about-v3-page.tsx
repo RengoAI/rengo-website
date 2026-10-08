@@ -99,12 +99,11 @@ export const AboutV3Page: React.FC = () => (
   <Box bg="site.bg.page">
     <SiteNav />
 
-    {/* --- Team ------------------------------------------------------------ */}
     {/*
       The title is sticky, and a sticky element is held inside its parent. So
-      the parent here is the whole band, with no bottom padding: the title
-      rides down past the portraits and lets go exactly where the story
-      container below begins.
+      the parent here spans both the team and the story, with no bottom
+      padding: the title stays pinned for the whole page and lets go only
+      where the footer begins.
     */}
     <Section rhythm="none" pt={{ base: "48px", lg: "80px" }}>
       <Text
@@ -124,38 +123,45 @@ export const AboutV3Page: React.FC = () => (
           _
         </Box>
       </Text>
+
+      {/* --- Team ---------------------------------------------------------- */}
       <Grid
         rowGap={{ base: "20px", md: "36px" }}
-        mt={{ base: "32px", lg: "43px" }}
+        mt={{ base: "16px", lg: "22px" }}
         pb={{ base: "64px", lg: "100px" }}
       >
         {FOUNDERS.map((founder, i) => (
           <FounderRow key={founder.name} {...founder} isFirst={i === 0} />
         ))}
       </Grid>
-    </Section>
 
-    {/* --- Story ----------------------------------------------------------- */}
-    <Section grid rhythm="none" py={{ base: "80px", md: "120px", lg: "160px" }}>
-      <GridCol span={{ base: 16, md: 12, lg: 6 }}>
-        <Box
-          display="flex"
-          flexDirection="column"
-          gap="25px"
-          maxW="452px"
-          color="site.fg.strong"
+      {/* --- Story --------------------------------------------------------- */}
+      <Grid py={{ base: "80px", md: "120px", lg: "160px" }}>
+        {/* From column 8 on desktop, under the portraits: the pinned title
+            keeps the left columns, so nothing may scroll beneath it. */}
+        <GridCol
+          span={{ base: 16, md: 12, lg: 6 }}
+          start={{ base: "auto", lg: 8 }}
         >
-          {STORY.map((paragraph) => (
-            <Text
-              key={paragraph.slice(0, 24)}
-              textStyle="body.md"
-              fontSize="lg"
-            >
-              {paragraph}
-            </Text>
-          ))}
-        </Box>
-      </GridCol>
+          <Box
+            display="flex"
+            flexDirection="column"
+            gap="25px"
+            maxW="452px"
+            color="site.fg.strong"
+          >
+            {STORY.map((paragraph) => (
+              <Text
+                key={paragraph.slice(0, 24)}
+                textStyle="body.md"
+                fontSize="lg"
+              >
+                {paragraph}
+              </Text>
+            ))}
+          </Box>
+        </GridCol>
+      </Grid>
     </Section>
 
     <SiteFooter />

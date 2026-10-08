@@ -1,9 +1,10 @@
-import { Grid, GridCol } from "@/components/layout/grid";
+import { GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import { ArrowLink } from "@/components/site/arrow-link";
 import { ComplianceCardGroup } from "@/components/site/compliance-card";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
+import { GlyphBedHero } from "@/features/hero-lab/heroes/glyph-bed-hero";
 import { SiteOutro } from "@/components/site/site-outro";
 import {
   MetricCard,
@@ -26,6 +27,9 @@ import { ArrowUpFromDot } from "lucide-react";
 import React from "react";
 
 const ART = "/img/rebrand/";
+
+const HERO_DESCRIPTION =
+  "Rengo is the embedded partner that builds the data intelligence layer for AI systems to learn and act from your firm’s knowledge.";
 
 const USE_CASES: UseCase[] = [
   {
@@ -125,17 +129,17 @@ const COMPLIANCE = [
  * % of the diagram's height.
  */
 const DIAGRAM_ANNOTATIONS: [string, number][] = [
-  ["Applications", 14.8],
-  ["Agents", 41.8],
-  ["Data ontology", 68.6],
+  ["Applications", 15.1],
+  ["Agents", 42.6],
+  ["Data ontology", 70.6],
 ];
 
 // Source sizes (w, h in px) of the trimmed layer renders. Every layer renders
 // at the same width; each overlaps the top 25% of the one beneath it.
 const SOLUTION_LAYER_SIZES: [number, number][] = [
-  [1008, 642],
-  [1018, 629],
-  [1059, 733],
+  [1297, 782],
+  [1297, 782],
+  [1297, 782],
 ];
 const SOLUTION_LAYER_OVERLAP = 0.25;
 
@@ -184,7 +188,7 @@ const SOLUTION_SCROLL_ROOM = "70vh";
 // the section's bottom padding (80px), less 24px of breathing room top and
 // bottom. SOLUTION_GRAPHIC_SCALE enlarges it from there; above 1 the stack is
 // taller than the viewport and scrolls past the pinned copy.
-const SOLUTION_GRAPHIC_SCALE = 1.5;
+const SOLUTION_GRAPHIC_SCALE = 1.62;
 const SOLUTION_STACK_HEIGHT = `calc(${SOLUTION_GRAPHIC_SCALE} * (min(869px, 100vh - 140px) - 48px))`;
 const SOLUTION_STAGE_HEIGHT = `calc(${SOLUTION_STACK_HEIGHT} + 48px)`;
 
@@ -243,27 +247,37 @@ const SolutionAnnotation: React.FC<{
     position="absolute"
     left={left}
     w={w}
-    top={`${top}%`}
+    // Lifted 20px off its layer mark, so the bent tail points down onto it.
+    top={`calc(${top}% - 20px)`}
     display="flex"
     alignItems="center"
     gap="8px"
     {...(reveal && scrollRevealProps(LABEL_RISE_PX))}
   >
-    <Text
-      textStyle="caption"
-      fontFamily="display"
-      fontVariantCaps="all-small-caps"
-      color="site.fg.onDarkSubtle"
-      whiteSpace="nowrap"
-    >
+    <Text textStyle="label" color="site.fg.onDarkSubtle" whiteSpace="nowrap">
       {label}
     </Text>
     <Box
       flex="1"
+      position="relative"
       borderTopWidth="1px"
       borderTopStyle="dotted"
-      borderTopColor="site.border.dashedOnDark"
-    />
+      borderTopColor="soot.600"
+    >
+      {/* The rule's tail: bends 30° downward off its right end, pointing
+          into the layer below it. */}
+      <Box
+        position="absolute"
+        left="100%"
+        top="-1px"
+        w="32px"
+        borderTopWidth="1px"
+        borderTopStyle="dotted"
+        borderTopColor="soot.600"
+        transform="rotate(30deg)"
+        transformOrigin="0 0"
+      />
+    </Box>
   </Box>
 );
 
@@ -276,8 +290,9 @@ const StaticSolutionDiagram: React.FC = () => (
   <Box position="relative">
     <Box
       position="relative"
-      ml="auto"
-      w={{ base: "full", md: "70%" }}
+      mx={{ base: "auto", md: "0" }}
+      ml={{ md: "auto" }}
+      w={{ base: "90%", md: "63%" }}
       aspectRatio={1 / SOLUTION_STACK_ASPECT}
       isolation="isolate"
       aria-hidden
@@ -570,77 +585,9 @@ export const LandingV3Page: React.FC = () => (
     <SiteNav />
 
     {/* --- Hero ---------------------------------------------------------- */}
-    <Box
-      as="section"
-      position="relative"
-      h={{ base: "560px", md: "760px", lg: "916px" }}
-      bg="site.bg.surface"
-      overflow="hidden"
-    >
-      <Section
-        rhythm="none"
-        position="relative"
-        zIndex={1}
-        pt={{ base: "64px", lg: "94px" }}
-      >
-        <Grid>
-          <GridCol
-            span={16}
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-          >
-            <Text
-              textStyle="h3"
-              letterSpacing="-0.04em"
-              color="site.fg"
-              textAlign="center"
-            >
-              Building your intelligent data layer
-              <Box as="span" color="site.accent">
-                _
-              </Box>
-            </Text>
-            <Text
-              textStyle="body.sm"
-              color="site.fg"
-              textAlign="center"
-              w="465px"
-              maxW="full"
-              mt="19px"
-            >
-              Rengo is the embedded partner that builds the data intelligence
-              layer for AI systems to learn and act from your firm&rsquo;s
-              knowledge.
-            </Text>
-            <Box
-              as="button"
-              mt="19px"
-              w="155px"
-              h="32px"
-              px="8px"
-              borderRadius="2px"
-              bg="site.bg.dark"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              cursor="pointer"
-              transition="opacity 150ms ease"
-              _hover={{ opacity: 0.88 }}
-            >
-              <ArrowLink
-                color="site.fg.onDark"
-                fontWeight={300}
-                lineHeight="21px"
-                gap="12px"
-              >
-                Get started
-              </ArrowLink>
-            </Box>
-          </GridCol>
-        </Grid>
-      </Section>
-    </Box>
+    {/* The hero lab's 09 Glyph bed: the copy's own letters drift down and
+        settle into the data layer under the CTA. */}
+    <GlyphBedHero description={HERO_DESCRIPTION} />
 
     {/* --- The problem & vision ------------------------------------------ */}
     {/* Held open to the design's 661px band; the copy only fills the top. */}
