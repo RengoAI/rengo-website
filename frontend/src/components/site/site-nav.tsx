@@ -1,11 +1,12 @@
 import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import { ArrowLink } from "@/components/site/arrow-link";
+import { NAV_H } from "@/features/hero-lab/hero-shared";
 import { Box, chakra, Text } from "@chakra-ui/react";
 import { Menu, X } from "lucide-react";
 import React from "react";
 
-const LINKS = ["Solutions", "Resources", "Team"];
+const LINKS = ["Resources", "Team"];
 
 const MENU_ID = "site-nav-menu";
 
@@ -18,10 +19,27 @@ const DESKTOP_QUERY = "(min-width: 768px)";
  *
  * Below `md` the links and CTA collapse behind an icon button, which opens
  * them as a sheet filling the viewport under the bar.
+ *
+ * `overlay` lays the bar over the top of the first section instead of above
+ * it, with no background until the page scrolls. The section has to extend
+ * up behind it (e.g. `<GlyphBedHero underNav />`).
  */
-export const SiteNav: React.FC = () => {
+export const SiteNav: React.FC<{ overlay?: boolean }> = ({
+  overlay = false,
+}) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const close = React.useCallback(() => setIsOpen(false), []);
+  const [atTop, setAtTop] = React.useState(() => window.scrollY <= 0);
+
+  React.useEffect(() => {
+    if (!overlay) return;
+    const onScroll = () => setAtTop(window.scrollY <= 0);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [overlay]);
+
+  const bare = overlay && atTop && !isOpen;
 
   React.useEffect(() => {
     if (!isOpen) return;
@@ -52,11 +70,15 @@ export const SiteNav: React.FC = () => {
       zIndex={10}
       // Translucent so content scrolling underneath shows through, softened
       // by the blur. Solid while the menu is open, so the sheet reads as one
-      // surface with the bar.
-      bg={isOpen ? "site.bg.surface" : "site.bg.surface/80"}
-      backdropFilter="blur(6px)"
+      // surface with the bar. Bare over the top of an overlaid section.
+      bg={
+        bare ? "transparent" : isOpen ? "site.bg.page" : "site.bg.page/80"
+      }
+      backdropFilter={bare ? "none" : "blur(6px)"}
+      transition="background-color 200ms ease, backdrop-filter 200ms ease"
+      mb={overlay ? `-${NAV_H}px` : undefined}
       py="16px"
-      minH="52px"
+      minH={`${NAV_H}px`}
     >
       <Grid alignItems="center">
         <GridCol
@@ -151,7 +173,7 @@ export const SiteNav: React.FC = () => {
           px="gutter"
           pt="24px"
           pb="40px"
-          bg="site.bg.surface"
+          bg="site.bg.page"
           borderTopWidth="1px"
           borderTopStyle="dotted"
           borderTopColor="site.border.dashed"

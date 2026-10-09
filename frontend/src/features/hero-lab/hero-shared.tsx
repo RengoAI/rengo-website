@@ -63,6 +63,24 @@ export const HERO_BOX: BoxProps = {
   overflow: "hidden",
 };
 
+/** Nav bar height, which an `underNav` hero extends up behind. */
+export const NAV_H = 52;
+
+/** Extra height on the live /v3 hero, past one viewport. */
+const UNDER_NAV_EXTRA = 40;
+
+/**
+ * HERO_BOX for a hero that runs up behind an overlaid nav: taller by the
+ * nav's height, so its copy sits as it did below the nav, plus
+ * UNDER_NAV_EXTRA, which runs a little past the fold.
+ */
+export const HERO_BOX_UNDER_NAV: BoxProps = {
+  ...HERO_BOX,
+  h: `calc(100svh + ${UNDER_NAV_EXTRA}px)`,
+  minH: `${720 + NAV_H + UNDER_NAV_EXTRA}px`,
+  maxH: `${940 + NAV_H + UNDER_NAV_EXTRA}px`,
+};
+
 /** Full-bleed canvas behind a hero. */
 export const CanvasFill = React.forwardRef<HTMLCanvasElement, BoxProps>(
   (props, ref) => (

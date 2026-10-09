@@ -1,9 +1,9 @@
 import { SiteNav } from "@/components/site/site-nav";
 import { CoreHero } from "@/features/hero-lab/heroes/core-hero";
-import { GlyphBedHero } from "@/features/hero-lab/heroes/glyph-bed-hero";
 import { LayerHero } from "@/features/hero-lab/heroes/layer-hero";
 import { LedgerHero } from "@/features/hero-lab/heroes/ledger-hero";
 import { SpecimenHero } from "@/features/hero-lab/heroes/specimen-hero";
+import { YELLOW } from "@/features/hero-lab/hero-designs-button";
 import { Box, chakra, Text } from "@chakra-ui/react";
 import { Layers } from "lucide-react";
 import React from "react";
@@ -30,9 +30,15 @@ type Variant = {
   layout: string;
 };
 
-const StrataHero: React.FC = () => <LayerHero lines={4} lineGap={4} />;
 const SedimentHero: React.FC = () => (
-  <LayerHero lines={20} lineGap={4} dots={3000} layerGap={60} shift />
+  <LayerHero
+    lines={20}
+    lineGap={4}
+    dots={3000}
+    layerGap={60}
+    shift
+    serifTitle
+  />
 );
 /**
  * Sediment's dots, settling into a sheet instead of a bed: the parallelogram
@@ -124,46 +130,6 @@ const VARIANTS: Variant[] = [
       "The table is the whole hero, with swatches running three per grid column across all 16 columns and only a 1px gap between them, so the sheet reads as one mass. The copy sits top-left in a window cut out of the table (columns 1–7, as many rows deep as the copy needs). The palette stays in the silver ramp and never goes darker than silver.400.",
   },
   {
-    id: "4",
-    name: "Layer",
-    reference: "p5.js sketch — dots coalescing into a layer",
-    Hero: LayerHero,
-    source:
-      "600 dots drifting in a simplex-noise flow field. Staggered over 25 seconds, each one is eased out of the current and sprung into its own evenly spaced slot on one horizontal line, darkening as it arrives. Tuned here so the pull starts almost at once: ease-out instead of ease-in-out, and a tighter stagger (0.2, was 0.35). Here each dot takes its own light grey or light blue, coming up to full strength as it arrives.",
-    concept: [
-      "Each dot is one piece of the firm's knowledge, drifting in the currents of day-to-day work: the flow field. Over time every dot is drawn out of the current and into its own place on a single line, the data layer.",
-      "Slots are handed out by where each dot starts, so knowledge settles where it already belongs instead of being reshuffled. Dots come up to full strength as they join, from loose to trusted. The line forms directly under the copy, as the baseline the headline stands on. Click the hero (or press R) to run it again.",
-    ],
-    legend: [
-      ["Drifting dots", "Knowledge moving through day-to-day work"],
-      ["Flow field", "The currents: email, meetings, drives"],
-      ["The line", "The data layer, one slot per piece"],
-      ["Strengthening", "Loose to trusted as each piece joins"],
-    ],
-    layout:
-      "The sketch runs full-bleed across the light site surface. The copy is centred on columns 4–13 and set as on the /v3 hero (h3 title, in Light, then the body), with the dark CTA below. One change from the sketch: the layer forms 72px under the CTA instead of at the vertical centre, where it would strike through the headline.",
-  },
-  {
-    id: "5",
-    name: "Strata",
-    reference: "p5.js sketch — dots coalescing into a layer (04, four lines)",
-    Hero: StrataHero,
-    source:
-      "The Layer sketch (04) with one change: the 600 dots coalesce into four parallel horizontal lines spaced 4px apart instead of one, 150 dots to a line. Same flow field, timing, easing, stagger and palette.",
-    concept: [
-      "As in Layer, each dot is a piece of the firm's knowledge pulled out of the currents of day-to-day work. Here the data layer has depth: four strata stacked tight enough to read as one band, the way a governed layer holds several kinds of record (documents, entities, permissions, activity) in register.",
-      "Slots are handed out by where each dot starts: its x picks the column, and within a column the dot that starts highest takes the top line, so dots travel the shortest way in. Click the hero (or press R) to run it again.",
-    ],
-    legend: [
-      ["Drifting dots", "Knowledge moving through day-to-day work"],
-      ["Flow field", "The currents: email, meetings, drives"],
-      ["Four lines", "The data layer, in strata"],
-      ["Strengthening", "Loose to trusted as each piece joins"],
-    ],
-    layout:
-      "Identical to Layer: full-bleed on the light surface, copy centred on columns 4–13 with the dark CTA below. The top line forms 72px under the CTA and the band runs 12px deep (four lines, 4px centre to centre).",
-  },
-  {
     id: "6",
     name: "Sediment",
     reference: "p5.js sketch — dots coalescing into a layer (05, twenty lines)",
@@ -225,27 +191,6 @@ const VARIANTS: Variant[] = [
     layout:
       "As Plane: copy centred on columns 4–13 with the dark CTA below, the sheet running corner to corner behind it, and glyphs under the copy held back so the type stays clean.",
   },
-  {
-    id: "9",
-    name: "Glyph bed",
-    reference:
-      "p5.js sketch — dots coalescing into a layer (08 Glyph, settling as in 06 Sediment)",
-    Hero: GlyphBedHero,
-    source:
-      "Glyph (08) settling into Sediment's (06) bed instead of the plane: 1,800 dark mono characters, drawn only from the letters used in the hero copy (no digits), coalesce into twelve horizontal lines, 150 to a line, under the CTA. Lines are 11px apart rather than Sediment's 4px so the characters don't stack into a smear, and columns stay aligned so the bed reads as rows of type. Same flow field, palette and scramble-then-lock. The opening float is halved: start delays are half as spread (stagger 0.1) and a steeper ease-out brings the pull to half strength twice as soon, while every glyph still lands by 25s.",
-    concept: [
-      "The firm's raw material drifts down out of the currents of day-to-day work, scrambling as it goes, and settles line on line as a bed of fixed records the copy stands on.",
-      "Slots are handed out by where each glyph starts: x picks the column, and within a column the glyph that starts highest takes the top line. Click the hero (or press R) to run it again.",
-    ],
-    legend: [
-      ["Scrambling glyphs", "Unstructured knowledge in motion"],
-      ["Flow field", "The currents: email, meetings, drives"],
-      ["The bed", "The data layer, twelve lines of records"],
-      ["Locked glyphs", "Loose to trusted as each piece joins"],
-    ],
-    layout:
-      "Copy as in Layer and Sediment, centred on columns 4–13 with the dark CTA below. The top line forms 56px under the CTA and the bed runs 121px deep (twelve lines, 11px centre to centre).",
-  },
 ];
 
 /**
@@ -299,8 +244,8 @@ const VariantSwitcher: React.FC<{
         w="36px"
         h="36px"
         borderRadius="full"
-        bg="site.bg.darkRaised"
-        color="site.fg.onDark"
+        bg={YELLOW}
+        color="black"
         boxShadow="0 2px 8px rgba(0, 0, 0, 0.18)"
         cursor="pointer"
         transition="opacity 150ms ease"
@@ -316,7 +261,7 @@ const VariantSwitcher: React.FC<{
           flexDirection="column"
           gap="2px"
           p="3px"
-          bg="site.bg.darkRaised"
+          bg={YELLOW}
           borderRadius="4px"
           boxShadow="0 2px 8px rgba(0, 0, 0, 0.18)"
         >
@@ -337,11 +282,11 @@ const VariantSwitcher: React.FC<{
                 h="28px"
                 px="12px"
                 borderRadius="2px"
-                bg={on ? "site.bg.raised" : "transparent"}
-                color={on ? "site.fg.strong" : "site.fg.onDarkMuted"}
+                bg={on ? "black" : "transparent"}
+                color={on ? YELLOW : "blackAlpha.700"}
                 cursor="pointer"
                 transition="background 150ms ease, color 150ms ease"
-                _hover={on ? {} : { color: "site.fg.onDark" }}
+                _hover={on ? {} : { color: "black" }}
               >
                 <Text as="span" textStyle="mono" opacity={0.6}>
                   0{v.id}
@@ -357,6 +302,45 @@ const VariantSwitcher: React.FC<{
     </Box>
   );
 };
+
+/**
+ * Which variant this is, floating in the middle of the nav bar. Sits above
+ * the sticky nav but lets clicks through to it.
+ */
+const VersionLabel: React.FC<{ variant: Variant }> = ({ variant }) => (
+  <Box
+    position="fixed"
+    top={0}
+    left="50%"
+    transform="translateX(-50%)"
+    h="52px"
+    zIndex={11}
+    display="flex"
+    alignItems="center"
+    pointerEvents="none"
+  >
+    <Box
+      display="flex"
+      alignItems="baseline"
+      gap="8px"
+      h="28px"
+      px="12px"
+      pt="5px"
+      borderRadius="full"
+      bg={YELLOW}
+      color="black"
+      boxShadow="0 2px 8px rgba(0, 0, 0, 0.18)"
+      whiteSpace="nowrap"
+    >
+      <Text as="span" textStyle="mono" opacity={0.6}>
+        {variant.id.padStart(2, "0")}
+      </Text>
+      <Text as="span" textStyle="body.sm" lineHeight="1">
+        {variant.name}
+      </Text>
+    </Box>
+  </Box>
+);
 
 export const HeroLabPage: React.FC = () => {
   const [params, setParams] = useSearchParams();
@@ -382,6 +366,7 @@ export const HeroLabPage: React.FC = () => {
       <SiteNav />
       {/* Keyed so each variant mounts fresh and only one canvas runs. */}
       <Hero key={active.id} />
+      <VersionLabel variant={active} />
       <VariantSwitcher active={active.id} onSelect={select} />
     </Box>
   );

@@ -2,7 +2,7 @@ import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
-import { Box, Image, Text } from "@chakra-ui/react";
+import { Box, Image, Text, VisuallyHidden } from "@chakra-ui/react";
 import React from "react";
 
 const ART = "/img/rebrand/";
@@ -52,13 +52,14 @@ const FounderRow: React.FC<Founder & { isFirst: boolean }> = ({
       span={{ base: 16, md: 5, lg: 3 }}
       start={{ base: "auto", lg: 8 }}
       display="flex"
-      justifyContent={{ base: "flex-start", lg: "flex-end" }}
+      justifyContent="flex-start"
       // Once stacked, the grid's row gap sits between portrait and bio too;
       // this keeps the founders themselves further apart.
       mt={{ base: isFirst ? 0 : "28px", md: 0 }}
     >
       {/* Fixed at the design size — the source portraits are only ~200px.
-          Pushed to the column's right edge so it sits a gutter from the bio. */}
+          Held to the column's left edge, the column-8 line the story text
+          below starts on. */}
       <Image
         src={photoSrc}
         alt={`Portrait of ${name}`}
@@ -95,6 +96,46 @@ const FounderRow: React.FC<Founder & { isFirst: boolean }> = ({
   </>
 );
 
+/** Typing: ms before the first letter, per letter, and random extra. */
+const TYPE_START = 300;
+const TYPE_STEP = 45;
+const TYPE_JITTER = 40;
+
+/**
+ * Text typed in one character at a time, the maroon underscore leading each
+ * one in and coming to rest at the end. The untyped rest is laid out but
+ * hidden, so the line holds its final width from the start. Screen readers
+ * get the whole text at once; reduced motion gets it already typed.
+ */
+const TypedText: React.FC<{ text: string }> = ({ text }) => {
+  const [typed, setTyped] = React.useState(() =>
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? text.length
+      : 0,
+  );
+
+  React.useEffect(() => {
+    if (typed >= text.length) return;
+    const delay =
+      typed === 0 ? TYPE_START : TYPE_STEP + Math.random() * TYPE_JITTER;
+    const id = window.setTimeout(() => setTyped((n) => n + 1), delay);
+    return () => window.clearTimeout(id);
+  }, [typed, text.length]);
+
+  return (
+    <>
+      <VisuallyHidden>{text}</VisuallyHidden>
+      <span aria-hidden>
+        {text.slice(0, typed)}
+        <Box as="span" color="site.accent">
+          _
+        </Box>
+        <span style={{ visibility: "hidden" }}>{text.slice(typed)}</span>
+      </span>
+    </>
+  );
+};
+
 export const AboutV3Page: React.FC = () => (
   <Box bg="site.bg.page">
     <SiteNav />
@@ -118,10 +159,7 @@ export const AboutV3Page: React.FC = () => (
         top="132px"
         w="fit-content"
       >
-        Our team and vision
-        <Box as="span" color="site.accent">
-          _
-        </Box>
+        <TypedText text="Our team and vision" />
       </Text>
 
       {/* --- Team ---------------------------------------------------------- */}

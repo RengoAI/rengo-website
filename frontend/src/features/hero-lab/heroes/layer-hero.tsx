@@ -2,10 +2,10 @@ import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import {
   CanvasFill,
-  Cursor,
   DESCRIPTION,
   HEADLINE,
   HERO_BOX,
+  HERO_BOX_UNDER_NAV,
   INK,
   SolidCta,
 } from "@/features/hero-lab/hero-shared";
@@ -33,6 +33,8 @@ import React from "react";
  * `lines` > 1 stacks the layer into several parallel lines, `lineGap` px
  * apart (centre to centre), with the dots split evenly between them.
  * `layerGap` overrides how far under the copy the (first) line forms.
+ * `toBottom` adds lines until the layer reaches the bottom of the hero,
+ * keeping the density `dots` / `lines` per line.
  *
  * `plane` replaces the lines with a 2D target: a cols × rows dot grid laid
  * across a parallelogram (a flat sheet seen in perspective), given by three
@@ -40,11 +42,16 @@ import React from "react";
  * that settle under the copy are held back to keep the text clean, and the
  * sheet itself fills in faintly as it forms.
  *
- * `glyphs` swaps each dot for a mono letter or digit drawn from a darker
+ * `glyphs` swaps each dot for a Serrif character drawn from a darker
  * palette (the deeper soot greys and silver/Rengo blues). A glyph keeps
  * scrambling while it drifts and locks to one character once it settles,
  * so the formed plane reads as a sheet of records rather than a dot grid.
  * `charset` narrows the characters glyphs are drawn from.
+ *
+ * Glyph mode only: `float={false}` skips the flow field — each glyph fades
+ * in at its slot, scrambling as it appears, instead of drifting there.
+ * `twinkle` keeps the formed layer alive: every few seconds each settled
+ * glyph fades out, swaps to a new character, and fades back in.
  *
  * Click the hero (or press R) to restart.
  */
@@ -57,6 +64,15 @@ const LAYER_GAP = 72; // px below the copy block where the layer forms
 const DOT_SIZE = 2.4; // px
 const NOISE_SCALE = 0.0025; // spatial frequency of the flow field
 const TIME_SCALE = 0.12; // how fast the field evolves
+/**
+ * With `wander`, how fast each dot moves along its own path through the
+ * noise, per second — how quickly its heading turns.
+ */
+const WANDER_RATE = 0.2;
+/** With `wander`: drift speed as a share of SPEED… */
+const WANDER_SPEED = 0.5;
+/** …and a cap on travel toward the layer, px per 60fps frame. */
+const WANDER_MAX = 1.8;
 const SPEED = 1.6; // base drift speed (px per 60fps frame)
 const PULL = 0.02; // spring strength toward the layer
 const TRAIL_ALPHA = 55; // lower = longer trails (0–255)
@@ -107,9 +123,10 @@ const randomShade = () => {
 const DRIFT_STRENGTH = 0.6;
 
 /**
- * The glyph palette: the darker half of the same two families. Glyphs
- * take one swatch each, unmixed, so every colour can be pre-rendered once
- * into an atlas instead of setting a font and fill per glyph per frame.
+ * The glyph palette: the darker half of the same two families, two lighter
+ * greys, and the accent red for one glyph in ten. Glyphs take one swatch
+ * each, unmixed, so every colour can be pre-rendered once into an atlas
+ * instead of setting a font and fill per glyph per frame.
  */
 const DARK_GREYS = [INK.soot500, INK.soot600, INK.soot700];
 const DARK_BLUES = [
@@ -120,22 +137,66 @@ const DARK_BLUES = [
   INK.rengo600,
   INK.rengo700,
 ];
-const DARK_SWATCHES = [...DARK_GREYS, ...DARK_BLUES];
-const randomSwatch = () =>
-  Math.random() < 0.5
-    ? Math.floor(Math.random() * DARK_GREYS.length)
-    : DARK_GREYS.length + Math.floor(Math.random() * DARK_BLUES.length);
+export const DARK_SWATCHES = [...DARK_GREYS, ...DARK_BLUES];
+const LIGHT_GREYS = [INK.soot300, INK.soot400];
+const GLYPH_SWATCHES = [...DARK_SWATCHES, ...LIGHT_GREYS, INK.crimson];
+const ACCENT_SWATCH = GLYPH_SWATCHES.length - 1;
+/** Share of glyphs in the accent red. */
+const ACCENT_SHARE = 0.1;
+/**
+ * One glyph in ten accent red; of the rest, half light grey and the other
+ * half split between dark greys and blues.
+ */
+const randomSwatch = () => {
+  if (Math.random() < ACCENT_SHARE) return ACCENT_SWATCH;
+  const r = Math.random();
+  const from = (start: number, n: number) =>
+    start + Math.floor(Math.random() * n);
+  if (r < 0.5) return from(DARK_SWATCHES.length, LIGHT_GREYS.length);
+  return r < 0.75
+    ? from(0, DARK_GREYS.length)
+    : from(DARK_GREYS.length, DARK_BLUES.length);
+};
 
 const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 const GLYPH_SIZE = 9; // px, font size
 /** Narrowest glyph spacing along a line; fewer glyphs on narrow screens. */
 const GLYPH_MIN_PITCH = 9.5;
 const GLYPH_CELL = 12; // px, atlas cell (room for ascenders and descenders)
-const GLYPH_FONT = `400 ${GLYPH_SIZE}px "Geist Mono", "Space Mono", ui-monospace, monospace`;
+const GLYPH_FONT = `400 ${GLYPH_SIZE}px Serrif, "Noto Serif", Georgia, ui-serif, serif`;
 /** Glyph drift strength: lower than dots', as the darker inks carry more. */
 const GLYPH_DRIFT_STRENGTH = 0.4;
 /** Chance per 60fps frame that a drifting glyph changes character. */
 const SCRAMBLE = 0.08;
+/** Without the float: glyphs start appearing over this many seconds… */
+const APPEAR_SPREAD = 1.6;
+/** …each taking this long to fade in. */
+const APPEAR = 0.6;
+/** Twinkle: seconds for a glyph to fade out (and again to fade back in). */
+const TWINKLE_FADE = 0.45;
+/** Twinkle: seconds a glyph holds between swaps, min and max. */
+const TWINKLE_HOLD = [1.5, 6] as const;
+
+const nextSwap = (now: number) =>
+  now + lerp(TWINKLE_HOLD[0], TWINKLE_HOLD[1], Math.random());
+
+/**
+ * A settled glyph's twinkle, as an opacity multiplier: out, swap the
+ * character, back in, then hold until its next swap.
+ */
+const twinkleAlpha = (d: Dot, now: number, chars: number) => {
+  if (now < d.swapAt) return 1;
+  const k = (now - d.swapAt) / TWINKLE_FADE;
+  if (k < 1) return 1 - k;
+  if (!d.swapped) {
+    d.glyph = Math.floor(Math.random() * chars);
+    d.swapped = true;
+  }
+  if (k < 2) return k - 1;
+  d.swapAt = nextSwap(now);
+  d.swapped = false;
+  return 1;
+};
 
 /**
  * Every glyph in every swatch, pre-rendered at device pixel ratio: one row
@@ -145,14 +206,14 @@ const buildAtlas = (charset: string) => {
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   const atlas = document.createElement("canvas");
   atlas.width = Math.ceil(charset.length * GLYPH_CELL * dpr);
-  atlas.height = Math.ceil(DARK_SWATCHES.length * GLYPH_CELL * dpr);
+  atlas.height = Math.ceil(GLYPH_SWATCHES.length * GLYPH_CELL * dpr);
   const g = atlas.getContext("2d");
   if (!g) return null;
   g.scale(dpr, dpr);
   g.font = GLYPH_FONT;
   g.textAlign = "center";
   g.textBaseline = "middle";
-  DARK_SWATCHES.forEach((c, row) => {
+  GLYPH_SWATCHES.forEach((c, row) => {
     g.fillStyle = c;
     [...charset].forEach((ch, col) => {
       g.fillText(ch, (col + 0.5) * GLYPH_CELL, (row + 0.5) * GLYPH_CELL + 0.5);
@@ -197,13 +258,21 @@ type Dot = {
   ty: number;
   /** This dot's light blue, [r, g, b]. */
   shade: number[];
-  /** Glyph mode: index into DARK_SWATCHES, and into the charset. */
+  /** Glyph mode: index into GLYPH_SWATCHES, and into the charset. */
   swatch: number;
   glyph: number;
+  /** Twinkle: seconds since start when this glyph next swaps (Infinity
+   * until a floating glyph settles), and whether the current swap has
+   * changed its character yet. */
+  swapAt: number;
+  swapped: boolean;
   /** Last TRAIL_LEN positions as x,y pairs, a ring buffer at `head`. */
   trail: Float32Array;
   head: number;
   count: number;
+  /** With `wander`: this dot's private start point in the noise. */
+  nx: number;
+  ny: number;
 };
 
 /**
@@ -330,6 +399,11 @@ const GLYPH_UNDER_COPY = 0.05;
 const GLYPH_CLEAR_RX = 440;
 const CLEAR_RX = 330;
 const CLEAR_MARGIN_Y = 44;
+/**
+ * With `toBottom`, the last line's centre above the hero's bottom edge, px:
+ * enough to seat the glyphs' baseline on the edge.
+ */
+const BOTTOM_INSET = 4;
 /** The sheet's fill when fully formed — the screenshot's pale grey plane. */
 const PLANE_FILL = parseToRgba(INK.canvas400);
 const PLANE_FILL_ALPHA = 0.55;
@@ -341,6 +415,8 @@ export const LayerHero: React.FC<{
   dots?: number;
   /** px below the copy block where the (first) line forms. */
   layerGap?: number;
+  /** Keep adding lines, `lineGap` apart, down to the bottom of the hero. */
+  toBottom?: boolean;
   /** Offset each line's slots so the lines read horizontally. */
   shift?: boolean;
   /** Settle into a 2D plane instead of lines; overrides lines and dots. */
@@ -354,10 +430,36 @@ export const LayerHero: React.FC<{
    * for the pull to take hold. 0.5 halves it; 1 is the sketch's timing.
    */
   drift?: number;
+  /**
+   * Seconds of pure float in the flow field before any pull toward the
+   * layer begins; the layer still takes DURATION to form after that.
+   */
+  hold?: number;
+  /**
+   * Steer each dot by its own path through the noise rather than by the
+   * field at its position. Headings still turn smoothly, but neighbours no
+   * longer steer alike, so dots stay scattered instead of gathering into
+   * the field's streamlines.
+   */
+  wander?: boolean;
+  /** Glyph mode: drift in through the flow field (true) or fade in place. */
+  float?: boolean;
+  /** Glyph mode: settled glyphs keep fading out and in as new characters. */
+  twinkle?: boolean;
   /** The body copy under the headline. */
   description?: React.ReactNode;
+  /** Extend up behind an overlaid nav (`<SiteNav overlay />`). */
+  underNav?: boolean;
+  /**
+   * px to raise the copy above centre. The layer hangs off the copy, so it
+   * rises with it.
+   */
+  lift?: number;
+  /** Set the title in Serrif (the d3 display style) instead of Geist. */
+  serifTitle?: boolean;
 }> = ({
   lines = 1,
+  toBottom = false,
   lineGap = 0,
   dots = NUM_DOTS,
   layerGap = LAYER_GAP,
@@ -366,14 +468,21 @@ export const LayerHero: React.FC<{
   glyphs = false,
   charset = GLYPHS,
   drift = 1,
+  hold = 0,
+  wander = false,
+  float = true,
+  twinkle = false,
   description = DESCRIPTION,
+  underNav = false,
+  lift = 0,
+  serifTitle = false,
 }) => {
   const ease = easeExponent(drift);
   const count = plane ? plane.cols * plane.rows : dots;
-  const place = (all: Dot[], w: number, h: number) =>
+  const place = (all: Dot[], w: number, h: number, lineCount: number) =>
     plane
       ? assignPlane(all, w, h, plane)
-      : assignSlots(all, w, lines, lineGap, shift);
+      : assignSlots(all, w, lineCount, lineGap, shift);
   const copy = React.useRef<HTMLDivElement>(null);
   const sim = React.useRef({
     dots: [] as Dot[],
@@ -381,6 +490,7 @@ export const LayerHero: React.FC<{
     start: 0,
     restart: true,
     atlas: null as Atlas | null,
+    lines: lines,
   });
   const reduced = React.useMemo(
     () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
@@ -391,7 +501,7 @@ export const LayerHero: React.FC<{
     sim.current.restart = true;
   }, []);
 
-  // The atlas bakes in the font, so rebuild it once Geist Mono has loaded.
+  // The atlas bakes in the font, so rebuild it once Serrif has loaded.
   React.useEffect(() => {
     if (!glyphs) return;
     let live = true;
@@ -414,48 +524,70 @@ export const LayerHero: React.FC<{
   const canvasRef = useCanvasLoop(({ ctx, w, h, t, dt, resized }) => {
     const s = sim.current;
 
+    const c = copy.current;
+    // With a plane, targets are absolute; with lines, they hang off layerY.
+    const top = plane
+      ? 0
+      : c
+        ? c.offsetTop + c.offsetHeight + layerGap
+        : h * 0.5;
+    const bottomLine = h - BOTTOM_INSET;
+    const toEdge = toBottom && !plane;
+    const lineCount = toEdge
+      ? Math.max(1, Math.floor((bottomLine - top) / lineGap) + 1)
+      : lines;
+    // To the bottom, the lines hang from the hero's edge rather than the
+    // copy, so the last one always sits flush on the next section; the
+    // first lands within a line of `layerGap` under the copy.
+    const layerY = toEdge ? bottomLine - (lineCount - 1) * lineGap : top;
+    // A new line count needs a new set of dots, not just new slots.
+    if (resized && lineCount !== s.lines) s.restart = true;
+
     if (s.restart) {
       // Glyph lines keep their characters legible: on a narrow hero, fewer
       // to a line rather than packed closer.
       const perLine = Math.ceil(count / lines);
       const n =
         glyphs && !plane
-          ? lines * Math.min(perLine, Math.floor(w / GLYPH_MIN_PITCH))
-          : count;
+          ? lineCount * Math.min(perLine, Math.floor(w / GLYPH_MIN_PITCH))
+          : toBottom && !plane
+            ? lineCount * perLine
+            : count;
+      const inPlace = glyphs && !float;
       s.dots = Array.from({ length: n }, () => ({
         x: Math.random() * w,
         y: Math.random() * h,
         vx: 0,
         vy: 0,
-        delay: Math.random() * STAGGER * drift,
+        // In place, the delay is seconds until the glyph starts to appear.
+        delay: Math.random() * (inPlace ? APPEAR_SPREAD : STAGGER * drift),
         tx: 0,
         ty: 0,
         shade: randomShade(),
         swatch: randomSwatch(),
         glyph: Math.floor(Math.random() * charset.length),
+        // Floating glyphs schedule their first swap when they settle.
+        swapAt: inPlace ? nextSwap(APPEAR_SPREAD + APPEAR) : Infinity,
+        swapped: false,
         trail: new Float32Array(TRAIL_LEN * 2),
         head: 0,
         count: 0,
+        nx: Math.random() * 1000,
+        ny: Math.random() * 1000,
       }));
-      place(s.dots, w, h);
+      place(s.dots, w, h, lineCount);
+      s.lines = lineCount;
       s.start = t;
       s.restart = false;
       ctx.clearRect(0, 0, w, h);
     } else if (resized) {
-      place(s.dots, w, h);
+      place(s.dots, w, h, lineCount);
       ctx.clearRect(0, 0, w, h);
     }
 
     if (glyphs && !s.atlas) s.atlas = buildAtlas(charset);
     const atlas = glyphs ? s.atlas : null;
 
-    const c = copy.current;
-    // With a plane, targets are absolute; with lines, they hang off layerY.
-    const layerY = plane
-      ? 0
-      : c
-        ? c.offsetTop + c.offsetHeight + layerGap
-        : h * 0.5;
     // The clearing behind the copy: 0 at its centre, 1 at and past its rim.
     const clear =
       plane && c
@@ -510,7 +642,7 @@ export const LayerHero: React.FC<{
     ctx.clearRect(0, 0, w, h);
 
     const elapsed = t - s.start;
-    const global = Math.min(Math.max(elapsed / DURATION, 0), 1);
+    const global = Math.min(Math.max((elapsed - hold) / DURATION, 0), 1);
     const z = elapsed * TIME_SCALE;
 
     // The sheet fills in under the dots as the plane forms.
@@ -525,14 +657,31 @@ export const LayerHero: React.FC<{
     }
 
     for (const d of s.dots) {
+      if (atlas && !float) {
+        // No float: fade in at the slot, scrambling until fully there.
+        const appear = Math.min(Math.max((elapsed - d.delay) / APPEAR, 0), 1);
+        if (appear < 1 && Math.random() < SCRAMBLE * f) {
+          d.glyph = Math.floor(Math.random() * charset.length);
+        }
+        const tw =
+          twinkle && appear === 1
+            ? twinkleAlpha(d, elapsed, charset.length)
+            : 1;
+        ctx.globalAlpha = appear * tw * underCopy(d);
+        drawGlyph(ctx, atlas, d, d.tx, layerY + d.ty);
+        continue;
+      }
+
       // Per-dot eased progress (staggered so they arrive gradually).
       let p = Math.min(Math.max((global - d.delay) / (1 - d.delay), 0), 1);
       p = 1 - (1 - p) ** ease;
 
       // Flow direction from 3D simplex noise (x, y, time).
-      const n = s.simplex.noise3D(d.x * NOISE_SCALE, d.y * NOISE_SCALE, z);
+      const n = wander
+        ? s.simplex.noise3D(d.nx, d.ny, elapsed * WANDER_RATE)
+        : s.simplex.noise3D(d.x * NOISE_SCALE, d.y * NOISE_SCALE, z);
       const a = n * Math.PI * 4;
-      const flow = SPEED * (1 - 0.55 * p);
+      const flow = SPEED * (wander ? WANDER_SPEED : 1) * (1 - 0.55 * p);
       const fx = Math.cos(a) * flow * (1 - p); // all flow fades as it settles
       const fy = Math.sin(a) * flow * (1 - p);
 
@@ -543,8 +692,18 @@ export const LayerHero: React.FC<{
       const pullX = dx * PULL * p;
       const pullY = (layerY + d.ty - d.y) * PULL * p;
 
-      d.vx = lerp(d.vx, fx + pullX, damp);
-      d.vy = lerp(d.vy, fy + pullY, damp);
+      let ux = fx + pullX;
+      let uy = fy + pullY;
+      if (wander) {
+        // Glide in rather than spring: cap the speed toward the slot.
+        const u = Math.hypot(ux, uy);
+        if (u > WANDER_MAX) {
+          ux *= WANDER_MAX / u;
+          uy *= WANDER_MAX / u;
+        }
+      }
+      d.vx = lerp(d.vx, ux, damp);
+      d.vy = lerp(d.vy, uy, damp);
       d.x += d.vx * f;
       d.y += d.vy * f;
 
@@ -563,8 +722,14 @@ export const LayerHero: React.FC<{
         if (p < 0.98 && Math.random() < SCRAMBLE * f) {
           d.glyph = Math.floor(Math.random() * charset.length);
         }
+        const settled = p >= 0.98;
+        if (twinkle && settled && d.swapAt === Infinity) {
+          d.swapAt = elapsed + Math.random() * TWINKLE_HOLD[1];
+        }
+        const tw =
+          twinkle && settled ? twinkleAlpha(d, elapsed, charset.length) : 1;
         ctx.globalAlpha =
-          lerp(GLYPH_DRIFT_STRENGTH, 1, p) * lerp(1, underCopy(d), p);
+          lerp(GLYPH_DRIFT_STRENGTH, 1, p) * lerp(1, underCopy(d), p) * tw;
         drawGlyph(ctx, atlas, d, d.x, d.y);
         continue;
       }
@@ -604,7 +769,7 @@ export const LayerHero: React.FC<{
 
   return (
     <Box
-      {...HERO_BOX}
+      {...(underNav ? HERO_BOX_UNDER_NAV : HERO_BOX)}
       bg="site.bg.surface"
       onClick={restart}
       cursor="crosshair"
@@ -629,26 +794,28 @@ export const LayerHero: React.FC<{
           <GridCol span={10} start={4}>
             <Box
               ref={copy}
+              position="relative"
+              top={`${-lift}px`}
               display="flex"
               flexDirection="column"
               alignItems="center"
               textAlign="center"
             >
               {/* Title and description set as the /v3 hero, with the title
-                  in Light. */}
+                  in Regular. */}
               <Text
                 as="h1"
-                textStyle="h3"
+                // Serrif's display step for this level, held at Regular.
+                textStyle={serifTitle ? "d3" : "h3"}
                 letterSpacing="-0.04em"
-                fontWeight={300}
+                fontWeight={400}
                 color="site.fg"
                 textAlign="center"
               >
                 {HEADLINE}
-                <Cursor />
               </Text>
               <Text
-                textStyle="body.md"
+                textStyle="body.sm"
                 fontWeight={300}
                 lineHeight="1.2"
                 color="site.fg.muted"

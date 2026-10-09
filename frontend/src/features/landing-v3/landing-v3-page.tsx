@@ -4,8 +4,12 @@ import { ArrowLink } from "@/components/site/arrow-link";
 import { ComplianceCardGroup } from "@/components/site/compliance-card";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
-import { GlyphBedHero } from "@/features/hero-lab/heroes/glyph-bed-hero";
+import {
+  GlyphBedHero,
+  heroCharset,
+} from "@/features/hero-lab/heroes/glyph-bed-hero";
 import { SiteOutro } from "@/components/site/site-outro";
+import { HeroDesignsButton } from "@/features/hero-lab/hero-designs-button";
 import {
   MetricCard,
   TestimonialCard,
@@ -36,19 +40,21 @@ const USE_CASES: UseCase[] = [
     audience: "Deal team",
     title: "Compare new deals without rebuilding context",
     body: 'Every new opportunity usually starts with associates pulling CIMs, past IC memos, and comps from scattered drives and inboxes, then rebuilding the same comparison spreadsheets by hand. A unified data foundation puts deal history, pipeline data, market comps, and portfolio performance in one governed store. The managed ontology ensures terms like "EBITDA," "sector," and "deal stage" mean the same thing across every source.',
-    art: true,
   },
   {
     audience: "Investor relations",
     title: "LP updates draw on one current, verified set of numbers.",
+    body: "Quarterly letters and LP requests usually mean chasing the latest figures across fund admin reports, portfolio updates, and last quarter’s deck, then reconciling which version is right. Rengo connects those sources into one governed data layer, with every number traced back to the document it came from. Updates and answers to LP questions are drafted from that single verified set, so what goes out matches what finance signed off on.",
   },
   {
     audience: "Finance",
     title: "Portfolio financials auto-ingested with accuracy",
+    body: "Portfolio companies report in their own formats and on their own schedules — PDFs, spreadsheets, and emailed packs that someone has to key into the firm’s models. Rengo ingests those files as they arrive and maps each line item to the firm’s own definitions through the managed ontology, so revenue, EBITDA, and covenants line up across every company. Finance reviews exceptions instead of retyping statements, and every figure stays linked to its source.",
   },
   {
     audience: "Knowledge operations",
     title: "Unlock collective intelligence",
+    body: "Much of what a firm knows lives in meeting notes, memos, email threads, and the heads of the people who were in the room. Rengo captures that knowledge alongside the firm’s structured data, links it to the deals, companies, and people it concerns, and makes it searchable in plain language. New team members get up to speed faster, and hard-won insight stays with the firm when people move on.",
   },
 ];
 
@@ -582,12 +588,12 @@ const SolutionSection: React.FC = () => {
 
 export const LandingV3Page: React.FC = () => (
   <Box bg="site.bg.page">
-    <SiteNav />
+    <SiteNav overlay />
 
     {/* --- Hero ---------------------------------------------------------- */}
     {/* The hero lab's 09 Glyph bed: the copy's own letters drift down and
         settle into the data layer under the CTA. */}
-    <GlyphBedHero description={HERO_DESCRIPTION} />
+    <GlyphBedHero description={HERO_DESCRIPTION} underNav />
 
     {/* --- The problem & vision ------------------------------------------ */}
     {/* Held open to the design's 661px band; the copy only fills the top. */}
@@ -739,8 +745,10 @@ export const LandingV3Page: React.FC = () => (
       </GridCol>
     </Section>
 
-    <SiteOutro />
+    <SiteOutro charset={heroCharset(HERO_DESCRIPTION)} />
 
     <SiteFooter />
+
+    <HeroDesignsButton />
   </Box>
 );

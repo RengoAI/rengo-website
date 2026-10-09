@@ -3,7 +3,7 @@ import { Section } from "@/components/layout/section";
 import { chakra, Text } from "@chakra-ui/react";
 import React from "react";
 
-const LINKS = ["Product", "Solutions", "Team", "Privacy", "Terms"];
+const LINKS = ["Product", "Team", "Privacy", "Terms"];
 
 /**
  * Closing band. On the same 16-column grid as the nav and the sections.
