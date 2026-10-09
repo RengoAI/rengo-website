@@ -1,5 +1,6 @@
 import { colors } from "@/theme/tokens/colors";
 import { fonts } from "@/theme/tokens/fonts";
+import { layoutSizes, layoutSpacing, layoutVars } from "@/theme/tokens/layout";
 import { shadows } from "@/theme/tokens/shadows";
 import {
   createSystem,
@@ -11,12 +12,15 @@ import { recipes } from "./recipes";
 import { semanticColors } from "./semantic-tokens/colors";
 import { semanticShadows } from "./semantic-tokens/shadows";
 import { slotRecipes } from "./slot-recipes";
+import { textStyles } from "./text-styles";
 
 const config = defineConfig({
   preflight: true,
   cssVarsPrefix: "rengo",
   cssVarsRoot: ":where(html, .rengo-theme)",
   globalCss: {
+    // Responsive section gutters, read by the `gutter*` spacing tokens.
+    ...layoutVars,
     // Global typography settings
     "html, body": {
       fontVariantNumeric: "lining-nums tabular-nums",
@@ -125,12 +129,22 @@ const config = defineConfig({
     },
   },
   theme: {
+    keyframes: {
+      /** One full loop of a doubled strip: slide left by one copy's width. */
+      marquee: {
+        from: { transform: "translateX(0)" },
+        to: { transform: "translateX(-50%)" },
+      },
+    },
     recipes,
     slotRecipes,
+    textStyles,
     tokens: {
       colors,
       shadows,
       fonts,
+      spacing: layoutSpacing,
+      sizes: layoutSizes,
     },
     semanticTokens: {
       colors: semanticColors,

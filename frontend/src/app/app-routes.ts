@@ -69,6 +69,10 @@ export const rootRoute = route(
         ),
       },
     ),
+    styleguide: route("/styleguide", {}, {}),
+    landingV3: route("/v3", {}, {}),
+    aboutV3: route("/v3/about", {}, {}),
+    heroLab: route("/v3/heroes", {}, {}),
     notFound: route("/*", {}, {}),
   },
 );

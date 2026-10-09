@@ -411,4 +411,76 @@ export const semanticColors = defineSemanticTokens.colors({
       },
     },
   },
+
+  // -----------------------------------------------------------------------
+  // Rebrand semantics (Figma: Rengo Marketing Site).
+  //
+  // Namespaced under `site` so the marketing surfaces can move without
+  // disturbing the app's existing bg/fg/border semantics.
+  //
+  // These are deliberately mode-flat. The design's dark bands are a
+  // compositional choice — a dark section sits next to a light one on the
+  // same page — not a colour mode, so the `onDark` variants are explicit
+  // rather than something `_dark` would swap in.
+  // -----------------------------------------------------------------------
+  site: {
+    bg: {
+      /** The page itself. */
+      page: { value: "{colors.canvas.200}" },
+      /** Sections and nav that sit a step above the page. */
+      surface: { value: "{colors.canvas.100}" },
+      /** Cards lifted off a surface. */
+      raised: { value: "{colors.canvas.0}" },
+      /** Footer band. */
+      footer: { value: "{colors.canvas.50}" },
+      /** Recessed chips and wells. */
+      inset: { value: "{colors.canvas.300}" },
+      /** The dark bands: performance, security, logos. */
+      dark: { value: "{colors.silver.800}" },
+      /** Controls on a dark band. */
+      darkRaised: { value: "{colors.soot.800}" },
+      /** Cool tinted band — testimonials. */
+      tint: { value: "{colors.silver.200}" },
+      /** Brighter blue band. */
+      tintSky: { value: "{colors.sky}" },
+      /** Palest blue band — the problem statement. */
+      tintSubtle: { value: "{colors.silver.100}" },
+      /** Filled brand surface — primary buttons. */
+      brand: { value: "{colors.rengo.500}" },
+    },
+    fg: {
+      /** Body copy. */
+      DEFAULT: { value: "{colors.soot.700}" },
+      /** Headings. */
+      strong: { value: "{colors.soot.800}" },
+      /** Secondary copy. */
+      muted: { value: "{colors.soot.500}" },
+      /** Captions, metadata. */
+      subtle: { value: "{colors.soot.400}" },
+      /** Type on a dark band. */
+      onDark: { value: "{colors.canvas.0}" },
+      onDarkMuted: { value: "{colors.soot.300}" },
+      onDarkSubtle: { value: "{colors.soot.400}" },
+      /** Quietest type on a dark band — the logo strip. */
+      onDarkFaint: { value: "{colors.soot.500}" },
+      /** Type on a filled brand surface. */
+      onBrand: { value: "{colors.canvas.0}" },
+    },
+    border: {
+      /** Solid hairline. */
+      DEFAULT: { value: "{colors.canvas.500}" },
+      /** The dashed rule that separates cards and rows. */
+      dashed: { value: "{colors.silver.300}" },
+      /** Same rule, over a tinted band. */
+      dashedOnTint: { value: "{colors.silver.400}" },
+      /** Same rule, over a dark band — lifted so it still reads. */
+      dashedOnDark: { value: "{colors.soot.500}" },
+      /** Solid hairline on a dark band. */
+      onDark: { value: "{colors.soot.600}" },
+    },
+    /** Maroon. The emphasised phrase, one rule, one glyph — sparing. */
+    accent: { value: "{colors.crimson}" },
+    /** Rengo blue. Links, primary actions. */
+    brand: { value: "{colors.rengo.500}" },
+  },
 });
