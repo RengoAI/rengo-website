@@ -214,11 +214,10 @@ const FoundationLayer: React.FC<{ title: string; description: string }> = ({
       >
         {title}
       </Text>
+      {/* Set like the rest of the page's body copy. */}
       <Text
         textStyle="body.sm"
-        fontWeight={400}
-        lineHeight="1.25"
-        color="site.fg.muted"
+        color="site.fg"
         // From lg the callout spans FOUNDATION_COPY_SPAN columns; the
         // description stops at FOUNDATION_DESCRIPTION_SPAN of them.
         maxW={{
@@ -534,18 +533,22 @@ const FdeSection: React.FC = () => (
             strategy → deployment
           </Box>
         </Text>
-        {/* Set like the hero's description. */}
+        {/* Set like the problem statement's body copy. */}
         <Text
           textStyle="body.sm"
-          fontWeight={400}
-          lineHeight="1.2"
-          color="site.fg.muted"
-          w="438px"
+          color="site.fg"
+          // As wide as the heading above it.
+          w="673px"
           maxW="full"
         >
-          We bring elite engineering and operate in a forward deployment model
-          to tailor these systems to your firm&rsquo;s data, tool stack, and
-          steward the deployment.
+          Our forward-deployed engineers embed with your team to map your source
+          systems, from fund administrator reports and portfolio company updates
+          to CRM records and shared drives, and to build the pipelines,
+          ontology, and access controls around how your firm already works. Once
+          live, we stay accountable for the system: we monitor data quality,
+          absorb changes to sources and schemas, and extend the applications as
+          your workflows evolve, so the foundation stays reliable long after
+          launch.
         </Text>
       </Box>
       <chakra.a

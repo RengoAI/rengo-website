@@ -8,7 +8,10 @@ import { heroLabRoutes } from "@/features/hero-lab/hero-lab-routes";
 import { landingV3Routes } from "@/features/landing-v3/landing-v3-routes";
 import { landingRoutes } from "@/features/landing/landing-routes";
 import { legalRoutes } from "@/features/legal/legal-routes";
-import { solutionsRoutes } from "@/features/solutions/solutions-routes";
+import {
+  solutionsOverviewRoute,
+  solutionsRoutes,
+} from "@/features/solutions/solutions-routes";
 import { styleguideRoutes } from "@/features/styleguide/styleguide-routes";
 import { createBrowserRouter, RouteObject } from "react-router-dom";
 
@@ -30,15 +33,18 @@ const STANDALONE_ROUTES: RouteObject[] = [
   landingV3Routes,
   aboutV3Routes,
   heroLabRoutes,
+  solutionsOverviewRoute,
 ];
 
 export const appRouter = createBrowserRouter([
+  // First, so a standalone route wins a tie with an AppRoot one: /solutions
+  // is the overview here, while its capability pages live under AppRoot.
+  ...STANDALONE_ROUTES,
   {
     id: "root",
     element: <AppRoot />,
     children: [...ALL_ROUTES],
   },
-  ...STANDALONE_ROUTES,
   {
     id: "notFound",
     path: "*",

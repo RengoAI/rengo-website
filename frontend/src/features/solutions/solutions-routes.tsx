@@ -1,6 +1,25 @@
 import { SOLUTION_CAPABILITIES } from "@/features/solutions/solutions";
 import { RouteObject, Navigate } from "react-router-dom";
 
+/**
+ * The overview at /solutions, on the rebrand chrome (SiteNav, SiteFooter), so
+ * it sits outside AppRoot with the other standalone routes. The capability
+ * pages below stay inside AppRoot.
+ */
+export const solutionsOverviewRoute: RouteObject = {
+  id: "solutionsOverview",
+  path: "solutions",
+  handle: {
+    pageTitle: "Solutions",
+  },
+  lazy: async () => {
+    const { SolutionsPage } = await import(
+      "@/features/solutions/solutions-page"
+    );
+    return { Component: SolutionsPage };
+  },
+};
+
 export const solutionsRoutes: RouteObject = {
   id: "solutions",
   path: "solutions",
@@ -8,16 +27,6 @@ export const solutionsRoutes: RouteObject = {
     pageTitle: "Solutions",
   },
   children: [
-    {
-      id: "solutionsIndex",
-      index: true,
-      lazy: async () => {
-        const { SolutionsPage } = await import(
-          "@/features/solutions/solutions-page"
-        );
-        return { Component: SolutionsPage };
-      },
-    },
     ...SOLUTION_CAPABILITIES.map((c) => ({
       id: `solutions-${c.slug}`,
       path: c.slug,

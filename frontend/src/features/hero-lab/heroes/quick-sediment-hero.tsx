@@ -3,6 +3,7 @@ import {
   ACCENT_BLUE_HEX,
   LayerHero,
 } from "@/features/hero-lab/heroes/layer-hero";
+import { mix } from "color2k";
 import React from "react";
 
 /** The light greys: a cool, silvery ramp. */
@@ -25,6 +26,19 @@ export const HERO_DOT_PALETTE = {
   greys: GREYS,
   blues: BLUES,
 } as const;
+
+const pick = <T,>(xs: readonly T[]) =>
+  xs[Math.floor(Math.random() * xs.length)];
+
+/** One colour, drawn the way the hero draws its dots'. */
+export const heroDotColor = () => {
+  const { accent, pale, greys, blues } = HERO_DOT_PALETTE;
+  const u = Math.random();
+  if (u < accent.share) return accent.color;
+  if (u < accent.share + pale.share) return pale.color;
+  const family = Math.random() < 0.5 ? greys : blues;
+  return mix(pick(family), pick(family), Math.random());
+};
 
 /** Each line's wave height, as a share of 24px: 12–24px. */
 const WAVE_AMP_RANGE: [number, number] = [0.5, 1];

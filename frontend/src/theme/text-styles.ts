@@ -135,7 +135,7 @@ export const textStyles = defineTextStyles({
         fontFamily: "body",
         fontSize: "1rem", // 16px
         fontWeight: "400",
-        letterSpacing: "-0.02em",
+        letterSpacing: "-0.01em",
         lineHeight: "1.4",
       },
     },
@@ -144,7 +144,7 @@ export const textStyles = defineTextStyles({
         fontFamily: "body",
         fontSize: { base: "0.75rem", md: "0.875rem" }, // 12px → 14px
         fontWeight: "400",
-        letterSpacing: "-0.01em",
+        letterSpacing: "0",
         lineHeight: "1.4",
       },
     },

@@ -1,7 +1,6 @@
 import { CanvasFill } from "@/features/hero-lab/hero-shared";
-import { HERO_DOT_PALETTE } from "@/features/hero-lab/heroes/quick-sediment-hero";
+import { heroDotColor } from "@/features/hero-lab/heroes/quick-sediment-hero";
 import { hash2, useCanvasLoop } from "@/features/hero-lab/use-canvas-loop";
-import { mix } from "color2k";
 import React from "react";
 
 /**
@@ -86,16 +85,6 @@ const pick = <T,>(xs: readonly T[]) =>
 const smooth = (x: number) => {
   const t = Math.min(Math.max(x, 0), 1);
   return t * t * (3 - 2 * t);
-};
-
-/** A colour drawn the way the hero draws its dots'. */
-const heroColor = () => {
-  const { accent, pale, greys, blues } = HERO_DOT_PALETTE;
-  const u = Math.random();
-  if (u < accent.share) return accent.color;
-  if (u < accent.share + pale.share) return pale.color;
-  const family = Math.random() < 0.5 ? greys : blues;
-  return mix(pick(family), pick(family), Math.random());
 };
 
 type Rect = { x: number; y: number; w: number; h: number };
@@ -259,7 +248,7 @@ const makeCluster = (spot: Rect, now: number): Cluster => {
     g: new Uint8Array(n),
     ink: new Float32Array(n),
     square: new Uint8Array(n),
-    color: Array.from({ length: n }, heroColor),
+    color: Array.from({ length: n }, heroDotColor),
     inside: new Uint8Array(n),
     states: kind === "cyclic" ? randInt(4, 6) : 3,
     seed: randInt(1, 1e6),

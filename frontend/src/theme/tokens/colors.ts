@@ -252,7 +252,7 @@ export const colors = defineTokens.colors({
     0: { value: "#FFFFFF" },
     50: { value: "#FAFBF9" }, // footer
     100: { value: "#FAFAFA" }, // nav + section surface ← brand (Supporting Neutral)
-    200: { value: "#F6F6F6" }, // page
+    200: { value: "#F8F8F8" }, // page, and the default surface
     300: { value: "#F5F5F6" }, // inset chip ← brand (gray #F5F5F5)
     350: { value: "#F1F1F2" }, // testimonial cards — halfway from 300 to 400
     400: { value: "#EDEDEE" },

@@ -1,119 +1,134 @@
-import { PageHero } from "@/components/layout/page-hero";
-import { HeroGridCanvas } from "@/features/landing/sections/hero-grid-canvas";
-import { SectionHeading } from "@/features/landing/sections/section-heading";
-import { SolutionContentSection } from "@/features/solutions/solution-content-layout";
-import {
-  SOLUTIONS_PATH,
-  SOLUTION_CAPABILITIES,
-} from "@/features/solutions/solutions";
-import { Box, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
-import { ArrowRight } from "lucide-react";
+import { Grid, GridCol } from "@/components/layout/grid";
+import { Section } from "@/components/layout/section";
+import { SiteFooter } from "@/components/site/site-footer";
+import { SiteNav } from "@/components/site/site-nav";
+import { dottedRule } from "@/components/site/split-card";
+import { GridCircleDots } from "@/features/solutions/grid-circle-dots";
+import { SOLUTION_CAPABILITIES } from "@/features/solutions/solutions";
+import { Box, Text } from "@chakra-ui/react";
 import React from "react";
-import { Link } from "react-router-dom";
 
-const openSalesMail = () =>
-  window.open("mailto:sales@rengoai.com", "_blank", "noopener,noreferrer");
+const INTRO =
+  "We build and run your firm's data infrastructure, then develop the applications and agents that work on top of it.";
+
+/** Each approach card's gloss, as set in the design. */
+const APPROACH_BODY =
+  "We help you consolidate existing tools for portfolio monitoring, unify that data, and ingest native files without templates or manual review.";
 
 /**
- * The Solutions overview: the two capabilities as cards linking to their own
- * pages, then the framing pillars.
+ * One step of the approach: index on top, title and gloss under it, off a
+ * dotted rule on the left like the /v3 metric cards.
  */
-export const SolutionsPage: React.FC = () => (
-  <Box fontFamily="body" bg="slate.10">
-    <PageHero
-      headline="We build it. We run it."
-      subtext="We build and run your firm's data infrastructure, then develop the applications and agents that work on top of it."
-      ctaLabel="Get started"
-      onCtaClick={openSalesMail}
-      background={<HeroGridCanvas />}
-    />
-
-    <SolutionContentSection bg="slate.10" borderTop>
-      <SectionHeading maxW="720px">
-        What we build
-        <br />
-        <Box as="span" color="slate.50" fontWeight={300}>
-          Applied AI and data infrastructure
-        </Box>
-      </SectionHeading>
-
-      <Grid
-        templateColumns={{ base: "1fr", md: "repeat(2, minmax(0, 1fr))" }}
-        gap={{ base: 4, md: 5 }}
-        w="full"
+const ApproachCard: React.FC<{
+  index: number;
+  title: string;
+  body: string;
+}> = ({ index, title, body }) => (
+  <Box
+    flex="1 0 0"
+    minW={0}
+    display="flex"
+    flexDirection="column"
+    alignItems="flex-start"
+    gap="16px"
+    p="20px"
+    {...dottedRule("site.border.dashed")}
+  >
+    <Text textStyle="label" lineHeight="1" letterSpacing="0" color="slate.100">
+      {index}
+    </Text>
+    <Box display="flex" flexDirection="column" gap="12px" w="330px" maxW="full">
+      <Text
+        fontSize="20px"
+        lineHeight="1"
+        letterSpacing="-0.6px"
+        color="site.fg"
       >
-        {SOLUTION_CAPABILITIES.map((c) => {
-          const Icon = c.icon;
-          return (
-            <GridItem key={c.slug}>
-              <Link
-                to={`${SOLUTIONS_PATH}/${c.slug}`}
-                style={{
-                  textDecoration: "none",
-                  display: "block",
-                  height: "100%",
-                }}
-              >
-                <Flex
-                  role="group"
-                  direction="column"
-                  gap={5}
-                  h="full"
-                  bg="slate.20"
-                  border="1px solid"
-                  borderColor="slate.30"
-                  borderRadius="3px"
-                  p={{ base: 6, md: 8 }}
-                  transition="border-color 150ms ease"
-                  _hover={{ borderColor: "accent.link" }}
-                >
-                  <Box color="accent.link" display="flex">
-                    <Icon size={22} strokeWidth={1.75} />
-                  </Box>
-
-                  <Flex direction="column" gap={3} flex="1">
-                    <Text
-                      fontFamily="heading"
-                      fontWeight={350}
-                      fontSize={{ base: "18px", md: "22px" }}
-                      lineHeight={1.2}
-                      letterSpacing="-0.72px"
-                      color="indigo.900"
-                      m={0}
-                    >
-                      {c.title}
-                    </Text>
-                    <Text
-                      fontFamily="body"
-                      fontSize="16px"
-                      lineHeight="24px"
-                      color="slate.50"
-                      m={0}
-                    >
-                      {c.body}
-                    </Text>
-                  </Flex>
-
-                  <Flex
-                    align="center"
-                    gap={2}
-                    color="indigo.700"
-                    _groupHover={{ color: "accent.link" }}
-                    transition="color 150ms ease"
-                  >
-                    <Text fontFamily="body" fontSize="14px" m={0}>
-                      Learn more
-                    </Text>
-                    <Box display="flex">
-                      <ArrowRight size={15} strokeWidth={2} />
-                    </Box>
-                  </Flex>
-                </Flex>
-              </Link>
-            </GridItem>
-          );
-        })}
-      </Grid>
-    </SolutionContentSection>
+        {title}
+      </Text>
+      <Text fontSize="14px" lineHeight="1.4" color="site.fg.muted">
+        {body}
+      </Text>
+    </Box>
   </Box>
 );
+
+/**
+ * The Solutions overview, on the rebrand chrome: the promise on the page
+ * surface, then the approach — the two capabilities — on a white band.
+ */
+export const SolutionsPage: React.FC = () => {
+  const introRef = React.useRef<HTMLHeadingElement>(null);
+  return (
+    <Box bg="site.bg.page">
+      <SiteNav />
+
+      {/* --- Intro --------------------------------------------------------- */}
+      {/* Taller than the design's 633px band, to hold the figure under the copy.
+        Under it, right of centre, the hero's marks move between a grid and a
+        circle, the circle's top meeting the copy. */}
+      <Section
+        rhythm="none"
+        position="relative"
+        overflow="hidden"
+        bg="site.bg.surface"
+        pt="67px"
+        pb="80px"
+        // Room for the copy, the circle right under it, and a bottom margin.
+        minH={{ base: "660px", lg: "780px" }}
+      >
+        <GridCircleDots below={introRef} />
+        <Grid position="relative">
+          <GridCol span={{ base: 16, md: 12, lg: 8 }}>
+            {/* Eyebrow: the page's name, set as a label. */}
+            <Text textStyle="label" color="site.fg.muted" mb="16px">
+              Solutions
+            </Text>
+            <Text
+              ref={introRef}
+              as="h1"
+              textStyle="h4"
+              fontWeight={400}
+              lineHeight="1.1"
+              letterSpacing="-0.04em"
+              color="site.fg.strong"
+              maxW="682px"
+            >
+              {INTRO}
+            </Text>
+          </GridCol>
+        </Grid>
+      </Section>
+
+      {/* --- Our approach -------------------------------------------------- */}
+      <Section rhythm="none" bg="site.bg.raised" py="60px">
+        <Grid rowGap="16px">
+          <GridCol span={16} minH={{ lg: "138px" }}>
+            <Text textStyle="h3" color="site.fg.strong">
+              Our approach
+            </Text>
+          </GridCol>
+          <GridCol
+            span={16}
+            display="flex"
+            flexDirection={{ base: "column", md: "row" }}
+            minH={{ md: "301px" }}
+            borderRadius="4px"
+            overflow="clip"
+          >
+            {SOLUTION_CAPABILITIES.map((c, i) => (
+              <ApproachCard
+                key={c.slug}
+                index={i + 1}
+                title={c.title}
+                body={APPROACH_BODY}
+              />
+            ))}
+          </GridCol>
+        </Grid>
+      </Section>
+
+      <SiteFooter />
+    </Box>
+  );
+};

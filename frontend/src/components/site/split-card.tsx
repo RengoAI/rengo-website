@@ -5,7 +5,7 @@ import React from "react";
  * The card shape shared by the metrics band and the testimonials band.
  *
  * Both are the same object: a tall column held open to a fixed height, hung
- * off a dashed rule on its left edge, with one thing pinned to the top and
+ * off a dotted rule on its left edge, with one thing pinned to the top and
  * one to the bottom. Only the children differ — an index and a figure in one
  * case, a quote and an attribution in the other. Keeping them one component
  * is what guarantees the two bands stay dimensionally identical.
@@ -16,11 +16,37 @@ import React from "react";
 export type SplitCardProps = Omit<BoxProps, "top"> & {
   top: React.ReactNode;
   bottom: React.ReactNode;
+  /** Draw the dotted rule on the left edge. */
+  rule?: boolean;
+  /** The rule's colour, as a colour token path. */
+  ruleColor?: string;
 };
+
+/**
+ * CSS `dotted` borders don't let you set the gap, so the rule is a 1px-wide
+ * strip of repeating 2px tiles: one 1px dot, then 1px of nothing.
+ */
+export const dottedRule = (token: string) => ({
+  position: "relative" as const,
+  _before: {
+    content: '""',
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    width: "1px",
+    bgImage: `linear-gradient(to bottom, var(--rengo-colors-${token.replace(/\./g, "-")}) 1px, transparent 1px)`,
+    bgSize: "1px 2px",
+    bgRepeat: "repeat-y",
+    pointerEvents: "none",
+  },
+});
 
 export const SplitCard: React.FC<SplitCardProps> = ({
   top,
   bottom,
+  rule = true,
+  ruleColor = "site.border.dashedOnDark",
   ...rest
 }) => (
   <Box
@@ -31,9 +57,7 @@ export const SplitCard: React.FC<SplitCardProps> = ({
     gap="32px"
     h={{ base: "auto", lg: "472px" }}
     px="16px"
-    borderLeftWidth="1px"
-    borderLeftStyle="dotted"
-    borderLeftColor="site.border.dashedOnDark"
+    {...(rule ? dottedRule(ruleColor) : {})}
     {...rest}
   >
     {top}
@@ -56,7 +80,7 @@ export const MetricCard: React.FC<
   <SplitCard
     // Tucked in closer to the rule than SplitCard's 16px.
     pl="12px"
-    borderLeftColor="site.border.dashed"
+    ruleColor="site.border.dashed"
     top={
       // Set exactly like the caption, in the tint band's rule colour so
       // the index stays legible against the lighter rule.
@@ -103,10 +127,10 @@ export const WASH_BLUE = "#BCCFEC";
  * step leans further toward the blue.
  */
 const TESTIMONIAL_WASHES = {
-  /** Flat, no blobs — the site's default white (#F6F6F6), lighter than
-   * the testimonials band (canvas 400) it sits on. */
+  /** Flat, no blobs — the palest blue band colour (silver 100), lighter
+   * than the other two cards' blues. */
   plain: {
-    bg: "site.bg.surface",
+    bg: "site.bg.tintSubtle",
     bgImage: "none",
   },
   light: {
@@ -155,7 +179,7 @@ export const TestimonialCard: React.FC<
     p="1.5rem" // 24px
     {...TESTIMONIAL_WASHES[wash]}
     borderRadius="4px"
-    borderLeftWidth={0}
+    rule={false}
     // Primary.800 (#0C1D34) at 4%: barely lifts the card off the band.
     boxShadow="0 2px 3px rgba(12, 29, 52, 0.04)"
     top={
