@@ -56,10 +56,10 @@ export const MetricCard: React.FC<
   <SplitCard
     // Tucked in closer to the rule than SplitCard's 16px.
     pl="12px"
-    borderLeftColor="site.border.dashedOnTint"
+    borderLeftColor="site.border.dashed"
     top={
-      // Set like the use-case audience labels, but drawn in the divider's
-      // colour so the index reads as part of the rule.
+      // Set like the use-case audience labels, in the tint band's rule
+      // colour so the index stays legible against the lighter rule.
       <Text
         textStyle="label"
         fontWeight={300}

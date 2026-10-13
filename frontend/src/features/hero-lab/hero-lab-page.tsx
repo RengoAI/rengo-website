@@ -41,6 +41,32 @@ const SedimentHero: React.FC = () => (
     serifTitle
   />
 );
+
+/**
+ * Sediment with the opening float cut to about a second: start delays
+ * spread over 1s instead of 5s, and the pull takes hold five times sooner.
+ * Title set in Geist rather than Serrif, with the title, description and
+ * CTA left-aligned to the left edge of the page's grid. The float runs in
+ * a 400px band 100px below the middle of the hero, the copy sits 180px
+ * above centre, and the bed forms 160px under the CTA. Once formed, the
+ * bed rolls in a gentle wave.
+ */
+const QuickSedimentHero: React.FC = () => (
+  <LayerHero
+    lines={20}
+    lineGap={4}
+    dots={3000}
+    layerGap={160}
+    shift
+    drift={0.2}
+    copyAlign="edge"
+    floatBand={400}
+    floatOffset={100}
+    wave
+    lift={180}
+  />
+);
+
 /**
  * Sediment's dots, settling into a sheet instead of a bed: the parallelogram
  * from the v3 hero mesh (corners measured off a screenshot of it).
@@ -212,6 +238,26 @@ const VARIANTS: Variant[] = [
     layout:
       "Copy left-aligned at h1 scale with the dark CTA below; the bed starts about 151px under the CTA and runs to the bottom of the hero.",
   },
+  {
+    id: "10",
+    name: "Quick sediment",
+    reference:
+      "p5.js sketch — dots coalescing into a layer (06), shorter float",
+    Hero: QuickSedimentHero,
+    source:
+      "Sediment (06) with the opening float in the flow field cut from about 5s to 1s: start delays spread over the first second instead of the first five, and the pull toward the bed reaches half strength five times sooner. Same twenty lines, dot count, field, palette and 25s finish. The title is set in Geist (h3) instead of Serrif.",
+    concept: [
+      "The same sediment, with less time adrift: the knowledge leaves the currents of day-to-day work almost at once, so the bed starts forming within a second of the page loading.",
+      "Click the hero (or press R) to run it again.",
+    ],
+    legend: [
+      ["Drifting dots", "Knowledge moving through day-to-day work"],
+      ["Flow field", "The currents: email, meetings, drives"],
+      ["The bed", "The data layer, twenty lines deep"],
+    ],
+    layout:
+      "As Sediment, but the title, description and CTA are left-aligned to the left edge of the page's grid (column 1). The opening float is confined to a 400px band, centred 100px below the middle of the hero. The copy is raised 180px above centre, and the bed forms 160px under the CTA. As each dot lands it eases into a slow travelling wave (6px high, 640px crest to crest, 7s a cycle), each line a little behind the one above, so the formed bed rolls gently.",
+  },
 ];
 
 /**
@@ -310,7 +356,7 @@ const VariantSwitcher: React.FC<{
                 _hover={on ? {} : { color: "black" }}
               >
                 <Text as="span" textStyle="mono" opacity={0.6}>
-                  0{v.id}
+                  {v.id.padStart(2, "0")}
                 </Text>
                 <Text as="span" textStyle="body.sm">
                   {v.name}

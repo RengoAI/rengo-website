@@ -1,9 +1,10 @@
-import { GridCol } from "@/components/layout/grid";
+import { Grid, GridCol } from "@/components/layout/grid";
+import { GRID_COLUMNS, GRID_GUTTER } from "@/theme/tokens/layout";
 import { Section } from "@/components/layout/section";
-import { ArrowLink } from "@/components/site/arrow-link";
 import { ComplianceCardGroup } from "@/components/site/compliance-card";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
+import { NAV_H } from "@/features/hero-lab/hero-shared";
 import { GlyphBedHero } from "@/features/hero-lab/heroes/glyph-bed-hero";
 import { SiteOutro } from "@/components/site/site-outro";
 import { HeroDesignsButton } from "@/features/hero-lab/hero-designs-button";
@@ -11,20 +12,13 @@ import {
   MetricCard,
   TestimonialCard,
   type TestimonialWash,
-  WASH_GREY,
 } from "@/components/site/split-card";
 import {
   UseCaseAccordion,
   type UseCase,
 } from "@/components/site/use-case-accordion";
-import {
-  Box,
-  type BoxProps,
-  Image,
-  Text,
-  useBreakpointValue,
-} from "@chakra-ui/react";
-import { ArrowUpFromDot } from "lucide-react";
+import { Box, chakra, Image, Text } from "@chakra-ui/react";
+import { ArrowUpFromDot, CornerDownRight } from "lucide-react";
 import React from "react";
 
 const ART = "/img/rebrand/";
@@ -98,12 +92,6 @@ const TESTIMONIALS = [
   },
 ];
 
-/**
- * The metrics band is a soft light-grey gradient: #F2F2F2 at the top, easing
- * into the page surface at the bottom so it melts into the testimonials.
- */
-const METRICS_WASH = `linear-gradient(180deg, ${WASH_GREY} 0%, var(--rengo-colors-site-bg-surface) 100%)`;
-
 const TESTIMONIAL_WASH_ORDER: TestimonialWash[] = ["plain", "mid", "deep"];
 
 const COMPLIANCE = [
@@ -126,195 +114,6 @@ const COMPLIANCE = [
     description: "Security controls suitably implemented. Continuously tested.",
   },
 ];
-
-/**
- * Labelled tick marks running down the left edge of the solution diagram, at a
- * % of the diagram's height.
- */
-const DIAGRAM_ANNOTATIONS: [string, number][] = [
-  ["Applications", 15.1],
-  ["Agents", 42.6],
-  ["Data ontology", 70.6],
-];
-
-// Source sizes (w, h in px) of the trimmed layer renders. Every layer renders
-// at the same width; each overlaps the top 25% of the one beneath it.
-const SOLUTION_LAYER_SIZES: [number, number][] = [
-  [1297, 782],
-  [1297, 782],
-  [1297, 782],
-];
-const SOLUTION_LAYER_OVERLAP = 0.25;
-
-// Layer heights and tops in units of the shared layer width.
-const SOLUTION_LAYER_ASPECTS = SOLUTION_LAYER_SIZES.map(([w, h]) => h / w);
-const SOLUTION_LAYER_TOPS = SOLUTION_LAYER_ASPECTS.reduce<number[]>(
-  (tops, aspect, i) =>
-    i === 0
-      ? [0]
-      : [
-          ...tops,
-          tops[i - 1] +
-            SOLUTION_LAYER_ASPECTS[i - 1] -
-            aspect * SOLUTION_LAYER_OVERLAP,
-        ],
-  [],
-);
-const SOLUTION_STACK_ASPECT =
-  SOLUTION_LAYER_TOPS[SOLUTION_LAYER_TOPS.length - 1] +
-  SOLUTION_LAYER_ASPECTS[SOLUTION_LAYER_ASPECTS.length - 1];
-
-const SOLUTION_LAYERS = SOLUTION_LAYER_TOPS.map((top, i) => ({
-  src: `solution-layer-${i + 1}.png`,
-  top: `${(top / SOLUTION_STACK_ASPECT) * 100}%`,
-  // Layer 1 sits in front, layer 3 at the back.
-  zIndex: SOLUTION_LAYER_SIZES.length - i,
-}));
-
-// The diagram is scroll-driven: the copy pins while the diagram column
-// scrolls up past it, and each layer rises into place as a function of
-// progress (0 = the section has scrolled SOLUTION_START_PX past the viewport
-// top, 1 = the copy is about to release). These are each layer's
-// [start, end] progress.
-const LAYER_SCROLL_WINDOWS: [number, number][] = [
-  [0, 0.4],
-  [0.3, 0.7],
-  [0.6, 1],
-];
-const SOLUTION_START_PX = 0;
-const LAYER_RISE_PX = 160;
-const LABEL_RISE_PX = 40;
-// Space above the diagram, so it starts low in the viewport when the copy pins
-// and moves in from below while the copy holds.
-const SOLUTION_SCROLL_ROOM = "70vh";
-// The stack's base height fits the viewport below the nav (~52px) and above
-// the section's bottom padding (80px), less 24px of breathing room top and
-// bottom. SOLUTION_GRAPHIC_SCALE enlarges it from there; above 1 the stack is
-// taller than the viewport and scrolls past the pinned copy.
-const SOLUTION_GRAPHIC_SCALE = 1.62;
-const SOLUTION_STACK_HEIGHT = `calc(${SOLUTION_GRAPHIC_SCALE} * (min(869px, 100vh - 140px) - 48px))`;
-const SOLUTION_STAGE_HEIGHT = `calc(${SOLUTION_STACK_HEIGHT} + 48px)`;
-
-const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
-const easeOutCubic = (x: number) => 1 - (1 - x) ** 3;
-
-/** Hidden until scroll drives it in; shown as-is for reduced motion. */
-const scrollRevealProps = (rise: number) => ({
-  opacity: 0,
-  transform: `translateY(${rise}px)`,
-  willChange: "opacity, transform",
-  css: {
-    "@media (prefers-reduced-motion: reduce)": {
-      opacity: 1,
-      transform: "none",
-    },
-  },
-});
-
-/** The three layer renders, absolutely placed in a stack-sized box. */
-const SolutionLayers: React.FC<{
-  /** Collects each layer for the scroll animation; omit for a static stack. */
-  layerRefs?: React.MutableRefObject<(HTMLImageElement | null)[]>;
-}> = ({ layerRefs }) =>
-  SOLUTION_LAYERS.map(({ src, top, zIndex }, i) => (
-    <Image
-      key={src}
-      ref={(node) => {
-        if (layerRefs) layerRefs.current[i] = node;
-      }}
-      src={`${ART}${src}`}
-      alt=""
-      position="absolute"
-      left={0}
-      top={top}
-      w="full"
-      h="auto"
-      maxW="none"
-      zIndex={zIndex}
-      {...(layerRefs && scrollRevealProps(LAYER_RISE_PX))}
-    />
-  ));
-
-/** A label and its dotted rule, at a % of the diagram's height. */
-const SolutionAnnotation: React.FC<{
-  label: string;
-  top: number;
-  /** The rule always ends at the same x, so this sets the whole width. */
-  left: BoxProps["left"];
-  w: BoxProps["w"];
-  labelRef?: React.Ref<HTMLDivElement>;
-  reveal?: boolean;
-}> = ({ label, top, left, w, labelRef, reveal = false }) => (
-  <Box
-    ref={labelRef}
-    position="absolute"
-    left={left}
-    w={w}
-    // Lifted 20px off its layer mark, so the bent tail points down onto it.
-    top={`calc(${top}% - 20px)`}
-    display="flex"
-    alignItems="center"
-    gap="8px"
-    {...(reveal && scrollRevealProps(LABEL_RISE_PX))}
-  >
-    <Text textStyle="label" color="site.fg.onDarkSubtle" whiteSpace="nowrap">
-      {label}
-    </Text>
-    <Box
-      flex="1"
-      position="relative"
-      borderTopWidth="1px"
-      borderTopStyle="dotted"
-      borderTopColor="soot.600"
-    >
-      {/* The rule's tail: bends 30° downward off its right end, pointing
-          into the layer below it. */}
-      <Box
-        position="absolute"
-        left="100%"
-        top="-1px"
-        w="32px"
-        borderTopWidth="1px"
-        borderTopStyle="dotted"
-        borderTopColor="soot.600"
-        transform="rotate(30deg)"
-        transformOrigin="0 0"
-      />
-    </Box>
-  </Box>
-);
-
-/**
- * The diagram below `lg`: the finished stack, fully built and in normal flow.
- * Tablet narrows it and pushes it right so the annotations have room on its
- * left; mobile drops the annotations and gives the stack the full width.
- */
-const StaticSolutionDiagram: React.FC = () => (
-  <Box position="relative">
-    <Box
-      position="relative"
-      mx={{ base: "auto", md: "0" }}
-      ml={{ md: "auto" }}
-      w={{ base: "90%", md: "63%" }}
-      aspectRatio={1 / SOLUTION_STACK_ASPECT}
-      isolation="isolate"
-      aria-hidden
-    >
-      <SolutionLayers />
-    </Box>
-    <Box display={{ base: "none", md: "block" }}>
-      {DIAGRAM_ANNOTATIONS.map(([label, top]) => (
-        <SolutionAnnotation
-          key={label}
-          label={label}
-          top={top}
-          left="0"
-          w="44%"
-        />
-      ))}
-    </Box>
-  </Box>
-);
 
 /**
  * The logo strip, drifting slowly right to left on a loop. Two copies of the
@@ -361,49 +160,147 @@ const LogoMarquee: React.FC = () => (
   </Box>
 );
 
-/** The layered solution graphic and its annotations, driven by scroll. */
-const SolutionDiagram: React.FC<{
-  /** The cell the pinned copy travels in; the build-up ends as it releases. */
-  trackRef: React.RefObject<HTMLDivElement>;
-}> = ({ trackRef }) => {
-  const stageRef = React.useRef<HTMLDivElement>(null);
-  const layerRefs = React.useRef<(HTMLImageElement | null)[]>([]);
-  const labelRefs = React.useRef<(HTMLDivElement | null)[]>([]);
+/** The four layers of the foundation, top to bottom. */
+const FOUNDATION_LAYERS: { title: string; description: string }[] = [
+  {
+    title: "Applications",
+    description:
+      "We connect your source systems, structure them into permission-ed ontology, and build applications and agents for your work.",
+  },
+  {
+    title: "Agents",
+    description:
+      "We connect your source systems, structure them into permission-ed ontology, and build applications and agents for your work.",
+  },
+  {
+    title: "Data ontology",
+    description:
+      "We connect your source systems, structure them into permission-ed ontology, and build applications and agents for your work.",
+  },
+  {
+    title: "Infrastructure",
+    description:
+      "Configuration for agents to run securely and performance. Database isolation, provisioned for agents and user requests to only reach what is necessary. Row-level security",
+  },
+];
 
+/** A layer's name over its description. */
+/** Columns a callout spans from lg, and how many its description fills. */
+const FOUNDATION_COPY_SPAN = 5;
+const FOUNDATION_DESCRIPTION_SPAN = 4;
+/** From lg, how far a callout's divider runs: past its copy into the render. */
+const FOUNDATION_DIVIDER_W = "654px";
+
+/**
+ * A layer's callout: name, description, and a dotted divider beneath that
+ * runs out to the layer's render.
+ */
+const FoundationLayer: React.FC<{ title: string; description: string }> = ({
+  title,
+  description,
+}) => (
+  <Box display="flex" flexDirection="column" gap="16px" alignItems="flex-start">
+    <Box display="flex" flexDirection="column" gap="8px" w="full">
+      <Text
+        textStyle="h6"
+        fontSize="1.125rem" // 18px
+        fontWeight={400}
+        lineHeight="1.1"
+        letterSpacing="-0.5px"
+        color="site.fg"
+      >
+        {title}
+      </Text>
+      <Text
+        textStyle="body.sm"
+        fontWeight={400}
+        lineHeight="1.25"
+        color="site.fg.muted"
+        // From lg the callout spans FOUNDATION_COPY_SPAN columns; the
+        // description stops at FOUNDATION_DESCRIPTION_SPAN of them.
+        maxW={{
+          lg: `calc((100% - ${FOUNDATION_COPY_SPAN - 1} * ${GRID_GUTTER}) * ${
+            FOUNDATION_DESCRIPTION_SPAN / FOUNDATION_COPY_SPAN
+          } + ${FOUNDATION_DESCRIPTION_SPAN - 1} * ${GRID_GUTTER})`,
+        }}
+      >
+        {description}
+      </Text>
+    </Box>
+    <Box
+      aria-hidden
+      w={{ base: "full", lg: FOUNDATION_DIVIDER_W }}
+      maxW={{ base: "full", lg: "none" }}
+      borderTopWidth="1px"
+      borderTopStyle="dotted"
+      borderTopColor="site.border.dashed"
+    />
+  </Box>
+);
+
+// Source sizes (w, h in px) of the foundation layer renders, one per layer
+// in FOUNDATION_LAYERS order. Every render shows at the same width.
+const FOUNDATION_LAYER_SIZES: [number, number][] = [
+  [1297, 782],
+  [1297, 782],
+  [1297, 872],
+  [1297, 872],
+];
+/** Each render tucks this share of its height under the one above. */
+const FOUNDATION_LAYER_OVERLAP = 0.3;
+/** Widest a render gets; narrower when its column is. */
+const FOUNDATION_LAYER_MAX_W = { base: "642px", lg: "826px" };
+/** Columns the renders take from lg, out of GRID_COLUMNS. */
+const FOUNDATION_RENDER_SPAN = 11;
+
+/**
+ * A render's width from lg, in terms of its row's width (a row's `100%`):
+ * FOUNDATION_RENDER_SPAN columns and the gutters between them, capped at
+ * the max. Lets a row work out its pull-up from its render's height.
+ */
+const FOUNDATION_RENDER_W = `min(${FOUNDATION_LAYER_MAX_W.lg}, (100% - ${
+  GRID_COLUMNS - 1
+} * ${GRID_GUTTER}) * ${FOUNDATION_RENDER_SPAN / GRID_COLUMNS} + ${
+  FOUNDATION_RENDER_SPAN - 1
+} * ${GRID_GUTTER})`;
+
+/** px between the nav and the foundation heading while it's pinned. */
+const FOUNDATION_HEADING_TOP = 60;
+
+/**
+ * The unified data foundation on a white band. Each layer is one row: its
+ * copy on the left and its render on the right, flush to the right edge.
+ * From lg each row pulls up by 30% of its render's height, so the planes
+ * stack on one another, the top layer in front. The row is exactly as tall
+ * as its render, so the copy, centred in the row, sits level with the
+ * plane's centre.
+ */
+/** Share of the section the pinned heading has passed when it fades out. */
+const FOUNDATION_HEADING_FADE_AT = 0.8;
+
+/**
+ * True once a point `pinTop` px down the viewport (where a heading pins) has
+ * passed `at` of the way down the section enclosing `ref`, and false again
+ * above it. For fading a pinned heading out as its section ends.
+ */
+const useFadeOutPast = (
+  ref: React.RefObject<HTMLElement>,
+  pinTop: number,
+  at: number,
+): boolean => {
+  const [past, setPast] = React.useState(false);
   React.useEffect(() => {
-    // Reduced motion keeps the static, fully shown diagram from the CSS.
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
     let frame = 0;
     const update = () => {
       frame = 0;
-      // The copy releases when its cell's bottom reaches the viewport bottom.
-      const track = trackRef.current;
-      const section = track?.closest("section");
-      if (!track || !section) return;
-      const scrolled = -section.getBoundingClientRect().top;
-      const untilRelease =
-        track.getBoundingClientRect().bottom - window.innerHeight;
-      const progress = clamp01(
-        (scrolled - SOLUTION_START_PX) /
-          (scrolled + untilRelease - SOLUTION_START_PX),
-      );
-
-      LAYER_SCROLL_WINDOWS.forEach(([start, end], i) => {
-        const eased = easeOutCubic(clamp01((progress - start) / (end - start)));
-        const apply = (node: HTMLElement | null, rise: number) => {
-          if (!node) return;
-          node.style.opacity = String(eased);
-          node.style.transform = `translateY(${(1 - eased) * rise}px)`;
-        };
-        apply(layerRefs.current[i], LAYER_RISE_PX);
-        apply(labelRefs.current[i], LABEL_RISE_PX);
-      });
+      const section = ref.current?.closest("section");
+      if (!section) return;
+      const box = section.getBoundingClientRect();
+      setPast((pinTop - box.top) / box.height > at);
     };
     const schedule = () => {
       if (!frame) frame = requestAnimationFrame(update);
     };
-
     update();
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule);
@@ -412,176 +309,257 @@ const SolutionDiagram: React.FC<{
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
     };
-  }, [trackRef]);
-
-  return (
-    // Once built, the stack pins: 76px down (below the nav) when it fits the
-    // viewport, otherwise with its bottom 24px above the viewport bottom. It
-    // holds until the end of its column, as the FDE copy comes up beside it.
-    <Box
-      ref={stageRef}
-      position="sticky"
-      top={`min(76px, calc(100vh - ${SOLUTION_STAGE_HEIGHT} - 24px))`}
-      h={SOLUTION_STAGE_HEIGHT}
-    >
-      {/* The stack is sized to the stage's height, centred vertically and
-          pushed to its right edge, so every layer shows in full. `isolation`
-          keeps the layer z-indices below the annotations. */}
-      <Box
-        position="absolute"
-        right={0}
-        top="50%"
-        h={SOLUTION_STACK_HEIGHT}
-        aspectRatio={1 / SOLUTION_STACK_ASPECT}
-        transform="translateY(-50%)"
-        isolation="isolate"
-        aria-hidden
-      >
-        <SolutionLayers layerRefs={layerRefs} />
-      </Box>
-      {DIAGRAM_ANNOTATIONS.map(([label, top], i) => (
-        <SolutionAnnotation
-          key={label}
-          label={label}
-          top={top}
-          left="130px"
-          w="256px"
-          reveal
-          labelRef={(node) => {
-            labelRefs.current[i] = node;
-          }}
-        />
-      ))}
-    </Box>
-  );
+  }, [ref, pinTop, at]);
+  return past;
 };
 
-const SolutionCopy: React.FC = () => (
-  <>
-    <Text textStyle="h4" fontWeight={300} color="site.fg.onDark">
-      To solve this, we build an agentic and unified data foundation.
-    </Text>
-    <Text textStyle="body.sm" fontWeight={300} color="site.fg.onDarkSubtle">
-      We connect your source systems, structure them into permission-ed
-      ontology, and build applications and agents for your work.
-    </Text>
-  </>
-);
-
-const FdeCopy: React.FC = () => (
-  <>
-    <Text textStyle="h4" fontWeight={300} color="site.fg.onDark" maxW="340px">
-      We manage your data from
-      <Box as="span" color="site.accent">
-        {" "}
-        strategy → deployment
-      </Box>
-    </Text>
-    <Text
-      textStyle="body.sm"
-      fontWeight={300}
-      color="site.fg.onDarkSubtle"
-      maxW="330px"
-    >
-      We bring elite engineering and operate in a forward deployment model to
-      tailor these systems to your firm&rsquo;s data, tool stack, and steward
-      the deployment.
-    </Text>
-    {/* 24px on top of the column's 16px gap: 40px below the copy. */}
-    <ArrowLink
-      href="/solutions/applied-ai"
-      mt="24px"
-      color="site.fg.onDark"
-      fontWeight={300}
-      gap="12px"
-    >
-      Learn more
-    </ArrowLink>
-  </>
-);
-
-/** Shared by the copy columns: a left-aligned stack 16px apart. */
-const copyColumnProps = {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "flex-start",
-  gap: "16px",
-} as const;
+/**
+ * Each layer row fades out as it rises: fully shown while its centre is
+ * below the middle of the viewport, gone by the time it reaches the pinned
+ * heading. Driven straight from scroll, so it eases back in on the way down.
+ */
+const FOUNDATION_ROW_FADE_END = NAV_H + FOUNDATION_HEADING_TOP;
 
 /**
- * The solution diagram and the FDE copy share one dark band. The solution copy
- * pins while the layered stack scrolls up and builds; the stack then pins
- * while the solution copy moves on, until the FDE copy has come up beside it.
+ * Fades the `[data-row-fade]` parts of each `[data-row]` inside `ref`'s
+ * section by how far the row's centre has risen past the viewport's middle,
+ * reaching 0 at `end` px from the top. Reduced motion leaves them shown.
  */
-const ScrollingSolutionSection: React.FC = () => {
-  const copyTrackRef = React.useRef<HTMLDivElement>(null);
+const useRowFade = (ref: React.RefObject<HTMLElement>, end: number) => {
+  React.useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const section = ref.current?.closest("section");
+      if (!section) return;
+      const mid = window.innerHeight / 2;
+      section.querySelectorAll<HTMLElement>("[data-row]").forEach((row) => {
+        const box = row.getBoundingClientRect();
+        const centre = box.top + box.height / 2;
+        const t = Math.min(Math.max((mid - centre) / (mid - end), 0), 1);
+        // Smoothstep, so the fade starts and finishes gently.
+        const opacity = String(1 - t * t * (3 - 2 * t));
+        row
+          .querySelectorAll<HTMLElement>("[data-row-fade]")
+          .forEach((part) => (part.style.opacity = opacity));
+      });
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+    };
+  }, [ref, end]);
+};
 
+const SolutionSection: React.FC = () => {
+  const headingRef = React.useRef<HTMLParagraphElement>(null);
+  useRowFade(headingRef, FOUNDATION_ROW_FADE_END);
+  const headingGone = useFadeOutPast(
+    headingRef,
+    NAV_H + FOUNDATION_HEADING_TOP,
+    FOUNDATION_HEADING_FADE_AT,
+  );
   return (
     <Section
-      grid
-      rhythm="tight"
-      bg="site.bg.dark"
-      gridProps={{
-        // Row 1 is the solution copy's pinned stretch; row 2 the FDE copy.
-        gridTemplateRows: `calc(${SOLUTION_SCROLL_ROOM} + ${SOLUTION_STAGE_HEIGHT}) auto`,
-      }}
+      bg="site.bg.surface"
+      borderTopRadius="4px"
+      isolation="isolate"
+      // Keeps the heading's strip from showing above the section before it
+      // pins. `clip`, not `hidden`, so the heading still sticks.
+      overflow="clip"
     >
-      <GridCol span={4} gridRow={1}>
-        {/* Fills the row; the copy inside stays pinned at the viewport's
-            centre while the diagram scrolls up and builds. */}
-        <Box ref={copyTrackRef} h="full">
-          <Box
-            {...copyColumnProps}
-            position="sticky"
-            top={0}
-            h="100vh"
-            justifyContent="center"
-          >
-            <SolutionCopy />
-          </Box>
-        </Box>
-      </GridCol>
-      {/* Spans both rows, so the pinned stack holds through the FDE copy. */}
-      <GridCol span={12} gridRow="1 / span 2" pt={SOLUTION_SCROLL_ROOM}>
-        <SolutionDiagram trackRef={copyTrackRef} />
-      </GridCol>
-      <GridCol
-        span={4}
-        gridRow={2}
-        {...copyColumnProps}
-        pt="160px"
-        // Extra room below keeps the stack pinned while the FDE copy rises
-        // further up the viewport.
-        pb="274px"
+      {/* The section's heading: top left, over both the renders and the
+        copy. From lg it pins FOUNDATION_HEADING_TOP under the nav while
+        the layers scroll up past it, and leaves with the section's bottom
+        edge. */}
+      <Grid
+        pb={{ base: "48px", lg: "40px" }}
+        position={{ lg: "sticky" }}
+        top={{ lg: `${NAV_H + FOUNDATION_HEADING_TOP}px` }}
+        zIndex={FOUNDATION_LAYERS.length + 1}
+        pointerEvents="none"
+        // Fades out, strip and all, once the section is mostly scrolled.
+        opacity={headingGone ? 0 : 1}
+        transition="opacity 300ms ease"
+        css={{
+          "@media (prefers-reduced-motion: reduce)": { transition: "none" },
+        }}
       >
-        <FdeCopy />
-      </GridCol>
+        {/* A band-coloured strip, edge to edge, from the nav's bottom to just
+          under the heading, so nothing shows as it scrolls up beneath.
+          Before the heading pins, it sits in the section's own top padding,
+          the same colour. */}
+        <Box
+          aria-hidden
+          display={{ base: "none", lg: "block" }}
+          position="absolute"
+          top={`-${FOUNDATION_HEADING_TOP}px`}
+          bottom="32px"
+          left="calc(-1 * var(--site-gutter))"
+          right="calc(-1 * var(--site-gutter))"
+          bg="site.bg.surface"
+        />
+        <GridCol
+          span={{ base: 16, md: 10, lg: 8 }}
+          position="relative"
+          pointerEvents={headingGone ? "none" : "auto"}
+        >
+          <Text
+            ref={headingRef}
+            textStyle="h4"
+            fontWeight={400}
+            lineHeight="1.1"
+            letterSpacing="-0.5px"
+            color="site.fg"
+          >
+            To solve this, we build a{" "}
+            <Box as="span" color="site.accent">
+              unified data foundation
+            </Box>{" "}
+            for your team
+          </Text>
+        </GridCol>
+      </Grid>
+      {FOUNDATION_LAYERS.map((layer, i) => {
+        const [w, h] = FOUNDATION_LAYER_SIZES[i];
+        return (
+          <Grid
+            key={layer.title}
+            data-row
+            rowGap="24px"
+            pb={{ base: "64px", lg: 0 }}
+            mt={
+              i === 0
+                ? undefined
+                : {
+                    lg: `calc(${FOUNDATION_RENDER_W} * ${
+                      (-h / w) * FOUNDATION_LAYER_OVERLAP
+                    })`,
+                  }
+            }
+          >
+            {/* Text first in the source, so it reads above the render when
+              stacked; from lg it takes cols 1–5 and the render cols 6–16. */}
+            <GridCol
+              span={{ base: 16, md: 10, lg: FOUNDATION_COPY_SPAN }}
+              start={{ lg: 1 }}
+              gridRow={{ lg: 1 }}
+              alignSelf="center"
+              // The row's parts fade on their own rather than the row as a
+              // whole, which would flatten the renders' stacking order.
+              data-row-fade
+            >
+              <FoundationLayer {...layer} />
+            </GridCol>
+            <GridCol
+              span={{ base: 16, lg: FOUNDATION_RENDER_SPAN }}
+              start={{ lg: GRID_COLUMNS - FOUNDATION_RENDER_SPAN + 1 }}
+              gridRow={{ lg: 1 }}
+            >
+              <Image
+                data-row-fade
+                src={`${ART}foundation-layer-${i + 1}.png`}
+                alt=""
+                aria-hidden
+                position="relative"
+                // Nudged into the page's right padding, short of the
+                // screen's edge.
+                left={{ lg: "20px" }}
+                zIndex={FOUNDATION_LAYERS.length - i}
+                display="block"
+                w="full"
+                h="auto"
+                maxW={FOUNDATION_LAYER_MAX_W}
+                ml="auto"
+                aspectRatio={w / h}
+              />
+            </GridCol>
+          </Grid>
+        );
+      })}
     </Section>
   );
 };
 
 /**
- * Below `lg` there's no room for the copy and the stack side by side, so the
- * band simply stacks: solution copy, the built diagram, then the FDE copy.
+ * About the FDE service: the promise and its gloss top left, a link to the
+ * services top right. Held open to 538px, 60px short of the design's band.
  */
-const StackedSolutionSection: React.FC = () => (
-  <Section grid rhythm="tight" bg="site.bg.dark" gridProps={{ rowGap: "48px" }}>
-    <GridCol span={{ base: 16, md: 10 }} {...copyColumnProps}>
-      <SolutionCopy />
-    </GridCol>
-    <GridCol span={16}>
-      <StaticSolutionDiagram />
-    </GridCol>
-    <GridCol span={{ base: 16, md: 10 }} {...copyColumnProps}>
-      <FdeCopy />
+const FdeSection: React.FC = () => (
+  <Section
+    grid
+    rhythm="tight"
+    bg="site.bg.surface"
+    borderBottomRadius="4px"
+    minH={{ lg: "538px" }}
+  >
+    <GridCol
+      span={16}
+      display="flex"
+      flexDirection={{ base: "column", md: "row" }}
+      alignItems="flex-start"
+      gap="16px"
+    >
+      <Box
+        flex="1"
+        minW={0}
+        display="flex"
+        flexDirection="column"
+        alignItems="flex-start"
+        gap="16px"
+      >
+        <Text
+          textStyle="h4"
+          fontWeight={400}
+          lineHeight="1.1"
+          color="site.fg"
+          w="673px"
+          maxW="full"
+        >
+          We maintain your data over time and manage your systems from{" "}
+          <Box as="span" color="site.accent">
+            strategy → deployment
+          </Box>
+        </Text>
+        <Text
+          textStyle="body.sm"
+          fontWeight={300}
+          lineHeight="1.25"
+          color="site.fg"
+          w="438px"
+          maxW="full"
+        >
+          We bring elite engineering and operate in a forward deployment model
+          to tailor these systems to your firm&rsquo;s data, tool stack, and
+          steward the deployment.
+        </Text>
+      </Box>
+      <chakra.a
+        href="/solutions"
+        display="inline-flex"
+        alignItems="center"
+        gap="20px"
+        flexShrink={0}
+        textStyle="body.sm"
+        color="site.fg"
+        whiteSpace="nowrap"
+        transition="opacity 150ms ease"
+        _hover={{ opacity: 0.65 }}
+      >
+        See our services
+        <CornerDownRight size={12} strokeWidth={1.5} aria-hidden />
+      </chakra.a>
     </GridCol>
   </Section>
 );
-
-const SolutionSection: React.FC = () => {
-  const isDesktop = useBreakpointValue({ base: false, lg: true });
-  return isDesktop ? <ScrollingSolutionSection /> : <StackedSolutionSection />;
-};
 
 export const LandingV3Page: React.FC = () => (
   <Box bg="site.bg.page">
@@ -629,15 +607,19 @@ export const LandingV3Page: React.FC = () => (
       </GridCol>
     </Section>
 
-    {/* --- Solution + About the FDE service ------------------------------ */}
+    {/* --- Solution ------------------------------------------------------- */}
+    {/* Light band, static: the foundation's layers. */}
     <SolutionSection />
 
+    {/* --- About the FDE service ------------------------------------------- */}
+    <FdeSection />
+
     {/* --- Use cases ------------------------------------------------------ */}
-    <Section grid bg="site.bg.surface">
+    <Section grid bg="site.bg.tintSubtle">
       <GridCol span={16} pb="60px">
         <Text
           textStyle="h3"
-          color="site.fg.strong"
+          color="site.fg"
           maxW={{ base: "160px", md: "280px" }}
         >
           Unlock agent driven workflows
@@ -649,7 +631,7 @@ export const LandingV3Page: React.FC = () => (
     </Section>
 
     {/* --- How we perform -------------------------------------------------- */}
-    <Section grid rhythm="tight" bg={WASH_GREY} bgImage={METRICS_WASH}>
+    <Section grid rhythm="tight" bg="canvas.350">
       <GridCol
         span={16}
         display="flex"
@@ -660,7 +642,7 @@ export const LandingV3Page: React.FC = () => (
       >
         <Text
           textStyle="h3"
-          color="site.fg.strong"
+          color="site.fg"
           maxW={{ base: "160px", md: "360px" }}
         >
           How our system performs today
@@ -693,7 +675,7 @@ export const LandingV3Page: React.FC = () => (
         <Box display="flex" flexDirection="column" gap="8px">
           <Text
             textStyle="h3"
-            color="site.fg.strong"
+            color="site.fg"
             maxW={{ base: "160px", md: "296px" }}
           >
             Our customers in their own words

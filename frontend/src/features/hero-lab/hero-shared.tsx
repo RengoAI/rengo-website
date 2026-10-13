@@ -114,8 +114,8 @@ export const SolidCta: React.FC<{ tone?: "dark" | "light" } & BoxProps> = ({
     display="inline-flex"
     alignItems="center"
     cursor="pointer"
-    transition="opacity 150ms ease"
-    _hover={{ opacity: 0.88 }}
+    transition="opacity 150ms ease, background-color 150ms ease"
+    _hover={tone === "dark" ? { bg: "site.bg.ctaHover" } : { opacity: 0.88 }}
     {...rest}
   >
     <ArrowLink

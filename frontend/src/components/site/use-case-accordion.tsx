@@ -64,10 +64,11 @@ export const UseCaseAccordion: React.FC<{
             py="20px"
             borderTopWidth="1px"
             borderTopStyle="dotted"
-            borderTopColor="site.border.dashed"
+            borderTopColor="site.border.dashedSubtle"
             cursor="pointer"
             transition="background 150ms ease"
-            _hover={{ bg: "site.bg.tintSubtle" }}
+            // A step up from the blue band the list sits on.
+            _hover={{ bg: "site.bg.tint" }}
           >
             <GridCol span={{ base: 16, lg: 5 }}>
               <Text

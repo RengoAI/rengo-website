@@ -81,6 +81,17 @@ const WANDER_SPEED = 0.5;
 const WANDER_MAX = 1.8;
 const SPEED = 1.6; // base drift speed (px per 60fps frame)
 const PULL = 0.02; // spring strength toward the layer
+/**
+ * With `wave`: the formed bed rolls in a slow travelling wave. Each line
+ * runs a little behind the one above, so the bed bends instead of moving
+ * as one rigid sheet.
+ */
+const WAVE_AMP = 6; // px, peak displacement
+const WAVE_LENGTH = 640; // px, crest to crest
+const WAVE_PERIOD = 7; // seconds per cycle
+const WAVE_LINE_LAG = 0.004; // radians of phase per px down the bed
+/** px from its slot at which a landing dot starts to join the wave. */
+const WAVE_JOIN = 8;
 const TRAIL_ALPHA = 55; // lower = longer trails (0–255)
 // ------------------------------------------------------------------------
 
@@ -496,9 +507,20 @@ export const LayerHero: React.FC<{
   serifTitle?: boolean;
   /**
    * `start` left-aligns the description and button with the title's left
-   * edge. The title stays centered on the page.
+   * edge. The title stays centered on the page. `edge` left-aligns them
+   * too, and pins the block to the left edge of the page's grid.
    */
-  copyAlign?: "center" | "start";
+  copyAlign?: "center" | "start" | "edge";
+  /**
+   * px. Confine the opening float to a band this tall, centred in the hero:
+   * dots start inside it and wrap within it until the pull begins. Omitted,
+   * they use the hero's full height.
+   */
+  floatBand?: number;
+  /** px to move the float band down from the hero's centre. */
+  floatOffset?: number;
+  /** Once formed, the bed rolls in a gentle travelling wave. */
+  wave?: boolean;
   /** Heading step. The live hero uses `h1`, the same size as Ledger. */
   titleStyle?: "h1" | "h3";
   /**
@@ -529,9 +551,13 @@ export const LayerHero: React.FC<{
   serifTitle = false,
   mesh = false,
   copyAlign = "center",
+  floatBand,
+  floatOffset = 0,
+  wave = false,
   titleStyle = "h3",
 }) => {
   const ease = easeExponent(drift);
+  const left = copyAlign !== "center";
   const count = plane ? plane.cols * plane.rows : dots;
   const place = (all: Dot[], w: number, h: number, lineCount: number) =>
     plane
@@ -632,7 +658,9 @@ export const LayerHero: React.FC<{
       const inPlace = glyphs && !float;
       s.dots = Array.from({ length: n }, () => ({
         x: Math.random() * w,
-        y: Math.random() * h,
+        y: floatBand
+          ? (h - floatBand) / 2 + floatOffset + Math.random() * floatBand
+          : Math.random() * h,
         vx: 0,
         vy: 0,
         // In place, the delay is seconds until the glyph starts to appear.
@@ -825,8 +853,10 @@ export const LayerHero: React.FC<{
         if (d.x < 0) d.x += w;
         if (d.x > w) d.x -= w;
         if (p === 0) {
-          if (d.y < 0) d.y += h;
-          if (d.y > h) d.y -= h;
+          const band = Math.min(floatBand ?? h, h);
+          const y0 = (h - band) / 2 + floatOffset;
+          if (d.y < y0) d.y += band;
+          if (d.y > y0 + band) d.y -= band;
         }
       }
 
@@ -860,6 +890,21 @@ export const LayerHero: React.FC<{
         k,
       )},${lerp(GROUND[2], d.shade[2], k)})`;
 
+      // The wave: each dot eases into it over its last few px of landing,
+      // so the bed only moves once it has formed.
+      let y = d.y;
+      if (wave) {
+        const join = Math.min(
+          Math.max(1 - Math.abs(layerY + d.ty - d.y) / WAVE_JOIN, 0),
+          1,
+        );
+        const phase =
+          (d.tx / WAVE_LENGTH) * Math.PI * 2 +
+          d.ty * WAVE_LINE_LAG -
+          (elapsed / WAVE_PERIOD) * Math.PI * 2;
+        y += WAVE_AMP * Math.sin(phase) * join * join * (3 - 2 * join);
+      }
+
       // The trail: oldest first, each step back one RETAIN dimmer.
       const r = DOT_SIZE / 2;
       const still = p > 0.99 && Math.abs(d.vx) + Math.abs(d.vy) < 0.02;
@@ -870,11 +915,11 @@ export const LayerHero: React.FC<{
       }
       ctx.globalAlpha = 1;
       ctx.beginPath();
-      ctx.arc(d.x, d.y, r, 0, Math.PI * 2);
+      ctx.arc(d.x, y, r, 0, Math.PI * 2);
       ctx.fill();
 
       d.trail[d.head * 2] = d.x;
-      d.trail[d.head * 2 + 1] = d.y;
+      d.trail[d.head * 2 + 1] = y;
       d.head = (d.head + 1) % TRAIL_LEN;
       d.count = Math.min(d.count + 1, TRAIL_LEN);
     }
@@ -954,7 +999,12 @@ export const LayerHero: React.FC<{
         pointerEvents="none"
       >
         <Grid w="full">
-          <GridCol span={10} start={4} display="flex" justifyContent="center">
+          <GridCol
+            span={10}
+            start={copyAlign === "edge" ? 1 : 4}
+            display="flex"
+            justifyContent={copyAlign === "edge" ? "flex-start" : "center"}
+          >
             <Box
               ref={copy}
               position="relative"
@@ -962,15 +1012,15 @@ export const LayerHero: React.FC<{
               w={
                 titleStyle === "h1" && !serifTitle
                   ? "560px"
-                  : copyAlign === "start"
+                  : left
                     ? "fit-content"
                     : "full"
               }
               maxW="full"
               display="flex"
               flexDirection="column"
-              alignItems={copyAlign === "start" ? "flex-start" : "center"}
-              textAlign={copyAlign === "start" ? "left" : "center"}
+              alignItems={left ? "flex-start" : "center"}
+              textAlign={left ? "left" : "center"}
             >
               {/* Title and description set as the /v3 hero, with the title
                   in Regular. */}
@@ -983,7 +1033,7 @@ export const LayerHero: React.FC<{
                   ? { letterSpacing: "-0.04em", fontWeight: 400 }
                   : {})}
                 color="site.fg"
-                textAlign={copyAlign === "start" ? "left" : "center"}
+                textAlign={left ? "left" : "center"}
                 maxW="full"
               >
                 {HEADLINE}
@@ -994,7 +1044,7 @@ export const LayerHero: React.FC<{
                 fontWeight={300}
                 lineHeight="1.2"
                 color="site.fg.muted"
-                textAlign={copyAlign === "start" ? "left" : "center"}
+                textAlign={left ? "left" : "center"}
                 w="465px"
                 maxW="full"
                 mt="19px"

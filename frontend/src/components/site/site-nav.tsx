@@ -117,6 +117,7 @@ export const SiteNav: React.FC<{ overlay?: boolean }> = ({
         >
           <Box display={{ base: "none", md: "block" }}>
             <SolidCta
+              h="28px"
               onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
             />
           </Box>

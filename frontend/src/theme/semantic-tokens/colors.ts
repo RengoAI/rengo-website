@@ -447,6 +447,8 @@ export const semanticColors = defineSemanticTokens.colors({
       tintSubtle: { value: "{colors.silver.100}" },
       /** Filled brand surface — primary buttons. */
       brand: { value: "{colors.rengo.500}" },
+      /** The primary (dark) button's fill on hover. */
+      ctaHover: { value: "#0052A3" },
     },
     fg: {
       /** Body copy. */
@@ -473,6 +475,8 @@ export const semanticColors = defineSemanticTokens.colors({
       dashed: { value: "{colors.silver.300}" },
       /** Same rule, over a tinted band. */
       dashedOnTint: { value: "{colors.silver.400}" },
+      /** A lighter rule: the use-case rows. */
+      dashedSubtle: { value: "{colors.silver.200}" },
       /** Same rule, over a dark band — lifted so it still reads. */
       dashedOnDark: { value: "{colors.soot.500}" },
       /** Solid hairline on a dark band. */

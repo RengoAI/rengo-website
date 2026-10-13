@@ -133,7 +133,14 @@ const SEMANTIC_GROUPS: { group: string; tokens: string[] }[] = [
   },
   {
     group: "site.border",
-    tokens: ["DEFAULT", "dashed", "dashedOnTint", "dashedOnDark", "onDark"],
+    tokens: [
+      "DEFAULT",
+      "dashed",
+      "dashedSubtle",
+      "dashedOnTint",
+      "dashedOnDark",
+      "onDark",
+    ],
   },
 ];
 
