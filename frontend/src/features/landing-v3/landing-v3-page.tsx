@@ -4,10 +4,7 @@ import { ArrowLink } from "@/components/site/arrow-link";
 import { ComplianceCardGroup } from "@/components/site/compliance-card";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
-import {
-  GlyphBedHero,
-  heroCharset,
-} from "@/features/hero-lab/heroes/glyph-bed-hero";
+import { GlyphBedHero } from "@/features/hero-lab/heroes/glyph-bed-hero";
 import { SiteOutro } from "@/components/site/site-outro";
 import { HeroDesignsButton } from "@/features/hero-lab/hero-designs-button";
 import {
@@ -591,8 +588,8 @@ export const LandingV3Page: React.FC = () => (
     <SiteNav overlay />
 
     {/* --- Hero ---------------------------------------------------------- */}
-    {/* The hero lab's 09 Glyph bed: the copy's own letters drift down and
-        settle into the data layer under the CTA. */}
+    {/* Dots drift down and settle into the data layer under the CTA, on
+        the same dot sheet as the outro. */}
     <GlyphBedHero description={HERO_DESCRIPTION} underNav />
 
     {/* --- The problem & vision ------------------------------------------ */}
@@ -745,7 +742,7 @@ export const LandingV3Page: React.FC = () => (
       </GridCol>
     </Section>
 
-    <SiteOutro charset={heroCharset(HERO_DESCRIPTION)} />
+    <SiteOutro />
 
     <SiteFooter />
 

@@ -1,5 +1,6 @@
 import { SiteNav } from "@/components/site/site-nav";
 import { CoreHero } from "@/features/hero-lab/heroes/core-hero";
+import { GlyphBedHero } from "@/features/hero-lab/heroes/glyph-bed-hero";
 import { LayerHero } from "@/features/hero-lab/heroes/layer-hero";
 import { LedgerHero } from "@/features/hero-lab/heroes/ledger-hero";
 import { SpecimenHero } from "@/features/hero-lab/heroes/specimen-hero";
@@ -190,6 +191,26 @@ const VARIANTS: Variant[] = [
     ],
     layout:
       "As Plane: copy centred on columns 4–13 with the dark CTA below, the sheet running corner to corner behind it, and glyphs under the copy held back so the type stays clean.",
+  },
+  {
+    id: "9",
+    name: "Matrix",
+    reference:
+      "p5.js sketch — dots coalescing into a layer, falling as in the outro",
+    Hero: GlyphBedHero,
+    source:
+      "The live /v3 hero. 1,800 marks start high and fall straight down, about half as short vertical streaks and the rest as dots, settling into lines 11px apart that fill from about 151px under the copy to the hero's bottom edge, each onto a dot of the outro's sheet.",
+    concept: [
+      "The firm's raw material rains down out of day-to-day work and settles line on line into a bed of records the copy stands on.",
+      "The bed lands on the same dot sheet the outro uses, so the page opens and closes on one surface. Click the hero (or press R) to run it again.",
+    ],
+    legend: [
+      ["Falling streaks and dots", "Unstructured knowledge in motion"],
+      ["The bed", "The data layer, filling to the hero's edge"],
+      ["Dot sheet", "The shared surface the outro returns to"],
+    ],
+    layout:
+      "Copy left-aligned at h1 scale with the dark CTA below; the bed starts about 151px under the CTA and runs to the bottom of the hero.",
   },
 ];
 

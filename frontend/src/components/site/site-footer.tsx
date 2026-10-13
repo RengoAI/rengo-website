@@ -1,5 +1,6 @@
 import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
+import { WASH_GREY } from "@/components/site/split-card";
 import { chakra, Text } from "@chakra-ui/react";
 import React from "react";
 
@@ -14,10 +15,7 @@ export const SiteFooter: React.FC = () => (
     as="footer"
     rhythm="none"
     py={{ base: "64px", md: "80px", lg: "110px" }}
-    bg="site.bg.footer"
-    borderWidth="1px"
-    borderStyle="solid"
-    borderColor="site.border"
+    bg={WASH_GREY}
   >
     <Grid alignItems="center" rowGap={{ base: "32px", lg: "gridGutter" }}>
       <GridCol span={{ base: 16, lg: 4 }} display="flex" alignItems="center">

@@ -1,7 +1,13 @@
 import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import {
+  DotSheet,
+  sheetCenters,
+  sheetPitch,
+} from "@/components/site/mesh-field";
+import {
   CanvasFill,
+  Cursor,
   DESCRIPTION,
   HEADLINE,
   HERO_BOX,
@@ -115,6 +121,15 @@ const randomShade = () => {
   const f = Math.random();
   return [0, 1, 2].map((c) => lerp(a[c], b[c], f));
 };
+/**
+ * On the outro's sheet the dots stay in its grey, so the bed reads as more
+ * of that field rather than a blue band laid over it.
+ */
+const MESH_GREYS = [INK.soot300, INK.soot400, INK.soot500].map((c) =>
+  parseToRgba(c),
+);
+const meshShade = () =>
+  MESH_GREYS[Math.floor(Math.random() * MESH_GREYS.length)];
 /**
  * Unsettled dots sit this far from the ground toward their shade; joined,
  * they take it in full. Higher than on a dark ground, where pale dots
@@ -273,6 +288,8 @@ type Dot = {
   /** With `wander`: this dot's private start point in the noise. */
   nx: number;
   ny: number;
+  /** On the sheet: this mark falls as a vertical streak rather than a dot. */
+  streak: boolean;
 };
 
 /**
@@ -307,6 +324,26 @@ const easeExponent = (drift: number) => {
 };
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
+/**
+ * Slots on the dot sheet itself. `xs` and `ys` are sheet centres, so a
+ * settled dot covers the background dot instead of landing beside it.
+ * Handed out like the lines: starting x picks the column, and within a
+ * column the higher dot takes the upper row.
+ */
+const assignMeshSlots = (dots: Dot[], xs: number[], ys: number[]) => {
+  const rows = ys.length;
+  const byX = [...dots].sort((a, b) => a.x - b.x);
+  xs.forEach((x, col) => {
+    byX
+      .slice(col * rows, (col + 1) * rows)
+      .sort((a, b) => a.y - b.y)
+      .forEach((d, row) => {
+        d.tx = x;
+        d.ty = ys[row];
+      });
+  });
+};
 
 /**
  * Evenly spaced slots along the line(s). Handed out in order of each dot's
@@ -457,6 +494,20 @@ export const LayerHero: React.FC<{
   lift?: number;
   /** Set the title in Serrif (the d3 display style) instead of Geist. */
   serifTitle?: boolean;
+  /**
+   * `start` left-aligns the description and button with the title's left
+   * edge. The title stays centered on the page.
+   */
+  copyAlign?: "center" | "start";
+  /** Heading step. The live hero uses `h1`, the same size as Ledger. */
+  titleStyle?: "h1" | "h3";
+  /**
+   * The outro's dot grid, on the same silver ground, instead of the plain
+   * surface and its glow. No character clusters. Settled dots sit on that
+   * grid's own dots. The live /v3 hero uses this so the top and the closing
+   * band share one field.
+   */
+  mesh?: boolean;
 }> = ({
   lines = 1,
   toBottom = false,
@@ -476,6 +527,9 @@ export const LayerHero: React.FC<{
   underNav = false,
   lift = 0,
   serifTitle = false,
+  mesh = false,
+  copyAlign = "center",
+  titleStyle = "h3",
 }) => {
   const ease = easeExponent(drift);
   const count = plane ? plane.cols * plane.rows : dots;
@@ -491,6 +545,8 @@ export const LayerHero: React.FC<{
     restart: true,
     atlas: null as Atlas | null,
     lines: lines,
+    cols: 0,
+    rows: 0,
   });
   const reduced = React.useMemo(
     () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
@@ -539,16 +595,36 @@ export const LayerHero: React.FC<{
     // To the bottom, the lines hang from the hero's edge rather than the
     // copy, so the last one always sits flush on the next section; the
     // first lands within a line of `layerGap` under the copy.
-    const layerY = toEdge ? bottomLine - (lineCount - 1) * lineGap : top;
-    // A new line count needs a new set of dots, not just new slots.
-    if (resized && lineCount !== s.lines) s.restart = true;
+    // On the sheet, targets are absolute centres, so nothing is added.
+    const layerY = mesh
+      ? 0
+      : toEdge
+        ? bottomLine - (lineCount - 1) * lineGap
+        : top;
+    // The sheet's own dots, in the same band the lines would have filled.
+    const hostW = canvasRef.current?.clientWidth ?? Math.round(w);
+    const pitch = sheetPitch(hostW);
+    const meshXs = mesh ? sheetCenters(pitch, 0, w - 0.01) : [];
+    const meshYs = mesh ? sheetCenters(pitch, top, bottomLine) : [];
+    // A new line count — or, on the sheet, a new set of cells — needs a new
+    // set of dots, not just new slots.
+    if (
+      resized &&
+      (mesh
+        ? meshXs.length !== s.cols || meshYs.length !== s.rows
+        : lineCount !== s.lines)
+    ) {
+      s.restart = true;
+    }
 
-    if (s.restart) {
+    const meshReady = !mesh || meshXs.length * meshYs.length > 0;
+    if (s.restart && meshReady) {
       // Glyph lines keep their characters legible: on a narrow hero, fewer
       // to a line rather than packed closer.
       const perLine = Math.ceil(count / lines);
-      const n =
-        glyphs && !plane
+      const n = mesh
+        ? meshXs.length * meshYs.length
+        : glyphs && !plane
           ? lineCount * Math.min(perLine, Math.floor(w / GLYPH_MIN_PITCH))
           : toBottom && !plane
             ? lineCount * perLine
@@ -563,7 +639,7 @@ export const LayerHero: React.FC<{
         delay: Math.random() * (inPlace ? APPEAR_SPREAD : STAGGER * drift),
         tx: 0,
         ty: 0,
-        shade: randomShade(),
+        shade: mesh ? meshShade() : randomShade(),
         swatch: randomSwatch(),
         glyph: Math.floor(Math.random() * charset.length),
         // Floating glyphs schedule their first swap when they settle.
@@ -574,14 +650,33 @@ export const LayerHero: React.FC<{
         count: 0,
         nx: Math.random() * 1000,
         ny: Math.random() * 1000,
+        streak: false,
       }));
-      place(s.dots, w, h, lineCount);
+      if (mesh) {
+        assignMeshSlots(s.dots, meshXs, meshYs);
+        // Above the hero, down through its upper part — never in the bed.
+        // A start capped near each slot stacks every column into one
+        // horizontal line. About half fall as a streak.
+        for (const d of s.dots) {
+          d.streak = Math.random() < 0.55;
+          d.x = d.tx;
+          const high = -h * 0.6;
+          const low = Math.min(
+            Math.max(high + h * 0.25, h * 0.38),
+            top - pitch * 3,
+          );
+          d.y = high + Math.random() * (low - high);
+        }
+      } else place(s.dots, w, h, lineCount);
       s.lines = lineCount;
+      s.cols = meshXs.length;
+      s.rows = meshYs.length;
       s.start = t;
       s.restart = false;
       ctx.clearRect(0, 0, w, h);
     } else if (resized) {
-      place(s.dots, w, h, lineCount);
+      if (mesh) assignMeshSlots(s.dots, meshXs, meshYs);
+      else place(s.dots, w, h, lineCount);
       ctx.clearRect(0, 0, w, h);
     }
 
@@ -642,7 +737,11 @@ export const LayerHero: React.FC<{
     ctx.clearRect(0, 0, w, h);
 
     const elapsed = t - s.start;
-    const global = Math.min(Math.max((elapsed - hold) / DURATION, 0), 1);
+    // On the sheet the fall starts at once. Other heroes keep their hold.
+    const global = Math.min(
+      Math.max((elapsed - (mesh ? 0 : hold)) / DURATION, 0),
+      1,
+    );
     const z = elapsed * TIME_SCALE;
 
     // The sheet fills in under the dots as the plane forms.
@@ -676,43 +775,59 @@ export const LayerHero: React.FC<{
       let p = Math.min(Math.max((global - d.delay) / (1 - d.delay), 0), 1);
       p = 1 - (1 - p) ** ease;
 
-      // Flow direction from 3D simplex noise (x, y, time).
-      const n = wander
-        ? s.simplex.noise3D(d.nx, d.ny, elapsed * WANDER_RATE)
-        : s.simplex.noise3D(d.x * NOISE_SCALE, d.y * NOISE_SCALE, z);
-      const a = n * Math.PI * 4;
-      const flow = SPEED * (wander ? WANDER_SPEED : 1) * (1 - 0.55 * p);
-      const fx = Math.cos(a) * flow * (1 - p); // all flow fades as it settles
-      const fy = Math.sin(a) * flow * (1 - p);
-
-      // Spring toward the dot's slot (shortest wrapped distance in x).
-      let dx = d.tx - d.x;
-      if (dx > w / 2) dx -= w;
-      if (dx < -w / 2) dx += w;
-      const pullX = dx * PULL * p;
-      const pullY = (layerY + d.ty - d.y) * PULL * p;
-
-      let ux = fx + pullX;
-      let uy = fy + pullY;
-      if (wander) {
-        // Glide in rather than spring: cap the speed toward the slot.
-        const u = Math.hypot(ux, uy);
-        if (u > WANDER_MAX) {
-          ux *= WANDER_MAX / u;
-          uy *= WANDER_MAX / u;
+      if (mesh) {
+        // Straight down its column. No sideways drift.
+        d.x = d.tx;
+        const targetY = layerY + d.ty;
+        const dy = targetY - d.y;
+        if (dy > 0.35) {
+          const fall = Math.max(dy * PULL * Math.max(p, 0.2), 0.45);
+          d.y += Math.min(dy, fall * f);
+        } else {
+          d.y = targetY;
         }
-      }
-      d.vx = lerp(d.vx, ux, damp);
-      d.vy = lerp(d.vy, uy, damp);
-      d.x += d.vx * f;
-      d.y += d.vy * f;
+        d.vx = 0;
+        d.vy = 0;
+        continue;
+      } else {
+        // Flow direction from 3D simplex noise (x, y, time).
+        const n = wander
+          ? s.simplex.noise3D(d.nx, d.ny, elapsed * WANDER_RATE)
+          : s.simplex.noise3D(d.x * NOISE_SCALE, d.y * NOISE_SCALE, z);
+        const a = n * Math.PI * 4;
+        const flow = SPEED * (wander ? WANDER_SPEED : 1) * (1 - 0.55 * p);
+        const fx = Math.cos(a) * flow * (1 - p); // all flow fades as it settles
+        const fy = Math.sin(a) * flow * (1 - p);
 
-      // Wrap horizontally always; vertically only before attraction starts.
-      if (d.x < 0) d.x += w;
-      if (d.x > w) d.x -= w;
-      if (p === 0) {
-        if (d.y < 0) d.y += h;
-        if (d.y > h) d.y -= h;
+        // Spring toward the dot's slot (shortest wrapped distance in x).
+        let dx = d.tx - d.x;
+        if (dx > w / 2) dx -= w;
+        if (dx < -w / 2) dx += w;
+        const pullX = dx * PULL * p;
+        const pullY = (layerY + d.ty - d.y) * PULL * p;
+
+        let ux = fx + pullX;
+        let uy = fy + pullY;
+        if (wander) {
+          // Glide in rather than spring: cap the speed toward the slot.
+          const u = Math.hypot(ux, uy);
+          if (u > WANDER_MAX) {
+            ux *= WANDER_MAX / u;
+            uy *= WANDER_MAX / u;
+          }
+        }
+        d.vx = lerp(d.vx, ux, damp);
+        d.vy = lerp(d.vy, uy, damp);
+        d.x += d.vx * f;
+        d.y += d.vy * f;
+
+        // Wrap horizontally always; vertically only before attraction starts.
+        if (d.x < 0) d.x += w;
+        if (d.x > w) d.x -= w;
+        if (p === 0) {
+          if (d.y < 0) d.y += h;
+          if (d.y > h) d.y -= h;
+        }
       }
 
       if (atlas) {
@@ -747,7 +862,6 @@ export const LayerHero: React.FC<{
 
       // The trail: oldest first, each step back one RETAIN dimmer.
       const r = DOT_SIZE / 2;
-      // A settled dot's trail has collapsed onto it; skip the redraw.
       const still = p > 0.99 && Math.abs(d.vx) + Math.abs(d.vy) < 0.02;
       for (let age = still ? 0 : d.count; age >= 1; age--) {
         const i = (d.head - age + TRAIL_LEN) % TRAIL_LEN;
@@ -764,23 +878,72 @@ export const LayerHero: React.FC<{
       d.head = (d.head + 1) % TRAIL_LEN;
       d.count = Math.min(d.count + 1, TRAIL_LEN);
     }
+
+    // Sheet marks fall in columns. Draw them sparsely on the way down — a
+    // short vertical streak or a dot, kept apart like the outro's lines —
+    // and let every one show once it has landed.
+    if (mesh) {
+      const cols = new Map<number, Dot[]>();
+      for (const d of s.dots) {
+        const key = Math.round(d.tx);
+        const list = cols.get(key);
+        if (list) list.push(d);
+        else cols.set(key, [d]);
+      }
+      ctx.lineWidth = 1;
+      ctx.lineCap = "round";
+      ctx.globalAlpha = 1;
+      for (const list of cols.values()) {
+        list.sort((a, b) => a.y - b.y);
+        let last = -1e9;
+        for (const d of list) {
+          const remaining = Math.max(0, d.ty - d.y);
+          const landed = remaining <= 0.4;
+          if (!landed && d.y - last < pitch * 2.2) continue;
+          let mp = Math.min(Math.max((global - d.delay) / (1 - d.delay), 0), 1);
+          mp = 1 - (1 - mp) ** ease;
+          const k = lerp(DRIFT_STRENGTH, 1, mp);
+          ctx.fillStyle = `rgb(${lerp(GROUND[0], d.shade[0], k)},${lerp(
+            GROUND[1],
+            d.shade[1],
+            k,
+          )},${lerp(GROUND[2], d.shade[2], k)})`;
+          if (d.streak && remaining > pitch) {
+            ctx.strokeStyle = ctx.fillStyle;
+            ctx.beginPath();
+            ctx.moveTo(d.x, d.y - pitch);
+            ctx.lineTo(d.x, d.y);
+            ctx.stroke();
+          } else {
+            ctx.beginPath();
+            ctx.arc(d.x, d.y, DOT_SIZE / 2, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          last = d.y;
+        }
+      }
+    }
     ctx.globalAlpha = 1;
   });
 
   return (
     <Box
       {...(underNav ? HERO_BOX_UNDER_NAV : HERO_BOX)}
-      bg="site.bg.surface"
+      bg={mesh ? "site.bg.tint" : "site.bg.surface"}
       onClick={restart}
       cursor="crosshair"
     >
-      <Box
-        position="absolute"
-        inset={0}
-        bgImage={GLOW}
-        pointerEvents="none"
-        aria-hidden
-      />
+      {mesh ? (
+        <DotSheet />
+      ) : (
+        <Box
+          position="absolute"
+          inset={0}
+          bgImage={GLOW}
+          pointerEvents="none"
+          aria-hidden
+        />
+      )}
       <CanvasFill ref={canvasRef} />
       <Section
         rhythm="none"
@@ -791,35 +954,47 @@ export const LayerHero: React.FC<{
         pointerEvents="none"
       >
         <Grid w="full">
-          <GridCol span={10} start={4}>
+          <GridCol span={10} start={4} display="flex" justifyContent="center">
             <Box
               ref={copy}
               position="relative"
               top={`${-lift}px`}
+              w={
+                titleStyle === "h1" && !serifTitle
+                  ? "560px"
+                  : copyAlign === "start"
+                    ? "fit-content"
+                    : "full"
+              }
+              maxW="full"
               display="flex"
               flexDirection="column"
-              alignItems="center"
-              textAlign="center"
+              alignItems={copyAlign === "start" ? "flex-start" : "center"}
+              textAlign={copyAlign === "start" ? "left" : "center"}
             >
               {/* Title and description set as the /v3 hero, with the title
                   in Regular. */}
               <Text
                 as="h1"
                 // Serrif's display step for this level, held at Regular.
-                textStyle={serifTitle ? "d3" : "h3"}
-                letterSpacing="-0.04em"
-                fontWeight={400}
+                // `h1` is left on its own metrics so it matches Ledger.
+                textStyle={serifTitle ? "d3" : titleStyle}
+                {...(serifTitle || titleStyle === "h3"
+                  ? { letterSpacing: "-0.04em", fontWeight: 400 }
+                  : {})}
                 color="site.fg"
-                textAlign="center"
+                textAlign={copyAlign === "start" ? "left" : "center"}
+                maxW="full"
               >
                 {HEADLINE}
+                {titleStyle === "h1" && !serifTitle ? <Cursor /> : null}
               </Text>
               <Text
                 textStyle="body.sm"
                 fontWeight={300}
                 lineHeight="1.2"
                 color="site.fg.muted"
-                textAlign="center"
+                textAlign={copyAlign === "start" ? "left" : "center"}
                 w="465px"
                 maxW="full"
                 mt="19px"

@@ -1,10 +1,13 @@
+import { rootRoute } from "@/app/app-routes";
 import { Grid, GridCol } from "@/components/layout/grid";
+import { marketingLayoutBorderColor } from "@/components/layout/marketing-frame";
 import { Section } from "@/components/layout/section";
-import { ArrowLink } from "@/components/site/arrow-link";
-import { NAV_H } from "@/features/hero-lab/hero-shared";
-import { Box, chakra, Text } from "@chakra-ui/react";
+import { Logo } from "@/components/logo/logo";
+import { NAV_H, SolidCta } from "@/features/hero-lab/hero-shared";
+import { Box, chakra } from "@chakra-ui/react";
 import { Menu, X } from "lucide-react";
 import React from "react";
+import { Link } from "react-router-dom";
 
 const LINKS = ["Resources", "Team"];
 
@@ -21,25 +24,13 @@ const DESKTOP_QUERY = "(min-width: 768px)";
  * them as a sheet filling the viewport under the bar.
  *
  * `overlay` lays the bar over the top of the first section instead of above
- * it, with no background until the page scrolls. The section has to extend
- * up behind it (e.g. `<GlyphBedHero underNav />`).
+ * it. The section has to extend up behind it (e.g. `<GlyphBedHero underNav />`).
  */
 export const SiteNav: React.FC<{ overlay?: boolean }> = ({
   overlay = false,
 }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const close = React.useCallback(() => setIsOpen(false), []);
-  const [atTop, setAtTop] = React.useState(() => window.scrollY <= 0);
-
-  React.useEffect(() => {
-    if (!overlay) return;
-    const onScroll = () => setAtTop(window.scrollY <= 0);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [overlay]);
-
-  const bare = overlay && atTop && !isOpen;
 
   React.useEffect(() => {
     if (!isOpen) return;
@@ -68,17 +59,18 @@ export const SiteNav: React.FC<{ overlay?: boolean }> = ({
       position="sticky"
       top={0}
       zIndex={10}
-      // Translucent so content scrolling underneath shows through, softened
-      // by the blur. Solid while the menu is open, so the sheet reads as one
-      // surface with the bar. Bare over the top of an overlaid section.
-      bg={
-        bare ? "transparent" : isOpen ? "site.bg.page" : "site.bg.page/80"
-      }
-      backdropFilter={bare ? "none" : "blur(6px)"}
-      transition="background-color 200ms ease, backdrop-filter 200ms ease"
+      // Opaque, including while content scrolls underneath. The hairline
+      // stays put too — it does not drop off once the page moves.
+      bg="site.bg.surface"
       mb={overlay ? `-${NAV_H}px` : undefined}
-      py="16px"
+      py="8px"
       minH={`${NAV_H}px`}
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      borderBottomWidth="1px"
+      borderBottomStyle="solid"
+      borderBottomColor={marketingLayoutBorderColor}
     >
       <Grid alignItems="center">
         <GridCol
@@ -88,18 +80,12 @@ export const SiteNav: React.FC<{ overlay?: boolean }> = ({
           gap="40px"
           minW={0}
         >
-          <Text
-            fontFamily="heading"
-            fontSize="1.0588rem" // 16.94px — the 14px wordmark, up 21% (10% twice)
-            fontWeight={500}
-            letterSpacing="-0.05em"
-            lineHeight="1"
-            textTransform="lowercase"
-            color="site.fg.strong"
-            whiteSpace="nowrap"
+          <Link
+            to={rootRoute({}).landingV3({}).$}
+            style={{ display: "flex", textDecoration: "none" }}
           >
-            rengo_ai
-          </Text>
+            <Logo color="indigo.900" />
+          </Link>
           <Box
             display={{ base: "none", md: "flex" }}
             alignItems="center"
@@ -123,16 +109,17 @@ export const SiteNav: React.FC<{ overlay?: boolean }> = ({
             ))}
           </Box>
         </GridCol>
-        <GridCol span={4} display="flex" justifyContent="flex-end">
-          <ArrowLink
-            href="#"
-            display={{ base: "none", md: "inline-flex" }}
-            color="site.fg.strong"
-            letterSpacing="-0.01em"
-            lineHeight="1.2"
-          >
-            Get started
-          </ArrowLink>
+        <GridCol
+          span={4}
+          display="flex"
+          alignItems="center"
+          justifyContent="flex-end"
+        >
+          <Box display={{ base: "none", md: "block" }}>
+            <SolidCta
+              onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
+            />
+          </Box>
           {/* 32px hit area around a 20px glyph; the negative margin keeps the
               glyph itself flush with the gutter and the bar at its height. */}
           <chakra.button
@@ -160,9 +147,7 @@ export const SiteNav: React.FC<{ overlay?: boolean }> = ({
       </Grid>
 
       {isOpen && (
-        // Positioned against the sticky bar (a fixed sheet would be trapped
-        // by the bar's backdrop-filter anyway), filling the rest of the
-        // viewport beneath it.
+        // Hangs from the sticky bar and fills the rest of the viewport.
         <Box
           id={MENU_ID}
           position="absolute"
@@ -173,7 +158,7 @@ export const SiteNav: React.FC<{ overlay?: boolean }> = ({
           px="gutter"
           pt="24px"
           pb="40px"
-          bg="site.bg.page"
+          bg="site.bg.surface"
           borderTopWidth="1px"
           borderTopStyle="dotted"
           borderTopColor="site.border.dashed"
@@ -206,22 +191,7 @@ export const SiteNav: React.FC<{ overlay?: boolean }> = ({
               </Box>
             ))}
           </Box>
-          <chakra.a
-            href="#"
-            onClick={close}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            h="44px"
-            borderRadius="2px"
-            bg="site.bg.dark"
-            transition="opacity 150ms ease"
-            _hover={{ opacity: 0.88 }}
-          >
-            <ArrowLink color="site.fg.onDark" fontWeight={300} gap="12px">
-              Get started
-            </ArrowLink>
-          </chakra.a>
+          <SolidCta w="full" justifyContent="center" onClick={close} />
         </Box>
       )}
     </Section>
