@@ -14,7 +14,7 @@ export const heroCharset = (description = DESCRIPTION) =>
   lettersOf(HEADLINE + description) + SYMBOLS;
 
 /**
- * The live /v3 hero. Same bed as the glyph version — lines 11px apart,
+ * Formerly the live /v3 hero. Same bed as the glyph version — lines 11px apart,
  * filling from about 151px under the copy down to the hero's bottom edge —
  * drawn as dots rather than characters, each one settling onto a dot of
  * the outro's sheet. Marks start high and only fall straight down: about

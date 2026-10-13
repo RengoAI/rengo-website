@@ -147,7 +147,7 @@ export const HatchHero: React.FC = () => {
       return a + (b - a) * u + (c - a) * v + (a - b - c + e) * u * v;
     };
 
-    ctx.fillStyle = INK.canvas100;
+    ctx.fillStyle = INK.canvas200;
     ctx.fillRect(0, 0, w, h);
 
     const ux = Math.cos(THETA);

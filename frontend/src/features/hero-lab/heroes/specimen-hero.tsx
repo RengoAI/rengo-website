@@ -165,7 +165,7 @@ const buildLayout = (w: number, h: number, scale: number): Layout => {
   const rnd = mulberry(11);
 
   // Paper and its dot grid.
-  c.fillStyle = INK.canvas100;
+  c.fillStyle = INK.canvas200;
   c.fillRect(0, 0, w, h);
   c.fillStyle = INK.soot300;
   for (let x = g.colLeft(1); x < w - g.inset / 2; x += dp)

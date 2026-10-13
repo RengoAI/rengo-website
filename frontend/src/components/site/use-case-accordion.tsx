@@ -64,7 +64,7 @@ export const UseCaseAccordion: React.FC<{
             py="20px"
             borderTopWidth="1px"
             borderTopStyle="dotted"
-            borderTopColor="site.border.dashedSubtle"
+            borderTopColor="site.border.dashed"
             cursor="pointer"
             transition="background 150ms ease"
             // A step up from the blue band the list sits on.

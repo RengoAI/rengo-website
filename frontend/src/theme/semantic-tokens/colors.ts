@@ -427,8 +427,8 @@ export const semanticColors = defineSemanticTokens.colors({
     bg: {
       /** The page itself. */
       page: { value: "{colors.canvas.200}" },
-      /** Sections and nav that sit a step above the page. */
-      surface: { value: "{colors.canvas.100}" },
+      /** Sections and nav: the default white, the same as the page. */
+      surface: { value: "{colors.canvas.200}" },
       /** Cards lifted off a surface. */
       raised: { value: "{colors.canvas.0}" },
       /** Footer band. */

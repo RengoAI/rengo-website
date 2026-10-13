@@ -82,16 +82,27 @@ const WANDER_MAX = 1.8;
 const SPEED = 1.6; // base drift speed (px per 60fps frame)
 const PULL = 0.02; // spring strength toward the layer
 /**
- * With `wave`: the formed bed rolls in a slow travelling wave. Each line
- * runs a little behind the one above, so the bed bends instead of moving
- * as one rigid sheet.
+ * With `wave`: each line of the formed bed rolls in its own slow travelling
+ * wave — its own phase, wavelength, speed and direction — so the rows move
+ * independently instead of as one sheet.
  */
-const WAVE_AMP = 6; // px, peak displacement
-const WAVE_LENGTH = 640; // px, crest to crest
-const WAVE_PERIOD = 7; // seconds per cycle
-const WAVE_LINE_LAG = 0.004; // radians of phase per px down the bed
+const WAVE_AMP = 16; // px, peak displacement (default)
+const WAVE_LENGTH: [number, number] = [480, 800]; // px, crest to crest
+const WAVE_PERIOD: [number, number] = [5, 9]; // seconds per cycle
+/** A stable 0..1 value per line and channel. */
+const lineHash = (line: number, k: number) => {
+  const v = Math.sin(line * 127.1 + k * 311.7) * 43758.5453;
+  return v - Math.floor(v);
+};
 /** px from its slot at which a landing dot starts to join the wave. */
 const WAVE_JOIN = 8;
+/**
+ * With `pulse`: now and then each dot swells by PULSE_GROW px across and
+ * eases back, over PULSE_DUR seconds, resting PULSE_REST seconds between.
+ */
+const PULSE_GROW = 2;
+const PULSE_DUR = 0.8;
+const PULSE_REST: [number, number] = [1, 6];
 const TRAIL_ALPHA = 55; // lower = longer trails (0–255)
 // ------------------------------------------------------------------------
 
@@ -112,21 +123,32 @@ const GLOW = `radial-gradient(ellipse 70% 75% at 50% 50%, ${rgba(
   SKY_B,
   0,
 )} 100%)`;
+/** The hero box's height, floor and ceiling, each `by` px shorter. */
+const shortened = (underNav: boolean, by: number) => {
+  const box = underNav ? HERO_BOX_UNDER_NAV : HERO_BOX;
+  return {
+    h: `calc(${String(box.h).replace(/^calc\((.*)\)$/, "$1")} - ${by}px)`,
+    minH: `${parseFloat(String(box.minH)) - by}px`,
+    maxH: `${parseFloat(String(box.maxH)) - by}px`,
+  };
+};
+
+/** px between the title and the description when they sit side by side. */
+const TITLE_BESIDE_GAP = 40;
 
 /** The ground: the site surface. The canvas is transparent over it. */
-const GROUND = parseToRgba(INK.canvas100);
+const GROUND = parseToRgba(INK.canvas200);
 
 /**
  * Two light families, half the dots from each: the soot greys and the
  * silver/sky blues. Within its family a dot takes a random mix of two
  * shades, so no two read quite alike.
  */
-const GREYS = [INK.soot200, INK.soot300].map((c) => parseToRgba(c));
-const BLUES = [INK.silver200, INK.silver300, INK.sky, INK.rengo300].map((c) =>
-  parseToRgba(c),
-);
-const randomShade = () => {
-  const family = Math.random() < 0.5 ? GREYS : BLUES;
+const toRgba = (cs: readonly string[]) => cs.map((c) => parseToRgba(c));
+const GREYS = toRgba([INK.soot200, INK.soot300]);
+const BLUES = toRgba([INK.silver200, INK.silver300, INK.sky, INK.rengo300]);
+const randomShade = (greys = GREYS, blues = BLUES) => {
+  const family = Math.random() < 0.5 ? greys : blues;
   const a = family[Math.floor(Math.random() * family.length)];
   const b = family[Math.floor(Math.random() * family.length)];
   const f = Math.random();
@@ -141,6 +163,8 @@ const MESH_GREYS = [INK.soot300, INK.soot400, INK.soot500].map((c) =>
 );
 const meshShade = () =>
   MESH_GREYS[Math.floor(Math.random() * MESH_GREYS.length)];
+/** The `accentShare` dots' colour: a vivid light blue. */
+const ACCENT_BLUE = parseToRgba("#ABC8F7").slice(0, 3);
 /**
  * Unsettled dots sit this far from the ground toward their shade; joined,
  * they take it in full. Higher than on a dark ground, where pale dots
@@ -301,6 +325,9 @@ type Dot = {
   ny: number;
   /** On the sheet: this mark falls as a vertical streak rather than a dot. */
   streak: boolean;
+  /** With `pulse`: seconds since start at which this dot's current or next
+   * swell begins. */
+  pulseAt: number;
 };
 
 /**
@@ -492,12 +519,19 @@ export const LayerHero: React.FC<{
   wander?: boolean;
   /** Glyph mode: drift in through the flow field (true) or fade in place. */
   float?: boolean;
+  /**
+   * Dots: drift through the simplex flow field before settling (true), or
+   * hold still at their random start positions until the pull takes them.
+   */
+  flow?: boolean;
   /** Glyph mode: settled glyphs keep fading out and in as new characters. */
   twinkle?: boolean;
   /** The body copy under the headline. */
   description?: React.ReactNode;
   /** Extend up behind an overlaid nav (`<SiteNav overlay />`). */
   underNav?: boolean;
+  /** px to take off the hero's height, and off its floor and ceiling. */
+  shorten?: number;
   /**
    * px to raise the copy above centre. The layer hangs off the copy, so it
    * rises with it.
@@ -521,12 +555,60 @@ export const LayerHero: React.FC<{
   floatOffset?: number;
   /** Once formed, the bed rolls in a gentle travelling wave. */
   wave?: boolean;
+  /** px, the wave's peak displacement. */
+  waveAmp?: number;
+  /**
+   * Each line takes its own share of `waveAmp`, between these two
+   * fractions. Omitted, every line uses `waveAmp` in full.
+   */
+  waveAmpRange?: [number, number];
+  /**
+   * This many lines, picked at random once, swell to `waveBigScale` times
+   * `waveAmp`.
+   */
+  waveBigLines?: number;
+  waveBigScale?: number;
+  /** Draw the soft sky glow behind the dots. Off, the hero is plain ground. */
+  glow?: boolean;
+  /**
+   * The two light dot families, half the dots from each. Default to the
+   * soot greys and the silver/sky blues. Pass module-level arrays: they
+   * are compared by reference.
+   */
+  greys?: readonly string[];
+  blues?: readonly string[];
+  /** Each dot swells by 2px and back at its own random times. */
+  pulse?: boolean;
+  /** Dot diameter in px. */
+  dotSize?: number;
+  /** Share of dots (0–1) drawn in a brighter blue instead of the light palette. */
+  accentShare?: number;
+  /**
+   * A solid pale colour for this share (0–1) of all dots, taken before the
+   * light families. Pass a module-level object: compared by reference.
+   */
+  pale?: { color: string; share: number };
   /** Heading step. The live hero uses `h1`, the same size as Ledger. */
   titleStyle?: "h1" | "h3";
+  /** Overrides the title's font size, e.g. { base: "26px", md: "30px" }. */
+  titleSize?: string | { base: string; md: string };
+  /** px between the description and the CTA. */
+  ctaGap?: number;
+  /**
+   * Set the title and description side by side in one row (from `md` up),
+   * the description left-aligned, with the CTA centred below.
+   */
+  titleBeside?: boolean;
+  /** px between the title and the description. */
+  descriptionGap?: number;
+  /** The description's weight. Defaults to Light (300). */
+  descriptionWeight?: number;
+  /** The CTA's height, e.g. "28px". Defaults to the button's own. */
+  ctaHeight?: string;
   /**
    * The outro's dot grid, on the same silver ground, instead of the plain
    * surface and its glow. No character clusters. Settled dots sit on that
-   * grid's own dots. The live /v3 hero uses this so the top and the closing
+   * grid's own dots. The former /v3 hero (glyph bed) used this so the top and the closing
    * band share one field.
    */
   mesh?: boolean;
@@ -544,9 +626,11 @@ export const LayerHero: React.FC<{
   hold = 0,
   wander = false,
   float = true,
+  flow = true,
   twinkle = false,
   description = DESCRIPTION,
   underNav = false,
+  shorten = 0,
   lift = 0,
   serifTitle = false,
   mesh = false,
@@ -554,9 +638,47 @@ export const LayerHero: React.FC<{
   floatBand,
   floatOffset = 0,
   wave = false,
+  waveAmp = WAVE_AMP,
+  waveAmpRange,
+  waveBigLines = 0,
+  waveBigScale = 2,
+  accentShare = 0,
+  pale,
+  dotSize = DOT_SIZE,
+  pulse = false,
+  greys,
+  blues,
+  glow = true,
   titleStyle = "h3",
+  descriptionWeight = 300,
+  descriptionGap = 19,
+  titleBeside = false,
+  ctaGap = 28,
+  titleSize,
+  ctaHeight,
 }) => {
   const ease = easeExponent(drift);
+  const paleShade = React.useMemo(
+    () => (pale ? parseToRgba(pale.color).slice(0, 3) : undefined),
+    [pale],
+  );
+  // The lines that swell to waveBigScale× the wave, keyed like the wave's own
+  // per-line values (by their offset, rounded).
+  const bigLines = React.useMemo(() => {
+    const keys = Array.from({ length: lines }, (_, i) =>
+      Math.round(i * lineGap),
+    );
+    keys.sort((a, b) => lineHash(a, 4) - lineHash(b, 4));
+    return new Set(keys.slice(0, waveBigLines));
+  }, [lines, lineGap, waveBigLines]);
+  const greyShades = React.useMemo(
+    () => (greys ? toRgba(greys) : GREYS),
+    [greys],
+  );
+  const blueShades = React.useMemo(
+    () => (blues ? toRgba(blues) : BLUES),
+    [blues],
+  );
   const left = copyAlign !== "center";
   const count = plane ? plane.cols * plane.rows : dots;
   const place = (all: Dot[], w: number, h: number, lineCount: number) =>
@@ -656,6 +778,13 @@ export const LayerHero: React.FC<{
             ? lineCount * perLine
             : count;
       const inPlace = glyphs && !float;
+      // Accent first, then the pale share, then the two light families.
+      const lightShade = () => {
+        const u = Math.random();
+        if (u < accentShare) return ACCENT_BLUE;
+        if (paleShade && u < accentShare + (pale?.share ?? 0)) return paleShade;
+        return randomShade(greyShades, blueShades);
+      };
       s.dots = Array.from({ length: n }, () => ({
         x: Math.random() * w,
         y: floatBand
@@ -667,12 +796,13 @@ export const LayerHero: React.FC<{
         delay: Math.random() * (inPlace ? APPEAR_SPREAD : STAGGER * drift),
         tx: 0,
         ty: 0,
-        shade: mesh ? meshShade() : randomShade(),
+        shade: mesh ? meshShade() : lightShade(),
         swatch: randomSwatch(),
         glyph: Math.floor(Math.random() * charset.length),
         // Floating glyphs schedule their first swap when they settle.
         swapAt: inPlace ? nextSwap(APPEAR_SPREAD + APPEAR) : Infinity,
         swapped: false,
+        pulseAt: pulse ? Math.random() * PULSE_REST[1] : Infinity,
         trail: new Float32Array(TRAIL_LEN * 2),
         head: 0,
         count: 0,
@@ -751,7 +881,7 @@ export const LayerHero: React.FC<{
         }
         ctx.fillStyle = `rgb(${d.shade[0]},${d.shade[1]},${d.shade[2]})`;
         ctx.beginPath();
-        ctx.arc(d.tx, layerY + d.ty, DOT_SIZE / 2, 0, Math.PI * 2);
+        ctx.arc(d.tx, layerY + d.ty, dotSize / 2, 0, Math.PI * 2);
         ctx.fill();
       }
       ctx.globalAlpha = 1;
@@ -819,13 +949,17 @@ export const LayerHero: React.FC<{
         continue;
       } else {
         // Flow direction from 3D simplex noise (x, y, time).
-        const n = wander
-          ? s.simplex.noise3D(d.nx, d.ny, elapsed * WANDER_RATE)
-          : s.simplex.noise3D(d.x * NOISE_SCALE, d.y * NOISE_SCALE, z);
+        const n = !flow
+          ? 0
+          : wander
+            ? s.simplex.noise3D(d.nx, d.ny, elapsed * WANDER_RATE)
+            : s.simplex.noise3D(d.x * NOISE_SCALE, d.y * NOISE_SCALE, z);
         const a = n * Math.PI * 4;
-        const flow = SPEED * (wander ? WANDER_SPEED : 1) * (1 - 0.55 * p);
-        const fx = Math.cos(a) * flow * (1 - p); // all flow fades as it settles
-        const fy = Math.sin(a) * flow * (1 - p);
+        const speed = flow
+          ? SPEED * (wander ? WANDER_SPEED : 1) * (1 - 0.55 * p)
+          : 0;
+        const fx = Math.cos(a) * speed * (1 - p); // all flow fades as it settles
+        const fy = Math.sin(a) * speed * (1 - p);
 
         // Spring toward the dot's slot (shortest wrapped distance in x).
         let dx = d.tx - d.x;
@@ -898,15 +1032,24 @@ export const LayerHero: React.FC<{
           Math.max(1 - Math.abs(layerY + d.ty - d.y) / WAVE_JOIN, 0),
           1,
         );
+        const line = Math.round(d.ty);
+        const length = lerp(...WAVE_LENGTH, lineHash(line, 0));
+        const period = lerp(...WAVE_PERIOD, lineHash(line, 1));
+        const dir = lineHash(line, 2) < 0.5 ? -1 : 1;
         const phase =
-          (d.tx / WAVE_LENGTH) * Math.PI * 2 +
-          d.ty * WAVE_LINE_LAG -
-          (elapsed / WAVE_PERIOD) * Math.PI * 2;
-        y += WAVE_AMP * Math.sin(phase) * join * join * (3 - 2 * join);
+          (d.tx / length) * Math.PI * 2 +
+          lineHash(line, 3) * Math.PI * 2 -
+          dir * (elapsed / period) * Math.PI * 2;
+        const amp = bigLines.has(line)
+          ? waveAmp * waveBigScale
+          : waveAmpRange
+            ? waveAmp * lerp(...waveAmpRange, lineHash(line, 5))
+            : waveAmp;
+        y += amp * Math.sin(phase) * join * join * (3 - 2 * join);
       }
 
       // The trail: oldest first, each step back one RETAIN dimmer.
-      const r = DOT_SIZE / 2;
+      const r = dotSize / 2;
       const still = p > 0.99 && Math.abs(d.vx) + Math.abs(d.vy) < 0.02;
       for (let age = still ? 0 : d.count; age >= 1; age--) {
         const i = (d.head - age + TRAIL_LEN) % TRAIL_LEN;
@@ -914,8 +1057,18 @@ export const LayerHero: React.FC<{
         ctx.fillRect(d.trail[i * 2] - r, d.trail[i * 2 + 1] - r, r * 2, r * 2);
       }
       ctx.globalAlpha = 1;
+      // The pulse: a half sine, so the dot swells and settles smoothly.
+      let pr = r;
+      if (elapsed >= d.pulseAt) {
+        const k = (elapsed - d.pulseAt) / PULSE_DUR;
+        if (k >= 1) {
+          d.pulseAt = elapsed + lerp(...PULSE_REST, Math.random());
+        } else {
+          pr += (PULSE_GROW / 2) * Math.sin(k * Math.PI);
+        }
+      }
       ctx.beginPath();
-      ctx.arc(d.x, y, r, 0, Math.PI * 2);
+      ctx.arc(d.x, y, pr, 0, Math.PI * 2);
       ctx.fill();
 
       d.trail[d.head * 2] = d.x;
@@ -961,7 +1114,7 @@ export const LayerHero: React.FC<{
             ctx.stroke();
           } else {
             ctx.beginPath();
-            ctx.arc(d.x, d.y, DOT_SIZE / 2, 0, Math.PI * 2);
+            ctx.arc(d.x, d.y, dotSize / 2, 0, Math.PI * 2);
             ctx.fill();
           }
           last = d.y;
@@ -974,13 +1127,14 @@ export const LayerHero: React.FC<{
   return (
     <Box
       {...(underNav ? HERO_BOX_UNDER_NAV : HERO_BOX)}
+      {...(shorten ? shortened(underNav, shorten) : {})}
       bg={mesh ? "site.bg.tint" : "site.bg.surface"}
       onClick={restart}
       cursor="crosshair"
     >
       {mesh ? (
         <DotSheet />
-      ) : (
+      ) : glow ? (
         <Box
           position="absolute"
           inset={0}
@@ -988,7 +1142,7 @@ export const LayerHero: React.FC<{
           pointerEvents="none"
           aria-hidden
         />
-      )}
+      ) : null}
       <CanvasFill ref={canvasRef} />
       <Section
         rhythm="none"
@@ -1000,8 +1154,8 @@ export const LayerHero: React.FC<{
       >
         <Grid w="full">
           <GridCol
-            span={10}
-            start={copyAlign === "edge" ? 1 : 4}
+            span={titleBeside ? 16 : 10}
+            start={titleBeside || copyAlign === "edge" ? 1 : 4}
             display="flex"
             justifyContent={copyAlign === "edge" ? "flex-start" : "center"}
           >
@@ -1023,42 +1177,61 @@ export const LayerHero: React.FC<{
               textAlign={left ? "left" : "center"}
             >
               {/* Title and description set as the /v3 hero, with the title
-                  in Regular. */}
-              <Text
-                as="h1"
-                // Serrif's display step for this level, held at Regular.
-                // `h1` is left on its own metrics so it matches Ledger.
-                textStyle={serifTitle ? "d3" : titleStyle}
-                {...(serifTitle || titleStyle === "h3"
-                  ? { letterSpacing: "-0.04em", fontWeight: 400 }
-                  : {})}
-                color="site.fg"
-                textAlign={left ? "left" : "center"}
-                maxW="full"
-              >
-                {HEADLINE}
-                {titleStyle === "h1" && !serifTitle ? <Cursor /> : null}
-              </Text>
-              <Text
-                textStyle="body.sm"
-                fontWeight={300}
-                lineHeight="1.2"
-                color="site.fg.muted"
-                textAlign={left ? "left" : "center"}
-                w="465px"
-                maxW="full"
-                mt="19px"
-              >
-                {description}
-              </Text>
+                  in Regular. With `titleBeside` they share one row from md
+                  up, the description left-aligned beside the title. */}
               <Box
-                mt="28px"
+                display="flex"
+                flexDirection={
+                  titleBeside ? { base: "column", md: "row" } : "column"
+                }
+                alignItems={
+                  titleBeside
+                    ? { base: left ? "flex-start" : "center", md: "center" }
+                    : left
+                      ? "flex-start"
+                      : "center"
+                }
+                columnGap={`${TITLE_BESIDE_GAP}px`}
+                rowGap={titleBeside ? `${descriptionGap}px` : 0}
+                maxW="full"
+              >
+                <Text
+                  as="h1"
+                  // Serrif's display step for this level, held at Regular.
+                  // `h1` is left on its own metrics so it matches Ledger.
+                  textStyle={serifTitle ? "d3" : titleStyle}
+                  {...(serifTitle || titleStyle === "h3"
+                    ? { letterSpacing: "-0.04em", fontWeight: 400 }
+                    : {})}
+                  {...(titleSize ? { fontSize: titleSize } : {})}
+                  color="site.fg"
+                  textAlign={left || titleBeside ? "left" : "center"}
+                  maxW="full"
+                >
+                  {HEADLINE}
+                  {titleStyle === "h1" && !serifTitle ? <Cursor /> : null}
+                </Text>
+                <Text
+                  textStyle="body.sm"
+                  fontWeight={descriptionWeight}
+                  lineHeight="1.2"
+                  color="site.fg.muted"
+                  textAlign={left || titleBeside ? "left" : "center"}
+                  w="465px"
+                  maxW="full"
+                  mt={titleBeside ? undefined : `${descriptionGap}px`}
+                >
+                  {description}
+                </Text>
+              </Box>
+              <Box
+                mt={`${ctaGap}px`}
                 pointerEvents="auto"
                 // The CTA shouldn't restart the animation.
                 onClick={(e: React.MouseEvent) => e.stopPropagation()}
                 cursor="default"
               >
-                <SolidCta />
+                <SolidCta {...(ctaHeight ? { h: ctaHeight } : {})} />
               </Box>
             </Box>
           </GridCol>

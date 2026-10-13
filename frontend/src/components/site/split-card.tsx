@@ -108,9 +108,9 @@ export const WASH_BLUE = "#BCCFEC";
  * step leans further toward the blue.
  */
 const TESTIMONIAL_WASHES = {
-  /** Flat light grey, no blobs — the same #F2F2F2 as the metrics band. */
+  /** Flat grey, no blobs — a step darker than WASH_GREY (canvas 400). */
   plain: {
-    bg: WASH_GREY,
+    bg: "canvas.400",
     bgImage: "none",
   },
   light: {

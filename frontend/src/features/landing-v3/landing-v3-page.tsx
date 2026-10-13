@@ -5,7 +5,7 @@ import { ComplianceCardGroup } from "@/components/site/compliance-card";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
 import { NAV_H } from "@/features/hero-lab/hero-shared";
-import { GlyphBedHero } from "@/features/hero-lab/heroes/glyph-bed-hero";
+import { QuickSedimentHero } from "@/features/hero-lab/heroes/quick-sediment-hero";
 import { SiteOutro } from "@/components/site/site-outro";
 import { HeroDesignsButton } from "@/features/hero-lab/hero-designs-button";
 import {
@@ -370,6 +370,8 @@ const SolutionSection: React.FC = () => {
   return (
     <Section
       bg="site.bg.surface"
+      // 20px less than the usual section rhythm above the heading.
+      pt="calc(var(--site-gutter-y) - 20px)"
       borderTopRadius="4px"
       isolation="isolate"
       // Keeps the heading's strip from showing above the section before it
@@ -529,11 +531,12 @@ const FdeSection: React.FC = () => (
             strategy → deployment
           </Box>
         </Text>
+        {/* Set like the hero's description. */}
         <Text
           textStyle="body.sm"
-          fontWeight={300}
-          lineHeight="1.25"
-          color="site.fg"
+          fontWeight={400}
+          lineHeight="1.2"
+          color="site.fg.muted"
           w="438px"
           maxW="full"
         >
@@ -563,12 +566,12 @@ const FdeSection: React.FC = () => (
 
 export const LandingV3Page: React.FC = () => (
   <Box bg="site.bg.page">
-    <SiteNav overlay />
+    <SiteNav overlay dotted />
 
     {/* --- Hero ---------------------------------------------------------- */}
-    {/* Dots drift down and settle into the data layer under the CTA, on
-        the same dot sheet as the outro. */}
-    <GlyphBedHero description={HERO_DESCRIPTION} underNav />
+    {/* Scattered dots are pulled into the data layer under the CTA, where
+        each line rolls in its own gentle wave. */}
+    <QuickSedimentHero description={HERO_DESCRIPTION} underNav />
 
     {/* --- The problem & vision ------------------------------------------ */}
     {/* Held open to the design's 661px band; the copy only fills the top. */}
@@ -631,7 +634,9 @@ export const LandingV3Page: React.FC = () => (
     </Section>
 
     {/* --- How we perform -------------------------------------------------- */}
-    <Section grid rhythm="tight" bg="canvas.350">
+    {/* A step past canvas 400; the scale's next token (500) is the hairline
+        border grey, too dark for a band. */}
+    <Section grid rhythm="tight" bg="#E9E9EA">
       <GridCol
         span={16}
         display="flex"
@@ -670,7 +675,7 @@ export const LandingV3Page: React.FC = () => (
     </Section>
 
     {/* --- Testimonials ----------------------------------------------------- */}
-    <Section grid bg="site.bg.raised">
+    <Section grid bg="site.bg.surface">
       <GridCol span={16} pb="40px">
         <Box display="flex" flexDirection="column" gap="8px">
           <Text

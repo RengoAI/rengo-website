@@ -67,7 +67,7 @@ export const FieldHero: React.FC = () => {
     const rows = Math.ceil((h - oy) / cell);
     const edgeBase = (g.seam(FIELD_COL) - ox) / cell;
 
-    ctx.fillStyle = INK.canvas100;
+    ctx.fillStyle = INK.canvas200;
     ctx.fillRect(0, 0, w, h);
 
     const region = new Path2D();

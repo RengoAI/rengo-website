@@ -25,10 +25,59 @@ const DESKTOP_QUERY = "(min-width: 768px)";
  *
  * `overlay` lays the bar over the top of the first section instead of above
  * it. The section has to extend up behind it (e.g. `<GlyphBedHero underNav />`).
+ *
+ * `dotted` swaps the solid hairline under the bar for a dotted one: 1px
+ * dots, 1px apart, in the site's dashed-rule colour. With `overlay` the
+ * dotted rule is hidden while the page sits at the top, where the bar rests
+ * on the hero, and fades in once the page scrolls.
  */
-export const SiteNav: React.FC<{ overlay?: boolean }> = ({
+const SOLID_RULE = {
+  borderBottomWidth: "1px",
+  borderBottomStyle: "solid",
+  borderBottomColor: marketingLayoutBorderColor,
+} as const;
+
+/**
+ * CSS `dotted` borders don't let you set the gap, so the rule is drawn as a
+ * repeating 2px tile: one 1px dot, then 1px of nothing.
+ */
+const dottedRule = (visible: boolean) =>
+  ({
+    _after: {
+      content: '""',
+      position: "absolute",
+      left: 0,
+      right: 0,
+      bottom: 0,
+      height: "1px",
+      bgImage:
+        "linear-gradient(to right, var(--rengo-colors-site-border-dashed) 1px, transparent 1px)",
+      bgSize: "2px 1px",
+      bgRepeat: "repeat-x",
+      pointerEvents: "none",
+      opacity: visible ? 1 : 0,
+      transition: "opacity 150ms ease",
+    },
+  }) as const;
+
+/** Whether the page has scrolled at all. */
+const useScrolled = (enabled: boolean) => {
+  const [scrolled, setScrolled] = React.useState(false);
+  React.useEffect(() => {
+    if (!enabled) return;
+    const onScroll = () => setScrolled(window.scrollY > 0);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [enabled]);
+  return scrolled;
+};
+
+export const SiteNav: React.FC<{ overlay?: boolean; dotted?: boolean }> = ({
   overlay = false,
+  dotted = false,
 }) => {
+  const scrolled = useScrolled(overlay && dotted);
   const [isOpen, setIsOpen] = React.useState(false);
   const close = React.useCallback(() => setIsOpen(false), []);
 
@@ -59,8 +108,7 @@ export const SiteNav: React.FC<{ overlay?: boolean }> = ({
       position="sticky"
       top={0}
       zIndex={10}
-      // Opaque, including while content scrolls underneath. The hairline
-      // stays put too — it does not drop off once the page moves.
+      // Opaque, including while content scrolls underneath.
       bg="site.bg.surface"
       mb={overlay ? `-${NAV_H}px` : undefined}
       py="8px"
@@ -68,24 +116,24 @@ export const SiteNav: React.FC<{ overlay?: boolean }> = ({
       display="flex"
       flexDirection="column"
       justifyContent="center"
-      borderBottomWidth="1px"
-      borderBottomStyle="solid"
-      borderBottomColor={marketingLayoutBorderColor}
+      {...(dotted ? dottedRule(!overlay || scrolled) : SOLID_RULE)}
     >
       <Grid alignItems="center">
-        <GridCol
-          span={12}
-          display="flex"
-          alignItems="center"
-          gap="40px"
-          minW={0}
-        >
+        <GridCol span={8} display="flex" alignItems="center" minW={0}>
           <Link
             to={rootRoute({}).landingV3({}).$}
             style={{ display: "flex", textDecoration: "none" }}
           >
             <Logo color="indigo.900" />
           </Link>
+        </GridCol>
+        <GridCol
+          span={8}
+          display="flex"
+          alignItems="center"
+          justifyContent="flex-end"
+          gap="24px"
+        >
           <Box
             display={{ base: "none", md: "flex" }}
             alignItems="center"
@@ -97,6 +145,7 @@ export const SiteNav: React.FC<{ overlay?: boolean }> = ({
                 href="#"
                 textStyle="body.sm"
                 letterSpacing="0"
+                pt="2px"
                 textTransform="capitalize"
                 color="site.fg.strong"
                 whiteSpace="nowrap"
@@ -108,13 +157,6 @@ export const SiteNav: React.FC<{ overlay?: boolean }> = ({
               </chakra.a>
             ))}
           </Box>
-        </GridCol>
-        <GridCol
-          span={4}
-          display="flex"
-          alignItems="center"
-          justifyContent="flex-end"
-        >
           <Box display={{ base: "none", md: "block" }}>
             <SolidCta
               h="28px"

@@ -25,7 +25,12 @@ export const Logo: React.FC<LogoProps> = ({
   homeLink = false,
 }) => {
   const wordmark = (
-    <Text fontSize="xl" fontFamily="heading" color={color}>
+    <Text
+      fontSize="xl"
+      fontFamily="heading"
+      letterSpacing="-0.04em"
+      color={color}
+    >
       rengo ai
     </Text>
   );

@@ -3,6 +3,8 @@ import { CoreHero } from "@/features/hero-lab/heroes/core-hero";
 import { GlyphBedHero } from "@/features/hero-lab/heroes/glyph-bed-hero";
 import { LayerHero } from "@/features/hero-lab/heroes/layer-hero";
 import { LedgerHero } from "@/features/hero-lab/heroes/ledger-hero";
+import { QuickSedimentHero } from "@/features/hero-lab/heroes/quick-sediment-hero";
+import { V3SnapshotHero } from "@/features/hero-lab/heroes/v3-snapshot-hero";
 import { SpecimenHero } from "@/features/hero-lab/heroes/specimen-hero";
 import { YELLOW } from "@/features/hero-lab/hero-designs-button";
 import { Box, chakra, Text } from "@chakra-ui/react";
@@ -39,31 +41,6 @@ const SedimentHero: React.FC = () => (
     layerGap={60}
     shift
     serifTitle
-  />
-);
-
-/**
- * Sediment with the opening float cut to about a second: start delays
- * spread over 1s instead of 5s, and the pull takes hold five times sooner.
- * Title set in Geist rather than Serrif, with the title, description and
- * CTA left-aligned to the left edge of the page's grid. The float runs in
- * a 400px band 100px below the middle of the hero, the copy sits 180px
- * above centre, and the bed forms 160px under the CTA. Once formed, the
- * bed rolls in a gentle wave.
- */
-const QuickSedimentHero: React.FC = () => (
-  <LayerHero
-    lines={20}
-    lineGap={4}
-    dots={3000}
-    layerGap={160}
-    shift
-    drift={0.2}
-    copyAlign="edge"
-    floatBand={400}
-    floatOffset={100}
-    wave
-    lift={180}
   />
 );
 
@@ -225,7 +202,7 @@ const VARIANTS: Variant[] = [
       "p5.js sketch — dots coalescing into a layer, falling as in the outro",
     Hero: GlyphBedHero,
     source:
-      "The live /v3 hero. 1,800 marks start high and fall straight down, about half as short vertical streaks and the rest as dots, settling into lines 11px apart that fill from about 151px under the copy to the hero's bottom edge, each onto a dot of the outro's sheet.",
+      "Formerly the live /v3 hero. 1,800 marks start high and fall straight down, about half as short vertical streaks and the rest as dots, settling into lines 11px apart that fill from about 151px under the copy to the hero's bottom edge, each onto a dot of the outro's sheet.",
     concept: [
       "The firm's raw material rains down out of day-to-day work and settles line on line into a bed of records the copy stands on.",
       "The bed lands on the same dot sheet the outro uses, so the page opens and closes on one surface. Click the hero (or press R) to run it again.",
@@ -245,7 +222,7 @@ const VARIANTS: Variant[] = [
       "p5.js sketch — dots coalescing into a layer (06), shorter float",
     Hero: QuickSedimentHero,
     source:
-      "Sediment (06) with the opening float in the flow field cut from about 5s to 1s: start delays spread over the first second instead of the first five, and the pull toward the bed reaches half strength five times sooner. Same twenty lines, dot count, field, palette and 25s finish. The title is set in Geist (h3) instead of Serrif.",
+      "Sediment (06) with the opening float in the flow field cut from about 5s to 1s: start delays spread over the first second instead of the first five, and the pull toward the bed reaches half strength five times sooner. Same twenty lines, dot count, field, palette and 25s finish. The title is set in Geist (h3 at 30px) instead of Serrif, the description in Regular, and the CTA is 28px tall.",
     concept: [
       "The same sediment, with less time adrift: the knowledge leaves the currents of day-to-day work almost at once, so the bed starts forming within a second of the page loading.",
       "Click the hero (or press R) to run it again.",
@@ -256,7 +233,25 @@ const VARIANTS: Variant[] = [
       ["The bed", "The data layer, twenty lines deep"],
     ],
     layout:
-      "As Sediment, but the title, description and CTA are left-aligned to the left edge of the page's grid (column 1). The opening float is confined to a 400px band, centred 100px below the middle of the hero. The copy is raised 180px above centre, and the bed forms 160px under the CTA. As each dot lands it eases into a slow travelling wave (6px high, 640px crest to crest, 7s a cycle), each line a little behind the one above, so the formed bed rolls gently.",
+      "As Sediment, with the title and description side by side in one row, 40px apart (the description left-aligned), centred on the page, and the CTA centred below; on phones they stack. The opening float is confined to a 400px band, centred 190px below the middle of the hero. The hero is 60px shorter than the others. The copy is raised 90px above centre, and the bed forms 152px under the CTA. The description sits 11px under the title (8px tighter than Sediment), and the CTA 44px under the description (16px looser). As each dot lands it eases into a slow travelling wave. Each line's wave has its own height, between 12 and 24px, and three lines, picked at random, swell to 72px (three times the 24px base). Each line waves on its own: its own phase, a wavelength of 480–800px, a 5–9s cycle, and a direction left or right, so the rows slide past one another. There is no background glow: the dots sit on the plain surface. Dots are 3.4px across, 1px larger than Sediment's. Each dot, at its own random moments every 1–6s, swells 2px wider and eases back over 0.8s. 40% of the dots are a solid pale grey (#E7EDF5). Of the rest, the light greys are #D3D9E3, #C3CCD7 and #ACB6C5, and the light blues are just the brighter two, #94AED6 (in place of Sky) and Rengo 300; the silver blues are dropped. A quarter of the dots are a vivid light blue (#ABC8F7) rather than the light greys and blues. There is no flow field: the dots start at random positions across the float band and hold still until the pull draws them into the bed.",
+  },
+  {
+    id: "11",
+    name: "Live /v3 fork",
+    reference: "The /v3 hero as of 2026-10-13",
+    Hero: V3SnapshotHero,
+    source:
+      "A frozen copy of the live /v3 hero (Quick sediment, 10, as tuned for the page) with /v3's own description, iterated on separately from 10 and /v3.",
+    concept: [
+      "As Quick sediment: scattered dots are pulled straight into the data layer under the CTA, where each line rolls in its own wave.",
+      "Click the hero (or press R) to run it again.",
+    ],
+    legend: [
+      ["Scattered dots", "Knowledge spread through day-to-day work"],
+      ["The bed", "The data layer, twenty lines deep"],
+      ["Swelling dots", "Records being touched and updated"],
+    ],
+    layout: "As Quick sediment (10) on 2026-10-13, after its copy was centred.",
   },
 ];
 

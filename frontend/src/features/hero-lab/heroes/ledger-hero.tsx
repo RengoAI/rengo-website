@@ -166,7 +166,7 @@ export const LedgerHero: React.FC = () => {
       width: lerp("width"),
     };
 
-    ctx.fillStyle = INK.canvas100;
+    ctx.fillStyle = INK.canvas200;
     ctx.fillRect(0, 0, w, h);
 
     const bars = new Path2D();
