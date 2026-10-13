@@ -99,7 +99,10 @@ export const CanvasFill = React.forwardRef<HTMLCanvasElement, BoxProps>(
 );
 CanvasFill.displayName = "CanvasFill";
 
-/** Filled CTA in the v3 shape, in a dark or a light tone. */
+/**
+ * Filled CTA in the v3 shape, in a dark or a light tone. The dark tone
+ * lightens to the footer's silver on hover, its label turning dark.
+ */
 export const SolidCta: React.FC<{ tone?: "dark" | "light" } & BoxProps> = ({
   tone = "dark",
   children = "Get started",
@@ -109,17 +112,20 @@ export const SolidCta: React.FC<{ tone?: "dark" | "light" } & BoxProps> = ({
     as="button"
     h="40px"
     px="14px"
-    borderRadius="2px"
+    borderRadius="4px"
+    className="group"
     bg={tone === "dark" ? "site.bg.dark" : "site.bg.raised"}
     display="inline-flex"
     alignItems="center"
     cursor="pointer"
     transition="opacity 150ms ease, background-color 150ms ease"
-    _hover={tone === "dark" ? { bg: "site.bg.ctaHover" } : { opacity: 0.88 }}
+    _hover={tone === "dark" ? { bg: "site.bg.tint" } : { opacity: 0.88 }}
     {...rest}
   >
     <ArrowLink
       color={tone === "dark" ? "site.fg.onDark" : "site.fg.strong"}
+      transition="color 150ms ease"
+      _groupHover={tone === "dark" ? { color: "site.fg.strong" } : undefined}
       fontWeight={300}
       gap="40px"
       _hover={{}}

@@ -44,8 +44,11 @@ const MESH_DOT_R = 1.5;
  * sized to the band's width (never under 1443px), and this uses that scale.
  * It has to sit on `site.bg.tint` — hard-light washes that silver toward
  * the sheet's off-white and leaves the dots.
+ *
+ * With `dot`, it draws just the dots, in that colour, straight over
+ * whatever band it's in — no paper, no blend.
  */
-export const DotSheet: React.FC = () => {
+export const DotSheet: React.FC<{ dot?: string }> = ({ dot }) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const [pitch, setPitch] = React.useState(() => sheetPitch(0));
 
@@ -67,12 +70,12 @@ export const DotSheet: React.FC = () => {
       ref={ref}
       position="absolute"
       inset={0}
-      bg={MESH_FIELD}
-      mixBlendMode="hard-light"
+      bg={dot ? undefined : MESH_FIELD}
+      mixBlendMode={dot ? undefined : "hard-light"}
       pointerEvents="none"
       aria-hidden
       style={{
-        backgroundImage: `radial-gradient(circle, ${MESH_DOT} ${radius}px, transparent ${radius + 0.6}px)`,
+        backgroundImage: `radial-gradient(circle, ${dot ?? MESH_DOT} ${radius}px, transparent ${radius + 0.6}px)`,
         backgroundSize: `${pitch}px ${pitch}px`,
       }}
     />

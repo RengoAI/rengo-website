@@ -23,6 +23,9 @@ import React from "react";
 
 const ART = "/img/rebrand/";
 
+/** The blue that picks out key phrases in section headings. */
+const HEADING_BLUE = "site.highlight";
+
 const HERO_DESCRIPTION =
   "Rengo is the embedded partner that builds the data intelligence layer for AI systems to learn and act from your firm’s knowledge.";
 
@@ -423,7 +426,7 @@ const SolutionSection: React.FC = () => {
             color="site.fg"
           >
             To solve this, we build a{" "}
-            <Box as="span" color="site.accent">
+            <Box as="span" color={HEADING_BLUE}>
               unified data foundation
             </Box>{" "}
             for your team
@@ -527,7 +530,7 @@ const FdeSection: React.FC = () => (
           maxW="full"
         >
           We maintain your data over time and manage your systems from{" "}
-          <Box as="span" color="site.accent">
+          <Box as="span" color={HEADING_BLUE}>
             strategy → deployment
           </Box>
         </Text>
@@ -634,9 +637,7 @@ export const LandingV3Page: React.FC = () => (
     </Section>
 
     {/* --- How we perform -------------------------------------------------- */}
-    {/* A step past canvas 400; the scale's next token (500) is the hairline
-        border grey, too dark for a band. */}
-    <Section grid rhythm="tight" bg="#E9E9EA">
+    <Section grid rhythm="tight" bg="site.bg.surface">
       <GridCol
         span={16}
         display="flex"
@@ -657,25 +658,24 @@ export const LandingV3Page: React.FC = () => (
           stack.
         </Text>
       </GridCol>
-      {/* Deliberately empty: the cards start a quarter of the way in. */}
-      <GridCol span={4} display={{ base: "none", lg: "block" }} />
-      {/* Two by two on mobile, four across from tablet up. */}
+      {/* Two by two on mobile, four across the full width from tablet up. */}
       {METRICS.map((metric) => (
         <GridCol
           key={metric.index}
-          span={{ base: 8, md: 4, lg: 3 }}
+          span={{ base: 8, md: 4 }}
           pt={{ base: "24px", lg: 0 }}
         >
           <MetricCard
             {...metric}
-            h={{ base: "240px", md: "320px", lg: "472px" }}
+            h={{ base: "200px", md: "280px", lg: "432px" }}
           />
         </GridCol>
       ))}
     </Section>
 
     {/* --- Testimonials ----------------------------------------------------- */}
-    <Section grid bg="site.bg.surface">
+    {/* Canvas 400; the first card takes the darker #E5E5E6. */}
+    <Section grid bg="canvas.400">
       <GridCol span={16} pb="40px">
         <Box display="flex" flexDirection="column" gap="8px">
           <Text

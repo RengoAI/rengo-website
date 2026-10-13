@@ -5,7 +5,8 @@ import React from "react";
 /*
  * Lab variant 11: a copy of the live /v3 hero as of 2026-10-13
  * (QuickSedimentHero's settings, with /v3's own description), iterated on
- * separately from v10 and /v3.
+ * separately from v10 and /v3. Since then: the copy block stays centred on
+ * the page, with its text and CTA left-aligned inside it.
  */
 
 /** /v3's hero description. */
@@ -34,6 +35,7 @@ export const V3SnapshotHero: React.FC = () => (
     dots={3000}
     layerGap={152}
     shift
+    copyAlign="start"
     drift={0.2}
     floatBand={400}
     floatOffset={190}

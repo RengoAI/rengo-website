@@ -164,7 +164,8 @@ const MESH_GREYS = [INK.soot300, INK.soot400, INK.soot500].map((c) =>
 const meshShade = () =>
   MESH_GREYS[Math.floor(Math.random() * MESH_GREYS.length)];
 /** The `accentShare` dots' colour: a vivid light blue. */
-const ACCENT_BLUE = parseToRgba("#ABC8F7").slice(0, 3);
+export const ACCENT_BLUE_HEX = "#ABC8F7";
+const ACCENT_BLUE = parseToRgba(ACCENT_BLUE_HEX).slice(0, 3);
 /**
  * Unsettled dots sit this far from the ground toward their shade; joined,
  * they take it in full. Higher than on a dark ground, where pale dots

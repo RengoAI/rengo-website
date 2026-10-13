@@ -58,15 +58,9 @@ export const MetricCard: React.FC<
     pl="12px"
     borderLeftColor="site.border.dashed"
     top={
-      // Set like the use-case audience labels, in the tint band's rule
-      // colour so the index stays legible against the lighter rule.
-      <Text
-        textStyle="label"
-        fontWeight={300}
-        letterSpacing="0"
-        lineHeight="1.1"
-        color="site.border.dashedOnTint"
-      >
+      // Set exactly like the caption, in the tint band's rule colour so
+      // the index stays legible against the lighter rule.
+      <Text textStyle="label" color="site.border.dashedOnTint">
         {index}
       </Text>
     }
@@ -81,7 +75,8 @@ export const MetricCard: React.FC<
         color="site.fg"
       >
         {icon}
-        <Text textStyle="d2" w="full">
+        {/* A step lighter than body copy (soot 600). */}
+        <Text textStyle="d2" color="soot.600" w="full">
           {value}
         </Text>
         {/* A step lighter than body copy (soot.700), so the caption sits
@@ -108,9 +103,10 @@ export const WASH_BLUE = "#BCCFEC";
  * step leans further toward the blue.
  */
 const TESTIMONIAL_WASHES = {
-  /** Flat grey, no blobs — a step darker than WASH_GREY (canvas 400). */
+  /** Flat, no blobs — the site's default white (#F6F6F6), lighter than
+   * the testimonials band (canvas 400) it sits on. */
   plain: {
-    bg: "canvas.400",
+    bg: "site.bg.surface",
     bgImage: "none",
   },
   light: {

@@ -251,7 +251,8 @@ const VARIANTS: Variant[] = [
       ["The bed", "The data layer, twenty lines deep"],
       ["Swelling dots", "Records being touched and updated"],
     ],
-    layout: "As Quick sediment (10) on 2026-10-13, after its copy was centred.",
+    layout:
+      "As Quick sediment (10) on 2026-10-13, after its copy was centred, except the text and CTA are left-aligned within the centred block.",
   },
 ];
 

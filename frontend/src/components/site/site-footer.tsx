@@ -1,6 +1,5 @@
 import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
-import { WASH_GREY } from "@/components/site/split-card";
 import { chakra, Text } from "@chakra-ui/react";
 import React from "react";
 
@@ -15,7 +14,8 @@ export const SiteFooter: React.FC = () => (
     as="footer"
     rhythm="none"
     py={{ base: "64px", md: "80px", lg: "110px" }}
-    bg={WASH_GREY}
+    // The use-case accordion's hover fill (silver 200).
+    bg="site.bg.tint"
   >
     <Grid alignItems="center" rowGap={{ base: "32px", lg: "gridGutter" }}>
       <GridCol span={{ base: 16, lg: 4 }} display="flex" alignItems="center">

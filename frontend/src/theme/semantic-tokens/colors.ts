@@ -447,8 +447,6 @@ export const semanticColors = defineSemanticTokens.colors({
       tintSubtle: { value: "{colors.silver.100}" },
       /** Filled brand surface — primary buttons. */
       brand: { value: "{colors.rengo.500}" },
-      /** The primary (dark) button's fill on hover. */
-      ctaHover: { value: "#0052A3" },
     },
     fg: {
       /** Body copy. */
@@ -484,6 +482,8 @@ export const semanticColors = defineSemanticTokens.colors({
     },
     /** Maroon. The emphasised phrase, one rule, one glyph — sparing. */
     accent: { value: "{colors.crimson}" },
+    /** Blue for key phrases in headings. */
+    highlight: { value: "#2E65BC" },
     /** Rengo blue. Links, primary actions. */
     brand: { value: "{colors.rengo.500}" },
   },

@@ -1,5 +1,8 @@
 import { DESCRIPTION, INK } from "@/features/hero-lab/hero-shared";
-import { LayerHero } from "@/features/hero-lab/heroes/layer-hero";
+import {
+  ACCENT_BLUE_HEX,
+  LayerHero,
+} from "@/features/hero-lab/heroes/layer-hero";
 import React from "react";
 
 /** The light greys: a cool, silvery ramp. */
@@ -8,6 +11,20 @@ const GREYS = ["#D3D9E3", "#C3CCD7", "#ACB6C5"];
 const PALE = { color: "#E7EDF5", share: 0.4 };
 /** The light blues: just the brighter two, #94AED6 in place of Sky. */
 const BLUES = ["#94AED6", INK.rengo300];
+/** Share of dots in the vivid accent blue. */
+const ACCENT_SHARE = 0.25;
+
+/**
+ * The hero's dot palette, for other surfaces that echo it (the footer):
+ * the accent's share, then the pale share, then half greys and half blues,
+ * each a random mix of two shades of its family.
+ */
+export const HERO_DOT_PALETTE = {
+  accent: { color: ACCENT_BLUE_HEX, share: ACCENT_SHARE },
+  pale: PALE,
+  greys: GREYS,
+  blues: BLUES,
+} as const;
 
 /** Each line's wave height, as a share of 24px: 12–24px. */
 const WAVE_AMP_RANGE: [number, number] = [0.5, 1];
@@ -57,7 +74,7 @@ export const QuickSedimentHero: React.FC<{
     waveBigScale={3}
     lift={90}
     shorten={60}
-    accentShare={0.25}
+    accentShare={ACCENT_SHARE}
     pale={PALE}
     dotSize={3.4}
     pulse
