@@ -1,7 +1,7 @@
 import { colSpanWidth, Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import { CanvasFill } from "@/components/site/canvas/canvas-fill";
-import { lerp } from "@/components/site/canvas/canvas-utils";
+import { easeInOut, lerp } from "@/components/site/canvas/canvas-utils";
 import { firstPulseAt, pulseGrowth } from "@/components/site/canvas/hero-dots";
 import { INK } from "@/components/site/canvas/ink";
 import { useCanvasLoop } from "@/components/site/canvas/use-canvas-loop";
@@ -98,6 +98,17 @@ const lineHash = (line: number, k: number) => {
 };
 /** px from its slot at which a landing dot starts to join the wave. */
 const WAVE_JOIN = 8;
+/**
+ * With `loopHold`: seconds the dots take to drift back to where they
+ * started, each one setting off within the first LOOP_SCATTER_SPREAD of it
+ * so they peel away gradually rather than all at once.
+ */
+const LOOP_SCATTER = 4.5;
+const LOOP_SCATTER_SPREAD = 0.35;
+/** With `loopHold`: the share of dots that must have landed for the bed to
+ * count as formed, and how close (px) a dot must be to its slot. */
+const LOOP_FORMED_SHARE = 0.98;
+const LOOP_LANDED = 1;
 const TRAIL_ALPHA = 55; // lower = longer trails (0–255)
 // ------------------------------------------------------------------------
 
@@ -354,6 +365,11 @@ type Dot = {
    * settled dot doesn't rebuild the same string every frame. */
   k: number;
   fill: string;
+  /** With `loopHold`: where this dot started, which it returns to, and its
+   * strength when the scatter began. */
+  sx: number;
+  sy: number;
+  sk: number;
 };
 
 /**
@@ -658,6 +674,13 @@ export const LayerHero: React.FC<{
    * one's right line, the description narrowing to fit.
    */
   splitOnGrid?: boolean;
+  /**
+   * Loop the formation: once the bed has formed, hold it in its wave for
+   * this many seconds, then let every dot drift back to where it started
+   * and form the bed again from there. Lines of dots only (not the plane,
+   * the sheet or glyphs). Omitted, the bed forms once and stays.
+   */
+  loopHold?: number;
   /** px between the description and the CTA. */
   ctaGap?: number;
   /**
@@ -753,6 +776,7 @@ export const LayerHero: React.FC<{
   splitTitleTracking = "-0.0375em",
   splitTitleWeight = 400,
   splitOnGrid = false,
+  loopHold,
   ctaHeight,
 }) => {
   const ease = easeExponent(drift);
@@ -824,6 +848,10 @@ export const LayerHero: React.FC<{
     lines: lines,
     cols: 0,
     rows: 0,
+    /** With `loopHold`: when (seconds into this pass) the bed formed, and
+     * when the dots began drifting back to their starts. */
+    formedAt: null as number | null,
+    scatterAt: null as number | null,
   });
   const restart = React.useCallback(() => {
     sim.current.restart = true;
@@ -941,6 +969,9 @@ export const LayerHero: React.FC<{
         streak: false,
         k: NaN,
         fill: "",
+        sx: 0,
+        sy: 0,
+        sk: 1,
       }));
       if (mesh) {
         assignMeshSlots(s.dots, meshXs, meshYs);
@@ -958,11 +989,17 @@ export const LayerHero: React.FC<{
           d.y = high + Math.random() * (low - high);
         }
       } else place(s.dots, w, h, lineCount);
+      for (const d of s.dots) {
+        d.sx = d.x;
+        d.sy = d.y;
+      }
       s.lines = lineCount;
       s.cols = meshXs.length;
       s.rows = meshYs.length;
       s.start = t;
       s.restart = false;
+      s.formedAt = null;
+      s.scatterAt = null;
       ctx.clearRect(0, 0, w, h);
     } else if (resized) {
       if (mesh) assignMeshSlots(s.dots, meshXs, meshYs);
@@ -1032,6 +1069,61 @@ export const LayerHero: React.FC<{
     );
     const z = elapsed * TIME_SCALE;
 
+    // The loop: lines of dots only. `scatter` is how far through drifting
+    // back to the start this pass is, or -1 while forming and holding.
+    const looping = loopHold !== undefined && !mesh && !plane && !glyphs;
+    const scatter =
+      looping && s.scatterAt !== null
+        ? (elapsed - s.scatterAt) / LOOP_SCATTER
+        : -1;
+    let landed = 0;
+
+    /** A dot's wave offset, eased in over its last few px of landing so the
+     * bed only moves once it has formed. */
+    const waveAt = (d: Dot) => {
+      if (!wave) return 0;
+      const join = Math.min(
+        Math.max(1 - Math.abs(layerY + d.ty - d.y) / WAVE_JOIN, 0),
+        1,
+      );
+      const { length, period, dir, offset, amp } = waveLine(Math.round(d.ty));
+      const phase =
+        (d.tx / length) * Math.PI * 2 +
+        offset * Math.PI * 2 -
+        dir * (elapsed / period) * Math.PI * 2;
+      return amp * Math.sin(phase) * join * join * (3 - 2 * join);
+    };
+
+    /** One dot at x, y and strength k, behind its trail unless `still`. */
+    const drawDot = (
+      d: Dot,
+      x: number,
+      y: number,
+      k: number,
+      still: boolean,
+    ) => {
+      // Dots come up to full strength as they join the layer — on a light
+      // ground, the sketch's "darken".
+      if (k !== d.k) {
+        d.k = k;
+        d.fill = groundToShade(d.shade, k);
+      }
+      ctx.fillStyle = d.fill;
+      // The trail: oldest first, each step back one RETAIN dimmer.
+      const r = dotSize / 2;
+      for (let age = still ? 0 : d.count; age >= 1; age--) {
+        const i = (d.head - age + TRAIL_LEN) % TRAIL_LEN;
+        ctx.globalAlpha = RETAIN ** age;
+        ctx.fillRect(d.trail[i * 2] - r, d.trail[i * 2 + 1] - r, r * 2, r * 2);
+      }
+      ctx.globalAlpha = 1;
+      mark(ctx, x, y, r + pulseGrowth(d, elapsed), square);
+      d.trail[d.head * 2] = x;
+      d.trail[d.head * 2 + 1] = y;
+      d.head = (d.head + 1) % TRAIL_LEN;
+      d.count = Math.min(d.count + 1, TRAIL_LEN);
+    };
+
     // The sheet fills in under the dots as the plane forms.
     if (plane) {
       ctx.fillStyle = rgba(
@@ -1056,6 +1148,24 @@ export const LayerHero: React.FC<{
             : 1;
         ctx.globalAlpha = appear * tw * underCopy(d);
         drawGlyph(ctx, atlas, d, d.tx, layerY + d.ty);
+        continue;
+      }
+
+      if (scatter >= 0) {
+        // Drifting back: from its place in the wave to where it started,
+        // fading back to its starting strength. Each dot sets off at its own
+        // moment early in the scatter (its private noise seed, reused).
+        const own =
+          (scatter - (d.ny / 1000) * LOOP_SCATTER_SPREAD) /
+          (1 - LOOP_SCATTER_SPREAD);
+        const e = easeInOut(Math.min(Math.max(own, 0), 1));
+        drawDot(
+          d,
+          lerp(d.x, d.sx, e),
+          lerp(d.y + waveAt(d), d.sy, e),
+          lerp(d.sk, DRIFT_STRENGTH, e),
+          false,
+        );
         continue;
       }
 
@@ -1122,6 +1232,14 @@ export const LayerHero: React.FC<{
           if (d.y < y0) d.y += band;
           if (d.y > y0 + band) d.y -= band;
         }
+        if (
+          looping &&
+          p > 0.98 &&
+          Math.abs(d.tx - d.x) < LOOP_LANDED &&
+          Math.abs(layerY + d.ty - d.y) < LOOP_LANDED
+        ) {
+          landed++;
+        }
       }
 
       if (atlas) {
@@ -1143,48 +1261,44 @@ export const LayerHero: React.FC<{
         continue;
       }
 
-      // Dots come up to full strength as they join the layer — on a light
-      // ground, the sketch's "darken".
       // Under the copy, a dot fades back as it settles rather than landing
       // on the type.
-      const k = lerp(DRIFT_STRENGTH, 1, p) * lerp(1, underCopy(d), p);
-      if (k !== d.k) {
-        d.k = k;
-        d.fill = groundToShade(d.shade, k);
-      }
-      ctx.fillStyle = d.fill;
+      drawDot(
+        d,
+        d.x,
+        d.y + waveAt(d),
+        lerp(DRIFT_STRENGTH, 1, p) * lerp(1, underCopy(d), p),
+        p > 0.99 && Math.abs(d.vx) + Math.abs(d.vy) < 0.02,
+      );
+    }
 
-      // The wave: each dot eases into it over its last few px of landing,
-      // so the bed only moves once it has formed.
-      let y = d.y;
-      if (wave) {
-        const join = Math.min(
-          Math.max(1 - Math.abs(layerY + d.ty - d.y) / WAVE_JOIN, 0),
-          1,
-        );
-        const { length, period, dir, offset, amp } = waveLine(Math.round(d.ty));
-        const phase =
-          (d.tx / length) * Math.PI * 2 +
-          offset * Math.PI * 2 -
-          dir * (elapsed / period) * Math.PI * 2;
-        y += amp * Math.sin(phase) * join * join * (3 - 2 * join);
+    if (looping && loopHold !== undefined) {
+      if (s.scatterAt === null) {
+        if (
+          s.formedAt === null &&
+          landed >= s.dots.length * LOOP_FORMED_SHARE
+        ) {
+          s.formedAt = elapsed;
+        }
+        if (s.formedAt !== null && elapsed - s.formedAt >= loopHold) {
+          s.scatterAt = elapsed;
+          for (const d of s.dots) d.sk = d.k;
+        }
+      } else if (scatter >= 1) {
+        // Back where they started: form the bed again from here, keeping
+        // each dot's pulse on its schedule across the new pass's clock.
+        for (const d of s.dots) {
+          d.x = d.sx;
+          d.y = d.sy;
+          d.vx = 0;
+          d.vy = 0;
+          d.count = 0;
+          d.pulseAt -= elapsed;
+        }
+        s.start = t;
+        s.formedAt = null;
+        s.scatterAt = null;
       }
-
-      // The trail: oldest first, each step back one RETAIN dimmer.
-      const r = dotSize / 2;
-      const still = p > 0.99 && Math.abs(d.vx) + Math.abs(d.vy) < 0.02;
-      for (let age = still ? 0 : d.count; age >= 1; age--) {
-        const i = (d.head - age + TRAIL_LEN) % TRAIL_LEN;
-        ctx.globalAlpha = RETAIN ** age;
-        ctx.fillRect(d.trail[i * 2] - r, d.trail[i * 2 + 1] - r, r * 2, r * 2);
-      }
-      ctx.globalAlpha = 1;
-      mark(ctx, d.x, y, r + pulseGrowth(d, elapsed), square);
-
-      d.trail[d.head * 2] = d.x;
-      d.trail[d.head * 2 + 1] = y;
-      d.head = (d.head + 1) % TRAIL_LEN;
-      d.count = Math.min(d.count + 1, TRAIL_LEN);
     }
 
     // Sheet marks fall in columns. Draw them sparsely on the way down — a
@@ -1232,7 +1346,7 @@ export const LayerHero: React.FC<{
       {...heroBox(underNav, shorten)}
       bg={mesh ? "site.bg.tint" : "site.bg.surface"}
       onClick={restart}
-      cursor="crosshair"
+      cursor="default"
     >
       {mesh ? (
         <DotSheet />

@@ -79,6 +79,8 @@ export const QuickSedimentHero: React.FC<{
     splitTitleTracking="-0.025em"
     // The copy on columns 2–15 at lg, 3–14 from xl.
     splitOnGrid
+    // Once formed, hold the wave 10s, drift back to the start, form again.
+    loopHold={10}
     descriptionColor="site.fg"
   />
 );
