@@ -57,7 +57,7 @@ const TITLE_SIZE = { base: "32px", md: "36px" };
  * measure. The copy sits 138px above centre and the bed forms 144px under
  * it.
  *
- * The bed: 3,000 dots, 3.4px across, start scattered across a 400px band
+ * The bed: 3,000 square dots, 3.4px across, start scattered across a 400px band
  * 190px below the middle and hold still until pulled in (no flow field,
  * start delays spread over about a second). Twenty lines 4px apart, each
  * rolling in its own wave, 12–24px high, with three lines at 3×. Every 1–6s
@@ -96,6 +96,7 @@ export const QuickSedimentHero: React.FC<{
     pale={PALE}
     highlight={HIGHLIGHT}
     dotSize={3.4}
+    square
     pulse
     greys={GREYS}
     blues={BLUES}

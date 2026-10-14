@@ -369,6 +369,23 @@ const easeExponent = (drift: number) => {
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
+/** One dot, radius `r` (half-width when `square`), centred on x, y. */
+const mark = (
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  r: number,
+  square: boolean,
+) => {
+  if (square) {
+    ctx.fillRect(x - r, y - r, r * 2, r * 2);
+    return;
+  }
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, Math.PI * 2);
+  ctx.fill();
+};
+
 /**
  * Slots on the dot sheet itself. `xs` and `ys` are sheet centres, so a
  * settled dot covers the background dot instead of landing beside it.
@@ -592,6 +609,8 @@ export const LayerHero: React.FC<{
   pulse?: boolean;
   /** Dot diameter in px. */
   dotSize?: number;
+  /** Draw each dot as a square, `dotSize` across, instead of a circle. */
+  square?: boolean;
   /** Share of dots (0–1) drawn in a brighter blue instead of the light palette. */
   accentShare?: number;
   /** The `accentShare` dots' colour. Defaults to ACCENT_BLUE_HEX. */
@@ -685,6 +704,7 @@ export const LayerHero: React.FC<{
   pale,
   highlight,
   dotSize = DOT_SIZE,
+  square = false,
   pulse = false,
   greys,
   blues,
@@ -940,9 +960,7 @@ export const LayerHero: React.FC<{
           continue;
         }
         ctx.fillStyle = `rgb(${d.shade[0]},${d.shade[1]},${d.shade[2]})`;
-        ctx.beginPath();
-        ctx.arc(d.tx, layerY + d.ty, dotSize / 2, 0, Math.PI * 2);
-        ctx.fill();
+        mark(ctx, d.tx, layerY + d.ty, dotSize / 2, square);
       }
       ctx.globalAlpha = 1;
       return;
@@ -1127,9 +1145,7 @@ export const LayerHero: React.FC<{
           pr += (PULSE_GROW / 2) * Math.sin(k * Math.PI);
         }
       }
-      ctx.beginPath();
-      ctx.arc(d.x, y, pr, 0, Math.PI * 2);
-      ctx.fill();
+      mark(ctx, d.x, y, pr, square);
 
       d.trail[d.head * 2] = d.x;
       d.trail[d.head * 2 + 1] = y;
@@ -1173,9 +1189,7 @@ export const LayerHero: React.FC<{
             ctx.lineTo(d.x, d.y);
             ctx.stroke();
           } else {
-            ctx.beginPath();
-            ctx.arc(d.x, d.y, dotSize / 2, 0, Math.PI * 2);
-            ctx.fill();
+            mark(ctx, d.x, d.y, dotSize / 2, square);
           }
           last = d.y;
         }
