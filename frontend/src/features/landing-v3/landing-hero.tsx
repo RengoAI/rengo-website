@@ -25,7 +25,7 @@ import React from "react";
  * button right-aligned opposite it, and under them a bed of dots — the data
  * layer — forming out of a scatter.
  *
- * 2,160 square dots start scattered across a 400px band below the middle
+ * 1,728 square dots start scattered across a 400px band below the middle
  * and are pulled, staggered over about a second, into sixteen lines 4px
  * apart, 88px under the copy. Slots are handed out by each dot's starting
  * x, so dots travel mostly vertically, and each line is slid along by a
@@ -47,7 +47,7 @@ const DESCRIPTION =
   "We are the embedded partner that builds the data layer for AI systems to learn and act from your firm’s knowledge.";
 
 // ---- Formation ---------------------------------------------------------
-const DOTS = 2160;
+const DOTS = 1728;
 /**
  * The whole graphic — the starting scatter and the bed — is raised RAISE
  * px. Phones (canvas narrower than the `md` breakpoint) get half the dots,
@@ -512,11 +512,11 @@ export const LandingHero: React.FC = () => {
       >
         <Box
           ref={copy}
-          // Centred on the viewport, then raised 20px + 4rem. The raise is a
+          // Centred on the viewport, then raised 40px + 4rem. The raise is a
           // transform, which the bed (hung off the box's laid-out bottom
           // edge) doesn't follow.
           position="relative"
-          transform="translateY(calc(-20px - 4rem))"
+          transform="translateY(calc(-40px - 4rem))"
           {...COPY_BOX}
           display="flex"
           flexDirection={{ base: "column", md: "row" }}
