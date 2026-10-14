@@ -1,8 +1,5 @@
 import { DESCRIPTION, INK } from "@/features/hero-lab/hero-shared";
-import {
-  ACCENT_BLUE_HEX,
-  LayerHero,
-} from "@/features/hero-lab/heroes/layer-hero";
+import { LayerHero } from "@/features/hero-lab/heroes/layer-hero";
 import { mix } from "color2k";
 import React from "react";
 
@@ -12,8 +9,10 @@ const GREYS = ["#D3D9E3", "#C3CCD7", "#ACB6C5"];
 const PALE = { color: "#E7EDF5", share: 0.4 };
 /** The light blues: just the brighter two, #94AED6 in place of Sky. */
 const BLUES = ["#94AED6", INK.rengo300];
-/** Share of dots in the vivid accent blue. */
+/** Share of dots in the accent blue. */
 const ACCENT_SHARE = 0.25;
+/** The accent: #ABC8F7 greyed down a touch. */
+const ACCENT_COLOR = "#B9CCE9";
 /** 10% of dots in the hero description's dark navy (slate.100). */
 const HIGHLIGHT = { color: "#425366", share: 0.1 };
 
@@ -24,7 +23,7 @@ const HIGHLIGHT = { color: "#425366", share: 0.1 };
  * each a random mix of two shades of its family.
  */
 export const HERO_DOT_PALETTE = {
-  accent: { color: ACCENT_BLUE_HEX, share: ACCENT_SHARE },
+  accent: { color: ACCENT_COLOR, share: ACCENT_SHARE },
   highlight: HIGHLIGHT,
   pale: PALE,
   greys: GREYS,
@@ -62,8 +61,8 @@ const TITLE_SIZE = { base: "32px", md: "36px" };
  * 190px below the middle and hold still until pulled in (no flow field,
  * start delays spread over about a second). Twenty lines 4px apart, each
  * rolling in its own wave, 12–24px high, with three lines at 3×. Every 1–6s
- * each dot swells 2px and eases back. A quarter are a vivid light blue
- * (#ABC8F7), 10% the description's dark navy (#425366), 40% a solid pale
+ * each dot swells 2px and eases back. A quarter are a greyed light blue
+ * (#B9CCE9), 10% the description's dark navy (#425366), 40% a solid pale
  * grey (#E7EDF5), the rest half light greys and half the brighter light
  * blues. No background glow.
  */
@@ -93,6 +92,7 @@ export const QuickSedimentHero: React.FC<{
     lift={138}
     shorten={60}
     accentShare={ACCENT_SHARE}
+    accentColor={ACCENT_COLOR}
     pale={PALE}
     highlight={HIGHLIGHT}
     dotSize={3.4}

@@ -170,7 +170,6 @@ const meshShade = () =>
   MESH_GREYS[Math.floor(Math.random() * MESH_GREYS.length)];
 /** The `accentShare` dots' colour: a vivid light blue. */
 export const ACCENT_BLUE_HEX = "#ABC8F7";
-const ACCENT_BLUE = parseToRgba(ACCENT_BLUE_HEX).slice(0, 3);
 /**
  * Unsettled dots sit this far from the ground toward their shade; joined,
  * they take it in full. Higher than on a dark ground, where pale dots
@@ -594,6 +593,8 @@ export const LayerHero: React.FC<{
   dotSize?: number;
   /** Share of dots (0–1) drawn in a brighter blue instead of the light palette. */
   accentShare?: number;
+  /** The `accentShare` dots' colour. Defaults to ACCENT_BLUE_HEX. */
+  accentColor?: string;
   /**
    * A solid pale colour for this share (0–1) of all dots, taken before the
    * light families. Pass a module-level object: compared by reference.
@@ -679,6 +680,7 @@ export const LayerHero: React.FC<{
   waveBigLines = 0,
   waveBigScale = 2,
   accentShare = 0,
+  accentColor = ACCENT_BLUE_HEX,
   pale,
   highlight,
   dotSize = DOT_SIZE,
@@ -701,6 +703,10 @@ export const LayerHero: React.FC<{
   ctaHeight,
 }) => {
   const ease = easeExponent(drift);
+  const accentShade = React.useMemo(
+    () => parseToRgba(accentColor).slice(0, 3),
+    [accentColor],
+  );
   const highlightShade = React.useMemo(
     () => (highlight ? parseToRgba(highlight.color).slice(0, 3) : undefined),
     [highlight],
@@ -829,7 +835,7 @@ export const LayerHero: React.FC<{
       // light families.
       const lightShade = () => {
         let u = Math.random();
-        if (u < accentShare) return ACCENT_BLUE;
+        if (u < accentShare) return accentShade;
         u -= accentShare;
         if (highlightShade && highlight) {
           if (u < highlight.share) return highlightShade;
