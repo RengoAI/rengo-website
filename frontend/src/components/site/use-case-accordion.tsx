@@ -1,5 +1,7 @@
-import { Grid, GridCol } from "@/components/layout/grid";
+import { GridCol } from "@/components/layout/grid";
 import { DataMeshDiagram } from "@/components/site/data-mesh-diagram";
+import { RuledRow } from "@/components/site/ruled-row";
+import { colorVar, dottedBottom } from "@/components/site/site-styles";
 import { Box, chakra, Text } from "@chakra-ui/react";
 import React from "react";
 
@@ -61,28 +63,15 @@ export const UseCaseAccordion: React.FC<{
         const isOpen = openIndices.has(i);
         const panelId = `${idPrefix}-panel-${i}`;
         return (
-          <Grid
+          // Its hover tint is a step up from the blue band the list sits on.
+          <RuledRow
             key={item.title}
             as="li"
             // Containing block for the button's row-wide hit area.
             position="relative"
-            rowGap="12px"
-            py="24px"
-            borderTopWidth="1px"
-            borderTopStyle="dotted"
-            borderTopColor="site.border.dashed"
             // The last row closes the list with the same rule underneath.
-            {...(i === items.length - 1
-              ? {
-                  borderBottomWidth: "1px",
-                  borderBottomStyle: "dotted",
-                  borderBottomColor: "site.border.dashed",
-                }
-              : {})}
+            {...(i === items.length - 1 ? dottedBottom() : {})}
             cursor="pointer"
-            transition="background 150ms ease"
-            // A step up from the blue band the list sits on.
-            _hover={{ bg: "site.bg.tint" }}
           >
             {/* From lg, where they share a row, the label is centred on the
                 title's first line: one h6 line box, 20px × 1.2. */}
@@ -130,7 +119,7 @@ export const UseCaseAccordion: React.FC<{
                   css={{
                     "&:focus-visible": { outline: "none" },
                     "&:focus-visible::before": {
-                      outline: "2px solid var(--rengo-colors-site-highlight)",
+                      outline: `2px solid ${colorVar("site.highlight")}`,
                       outlineOffset: "-2px",
                     },
                   }}
@@ -164,7 +153,7 @@ export const UseCaseAccordion: React.FC<{
                 <DataMeshDiagram />
               </GridCol>
             )}
-          </Grid>
+          </RuledRow>
         );
       })}
     </Box>

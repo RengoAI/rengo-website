@@ -1,3 +1,4 @@
+import { tiledRuleLeft } from "@/components/site/site-styles";
 import { Box, type BoxProps, Image, Text } from "@chakra-ui/react";
 import React from "react";
 
@@ -22,26 +23,6 @@ export type SplitCardProps = Omit<BoxProps, "top"> & {
   ruleColor?: string;
 };
 
-/**
- * CSS `dotted` borders don't let you set the gap, so the rule is a 1px-wide
- * strip of repeating 2px tiles: one 1px dot, then 1px of nothing.
- */
-export const dottedRule = (token: string) => ({
-  position: "relative" as const,
-  _before: {
-    content: '""',
-    position: "absolute",
-    top: 0,
-    bottom: 0,
-    left: 0,
-    width: "1px",
-    bgImage: `linear-gradient(to bottom, var(--rengo-colors-${token.replace(/\./g, "-")}) 1px, transparent 1px)`,
-    bgSize: "1px 2px",
-    bgRepeat: "repeat-y",
-    pointerEvents: "none",
-  },
-});
-
 export const SplitCard: React.FC<SplitCardProps> = ({
   top,
   bottom,
@@ -57,7 +38,7 @@ export const SplitCard: React.FC<SplitCardProps> = ({
     gap="32px"
     h={{ base: "auto", lg: "472px" }}
     px="16px"
-    {...(rule ? dottedRule(ruleColor) : {})}
+    {...(rule ? tiledRuleLeft(ruleColor) : {})}
     {...rest}
   >
     {top}
@@ -126,10 +107,10 @@ export const MetricCard: React.FC<
 );
 
 // The testimonial washes' three colours: a light grey, a grey-blue between,
-// and a soft periwinkle. Exported so the metrics band can echo them.
-export const WASH_GREY = "#F2F2F2";
-export const WASH_MIST = "#E1E9EF";
-export const WASH_BLUE = "#BCCFEC";
+// and a soft periwinkle.
+const WASH_GREY = "#F2F2F2";
+const WASH_MIST = "#E1E9EF";
+const WASH_BLUE = "#BCCFEC";
 
 /**
  * Soft organic gradients for the testimonial cards: a base colour with a few

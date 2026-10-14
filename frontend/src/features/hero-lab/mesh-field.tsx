@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import React from "react";
 
-/** Dot pitch and width of `hero-mesh.png`, so a drawn grid can match it. */
+/** Dot pitch and width of the former `hero-mesh.png`, so a drawn grid can match it. */
 export const MESH_PITCH = 22;
 export const MESH_WIDTH = 2616;
 
@@ -40,7 +40,7 @@ const MESH_DOT_R = 1.5;
 
 /**
  * The rebrand dot grid, drawn to fill its parent, without the character
- * clusters baked into `hero-mesh.png`. Pitch follows that image: it was
+ * clusters baked into the former `hero-mesh.png`. Pitch follows that image: it was
  * sized to the band's width (never under 1443px), and this uses that scale.
  * It has to sit on `site.bg.tint` — hard-light washes that silver toward
  * the sheet's off-white and leaves the dots.

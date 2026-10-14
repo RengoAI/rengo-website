@@ -4,7 +4,7 @@ import React from "react";
 
 /**
  * A full-bleed horizontal band carrying the global gutters: 40px left/right,
- * 100px top/bottom on desktop, stepping down to 32px left/right on tablet and
+ * 120px top/bottom on desktop, stepping down to 32px left/right on tablet and
  * 16px on mobile (see `layoutVars`).
  *
  * Every content section, the nav, and the footer sit in one of these so their
@@ -20,7 +20,7 @@ export type SectionProps = BoxProps & {
   /** Forwarded to the inner `Grid` when `grid` is set. */
   gridProps?: GridProps;
   /**
-   * Vertical rhythm. `default` 100px, `tight` 80px, `compact` 60px at desktop
+   * Vertical rhythm. `default` 120px, `tight` 100px, `compact` 80px at desktop
    * (each a little less on smaller screens), `none` for bands that manage
    * their own (the nav, the footer).
    */

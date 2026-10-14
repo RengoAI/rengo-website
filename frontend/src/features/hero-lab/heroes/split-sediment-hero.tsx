@@ -1,5 +1,14 @@
-import { INK } from "@/features/hero-lab/hero-shared";
+import {
+  HERO_BLUES,
+  HERO_DOT,
+  HERO_GREYS,
+  HERO_PALE,
+} from "@/components/site/canvas/hero-dots";
 import { LayerHero } from "@/features/hero-lab/heroes/layer-hero";
+import {
+  TITLE_SIZE,
+  WAVE_AMP_RANGE,
+} from "@/features/hero-lab/heroes/quick-sediment-hero";
 import React from "react";
 
 /*
@@ -13,19 +22,6 @@ import React from "react";
 /** The description as set in the frame. */
 const DESCRIPTION =
   "We’re the embedded partner that builds the data layer for AI systems to learn and act from your firm’s knowledge.";
-
-/** The light greys: a cool, silvery ramp. */
-const GREYS = ["#D3D9E3", "#C3CCD7", "#ACB6C5"];
-/** 40% of all dots in a solid pale grey-blue, lighter than #D3D9E3. */
-const PALE = { color: "#E7EDF5", share: 0.4 };
-/** The light blues: just the brighter two, #94AED6 in place of Sky. */
-const BLUES = ["#94AED6", INK.rengo300];
-
-/** Each line's wave height, as a share of 24px: 12–24px. */
-const WAVE_AMP_RANGE: [number, number] = [0.5, 1];
-
-/** The title in Geist, held at the size it had in Serrif's d3. */
-const TITLE_SIZE = { base: "32px", md: "36px" };
 
 export const SplitSedimentHero: React.FC = () => (
   <LayerHero
@@ -48,11 +44,11 @@ export const SplitSedimentHero: React.FC = () => (
     lift={138}
     shorten={60}
     accentShare={0.25}
-    pale={PALE}
-    dotSize={3.4}
+    pale={HERO_PALE}
+    dotSize={HERO_DOT}
     pulse
-    greys={GREYS}
-    blues={BLUES}
+    greys={HERO_GREYS}
+    blues={HERO_BLUES}
     flow={false}
     glow={false}
   />

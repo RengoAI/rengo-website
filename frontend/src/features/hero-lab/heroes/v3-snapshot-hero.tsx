@@ -1,5 +1,11 @@
-import { INK } from "@/features/hero-lab/hero-shared";
+import {
+  HERO_BLUES,
+  HERO_DOT,
+  HERO_GREYS,
+  HERO_PALE,
+} from "@/components/site/canvas/hero-dots";
 import { LayerHero } from "@/features/hero-lab/heroes/layer-hero";
+import { WAVE_AMP_RANGE } from "@/features/hero-lab/heroes/quick-sediment-hero";
 import React from "react";
 
 /*
@@ -12,16 +18,6 @@ import React from "react";
 /** /v3's hero description. */
 const DESCRIPTION =
   "Rengo is the embedded partner that builds the data intelligence layer for AI systems to learn and act from your firm’s knowledge.";
-
-/** The light greys: a cool, silvery ramp. */
-const GREYS = ["#D3D9E3", "#C3CCD7", "#ACB6C5"];
-/** 40% of all dots in a solid pale grey-blue, lighter than #D3D9E3. */
-const PALE = { color: "#E7EDF5", share: 0.4 };
-/** The light blues: just the brighter two, #94AED6 in place of Sky. */
-const BLUES = ["#94AED6", INK.rengo300];
-
-/** Each line's wave height, as a share of 24px: 12–24px. */
-const WAVE_AMP_RANGE: [number, number] = [0.5, 1];
 
 /** The title: h3, held at 30px on desktop rather than its 32px. */
 const TITLE_SIZE = { base: "26px", md: "30px" };
@@ -46,11 +42,11 @@ export const V3SnapshotHero: React.FC = () => (
     lift={90}
     shorten={60}
     accentShare={0.25}
-    pale={PALE}
-    dotSize={3.4}
+    pale={HERO_PALE}
+    dotSize={HERO_DOT}
     pulse
-    greys={GREYS}
-    blues={BLUES}
+    greys={HERO_GREYS}
+    blues={HERO_BLUES}
     flow={false}
     glow={false}
     titleSize={TITLE_SIZE}

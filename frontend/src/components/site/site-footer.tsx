@@ -1,6 +1,7 @@
 import { rootRoute } from "@/app/app-routes";
 import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
+import { hoverFade } from "@/components/site/site-styles";
 import { chakra, Text } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -60,8 +61,7 @@ export const SiteFooter: React.FC = () => (
                 color="site.fg"
                 whiteSpace="nowrap"
                 cursor="pointer"
-                transition="opacity 150ms ease"
-                _hover={{ opacity: 0.6 }}
+                {...hoverFade}
               >
                 {link.label}
               </RouterLink>

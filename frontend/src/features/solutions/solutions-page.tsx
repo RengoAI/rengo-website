@@ -2,7 +2,7 @@ import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
-import { dottedRule } from "@/components/site/split-card";
+import { tiledRuleLeft } from "@/components/site/site-styles";
 import { GridCircleDots } from "@/features/solutions/grid-circle-dots";
 import { SOLUTION_CAPABILITIES } from "@/features/solutions/solutions";
 import { Box, Text } from "@chakra-ui/react";
@@ -33,7 +33,7 @@ const ApproachCard: React.FC<{
     alignItems="flex-start"
     gap="16px"
     p="20px"
-    {...dottedRule("site.border.dashed")}
+    {...tiledRuleLeft("site.border.dashed")}
   >
     <Text textStyle="label" lineHeight="1" letterSpacing="0" color="slate.100">
       {index}

@@ -1,5 +1,6 @@
 import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
+import { NAV_H } from "@/components/site/site-constants";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
 import { TypedText } from "@/components/site/typed-text";
@@ -122,9 +123,9 @@ export const AboutV3Page: React.FC = () => (
           // Only pinned on desktop: on narrower screens the portraits scroll
           // right under it, where it would sit on top of them.
           position={{ base: "static", lg: "sticky" }}
-          // Nav (52px) plus the band's 80px top inset — the title pins where it
+          // The nav plus the band's 80px top inset — the title pins where it
           // already sits, rather than jumping up under the nav.
-          top="132px"
+          top={`${NAV_H + 80}px`}
           w="fit-content"
         >
           <TypedText text="Our team and vision" />

@@ -1,54 +1,27 @@
-import { DESCRIPTION, INK } from "@/features/hero-lab/hero-shared";
+import {
+  HERO_ACCENT,
+  HERO_BLUES,
+  HERO_DOT,
+  HERO_GREYS,
+  HERO_HIGHLIGHT,
+  HERO_PALE,
+} from "@/components/site/canvas/hero-dots";
+import { DESCRIPTION } from "@/features/hero-lab/hero-shared";
 import { LayerHero } from "@/features/hero-lab/heroes/layer-hero";
-import { mix } from "color2k";
 import React from "react";
 
-/** The light greys: a cool, silvery ramp. */
-const GREYS = ["#D3D9E3", "#C3CCD7", "#ACB6C5"];
-/** 40% of all dots in a solid pale grey-blue, lighter than #D3D9E3. */
-const PALE = { color: "#E7EDF5", share: 0.4 };
-/** The light blues: just the brighter two, #94AED6 in place of Sky. */
-const BLUES = ["#94AED6", INK.rengo300];
-/** Share of dots in the accent blue. */
-const ACCENT_SHARE = 0.25;
-/** The accent: #ABC8F7 greyed down a touch. */
-const ACCENT_COLOR = "#B9CCE9";
-/** 10% of dots in the hero description's dark navy (slate.100). */
-const HIGHLIGHT = { color: "#425366", share: 0.1 };
+/** Each line's wave height, as a share of 24px: 12–24px. */
+export const WAVE_AMP_RANGE: [number, number] = [0.5, 1];
 
 /**
- * The hero's dot palette, for other surfaces that echo it (the footer):
- * the accent's share, then the highlight blue's, then the pale share, then
- * half greys and half blues,
- * each a random mix of two shades of its family.
+ * The hero's own pale share: the lightest grey (#E7EDF5) on 60% of the
+ * dots, 20 points more than the shared palette's 40%. That leaves 5% for the
+ * mixed light greys and blues, after the accent's 25% and the navy's 10%.
  */
-export const HERO_DOT_PALETTE = {
-  accent: { color: ACCENT_COLOR, share: ACCENT_SHARE },
-  highlight: HIGHLIGHT,
-  pale: PALE,
-  greys: GREYS,
-  blues: BLUES,
-} as const;
-
-const pick = <T,>(xs: readonly T[]) =>
-  xs[Math.floor(Math.random() * xs.length)];
-
-/** One colour, drawn the way the hero draws its dots'. */
-export const heroDotColor = () => {
-  const { accent, highlight, pale, greys, blues } = HERO_DOT_PALETTE;
-  const u = Math.random();
-  if (u < accent.share) return accent.color;
-  if (u < accent.share + highlight.share) return highlight.color;
-  if (u < accent.share + highlight.share + pale.share) return pale.color;
-  const family = Math.random() < 0.5 ? greys : blues;
-  return mix(pick(family), pick(family), Math.random());
-};
-
-/** Each line's wave height, as a share of 24px: 12–24px. */
-const WAVE_AMP_RANGE: [number, number] = [0.5, 1];
+const PALE = { ...HERO_PALE, share: 0.6 };
 
 /** The title in Geist, held at the size it had in Serrif's d3. */
-const TITLE_SIZE = { base: "32px", md: "36px" };
+export const TITLE_SIZE = { base: "32px", md: "36px" };
 
 /**
  * The live /v3 hero (lab variant 10), in v12's split layout: the title on
@@ -57,14 +30,12 @@ const TITLE_SIZE = { base: "32px", md: "36px" };
  * measure. The copy sits 138px above centre and the bed forms 144px under
  * it.
  *
- * The bed: 3,000 square dots, 3.4px across, start scattered across a 400px band
- * 190px below the middle and hold still until pulled in (no flow field,
- * start delays spread over about a second). Twenty lines 4px apart, each
- * rolling in its own wave, 12–24px high, with three lines at 3×. Every 1–6s
- * each dot swells 2px and eases back. A quarter are a greyed light blue
- * (#B9CCE9), 10% the description's dark navy (#425366), 40% a solid pale
- * grey (#E7EDF5), the rest half light greys and half the brighter light
- * blues. No background glow.
+ * The bed: 2,160 square dots, 3.4px across, start scattered across a 400px
+ * band 190px below the middle and hold still until pulled in (no flow field,
+ * start delays spread over about a second). Sixteen lines 4px apart, 135
+ * dots to a line, each rolling in its own wave, 12–24px high, with three
+ * lines at 3×. Every 1–6s each dot swells 2px and eases back. The palette is
+ * the hero's, from `hero-dots`. No background glow.
  */
 export const QuickSedimentHero: React.FC<{
   description?: string;
@@ -76,9 +47,9 @@ export const QuickSedimentHero: React.FC<{
     ctaLabel="Book a call"
     description={description}
     underNav={underNav}
-    lines={20}
+    lines={16}
     lineGap={4}
-    dots={3000}
+    dots={2160}
     layerGap={144}
     shift
     drift={0.2}
@@ -91,18 +62,21 @@ export const QuickSedimentHero: React.FC<{
     waveBigScale={3}
     lift={138}
     shorten={60}
-    accentShare={ACCENT_SHARE}
-    accentColor={ACCENT_COLOR}
+    accentShare={HERO_ACCENT.share}
+    accentColor={HERO_ACCENT.color}
     pale={PALE}
-    highlight={HIGHLIGHT}
-    dotSize={3.4}
+    highlight={HERO_HIGHLIGHT}
+    dotSize={HERO_DOT}
     square
     pulse
-    greys={GREYS}
-    blues={BLUES}
+    greys={HERO_GREYS}
+    blues={HERO_BLUES}
     flow={false}
     glow={false}
     titleSize={TITLE_SIZE}
+    // The heading scale's own weight and tracking.
+    splitTitleWeight={350}
+    splitTitleTracking="-0.025em"
     descriptionColor="site.fg"
   />
 );

@@ -65,7 +65,7 @@ export const textStyles = defineTextStyles({
   h5: {
     value: {
       fontFamily: "body",
-      fontSize: { base: "1.125rem", md: "1.5rem" }, // 20px → 24px
+      fontSize: { base: "1.375rem", md: "1.5rem" }, // 20px → 24px
       fontWeight: "350",
       letterSpacing: "-0.02em",
       lineHeight: "1.2",
@@ -74,7 +74,7 @@ export const textStyles = defineTextStyles({
   h6: {
     value: {
       fontFamily: "body",
-      fontSize: "1.25rem", // 20px — accordion titles
+      fontSize: "1.125rem", // 20px — accordion titles
       fontWeight: "350",
       letterSpacing: "-0.02em",
       lineHeight: "1.2",

@@ -1,6 +1,7 @@
-import { CanvasFill } from "@/features/hero-lab/hero-shared";
-import { heroDotColor } from "@/features/hero-lab/heroes/quick-sediment-hero";
-import { useCanvasLoop } from "@/features/hero-lab/use-canvas-loop";
+import { CanvasFill } from "@/components/site/canvas/canvas-fill";
+import { rand } from "@/components/site/canvas/canvas-utils";
+import { heroDotColor } from "@/components/site/canvas/hero-dots";
+import { useCanvasLoop } from "@/components/site/canvas/use-canvas-loop";
 import React from "react";
 
 /**
@@ -34,14 +35,14 @@ const INK_OUT = 4;
  */
 const MAX_AGE = 40;
 
-const rand = (lo: number, hi: number) => lo + Math.random() * (hi - lo);
-
 type Field = {
   cols: number;
   rows: number;
   ox: number;
   oy: number;
   live: Uint8Array;
+  /** The next generation's buffer, swapped with `live` each step. */
+  next: Uint8Array;
   age: Uint8Array;
   ink: Float32Array;
   color: string[];
@@ -61,6 +62,7 @@ const makeField = (w: number, h: number, t: number): Field => {
     ox: (w - (cols - 1) * PITCH) / 2,
     oy: (h - (rows - 1) * PITCH) / 2,
     live,
+    next: new Uint8Array(n),
     age: new Uint8Array(n),
     ink: new Float32Array(n),
     color: Array.from({ length: n }, heroDotColor),
@@ -71,20 +73,25 @@ const makeField = (w: number, h: number, t: number): Field => {
 
 /** One Life generation, wrapping at the edges, with the age limit. */
 const generation = (f: Field) => {
-  const { cols, rows, live, age } = f;
-  const next = new Uint8Array(live.length);
+  const { cols, rows, live, next, age } = f;
   for (let j = 0; j < rows; j++) {
+    // Row starts above, at and below this one, wrapped.
+    const up = ((j - 1 + rows) % rows) * cols;
+    const mid = j * cols;
+    const down = ((j + 1) % rows) * cols;
     for (let i = 0; i < cols; i++) {
-      let n = 0;
-      for (let dy = -1; dy <= 1; dy++) {
-        for (let dx = -1; dx <= 1; dx++) {
-          if (!dx && !dy) continue;
-          const a = (i + dx + cols) % cols;
-          const b = (j + dy + rows) % rows;
-          n += live[b * cols + a];
-        }
-      }
-      const k = j * cols + i;
+      const l = (i - 1 + cols) % cols;
+      const r = (i + 1) % cols;
+      const n =
+        live[up + l] +
+        live[up + i] +
+        live[up + r] +
+        live[mid + l] +
+        live[mid + r] +
+        live[down + l] +
+        live[down + i] +
+        live[down + r];
+      const k = mid + i;
       const alive = (live[k] && (n === 2 || n === 3)) || (!live[k] && n === 3);
       age[k] = alive ? Math.min(age[k] + 1, 255) : 0;
       next[k] = alive && age[k] <= MAX_AGE ? 1 : 0;
@@ -92,6 +99,7 @@ const generation = (f: Field) => {
     }
   }
   f.live = next;
+  f.next = live;
 };
 
 /** A small random patch, somewhere new. */
@@ -111,12 +119,8 @@ const seed = (f: Field) => {
 
 export const AutomataGrid: React.FC = () => {
   const field = React.useRef<Field | null>(null);
-  const reduced = React.useMemo(
-    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-    [],
-  );
 
-  const canvasRef = useCanvasLoop(({ ctx, w, h, t, dt, resized }) => {
+  const canvasRef = useCanvasLoop(({ ctx, w, h, t, dt, reduced, resized }) => {
     if (resized || !field.current) {
       field.current = makeField(w, h, t);
       // Reduced motion: a settled, inked-in still.

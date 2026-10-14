@@ -1,23 +1,24 @@
 import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
+import { CanvasFill } from "@/components/site/canvas/canvas-fill";
+import { lerp } from "@/components/site/canvas/canvas-utils";
+import { firstPulseAt, pulseGrowth } from "@/components/site/canvas/hero-dots";
+import { INK } from "@/components/site/canvas/ink";
+import { useCanvasLoop } from "@/components/site/canvas/use-canvas-loop";
+import { CONTACT_HREF } from "@/components/site/site-constants";
+import { SolidCta } from "@/components/site/solid-cta";
+import {
+  Cursor,
+  DESCRIPTION,
+  HEADLINE,
+  heroBox,
+} from "@/features/hero-lab/hero-shared";
 import {
   DotSheet,
   sheetCenters,
   sheetPitch,
-} from "@/components/site/mesh-field";
-import {
-  CanvasFill,
-  CONTACT_HREF,
-  Cursor,
-  DESCRIPTION,
-  HEADLINE,
-  HERO_BOX,
-  HERO_BOX_UNDER_NAV,
-  INK,
-  SolidCta,
-} from "@/features/hero-lab/hero-shared";
+} from "@/features/hero-lab/mesh-field";
 import { SimplexNoise } from "@/features/hero-lab/simplex-noise";
-import { useCanvasLoop } from "@/features/hero-lab/use-canvas-loop";
 import { Box, Text } from "@chakra-ui/react";
 import { parseToRgba, rgba } from "color2k";
 import React from "react";
@@ -97,13 +98,6 @@ const lineHash = (line: number, k: number) => {
 };
 /** px from its slot at which a landing dot starts to join the wave. */
 const WAVE_JOIN = 8;
-/**
- * With `pulse`: now and then each dot swells by PULSE_GROW px across and
- * eases back, over PULSE_DUR seconds, resting PULSE_REST seconds between.
- */
-const PULSE_GROW = 2;
-const PULSE_DUR = 0.8;
-const PULSE_REST: [number, number] = [1, 6];
 const TRAIL_ALPHA = 55; // lower = longer trails (0–255)
 // ------------------------------------------------------------------------
 
@@ -124,16 +118,6 @@ const GLOW = `radial-gradient(ellipse 70% 75% at 50% 50%, ${rgba(
   SKY_B,
   0,
 )} 100%)`;
-/** The hero box's height, floor and ceiling, each `by` px shorter. */
-const shortened = (underNav: boolean, by: number) => {
-  const box = underNav ? HERO_BOX_UNDER_NAV : HERO_BOX;
-  return {
-    h: `calc(${String(box.h).replace(/^calc\((.*)\)$/, "$1")} - ${by}px)`,
-    minH: `${parseFloat(String(box.minH)) - by}px`,
-    maxH: `${parseFloat(String(box.maxH)) - by}px`,
-  };
-};
-
 /** px, the split layout's width: title flush left, copy flush right. */
 const SPLIT_MEASURE = 1100;
 /** Where the split title's second line starts: at "intelligent". */
@@ -144,6 +128,28 @@ const TITLE_BESIDE_GAP = 40;
 
 /** The ground: the site surface. The canvas is transparent over it. */
 const GROUND = parseToRgba(INK.canvas200);
+
+/** A dot's colour `k` of the way from the ground to its shade, as CSS. */
+const groundToShade = (shade: number[], k: number) =>
+  `rgb(${lerp(GROUND[0], shade[0], k)},${lerp(GROUND[1], shade[1], k)},${lerp(
+    GROUND[2],
+    shade[2],
+    k,
+  )})`;
+
+/** One line's travelling wave. */
+type WaveLine = {
+  /** px, crest to crest. */
+  length: number;
+  /** Seconds per cycle. */
+  period: number;
+  /** Travel direction, ±1. */
+  dir: number;
+  /** Phase offset, in cycles. */
+  offset: number;
+  /** px, peak displacement. */
+  amp: number;
+};
 
 /**
  * Two light families, half the dots from each: the soot greys and the
@@ -170,7 +176,7 @@ const MESH_GREYS = [INK.soot300, INK.soot400, INK.soot500].map((c) =>
 const meshShade = () =>
   MESH_GREYS[Math.floor(Math.random() * MESH_GREYS.length)];
 /** The `accentShare` dots' colour: a vivid light blue. */
-export const ACCENT_BLUE_HEX = "#ABC8F7";
+const ACCENT_BLUE_HEX = "#ABC8F7";
 /**
  * Unsettled dots sit this far from the ground toward their shade; joined,
  * they take it in full. Higher than on a dark ground, where pale dots
@@ -193,7 +199,7 @@ const DARK_BLUES = [
   INK.rengo600,
   INK.rengo700,
 ];
-export const DARK_SWATCHES = [...DARK_GREYS, ...DARK_BLUES];
+const DARK_SWATCHES = [...DARK_GREYS, ...DARK_BLUES];
 const LIGHT_GREYS = [INK.soot300, INK.soot400];
 const GLYPH_SWATCHES = [...DARK_SWATCHES, ...LIGHT_GREYS, INK.crimson];
 const ACCENT_SWATCH = GLYPH_SWATCHES.length - 1;
@@ -334,6 +340,10 @@ type Dot = {
   /** With `pulse`: seconds since start at which this dot's current or next
    * swell begins. */
   pulseAt: number;
+  /** The strength `fill` was last built for, and that colour as CSS, so a
+   * settled dot doesn't rebuild the same string every frame. */
+  k: number;
+  fill: string;
 };
 
 /**
@@ -366,8 +376,6 @@ const easeExponent = (drift: number) => {
   const half = (1 - 0.5 ** (1 / 3)) * drift;
   return Math.log(0.5) / Math.log(1 - half);
 };
-
-const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 /** One dot, radius `r` (half-width when `square`), centred on x, y. */
 const mark = (
@@ -629,6 +637,10 @@ export const LayerHero: React.FC<{
   titleStyle?: "h1" | "h3";
   /** Overrides the title's font size, e.g. { base: "26px", md: "30px" }. */
   titleSize?: string | { base: string; md: string };
+  /** Split layout, Geist title: its tracking. */
+  splitTitleTracking?: string;
+  /** Split layout, Geist title: its weight. */
+  splitTitleWeight?: number;
   /** px between the description and the CTA. */
   ctaGap?: number;
   /**
@@ -721,6 +733,8 @@ export const LayerHero: React.FC<{
   descriptionColor,
   ctaGap = 28,
   titleSize,
+  splitTitleTracking = "-0.0375em",
+  splitTitleWeight = 400,
   ctaHeight,
 }) => {
   const ease = easeExponent(drift);
@@ -745,6 +759,29 @@ export const LayerHero: React.FC<{
     keys.sort((a, b) => lineHash(a, 4) - lineHash(b, 4));
     return new Set(keys.slice(0, waveBigLines));
   }, [lines, lineGap, waveBigLines]);
+  // Each line's wave, worked out once per line (keyed by its offset,
+  // rounded) rather than per dot per frame.
+  const waveLine = React.useMemo(() => {
+    const cache = new Map<number, WaveLine>();
+    return (line: number) => {
+      let v = cache.get(line);
+      if (!v) {
+        v = {
+          length: lerp(...WAVE_LENGTH, lineHash(line, 0)),
+          period: lerp(...WAVE_PERIOD, lineHash(line, 1)),
+          dir: lineHash(line, 2) < 0.5 ? -1 : 1,
+          offset: lineHash(line, 3),
+          amp: bigLines.has(line)
+            ? waveAmp * waveBigScale
+            : waveAmpRange
+              ? waveAmp * lerp(...waveAmpRange, lineHash(line, 5))
+              : waveAmp,
+        };
+        cache.set(line, v);
+      }
+      return v;
+    };
+  }, [bigLines, waveAmp, waveBigScale, waveAmpRange]);
   const greyShades = React.useMemo(
     () => (greys ? toRgba(greys) : GREYS),
     [greys],
@@ -770,11 +807,6 @@ export const LayerHero: React.FC<{
     cols: 0,
     rows: 0,
   });
-  const reduced = React.useMemo(
-    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-    [],
-  );
-
   const restart = React.useCallback(() => {
     sim.current.restart = true;
   }, []);
@@ -799,7 +831,7 @@ export const LayerHero: React.FC<{
     return () => window.removeEventListener("keydown", onKey);
   }, [restart]);
 
-  const canvasRef = useCanvasLoop(({ ctx, w, h, t, dt, resized }) => {
+  const canvasRef = useCanvasLoop(({ ctx, w, h, t, dt, reduced, resized }) => {
     const s = sim.current;
 
     const c = copy.current;
@@ -882,13 +914,15 @@ export const LayerHero: React.FC<{
         // Floating glyphs schedule their first swap when they settle.
         swapAt: inPlace ? nextSwap(APPEAR_SPREAD + APPEAR) : Infinity,
         swapped: false,
-        pulseAt: pulse ? Math.random() * PULSE_REST[1] : Infinity,
+        pulseAt: pulse ? firstPulseAt() : Infinity,
         trail: new Float32Array(TRAIL_LEN * 2),
         head: 0,
         count: 0,
         nx: Math.random() * 1000,
         ny: Math.random() * 1000,
         streak: false,
+        k: NaN,
+        fill: "",
       }));
       if (mesh) {
         assignMeshSlots(s.dots, meshXs, meshYs);
@@ -1096,11 +1130,11 @@ export const LayerHero: React.FC<{
       // Under the copy, a dot fades back as it settles rather than landing
       // on the type.
       const k = lerp(DRIFT_STRENGTH, 1, p) * lerp(1, underCopy(d), p);
-      ctx.fillStyle = `rgb(${lerp(GROUND[0], d.shade[0], k)},${lerp(
-        GROUND[1],
-        d.shade[1],
-        k,
-      )},${lerp(GROUND[2], d.shade[2], k)})`;
+      if (k !== d.k) {
+        d.k = k;
+        d.fill = groundToShade(d.shade, k);
+      }
+      ctx.fillStyle = d.fill;
 
       // The wave: each dot eases into it over its last few px of landing,
       // so the bed only moves once it has formed.
@@ -1110,19 +1144,11 @@ export const LayerHero: React.FC<{
           Math.max(1 - Math.abs(layerY + d.ty - d.y) / WAVE_JOIN, 0),
           1,
         );
-        const line = Math.round(d.ty);
-        const length = lerp(...WAVE_LENGTH, lineHash(line, 0));
-        const period = lerp(...WAVE_PERIOD, lineHash(line, 1));
-        const dir = lineHash(line, 2) < 0.5 ? -1 : 1;
+        const { length, period, dir, offset, amp } = waveLine(Math.round(d.ty));
         const phase =
           (d.tx / length) * Math.PI * 2 +
-          lineHash(line, 3) * Math.PI * 2 -
+          offset * Math.PI * 2 -
           dir * (elapsed / period) * Math.PI * 2;
-        const amp = bigLines.has(line)
-          ? waveAmp * waveBigScale
-          : waveAmpRange
-            ? waveAmp * lerp(...waveAmpRange, lineHash(line, 5))
-            : waveAmp;
         y += amp * Math.sin(phase) * join * join * (3 - 2 * join);
       }
 
@@ -1135,17 +1161,7 @@ export const LayerHero: React.FC<{
         ctx.fillRect(d.trail[i * 2] - r, d.trail[i * 2 + 1] - r, r * 2, r * 2);
       }
       ctx.globalAlpha = 1;
-      // The pulse: a half sine, so the dot swells and settles smoothly.
-      let pr = r;
-      if (elapsed >= d.pulseAt) {
-        const k = (elapsed - d.pulseAt) / PULSE_DUR;
-        if (k >= 1) {
-          d.pulseAt = elapsed + lerp(...PULSE_REST, Math.random());
-        } else {
-          pr += (PULSE_GROW / 2) * Math.sin(k * Math.PI);
-        }
-      }
-      mark(ctx, d.x, y, pr, square);
+      mark(ctx, d.x, y, r + pulseGrowth(d, elapsed), square);
 
       d.trail[d.head * 2] = d.x;
       d.trail[d.head * 2 + 1] = y;
@@ -1176,12 +1192,7 @@ export const LayerHero: React.FC<{
           if (!landed && d.y - last < pitch * 2.2) continue;
           let mp = Math.min(Math.max((global - d.delay) / (1 - d.delay), 0), 1);
           mp = 1 - (1 - mp) ** ease;
-          const k = lerp(DRIFT_STRENGTH, 1, mp);
-          ctx.fillStyle = `rgb(${lerp(GROUND[0], d.shade[0], k)},${lerp(
-            GROUND[1],
-            d.shade[1],
-            k,
-          )},${lerp(GROUND[2], d.shade[2], k)})`;
+          ctx.fillStyle = groundToShade(d.shade, lerp(DRIFT_STRENGTH, 1, mp));
           if (d.streak && remaining > pitch) {
             ctx.strokeStyle = ctx.fillStyle;
             ctx.beginPath();
@@ -1200,8 +1211,7 @@ export const LayerHero: React.FC<{
 
   return (
     <Box
-      {...(underNav ? HERO_BOX_UNDER_NAV : HERO_BOX)}
-      {...(shorten ? shortened(underNav, shorten) : {})}
+      {...heroBox(underNav, shorten)}
       bg={mesh ? "site.bg.tint" : "site.bg.surface"}
       onClick={restart}
       cursor="crosshair"
@@ -1255,8 +1265,8 @@ export const LayerHero: React.FC<{
                   }
                 : {
                     textStyle: "h2",
-                    fontWeight: 400,
-                    letterSpacing: "-0.0375em",
+                    fontWeight: splitTitleWeight,
+                    letterSpacing: splitTitleTracking,
                   })}
               {...(titleSize ? { fontSize: titleSize } : {})}
               color="site.fg"
@@ -1272,12 +1282,17 @@ export const LayerHero: React.FC<{
               display="flex"
               flexDirection="column"
               alignItems={{ base: "flex-start", md: "flex-end" }}
+              // Stacked on mobile, it spans the measure, so the 420px
+              // description caps at its edge.
+              w={{ base: "full", md: "auto" }}
               gap="20px"
               // Its first line sits a touch under the title's.
               pt={{ md: "8px" }}
             >
               <Text
                 textStyle="body.sm"
+                // 14px on phones too, where body.sm steps down to 12px.
+                fontSize="0.875rem"
                 lineHeight="1.2"
                 color={descriptionColor ?? "slate.100"}
                 textAlign={{ base: "left", md: "right" }}

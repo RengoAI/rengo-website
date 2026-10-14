@@ -1,10 +1,19 @@
 import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
-import { ArrowLink } from "@/components/site/arrow-link";
 import { AutomataGrid } from "@/components/site/automata-grid";
-import { CONTACT_HREF } from "@/features/hero-lab/hero-shared";
-import { Box, chakra, Text } from "@chakra-ui/react";
+import { CONTACT_HREF } from "@/components/site/site-constants";
+import { SolidCta } from "@/components/site/solid-cta";
+import { Box, Text } from "@chakra-ui/react";
 import React from "react";
+
+/** The CTA's label, a size up from the other buttons'. */
+const OUTRO_LABEL = {
+  fontSize: "1.25rem",
+  lineHeight: "21px",
+  letterSpacing: "0",
+  color: "canvas.50",
+  _hover: { opacity: 0.65 },
+} as const;
 
 /**
  * The closing "Ready to make your data your alpha?" band that every rebrand
@@ -49,37 +58,20 @@ export const SiteOutro: React.FC = () => (
               your alpha?
             </Box>
           </Text>
-          <chakra.a
+          {/* The hero and nav button, larger and on soot: lightens to the
+              footer's silver on hover, its label turning dark. Hugs its
+              label, a set 20px to the arrow. */}
+          <SolidCta
             href={CONTACT_HREF}
             display="flex"
-            alignItems="center"
             h="49px"
             px="16px"
             py="6px"
-            borderRadius="4px"
-            className="group"
             bg="site.bg.darkRaised"
-            cursor="pointer"
-            transition="background 150ms ease"
-            // Like the hero and nav buttons: lightens to the footer's
-            // silver on hover, its label turning dark.
-            _hover={{ bg: "site.bg.tint" }}
+            labelProps={OUTRO_LABEL}
           >
-            {/* Hugs its label: a set 20px to the arrow, about half the
-                  gap the old fixed 206px width left. */}
-            <ArrowLink
-              gap="20px"
-              fontSize="1.25rem"
-              fontWeight={300}
-              lineHeight="21px"
-              letterSpacing="0"
-              color="canvas.50"
-              transition="color 150ms ease"
-              _groupHover={{ color: "site.fg.strong" }}
-            >
-              Get in touch
-            </ArrowLink>
-          </chakra.a>
+            Get in touch
+          </SolidCta>
         </GridCol>
       </Grid>
     </Section>

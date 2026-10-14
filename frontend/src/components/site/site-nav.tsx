@@ -3,7 +3,13 @@ import { Grid, GridCol } from "@/components/layout/grid";
 import { marketingLayoutBorderColor } from "@/components/layout/marketing-frame";
 import { Section } from "@/components/layout/section";
 import { Logo } from "@/components/logo/logo";
-import { CONTACT_HREF, NAV_H, SolidCta } from "@/features/hero-lab/hero-shared";
+import { CONTACT_HREF, NAV_H } from "@/components/site/site-constants";
+import {
+  dottedTop,
+  hoverFade,
+  tiledRuleBottom,
+} from "@/components/site/site-styles";
+import { SolidCta } from "@/components/site/solid-cta";
 import { Box, chakra } from "@chakra-ui/react";
 import { Menu, X } from "lucide-react";
 import React from "react";
@@ -53,28 +59,25 @@ const SOLID_RULE = {
   borderBottomColor: marketingLayoutBorderColor,
 } as const;
 
-/**
- * CSS `dotted` borders don't let you set the gap, so the rule is drawn as a
- * repeating 2px tile: one 1px dot, then 1px of nothing.
- */
-const dottedRule = (visible: boolean) =>
-  ({
-    _after: {
-      content: '""',
-      position: "absolute",
-      left: 0,
-      right: 0,
-      bottom: 0,
-      height: "1px",
-      bgImage:
-        "linear-gradient(to right, var(--rengo-colors-site-border-dashed) 1px, transparent 1px)",
-      bgSize: "2px 1px",
-      bgRepeat: "repeat-x",
-      pointerEvents: "none",
-      opacity: visible ? 1 : 0,
-      transition: "opacity 150ms ease",
-    },
-  }) as const;
+/** The bar's links, "Log in" among them, from `md` up. */
+const DESKTOP_LINK = {
+  textStyle: "body.sm",
+  letterSpacing: "0",
+  pt: "2px",
+  color: "site.fg.strong",
+  whiteSpace: "nowrap",
+  ...hoverFade,
+} as const;
+
+/** The same links in the mobile sheet. */
+const SHEET_LINK = {
+  display: "block",
+  py: "12px",
+  textStyle: "h4",
+  fontWeight: 300,
+  color: "site.fg.strong",
+  ...hoverFade,
+} as const;
 
 /** Whether the page has scrolled at all. */
 const useScrolled = () => {
@@ -137,7 +140,7 @@ export const SiteNav: React.FC<{
       {...(borderless
         ? {}
         : dotted
-          ? dottedRule(!overlay || scrolled)
+          ? tiledRuleBottom(!overlay || scrolled)
           : SOLID_RULE)}
       // A soft shadow once the page scrolls, lifting the bar off what
       // passes beneath it.
@@ -170,18 +173,7 @@ export const SiteNav: React.FC<{
           >
             {LINKS.map((link) => (
               <chakra.li key={link.label}>
-                <NavLink
-                  to={link.to}
-                  textStyle="body.sm"
-                  letterSpacing="0"
-                  pt="2px"
-                  textTransform="capitalize"
-                  color="site.fg.strong"
-                  whiteSpace="nowrap"
-                  cursor="pointer"
-                  transition="opacity 150ms ease"
-                  _hover={{ opacity: 0.6 }}
-                >
+                <NavLink to={link.to} {...DESKTOP_LINK}>
                   {link.label}
                 </NavLink>
               </chakra.li>
@@ -193,13 +185,7 @@ export const SiteNav: React.FC<{
             target="_blank"
             rel="noopener noreferrer"
             display={{ base: "none", md: "block" }}
-            textStyle="body.sm"
-            letterSpacing="0"
-            pt="2px"
-            color="site.fg.strong"
-            whiteSpace="nowrap"
-            transition="opacity 150ms ease"
-            _hover={{ opacity: 0.6 }}
+            {...DESKTOP_LINK}
           >
             Log in
           </chakra.a>
@@ -248,9 +234,7 @@ export const SiteNav: React.FC<{
           pt="24px"
           pb="40px"
           bg="site.bg.surface"
-          borderTopWidth="1px"
-          borderTopStyle="dotted"
-          borderTopColor="site.border.dashed"
+          {...dottedTop()}
           display={{ base: "flex", md: "none" }}
           flexDirection="column"
           justifyContent="space-between"
@@ -264,17 +248,7 @@ export const SiteNav: React.FC<{
           >
             {LINKS.map((link) => (
               <Box as="li" key={link.label}>
-                <NavLink
-                  to={link.to}
-                  onClick={close}
-                  display="block"
-                  py="12px"
-                  textStyle="h4"
-                  fontWeight={300}
-                  color="site.fg.strong"
-                  transition="opacity 150ms ease"
-                  _hover={{ opacity: 0.6 }}
-                >
+                <NavLink to={link.to} onClick={close} {...SHEET_LINK}>
                   {link.label}
                 </NavLink>
               </Box>
@@ -285,13 +259,7 @@ export const SiteNav: React.FC<{
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={close}
-                display="block"
-                py="12px"
-                textStyle="h4"
-                fontWeight={300}
-                color="site.fg.strong"
-                transition="opacity 150ms ease"
-                _hover={{ opacity: 0.6 }}
+                {...SHEET_LINK}
               >
                 Log in
               </chakra.a>

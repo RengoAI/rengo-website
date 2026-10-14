@@ -1,6 +1,13 @@
-import { CanvasFill, INK } from "@/features/hero-lab/hero-shared";
-import { heroDotColor } from "@/features/hero-lab/heroes/quick-sediment-hero";
-import { useCanvasLoop } from "@/features/hero-lab/use-canvas-loop";
+import { CanvasFill } from "@/components/site/canvas/canvas-fill";
+import { easeInOut, lerp } from "@/components/site/canvas/canvas-utils";
+import {
+  firstPulseAt,
+  HERO_DOT,
+  heroDotColor,
+  pulseGrowth,
+} from "@/components/site/canvas/hero-dots";
+import { INK } from "@/components/site/canvas/ink";
+import { useCanvasLoop } from "@/components/site/canvas/use-canvas-loop";
 import React from "react";
 
 /**
@@ -18,7 +25,6 @@ import React from "react";
 const COLS = 56;
 const ROWS = 18;
 const PITCH = 14; // px, grid spacing at full size
-const DOT = 3.4; // px, the hero's dot
 /** The whole figure, spacing and marks, at this scale. */
 const SCALE = 1.2;
 /** Share of marks in the site's accent red; the rest take the hero's mix. */
@@ -29,10 +35,6 @@ const MORPH = 2.4;
 const CYCLE = 2 * (HOLD + MORPH);
 /** Seconds the outermost marks set off after the centre's. */
 const RIPPLE = 0.6;
-/** The pulse: px of swell, seconds it takes, seconds between, min–max. */
-const PULSE_GROW = 2;
-const PULSE_DUR = 0.8;
-const PULSE_REST = [1, 6] as const;
 const GOLDEN = Math.PI * (3 - Math.sqrt(5));
 /** The circle's radius in pitches: the same area as the grid. */
 const CIRCLE_R = Math.sqrt((COLS * ROWS) / Math.PI);
@@ -50,11 +52,6 @@ type Mark = {
   color: string;
   pulseAt: number;
 };
-
-const easeInOut = (x: number) =>
-  x < 0.5 ? 4 * x * x * x : 1 - (-2 * x + 2) ** 3 / 2;
-const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-const rand = (lo: number, hi: number) => lo + Math.random() * (hi - lo);
 
 const makeMarks = (): Mark[] => {
   const n = COLS * ROWS;
@@ -75,7 +72,7 @@ const makeMarks = (): Mark[] => {
       cy: r * Math.sin(i * GOLDEN),
       delay: g.d / maxD,
       color: Math.random() < ACCENT_SHARE ? INK.crimson : heroDotColor(),
-      pulseAt: rand(0, PULSE_REST[1]),
+      pulseAt: firstPulseAt(),
     };
   });
 };
@@ -98,12 +95,8 @@ export const GridCircleDots: React.FC<{
   below?: React.RefObject<HTMLElement | null>;
 }> = ({ below }) => {
   const marks = React.useMemo(makeMarks, []);
-  const reduced = React.useMemo(
-    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-    [],
-  );
 
-  const canvasRef = useCanvasLoop(({ ctx, w, h, t }) => {
+  const canvasRef = useCanvasLoop(({ ctx, w, h, t, reduced }) => {
     // Fit the grid to narrow screens, never past full size, then scale.
     const pitch = Math.min(PITCH, (w - 32) / COLS) * SCALE;
     // A quarter of the band's width right of centre, less 120px, its
@@ -124,12 +117,7 @@ export const GridCircleDots: React.FC<{
       const x = ox + lerp(m.gx, m.cx, p) * pitch;
       const y = oy + lerp(m.gy, m.cy, p) * pitch;
 
-      let r = (DOT * SCALE) / 2;
-      if (!reduced && t >= m.pulseAt) {
-        const k = (t - m.pulseAt) / PULSE_DUR;
-        if (k >= 1) m.pulseAt = t + rand(PULSE_REST[0], PULSE_REST[1]);
-        else r += (PULSE_GROW / 2) * Math.sin(k * Math.PI);
-      }
+      const r = (HERO_DOT * SCALE) / 2 + (reduced ? 0 : pulseGrowth(m, t));
 
       ctx.fillStyle = m.color;
       ctx.beginPath();

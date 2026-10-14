@@ -1,19 +1,19 @@
 import { cssColLeft, gridGeometry } from "@/features/hero-lab/grid-geometry";
-import {
-  CanvasFill,
-  Cursor,
-  DESCRIPTION,
-  HEADLINE,
-  HERO_BOX,
-  INK,
-  SolidCta,
-} from "@/features/hero-lab/hero-shared";
+import { CanvasFill } from "@/components/site/canvas/canvas-fill";
+import { INK } from "@/components/site/canvas/ink";
 import {
   hash2,
   makeGrain,
-  useCanvasLoop,
   valueNoise,
-} from "@/features/hero-lab/use-canvas-loop";
+} from "@/components/site/canvas/canvas-utils";
+import { useCanvasLoop } from "@/components/site/canvas/use-canvas-loop";
+import { SolidCta } from "@/components/site/solid-cta";
+import {
+  Cursor,
+  DESCRIPTION,
+  HEADLINE,
+  heroBox,
+} from "@/features/hero-lab/hero-shared";
 import { Box, Text } from "@chakra-ui/react";
 import { parseToRgba } from "color2k";
 import React from "react";
@@ -130,92 +130,95 @@ export const LedgerHero: React.FC = () => {
   const streaks = React.useRef<HTMLCanvasElement>();
   const copy = React.useRef<HTMLDivElement>(null);
 
-  const canvasRef = useCanvasLoop(({ ctx, w, h, t, pointer, resized }) => {
-    grain.current ??= makeGrain(160, 22);
-    if (resized || !streaks.current)
-      streaks.current = makeStreaks(w, h, ctx.getTransform().a);
+  const canvasRef = useCanvasLoop(
+    ({ ctx, w, h, t, pointer, resized }) => {
+      grain.current ??= makeGrain(160, 22);
+      if (resized || !streaks.current)
+        streaks.current = makeStreaks(w, h, ctx.getTransform().a);
 
-    const g = gridGeometry(w);
-    const barPitch = g.pitch / PER_COL;
-    const barW = barPitch - BAR_GAP;
-    const x0 = g.colLeft(1);
-    const cols = Math.floor((w - g.inset - x0 + BAR_GAP) / barPitch);
-    const rowH = (h - PAD_Y * 2 - ROW_GAP * (ROWS - 1)) / ROWS;
-    const rowTop = (r: number) => PAD_Y + r * (rowH + ROW_GAP);
-    const windowRight = g.colLeft(COPY_COLS + 1) + barPitch / 2;
-    const copyH = copy.current?.offsetHeight ?? 0;
-    const windowRows = Math.min(
-      ROWS - 2,
-      Math.ceil((copyH + ROW_GAP) / (rowH + ROW_GAP)),
-    );
+      const g = gridGeometry(w);
+      const barPitch = g.pitch / PER_COL;
+      const barW = barPitch - BAR_GAP;
+      const x0 = g.colLeft(1);
+      const cols = Math.floor((w - g.inset - x0 + BAR_GAP) / barPitch);
+      const rowH = (h - PAD_Y * 2 - ROW_GAP * (ROWS - 1)) / ROWS;
+      const rowTop = (r: number) => PAD_Y + r * (rowH + ROW_GAP);
+      const windowRight = g.colLeft(COPY_COLS + 1) + barPitch / 2;
+      const copyH = copy.current?.offsetHeight ?? 0;
+      const windowRows = Math.min(
+        ROWS - 2,
+        Math.ceil((copyH + ROW_GAP) / (rowH + ROW_GAP)),
+      );
 
-    // Which question, and how far into the morph to the next.
-    const cycle = HOLD + MORPH;
-    const k = Math.floor(t / cycle);
-    const qi = k % QUESTIONS.length;
-    const next = QUESTIONS[(qi + 1) % QUESTIONS.length];
-    const m = ease(Math.max(0, (t - k * cycle - HOLD) / MORPH));
-    const cur = QUESTIONS[qi];
-    const lerp = (key: keyof Band) => cur[key] + (next[key] - cur[key]) * m;
-    const band: Band = {
-      a: lerp("a"),
-      slope: lerp("slope"),
-      amp: lerp("amp"),
-      freq: lerp("freq"),
-      phase: lerp("phase"),
-      width: lerp("width"),
-    };
+      // Which question, and how far into the morph to the next.
+      const cycle = HOLD + MORPH;
+      const k = Math.floor(t / cycle);
+      const qi = k % QUESTIONS.length;
+      const next = QUESTIONS[(qi + 1) % QUESTIONS.length];
+      const m = ease(Math.max(0, (t - k * cycle - HOLD) / MORPH));
+      const cur = QUESTIONS[qi];
+      const lerp = (key: keyof Band) => cur[key] + (next[key] - cur[key]) * m;
+      const band: Band = {
+        a: lerp("a"),
+        slope: lerp("slope"),
+        amp: lerp("amp"),
+        freq: lerp("freq"),
+        phase: lerp("phase"),
+        width: lerp("width"),
+      };
 
-    ctx.fillStyle = INK.canvas200;
-    ctx.fillRect(0, 0, w, h);
+      ctx.fillStyle = INK.canvas200;
+      ctx.fillRect(0, 0, w, h);
 
-    const bars = new Path2D();
-    for (let i = 0; i < cols; i++) {
-      const x = x0 + i * barPitch;
-      const fx = i / (cols - 1);
-      const centre =
-        band.a +
-        band.slope * fx +
-        band.amp *
-          Math.sin(Math.PI * 2 * band.freq * fx + band.phase + t * 0.08);
-      for (let r = 0; r < ROWS; r++) {
-        if (r < windowRows && x < windowRight) continue;
-        const y = rowTop(r);
-        // The band, plus faint echoes a sheet-height away, as in the ref.
-        let v = 0;
-        for (const off of [0, ROWS + 1, -(ROWS + 1)]) {
-          const d = (r - centre - off) / band.width;
-          v += (off === 0 ? 1 : 0.55) * Math.exp(-d * d);
+      const bars = new Path2D();
+      for (let i = 0; i < cols; i++) {
+        const x = x0 + i * barPitch;
+        const fx = i / (cols - 1);
+        const centre =
+          band.a +
+          band.slope * fx +
+          band.amp *
+            Math.sin(Math.PI * 2 * band.freq * fx + band.phase + t * 0.08);
+        for (let r = 0; r < ROWS; r++) {
+          if (r < windowRows && x < windowRight) continue;
+          const y = rowTop(r);
+          // The band, plus faint echoes a sheet-height away, as in the ref.
+          let v = 0;
+          for (const off of [0, ROWS + 1, -(ROWS + 1)]) {
+            const d = (r - centre - off) / band.width;
+            v += (off === 0 ? 1 : 0.55) * Math.exp(-d * d);
+          }
+          if (pointer) {
+            const dx = (x + barW / 2 - pointer.x) / (barPitch * 4);
+            const dy = (y + rowH / 2 - pointer.y) / (rowH * 1.2);
+            v += 0.5 * Math.exp(-(dx * dx + dy * dy));
+          }
+          // Hand-shading never lands two swatches on quite the same tone.
+          v += (valueNoise(i * 0.4, r * 0.7, 3) - 0.5) * 0.12;
+          v += (hash2(i, r, 5) - 0.5) * 0.05;
+
+          ctx.fillStyle = tone(0.08 + v * 0.9);
+          ctx.fillRect(x, y, barW, rowH);
+          bars.rect(x, y, barW, rowH);
         }
-        if (pointer) {
-          const dx = (x + barW / 2 - pointer.x) / (barPitch * 4);
-          const dy = (y + rowH / 2 - pointer.y) / (rowH * 1.2);
-          v += 0.5 * Math.exp(-(dx * dx + dy * dy));
-        }
-        // Hand-shading never lands two swatches on quite the same tone.
-        v += (valueNoise(i * 0.4, r * 0.7, 3) - 0.5) * 0.12;
-        v += (hash2(i, r, 5) - 0.5) * 0.05;
-
-        ctx.fillStyle = tone(0.08 + v * 0.9);
-        ctx.fillRect(x, y, barW, rowH);
-        bars.rect(x, y, barW, rowH);
       }
-    }
 
-    // Pencil: streaks and tooth, inside the swatches only.
-    ctx.save();
-    ctx.clip(bars);
-    ctx.globalAlpha = 0.55;
-    ctx.drawImage(streaks.current, 0, 0, w, h);
-    ctx.globalAlpha = 1;
-    ctx.globalCompositeOperation = "multiply";
-    ctx.fillStyle = ctx.createPattern(grain.current, "repeat")!;
-    ctx.fillRect(0, 0, w, h);
-    ctx.restore();
-  });
+      // Pencil: streaks and tooth, inside the swatches only.
+      ctx.save();
+      ctx.clip(bars);
+      ctx.globalAlpha = 0.55;
+      ctx.drawImage(streaks.current, 0, 0, w, h);
+      ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = "multiply";
+      ctx.fillStyle = ctx.createPattern(grain.current, "repeat")!;
+      ctx.fillRect(0, 0, w, h);
+      ctx.restore();
+    },
+    { pointer: true },
+  );
 
   return (
-    <Box {...HERO_BOX} bg="site.bg.surface">
+    <Box {...heroBox()} bg="site.bg.surface">
       <CanvasFill ref={canvasRef} />
 
       {/* The copy window, cut out of the top-left of the table. */}

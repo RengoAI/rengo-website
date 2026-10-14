@@ -1,20 +1,17 @@
 import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import { gridGeometry } from "@/features/hero-lab/grid-geometry";
+import { CanvasFill } from "@/components/site/canvas/canvas-fill";
+import { INK } from "@/components/site/canvas/ink";
+import { hash2, makeGrain } from "@/components/site/canvas/canvas-utils";
+import { useCanvasLoop } from "@/components/site/canvas/use-canvas-loop";
+import { SolidCta } from "@/components/site/solid-cta";
 import {
-  CanvasFill,
   Cursor,
   DESCRIPTION,
   HEADLINE,
-  HERO_BOX,
-  INK,
-  SolidCta,
+  heroBox,
 } from "@/features/hero-lab/hero-shared";
-import {
-  hash2,
-  makeGrain,
-  useCanvasLoop,
-} from "@/features/hero-lab/use-canvas-loop";
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 
@@ -204,7 +201,7 @@ export const CoreHero: React.FC = () => {
   });
 
   return (
-    <Box {...HERO_BOX} bg="site.bg.darkRaised">
+    <Box {...heroBox()} bg="site.bg.darkRaised">
       <CanvasFill ref={canvasRef} />
       <Box position="absolute" inset={0} pointerEvents="none">
         {STAGES.map(([label], i) => (

@@ -1,5 +1,6 @@
 import { Grid, GridCol, type GridProps } from "@/components/layout/grid";
-import { Box, type BoxProps, Image, Text } from "@chakra-ui/react";
+import { dottedLeft } from "@/components/site/site-styles";
+import { Box, type BoxProps, Text } from "@chakra-ui/react";
 import React from "react";
 
 /**
@@ -10,40 +11,27 @@ import React from "react";
 export type ComplianceCardProps = BoxProps & {
   title: string;
   description: string;
-  /** Optional badge pinned to the top-left corner. */
-  badgeSrc?: string;
 };
 
 export const ComplianceCard: React.FC<ComplianceCardProps> = ({
   title,
   description,
-  badgeSrc,
   ...rest
 }) => (
   <Box
-    position="relative"
     display="flex"
     flexDirection="column"
     alignItems="flex-start"
     justifyContent="flex-end"
     h="full"
-    // Holds room for the badge once the tiles stack and lose the group's
-    // fixed height.
+    // Holds the tiles open below lg, where they lose the group's fixed
+    // height.
     minH={{ base: "160px", md: "200px" }}
-    p="20px"
+    // Phones: no vertical padding, 1rem either side.
+    px={{ base: "1rem", md: "20px" }}
+    py={{ base: 0, md: "20px" }}
     {...rest}
   >
-    {badgeSrc && (
-      <Image
-        src={badgeSrc}
-        alt=""
-        position="absolute"
-        left="15px"
-        top="17px"
-        boxSize="40px"
-        objectFit="cover"
-      />
-    )}
     <Box
       display="flex"
       flexDirection="column"
@@ -75,7 +63,7 @@ export const ComplianceCard: React.FC<ComplianceCardProps> = ({
 /**
  * The security band's tiles, each hung off a dotted rule on its left edge —
  * like the metric cards — rather than framed. Four across on desktop, two by
- * two on tablet, stacked on mobile.
+ * two below that.
  */
 export type ComplianceCardGroupProps = GridProps & {
   items: ComplianceCardProps[];
@@ -90,10 +78,8 @@ export const ComplianceCardGroup: React.FC<ComplianceCardGroupProps> = ({
       <GridCol
         as="li"
         key={item.title}
-        span={{ base: 16, md: 8, lg: 4 }}
-        borderLeftWidth="1px"
-        borderLeftStyle="dotted"
-        borderLeftColor="site.border.onDark"
+        span={{ base: 8, lg: 4 }}
+        {...dottedLeft("site.border.onDark")}
       >
         <ComplianceCard {...item} />
       </GridCol>

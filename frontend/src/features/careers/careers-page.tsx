@@ -1,8 +1,11 @@
 import { rootRoute } from "@/app/app-routes";
 import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
+import { RuledRow } from "@/components/site/ruled-row";
+import { NAV_H } from "@/components/site/site-constants";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
+import { dottedTop } from "@/components/site/site-styles";
 import { TypedText } from "@/components/site/typed-text";
 import { OPEN_ROLES } from "@/features/careers/open-roles";
 import { Box, Text } from "@chakra-ui/react";
@@ -27,7 +30,7 @@ export const CareersPage: React.FC = () => (
       rhythm="none"
       bg="site.bg.surface"
       py="60px"
-      minH="calc(100svh - 52px)"
+      minH={`calc(100svh - ${NAV_H}px)`}
     >
       <Grid rowGap="16px">
         <GridCol span={16} minH={{ lg: "138px" }}>
@@ -49,15 +52,7 @@ export const CareersPage: React.FC = () => (
                   style={{ display: "block", textDecoration: "none" }}
                 >
                   {/* Ruled like the use-case accordion's rows. */}
-                  <Grid
-                    rowGap="12px"
-                    py="24px"
-                    borderTopWidth="1px"
-                    borderTopStyle="dotted"
-                    borderTopColor="site.border.dashed"
-                    transition="background 150ms ease"
-                    _hover={{ bg: "site.bg.tint" }}
-                  >
+                  <RuledRow>
                     <GridCol span={{ base: 16, lg: 5 }}>
                       <Text textStyle="label" color="slate.100">
                         {role.department}
@@ -76,17 +71,13 @@ export const CareersPage: React.FC = () => (
                         {role.location} • {role.employmentType}
                       </Text>
                     </GridCol>
-                  </Grid>
+                  </RuledRow>
                 </Link>
               </li>
             ))}
           </Box>
           {/* Closes the list with the same dotted rule as the rows'. */}
-          <Box
-            borderTopWidth="1px"
-            borderTopStyle="dotted"
-            borderTopColor="site.border.dashed"
-          />
+          <Box {...dottedTop()} />
         </GridCol>
       </Grid>
     </Section>

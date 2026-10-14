@@ -21,7 +21,7 @@ export const GRID_GUTTER = "16px";
 export const SECTION_GUTTER = "40px";
 
 /** Global top/bottom padding for a content section, at desktop widths. */
-export const SECTION_GUTTER_Y = "100px";
+export const SECTION_GUTTER_Y = "120px";
 
 /**
  * The section insets step down with the viewport: mobile, then tablet (`md`,
@@ -32,20 +32,20 @@ export const SECTION_GUTTER_Y = "100px";
 export const layoutVars = {
   ":root": {
     "--site-gutter": "16px",
-    "--site-gutter-y": "64px",
-    "--site-gutter-y-tight": "56px",
-    "--site-gutter-y-compact": "40px",
+    "--site-gutter-y": "84px",
+    "--site-gutter-y-tight": "76px",
+    "--site-gutter-y-compact": "60px",
     "@media screen and (min-width: 768px)": {
       "--site-gutter": "32px",
-      "--site-gutter-y": "80px",
-      "--site-gutter-y-tight": "64px",
-      "--site-gutter-y-compact": "48px",
+      "--site-gutter-y": "100px",
+      "--site-gutter-y-tight": "84px",
+      "--site-gutter-y-compact": "68px",
     },
     "@media screen and (min-width: 1024px)": {
       "--site-gutter": SECTION_GUTTER,
       "--site-gutter-y": SECTION_GUTTER_Y,
-      "--site-gutter-y-tight": "80px",
-      "--site-gutter-y-compact": "60px",
+      "--site-gutter-y-tight": "100px",
+      "--site-gutter-y-compact": "80px",
     },
   },
 };

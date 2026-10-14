@@ -1,3 +1,4 @@
+import { prefersReducedMotion } from "@/shared/utils/motion";
 import React from "react";
 
 export type Frame = {
@@ -10,8 +11,12 @@ export type Frame = {
   /** Seconds since the previous frame, clamped so a backgrounded tab can't
       fast-forward a simulation. */
   dt: number;
-  /** Pointer position in canvas pixels, or null when outside. */
+  /** Pointer position in canvas pixels, or null when outside. Always null
+      unless the loop was started with `{ pointer: true }`. */
   pointer: { x: number; y: number } | null;
+  /** The user prefers reduced motion: `draw` runs once per resize, with
+      `t` frozen and `dt` 0, so draw the settled state. */
+  reduced: boolean;
   /** True on the first frame after a resize — rebuild any cached layout. */
   resized: boolean;
 };
@@ -21,12 +26,16 @@ const STILL_T = 6;
 
 /**
  * Drives a 2D canvas: sizes it to its box at device pixel ratio, runs `draw`
- * every animation frame while it is on screen, and hands it the pointer.
+ * every animation frame while it is on screen. With `{ pointer: true }` it
+ * also tracks the pointer and hands it to `draw`.
  *
  * `draw` is read through a ref, so it can close over fresh props without
  * restarting the loop.
  */
-export const useCanvasLoop = (draw: (frame: Frame) => void) => {
+export const useCanvasLoop = (
+  draw: (frame: Frame) => void,
+  { pointer: trackPointer = false }: { pointer?: boolean } = {},
+) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const drawRef = React.useRef(draw);
   drawRef.current = draw;
@@ -36,7 +45,7 @@ export const useCanvasLoop = (draw: (frame: Frame) => void) => {
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx) return;
 
-    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const still = prefersReducedMotion();
     let w = 0;
     let h = 0;
     let resized = true;
@@ -70,6 +79,7 @@ export const useCanvasLoop = (draw: (frame: Frame) => void) => {
           t: still ? STILL_T : Math.max(0, now - start) / 1000,
           dt: still ? 0 : dt,
           pointer,
+          reduced: still,
           resized,
         });
         resized = false;
@@ -104,66 +114,30 @@ export const useCanvasLoop = (draw: (frame: Frame) => void) => {
     io.observe(canvas);
     // Listen on the window so DOM copy layered over the canvas doesn't
     // swallow the pointer.
-    window.addEventListener("pointermove", onMove);
-    document.addEventListener("pointerleave", onLeave);
+    if (trackPointer) {
+      window.addEventListener("pointermove", onMove);
+      document.addEventListener("pointerleave", onLeave);
+    }
 
     resize();
     raf = requestAnimationFrame(loop);
     // Canvas text has to wait for the webfonts; redraw once they land.
+    let live = true;
     document.fonts?.ready.then(() => {
+      if (!live) return;
       resized = true;
       if (still) frame(performance.now());
     });
 
     return () => {
+      live = false;
       cancelAnimationFrame(raf);
       ro.disconnect();
       io.disconnect();
       window.removeEventListener("pointermove", onMove);
       document.removeEventListener("pointerleave", onLeave);
     };
-  }, []);
+  }, [trackPointer]);
 
   return canvasRef;
-};
-
-/** Cheap deterministic hash → [0, 1). Stable per integer cell. */
-export const hash2 = (x: number, y: number, seed = 0) => {
-  let n = (x * 374761393 + y * 668265263 + seed * 2147483647) | 0;
-  n = Math.imul(n ^ (n >>> 13), 1274126177);
-  n ^= n >>> 16;
-  return (n >>> 0) / 4294967296;
-};
-
-/** Smooth 2D value noise in roughly [0, 1]. */
-export const valueNoise = (x: number, y: number, seed = 0) => {
-  const xi = Math.floor(x);
-  const yi = Math.floor(y);
-  const xf = x - xi;
-  const yf = y - yi;
-  const u = xf * xf * (3 - 2 * xf);
-  const v = yf * yf * (3 - 2 * yf);
-  const a = hash2(xi, yi, seed);
-  const b = hash2(xi + 1, yi, seed);
-  const c = hash2(xi, yi + 1, seed);
-  const d = hash2(xi + 1, yi + 1, seed);
-  return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
-};
-
-/**
- * A tile of monochrome grain, built once and reused as a pattern. Overlaid at
- * low alpha it gives flat fills the printed/filmic texture of the references.
- */
-export const makeGrain = (size = 160, alpha = 28) => {
-  const c = document.createElement("canvas");
-  c.width = c.height = size;
-  const g = c.getContext("2d")!;
-  const img = g.createImageData(size, size);
-  for (let i = 0; i < img.data.length; i += 4) {
-    const v = Math.random() * 255;
-    img.data[i] = img.data[i + 1] = img.data[i + 2] = v;
-    img.data[i + 3] = alpha;
-  }
-  g.putImageData(img, 0, 0);
-  return c;
 };

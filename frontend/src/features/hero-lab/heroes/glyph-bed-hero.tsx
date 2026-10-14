@@ -1,17 +1,6 @@
-import { DESCRIPTION, HEADLINE } from "@/features/hero-lab/hero-shared";
+import { DESCRIPTION } from "@/features/hero-lab/hero-shared";
 import { LayerHero } from "@/features/hero-lab/heroes/layer-hero";
 import React from "react";
-
-/** Every distinct letter in a piece of copy, case kept, sorted. */
-const lettersOf = (text: string) =>
-  [...new Set(text.replace(/[^A-Za-z]/g, ""))].sort().join("");
-
-/** Code-ish symbols and punctuation mixed in with the letters. */
-const SYMBOLS = "/\\<>%+=*#:;.,-_()[]{}!?&@|";
-
-/** The glyph bed's characters: the copy's letters plus SYMBOLS. */
-export const heroCharset = (description = DESCRIPTION) =>
-  lettersOf(HEADLINE + description) + SYMBOLS;
 
 /**
  * Formerly the live /v3 hero. Same bed as the glyph version — lines 11px apart,

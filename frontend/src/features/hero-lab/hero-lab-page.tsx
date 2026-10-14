@@ -1,3 +1,4 @@
+import { NAV_H } from "@/components/site/site-constants";
 import { SiteNav } from "@/components/site/site-nav";
 import { CoreHero } from "@/features/hero-lab/heroes/core-hero";
 import { GlyphBedHero } from "@/features/hero-lab/heroes/glyph-bed-hero";
@@ -225,7 +226,7 @@ const VARIANTS: Variant[] = [
       "p5.js sketch — dots coalescing into a layer (06), shorter float",
     Hero: QuickSedimentHero,
     source:
-      "Sediment (06) with the opening float in the flow field cut from about 5s to 1s: start delays spread over the first second instead of the first five, and the pull toward the bed reaches half strength five times sooner. Same twenty lines, dot count, field, palette and 25s finish. The title is set in Geist at 36px, the description in Regular, and the CTA is 28px tall.",
+      "Sediment (06) with the opening float in the flow field cut from about 5s to 1s: start delays spread over the first second instead of the first five, and the pull toward the bed reaches half strength five times sooner. Sixteen lines (four fewer) of 135 dots each, 10% sparser; same field, palette and 25s finish. The title is set in Geist at 36px, the description in Regular, and the CTA is 28px tall.",
     concept: [
       "The same sediment, with less time adrift: the knowledge leaves the currents of day-to-day work almost at once, so the bed starts forming within a second of the page loading.",
       "Click the hero (or press R) to run it again.",
@@ -233,10 +234,10 @@ const VARIANTS: Variant[] = [
     legend: [
       ["Drifting dots", "Knowledge moving through day-to-day work"],
       ["Flow field", "The currents: email, meetings, drives"],
-      ["The bed", "The data layer, twenty lines deep"],
+      ["The bed", "The data layer, sixteen lines deep"],
     ],
     layout:
-      'The live /v3 hero, in v12\'s split layout: the title on the left in Geist at 36px, broken before "intelligent"; the description and a "Book a call" button right-aligned opposite it in a centred 1100px measure. The copy sits 138px above centre and the bed forms 144px under it. The bed: twenty lines 4px apart, each in its own wave (12–24px, three lines at 3x); 3.4px dots that swell 2px now and then; a quarter #ABC8F7, 10% #425366 (the dark navy of the description), 40% #E7EDF5, the rest light greys and blues; no flow field or glow.',
+      'The live /v3 hero, in v12\'s split layout: the title on the left in Geist at 36px, broken before "intelligent"; the description and a "Book a call" button right-aligned opposite it in a centred 1100px measure. The copy sits 138px above centre and the bed forms 144px under it. The bed: sixteen lines 4px apart, each in its own wave (12–24px, three lines at 3x); 3.4px dots that swell 2px now and then; a quarter #ABC8F7, 10% #425366 (the dark navy of the description), 40% #E7EDF5, the rest light greys and blues; no flow field or glow.',
   },
   {
     id: "11",
@@ -311,7 +312,7 @@ const VariantSwitcher: React.FC<{
     <Box
       ref={ref}
       position="fixed"
-      top="68px"
+      top={`${NAV_H + 16}px`}
       right="16px"
       zIndex={20}
       display="flex"
@@ -399,7 +400,7 @@ const VersionLabel: React.FC<{ variant: Variant }> = ({ variant }) => (
     top={0}
     left="50%"
     transform="translateX(-50%)"
-    h="52px"
+    h={`${NAV_H}px`}
     zIndex={11}
     display="flex"
     alignItems="center"

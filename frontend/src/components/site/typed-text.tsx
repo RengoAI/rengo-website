@@ -1,3 +1,4 @@
+import { prefersReducedMotion } from "@/shared/utils/motion";
 import { Box, VisuallyHidden } from "@chakra-ui/react";
 import React from "react";
 
@@ -14,9 +15,7 @@ const TYPE_JITTER = 40;
  */
 export const TypedText: React.FC<{ text: string }> = ({ text }) => {
   const [typed, setTyped] = React.useState(() =>
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches
-      ? text.length
-      : 0,
+    prefersReducedMotion() ? text.length : 0,
   );
 
   React.useEffect(() => {

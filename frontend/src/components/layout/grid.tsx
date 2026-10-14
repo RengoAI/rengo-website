@@ -1,4 +1,4 @@
-import { GRID_COLUMNS } from "@/theme/tokens/layout";
+import { GRID_COLUMNS, GRID_GUTTER } from "@/theme/tokens/layout";
 import { Box, type BoxProps } from "@chakra-ui/react";
 import React from "react";
 
@@ -69,3 +69,11 @@ export const GridCol: React.FC<GridColProps> = ({
     {children}
   </Box>
 );
+
+/**
+ * The width of `n` columns and the gutters between them, as CSS, inside a
+ * box `of` columns wide whose width is `100%`. For sizing something to the
+ * grid from inside a `GridCol` (pass that column's span as `of`).
+ */
+export const colSpanWidth = (n: number, of: number = GRID_COLUMNS) =>
+  `calc((100% - ${of - 1} * ${GRID_GUTTER}) * ${n / of} + ${n - 1} * ${GRID_GUTTER})`;
