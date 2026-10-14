@@ -474,7 +474,7 @@ export const semanticColors = defineSemanticTokens.colors({
       /** Same rule, over a tinted band. */
       dashedOnTint: { value: "{colors.silver.400}" },
       /** A lighter rule: the use-case rows. */
-      dashedSubtle: { value: "{colors.silver.200}" },
+      dashedSubtle: { value: "{colors.silver.250}" },
       /** Same rule, over a dark band — lifted so it still reads. */
       dashedOnDark: { value: "{colors.soot.500}" },
       /** Solid hairline on a dark band. */

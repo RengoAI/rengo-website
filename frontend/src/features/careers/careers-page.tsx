@@ -1,7 +1,7 @@
 import { rootRoute } from "@/app/app-routes";
 import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
-import { RuledRow } from "@/components/site/ruled-row";
+import { RULED_ROW_RULE, RuledRow } from "@/components/site/ruled-row";
 import { NAV_H } from "@/components/site/site-constants";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
@@ -77,7 +77,7 @@ export const CareersPage: React.FC = () => (
             ))}
           </Box>
           {/* Closes the list with the same dotted rule as the rows'. */}
-          <Box {...dottedTop()} />
+          <Box {...dottedTop(RULED_ROW_RULE)} />
         </GridCol>
       </Grid>
     </Section>

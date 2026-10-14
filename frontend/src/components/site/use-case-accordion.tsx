@@ -1,6 +1,6 @@
-import { GridCol } from "@/components/layout/grid";
+import { colSpanWidth, GridCol } from "@/components/layout/grid";
 import { DataMeshDiagram } from "@/components/site/data-mesh-diagram";
-import { RuledRow } from "@/components/site/ruled-row";
+import { RULED_ROW_RULE, RuledRow } from "@/components/site/ruled-row";
 import { colorVar, dottedBottom } from "@/components/site/site-styles";
 import { Box, chakra, Text } from "@chakra-ui/react";
 import React from "react";
@@ -61,16 +61,18 @@ export const UseCaseAccordion: React.FC<{
     >
       {items.map((item, i) => {
         const isOpen = openIndices.has(i);
+        // The title's column, and the description one column narrower.
+        const titleSpan = { base: 16, md: 12, lg: isOpen && item.art ? 7 : 10 };
         const panelId = `${idPrefix}-panel-${i}`;
         return (
-          // Its hover tint is a step up from the blue band the list sits on.
+          // Its hover tint, silver 200, reads against the grey band.
           <RuledRow
             key={item.title}
             as="li"
             // Containing block for the button's row-wide hit area.
             position="relative"
             // The last row closes the list with the same rule underneath.
-            {...(i === items.length - 1 ? dottedBottom() : {})}
+            {...(i === items.length - 1 ? dottedBottom(RULED_ROW_RULE) : {})}
             cursor="pointer"
           >
             {/* From lg, where they share a row, the label is centred on the
@@ -94,7 +96,7 @@ export const UseCaseAccordion: React.FC<{
             </GridCol>
 
             <GridCol
-              span={{ base: 16, md: 12, lg: isOpen && item.art ? 7 : 10 }}
+              span={titleSpan}
               display="flex"
               flexDirection="column"
               gap="10px"
@@ -135,6 +137,11 @@ export const UseCaseAccordion: React.FC<{
                   textStyle="body.sm"
                   color="soot.600"
                   w="full"
+                  maxW={{
+                    base: colSpanWidth(titleSpan.base - 1, titleSpan.base),
+                    md: colSpanWidth(titleSpan.md - 1, titleSpan.md),
+                    lg: colSpanWidth(titleSpan.lg - 1, titleSpan.lg),
+                  }}
                 >
                   {item.body}
                 </Text>

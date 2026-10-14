@@ -279,6 +279,7 @@ export const colors = defineTokens.colors({
   silver: {
     100: { value: "#E8EDF4" }, // ← brand (problem band)
     200: { value: "#D4DCE7" }, // ← brand (Silver)
+    250: { value: "#C6D0DE" }, // ruled rows — halfway from 200 to 300
     300: { value: "#B8C4D5" },
     400: { value: "#95A5BB" },
     500: { value: "#7386A0" },

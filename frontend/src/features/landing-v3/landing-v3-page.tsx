@@ -265,7 +265,9 @@ export const LandingV3Page: React.FC = () => (
       <FdeSection />
 
       {/* --- Use cases ------------------------------------------------------ */}
-      <Section grid bg="site.bg.tintSubtle">
+      {/* Canvas 400: a grey darker than the footer's, so the band reads
+        apart from the off-white sections around it. */}
+      <Section grid bg="canvas.400">
         <GridCol span={16} pb="60px">
           <Text
             as="h2"
