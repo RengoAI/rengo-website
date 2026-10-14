@@ -31,7 +31,7 @@ export const textStyles = defineTextStyles({
       fontFamily: "body",
       fontSize: { base: "2.5rem", md: "3.5rem" }, // 40px → 60px
       fontWeight: "350",
-      letterSpacing: "-0.04em",
+      letterSpacing: "-0.03em",
       lineHeight: "1",
     },
   },
@@ -40,7 +40,7 @@ export const textStyles = defineTextStyles({
       fontFamily: "body",
       fontSize: { base: "2rem", md: "2.5rem" }, // 32px → 40px
       fontWeight: "350",
-      letterSpacing: "-0.02em",
+      letterSpacing: "-0.025em",
       lineHeight: "1.1",
     },
   },
@@ -49,7 +49,7 @@ export const textStyles = defineTextStyles({
       fontFamily: "body",
       fontSize: { base: "1.625rem", md: "2.125rem" }, // 26px → 32px
       fontWeight: "350",
-      letterSpacing: "-0.02em",
+      letterSpacing: "-0.025em",
       lineHeight: "1.1",
     },
   },

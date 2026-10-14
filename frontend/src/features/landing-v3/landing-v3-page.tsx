@@ -407,7 +407,7 @@ const SolutionSection: React.FC = () => {
           bgImage="linear-gradient(to right, var(--rengo-colors-site-bg-surface) 0%, var(--rengo-colors-site-bg-surface) 35%, transparent 50%)"
         />
         <GridCol
-          span={{ base: 16, md: 10, lg: 8 }}
+          span={{ base: 16, md: 10, lg: 10 }}
           position="relative"
           pointerEvents={headingGone ? "none" : "auto"}
         >
@@ -423,7 +423,7 @@ const SolutionSection: React.FC = () => {
             <Box as="span" color="site.highlight">
               unified data foundation
             </Box>{" "}
-            for your team
+            on top of your existing systems
           </Text>
         </GridCol>
       </Grid>

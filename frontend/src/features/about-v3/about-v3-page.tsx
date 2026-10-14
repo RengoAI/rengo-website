@@ -37,7 +37,7 @@ const STORY = [
 ];
 
 /**
- * A founder row: portrait in columns 8–10, bio in 11–15. Both rows share one
+ * A founder row: portrait in columns 9–11, bio in 12–16. Both rows share one
  * grid, so they line up column for column. Tablet moves the pair to the left
  * edge; mobile stacks the bio under the portrait.
  */
@@ -51,7 +51,7 @@ const FounderRow: React.FC<Founder & { isFirst: boolean }> = ({
   <>
     <GridCol
       span={{ base: 16, md: 5, lg: 3 }}
-      start={{ base: "auto", lg: 8 }}
+      start={{ base: "auto", lg: 9 }}
       display="flex"
       justifyContent="flex-start"
       // Once stacked, the grid's row gap sits between portrait and bio too;
@@ -59,24 +59,29 @@ const FounderRow: React.FC<Founder & { isFirst: boolean }> = ({
       mt={{ base: isFirst ? 0 : "28px", md: 0 }}
     >
       {/* Fixed at the design size — the source portraits are only ~200px.
-          Held to the column's left edge, the column-8 line the story text
+          Held to the column's left edge, the column-9 line the story text
           below starts on. */}
       <Image
         src={photoSrc}
         alt={`Portrait of ${name}`}
-        w="200px"
-        h="206px"
+        w="180px"
+        h="186px"
         objectFit="cover"
         borderRadius="2px"
       />
     </GridCol>
     <GridCol
       span={{ base: 16, md: 11, lg: 5 }}
+      // Pulled left by half the space the portrait leaves in its 3 columns,
+      // halving the gap. With B this column's 5-column width and g the
+      // gutter, a column is (B − 4g)/5, so that space is 0.6B + 0.6g − 180px.
+      ml={{ lg: "calc(90px - 30% - 4.8px)" }}
       display="flex"
       flexDirection="column"
       alignItems="flex-start"
       gap="8px"
-      pt="2px"
+      // Centred on the portrait beside it.
+      alignSelf="center"
     >
       <Text
         textStyle="body.md"
@@ -136,11 +141,11 @@ export const AboutV3Page: React.FC = () => (
 
       {/* --- Story --------------------------------------------------------- */}
       <Grid py={{ base: "80px", md: "120px", lg: "160px" }}>
-        {/* From column 8 on desktop, under the portraits: the pinned title
+        {/* From column 9 on desktop, under the portraits: the pinned title
             keeps the left columns, so nothing may scroll beneath it. */}
         <GridCol
           span={{ base: 16, md: 12, lg: 6 }}
-          start={{ base: "auto", lg: 8 }}
+          start={{ base: "auto", lg: 9 }}
         >
           <Box
             display="flex"

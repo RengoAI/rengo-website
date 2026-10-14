@@ -32,10 +32,7 @@ export const CareersPage: React.FC = () => (
         <GridCol span={16} minH={{ lg: "138px" }}>
           <Text
             as="h1"
-            textStyle="h2"
-            fontSize={{ base: "32px", md: "36px" }}
-            fontWeight={400}
-            letterSpacing="-0.05em"
+            textStyle="h3"
             color="site.fg.strong"
           >
             {/* Typed in like the about page's title. */}
@@ -84,6 +81,12 @@ export const CareersPage: React.FC = () => (
               </Grid>
             </Link>
           ))}
+          {/* Closes the list with the same dotted rule as the rows'. */}
+          <Box
+            borderTopWidth="1px"
+            borderTopStyle="dotted"
+            borderTopColor="site.border.dashed"
+          />
         </GridCol>
       </Grid>
     </Section>
