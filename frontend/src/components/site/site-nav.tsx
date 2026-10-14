@@ -1,14 +1,9 @@
 import { rootRoute } from "@/app/app-routes";
 import { Grid, GridCol } from "@/components/layout/grid";
-import { marketingLayoutBorderColor } from "@/components/layout/marketing-frame";
 import { Section } from "@/components/layout/section";
 import { Logo } from "@/components/logo/logo";
 import { CONTACT_HREF, NAV_H } from "@/components/site/site-constants";
-import {
-  dottedTop,
-  hoverFade,
-  tiledRuleX,
-} from "@/components/site/site-styles";
+import { dottedTop, hoverFade } from "@/components/site/site-styles";
 import { SolidCta } from "@/components/site/solid-cta";
 import { Box, chakra } from "@chakra-ui/react";
 import { Menu, X } from "lucide-react";
@@ -17,18 +12,12 @@ import { Link } from "react-router-dom";
 
 const RouterLink = chakra(Link);
 
-/** `to` is an in-app route; without one the link has no page yet. */
-const LINKS: { label: string; to?: string }[] = [
-  // TODO: Resources has no page yet.
-  { label: "Resources" },
+/** The nav's in-app pages. */
+const LINKS: { label: string; to: string }[] = [
+  { label: "Solutions", to: rootRoute({}).solutions({}).$ },
+  { label: "Careers", to: rootRoute({}).careers({}).$ },
   { label: "Team", to: rootRoute({}).aboutV3({}).$ },
 ];
-
-/** An in-app route as a router link, or a placeholder anchor without one. */
-const NavLink: React.FC<
-  { to?: string } & React.ComponentProps<typeof chakra.a>
-> = ({ to, ...rest }) =>
-  to ? <RouterLink to={to} {...rest} /> : <chakra.a href="#" {...rest} />;
 
 const MENU_ID = "site-nav-menu";
 
@@ -48,14 +37,9 @@ const DESKTOP_QUERY = "(min-width: 768px)";
  * `overlay` lays the bar over the top of the first section instead of above
  * it. The section has to extend up behind it, as the /v3 hero does.
  *
- * `dotted` swaps the solid hairline under the bar for a dotted one: 1px
- * dots, 1px apart, in the site's dashed-rule colour.
+ * The bar draws no rule underneath; once the page scrolls, a soft shadow
+ * lifts it off what passes beneath.
  */
-const SOLID_RULE = {
-  borderBottomWidth: "1px",
-  borderBottomStyle: "solid",
-  borderBottomColor: marketingLayoutBorderColor,
-} as const;
 
 /** The bar's links, "Log in" among them, from `md` up. */
 const DESKTOP_LINK = {
@@ -91,8 +75,7 @@ const useScrolled = () => {
 
 export const SiteNav: React.FC<{
   overlay?: boolean;
-  dotted?: boolean;
-}> = ({ overlay = false, dotted = false }) => {
+}> = ({ overlay = false }) => {
   const scrolled = useScrolled();
   const [isOpen, setIsOpen] = React.useState(false);
   const close = React.useCallback(() => setIsOpen(false), []);
@@ -133,7 +116,6 @@ export const SiteNav: React.FC<{
       display="flex"
       flexDirection="column"
       justifyContent="center"
-      {...(dotted ? tiledRuleX("bottom") : SOLID_RULE)}
       // A soft shadow once the page scrolls, lifting the bar off what
       // passes beneath it.
       boxShadow={
@@ -142,7 +124,17 @@ export const SiteNav: React.FC<{
       transition="box-shadow 200ms ease"
     >
       <Grid alignItems="center">
-        <GridCol span={8} display="flex" alignItems="center" minW={0}>
+        {/* From md: the wordmark on the left, the links from column 4 —
+            column 3 from lg, where the wordmark leaves room (and, from xl,
+            the hero title's left edge) — and "Log in" and the CTA on the
+            right half. Below md the links are in the menu, so the wordmark
+            takes the left half. */}
+        <GridCol
+          span={{ base: 8, md: 3, lg: 2 }}
+          display="flex"
+          alignItems="center"
+          minW={0}
+        >
           <Link
             to={rootRoute({}).landingV3({}).$}
             aria-label="Rengo AI home"
@@ -152,26 +144,29 @@ export const SiteNav: React.FC<{
           </Link>
         </GridCol>
         <GridCol
+          as="ul"
+          span={{ md: 5, lg: 6 }}
+          start={{ md: 4, lg: 3 }}
+          display={{ base: "none", md: "flex" }}
+          alignItems="center"
+          gap="20px"
+        >
+          {LINKS.map((link) => (
+            <chakra.li key={link.label}>
+              <RouterLink to={link.to} {...DESKTOP_LINK}>
+                {link.label}
+              </RouterLink>
+            </chakra.li>
+          ))}
+        </GridCol>
+        <GridCol
           span={8}
+          start={{ md: 9 }}
           display="flex"
           alignItems="center"
           justifyContent="flex-end"
           gap="24px"
         >
-          <chakra.ul
-            display={{ base: "none", md: "flex" }}
-            alignItems="center"
-            gap="20px"
-          >
-            {LINKS.map((link) => (
-              <chakra.li key={link.label}>
-                <NavLink to={link.to} {...DESKTOP_LINK}>
-                  {link.label}
-                </NavLink>
-              </chakra.li>
-            ))}
-          </chakra.ul>
-          {/* Set like the links, between them and the CTA. */}
           <chakra.a
             href={LOGIN_URL}
             target="_blank"
@@ -240,9 +235,9 @@ export const SiteNav: React.FC<{
           >
             {LINKS.map((link) => (
               <Box as="li" key={link.label}>
-                <NavLink to={link.to} onClick={close} {...SHEET_LINK}>
+                <RouterLink to={link.to} onClick={close} {...SHEET_LINK}>
                   {link.label}
-                </NavLink>
+                </RouterLink>
               </Box>
             ))}
             <Box as="li">

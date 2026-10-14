@@ -14,7 +14,7 @@ import {
 } from "@/components/site/canvas/hero-dots";
 import { INK } from "@/components/site/canvas/ink";
 import { useCanvasLoop } from "@/components/site/canvas/use-canvas-loop";
-import { CONTACT_HREF, NAV_H } from "@/components/site/site-constants";
+import { CONTACT_HREF } from "@/components/site/site-constants";
 import { SolidCta } from "@/components/site/solid-cta";
 import { Box, Text } from "@chakra-ui/react";
 import { parseToRgba } from "color2k";
@@ -27,12 +27,13 @@ import React from "react";
  *
  * 2,160 square dots start scattered across a 400px band below the middle
  * and are pulled, staggered over about a second, into sixteen lines 4px
- * apart, 144px under the copy. Slots are handed out by each dot's starting
+ * apart, 88px under the copy. Slots are handed out by each dot's starting
  * x, so dots travel mostly vertically, and each line is slid along by a
  * golden-ratio step so the columns don't stack. Dots come up to full
  * strength as they land, then each line rolls in its own wave and every dot
  * swells 2px now and then. Ten seconds after the bed forms, every dot drifts
- * back to where it started and the bed forms again.
+ * back to where it started and the bed forms again. On phones there are
+ * half as many dots, sitting 60px higher still.
  *
  * Click the hero (or press R) to restart with a fresh scatter. Reduced
  * motion gets the formed bed, still.
@@ -40,16 +41,25 @@ import React from "react";
 
 /** The hero's copy. */
 const HEADLINE = "Building your intelligent data layer";
-const DESCRIPTION =
-  "We are the embedded partner that builds the data layer for AI systems to learn and act from your firm’s knowledge.";
 /** Where the title's second line starts: at "intelligent". */
 const HEADLINE_BREAK = HEADLINE.indexOf("intelligent");
+const DESCRIPTION =
+  "We are the embedded partner that builds the data layer for AI systems to learn and act from your firm’s knowledge.";
 
 // ---- Formation ---------------------------------------------------------
 const DOTS = 2160;
+/**
+ * The whole graphic — the starting scatter and the bed — is raised RAISE
+ * px. Phones (canvas narrower than the `md` breakpoint) get half the dots,
+ * raised PHONE_RAISE px more.
+ */
+const RAISE = 60;
+const PHONE_MAX_W = 768;
+const PHONE_DOTS = DOTS / 2;
+const PHONE_RAISE = 60;
 const LINES = 16;
 const LINE_GAP = 4; // px, centre to centre
-const LAYER_GAP = 144; // px below the copy where the first line forms
+const LAYER_GAP = 148; // px below the copy where the first line forms
 const DURATION = 25; // seconds until the last dot is fully pulled in
 /** Spread of per-dot start delays, as a share of DURATION. */
 const STAGGER = 0.04;
@@ -65,8 +75,6 @@ const PULL = 0.02; // spring strength toward the slot
 /** Dots start inside a band this tall, this far below the hero's middle. */
 const FLOAT_BAND = 400;
 const FLOAT_OFFSET = 190;
-/** Copy raised this far above the hero's centre; the bed hangs off it. */
-const LIFT = 138;
 
 // ---- The wave ------------------------------------------------------------
 // Each line of the formed bed rolls in its own slow travelling wave — its own
@@ -249,12 +257,11 @@ const assignSlots = (dots: Dot[], width: number) => {
 const mark = (ctx: CanvasRenderingContext2D, x: number, y: number, r: number) =>
   ctx.fillRect(x - r, y - r, r * 2, r * 2);
 
-/** Hero height: about one viewport, running up behind the overlaid nav. */
-const HERO_BOX = {
-  h: "calc(100svh + 40px - 60px)",
-  minH: `${720 + NAV_H - 20}px`,
-  maxH: `${940 + NAV_H - 20}px`,
-} as const;
+/**
+ * Hero height: exactly one viewport (the small viewport, so a phone's
+ * toolbar can't push it past the fold), running up behind the overlaid nav.
+ */
+const HERO_BOX = { h: "100svh" } as const;
 
 /**
  * The copy's box: full width below lg, then centred on the grid with the
@@ -272,6 +279,8 @@ export const LandingHero: React.FC = () => {
     dots: [] as Dot[],
     start: 0,
     restart: true,
+    /** Whether the dots were laid out for a phone. */
+    phone: false,
     /** When (seconds into this pass) the bed formed, and when the dots
      * began drifting back to their starts. */
     formedAt: null as number | null,
@@ -292,12 +301,22 @@ export const LandingHero: React.FC = () => {
   const canvasRef = useCanvasLoop(({ ctx, w, h, t, dt, reduced, resized }) => {
     const s = sim.current;
     const c = copy.current;
-    const layerY = c ? c.offsetTop + c.offsetHeight + LAYER_GAP : h * 0.5;
+    const phone = w < PHONE_MAX_W;
+    const raise = RAISE + (phone ? PHONE_RAISE : 0);
+    const layerY =
+      (c ? c.offsetTop + c.offsetHeight + LAYER_GAP : h * 0.5) - raise;
+    // Crossing the breakpoint changes the dot count: start a fresh pass.
+    if (resized && phone !== s.phone) s.restart = true;
 
     if (s.restart) {
-      s.dots = Array.from({ length: DOTS }, () => ({
+      s.phone = phone;
+      s.dots = Array.from({ length: phone ? PHONE_DOTS : DOTS }, () => ({
         x: Math.random() * w,
-        y: (h - FLOAT_BAND) / 2 + FLOAT_OFFSET + Math.random() * FLOAT_BAND,
+        y:
+          (h - FLOAT_BAND) / 2 +
+          FLOAT_OFFSET -
+          raise +
+          Math.random() * FLOAT_BAND,
         vx: 0,
         vy: 0,
         delay: Math.random() * STAGGER,
@@ -493,13 +512,18 @@ export const LandingHero: React.FC = () => {
       >
         <Box
           ref={copy}
+          // Centred on the viewport, then raised 20px + 4rem. The raise is a
+          // transform, which the bed (hung off the box's laid-out bottom
+          // edge) doesn't follow.
           position="relative"
-          top={`${-LIFT}px`}
+          transform="translateY(calc(-20px - 4rem))"
           {...COPY_BOX}
           display="flex"
           flexDirection={{ base: "column", md: "row" }}
           justifyContent="space-between"
-          alignItems="flex-start"
+          // Side by side, the title and the description + CTA share a
+          // horizontal centre line.
+          alignItems={{ base: "flex-start", md: "center" }}
           gap="32px"
         >
           <Text
@@ -526,8 +550,6 @@ export const LandingHero: React.FC = () => {
             w={{ base: "full", md: "auto" }}
             minW={0}
             gap="20px"
-            // Its first line sits a touch under the title's.
-            pt={{ md: "8px" }}
           >
             <Text
               textStyle="body.sm"

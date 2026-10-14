@@ -88,10 +88,8 @@ export const SolutionsPage: React.FC = () => {
               <Text
                 ref={introRef}
                 as="h1"
-                textStyle="h4"
-                fontWeight={400}
-                lineHeight="1.1"
-                letterSpacing="-0.04em"
+                // Set like the landing page's problem statement.
+                textStyle="h5"
                 color="site.fg.strong"
                 maxW="682px"
               >

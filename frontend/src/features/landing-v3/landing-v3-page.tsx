@@ -192,7 +192,7 @@ const FdeSection: React.FC = () => (
 
 export const LandingV3Page: React.FC = () => (
   <Box bg="site.bg.page">
-    <SiteNav overlay dotted />
+    <SiteNav overlay />
 
     <Box as="main">
       {/* --- Hero ---------------------------------------------------------- */}
