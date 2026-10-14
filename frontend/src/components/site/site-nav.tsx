@@ -46,7 +46,7 @@ const DESKTOP_QUERY = "(min-width: 768px)";
  * them as a sheet filling the viewport under the bar.
  *
  * `overlay` lays the bar over the top of the first section instead of above
- * it. The section has to extend up behind it (e.g. `<GlyphBedHero underNav />`).
+ * it. The section has to extend up behind it, as the /v3 hero does.
  *
  * `dotted` swaps the solid hairline under the bar for a dotted one: 1px
  * dots, 1px apart, in the site's dashed-rule colour.
@@ -92,9 +92,7 @@ const useScrolled = () => {
 export const SiteNav: React.FC<{
   overlay?: boolean;
   dotted?: boolean;
-  /** Drop the rule under the bar. */
-  borderless?: boolean;
-}> = ({ overlay = false, dotted = false, borderless = false }) => {
+}> = ({ overlay = false, dotted = false }) => {
   const scrolled = useScrolled();
   const [isOpen, setIsOpen] = React.useState(false);
   const close = React.useCallback(() => setIsOpen(false), []);
@@ -135,7 +133,7 @@ export const SiteNav: React.FC<{
       display="flex"
       flexDirection="column"
       justifyContent="center"
-      {...(borderless ? {} : dotted ? tiledRuleX("bottom") : SOLID_RULE)}
+      {...(dotted ? tiledRuleX("bottom") : SOLID_RULE)}
       // A soft shadow once the page scrolls, lifting the bar off what
       // passes beneath it.
       boxShadow={

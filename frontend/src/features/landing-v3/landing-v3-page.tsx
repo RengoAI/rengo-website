@@ -14,9 +14,8 @@ import {
   UseCaseAccordion,
   type UseCase,
 } from "@/components/site/use-case-accordion";
-import { HeroDesignsButton } from "@/features/hero-lab/hero-designs-button";
-import { QuickSedimentHero } from "@/features/hero-lab/heroes/quick-sediment-hero";
 import { FoundationSection } from "@/features/landing-v3/foundation-section";
+import { LandingHero } from "@/features/landing-v3/landing-hero";
 import { LogoMarquee } from "@/features/landing-v3/logo-marquee";
 import { Box, chakra, Text } from "@chakra-ui/react";
 import { ArrowUpFromDot, CornerDownRight } from "lucide-react";
@@ -26,9 +25,6 @@ import { Link } from "react-router-dom";
 const RouterLink = chakra(Link);
 
 const ART = "/img/rebrand/";
-
-const HERO_DESCRIPTION =
-  "We are the embedded partner that builds the data layer for AI systems to learn and act from your firm’s knowledge.";
 
 const USE_CASES: UseCase[] = [
   {
@@ -202,7 +198,7 @@ export const LandingV3Page: React.FC = () => (
       {/* --- Hero ---------------------------------------------------------- */}
       {/* Scattered dots are pulled into the data layer under the CTA, where
         each line rolls in its own gentle wave. */}
-      <QuickSedimentHero description={HERO_DESCRIPTION} underNav />
+      <LandingHero />
 
       {/* --- The problem & vision ------------------------------------------ */}
       {/* Held open to 741px, 80px past the design's 661px band; the copy
@@ -417,7 +413,5 @@ export const LandingV3Page: React.FC = () => (
     </Box>
 
     <SiteFooter />
-
-    <HeroDesignsButton />
   </Box>
 );

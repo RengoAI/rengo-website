@@ -4,7 +4,6 @@ import { aboutV3Routes } from "@/features/about-v3/about-v3-routes";
 import { blogRoutes } from "@/features/blog/blog-routes";
 import { careersRoutes } from "@/features/careers/careers-routes";
 import { companyRoute } from "@/features/company/company-routes";
-import { heroLabRoutes } from "@/features/hero-lab/hero-lab-routes";
 import { landingV3Routes } from "@/features/landing-v3/landing-v3-routes";
 import { landingRoutes } from "@/features/landing/landing-routes";
 import { legalRoutes } from "@/features/legal/legal-routes";
@@ -31,7 +30,6 @@ export const ALL_ROUTES: RouteObject[] = [
 const STANDALONE_ROUTES: RouteObject[] = [
   landingV3Routes,
   aboutV3Routes,
-  heroLabRoutes,
   solutionsOverviewRoute,
   careersRoutes,
 ];
