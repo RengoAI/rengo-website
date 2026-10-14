@@ -42,6 +42,9 @@ export const HEADLINE = "Building your intelligent data layer";
 export const DESCRIPTION =
   "We’re the embedded partner that builds the data intelligence layer for AI systems to learn and act from your firm’s knowledge.";
 
+/** Where every "Book a call" and "Get in touch" CTA leads. */
+export const CONTACT_HREF = "mailto:sales@rengoai.com";
+
 /** The blue underscore that closes the headline. */
 export const Cursor: React.FC = () => (
   <Box as="span" color="site.highlight">
@@ -102,14 +105,14 @@ CanvasFill.displayName = "CanvasFill";
 /**
  * Filled CTA in the v3 shape, in a dark or a light tone. The dark tone
  * lightens to the footer's silver on hover, its label turning dark.
+ *
+ * With `href` it renders as a link, since it navigates; without, a button.
  */
-export const SolidCta: React.FC<{ tone?: "dark" | "light" } & BoxProps> = ({
-  tone = "dark",
-  children = "Get started",
-  ...rest
-}) => (
+export const SolidCta: React.FC<
+  { tone?: "dark" | "light"; href?: string } & BoxProps
+> = ({ tone = "dark", children = "Get started", href, ...rest }) => (
   <Box
-    as="button"
+    {...(href ? { as: "a", href } : { as: "button", type: "button" })}
     h="40px"
     px="14px"
     borderRadius="4px"

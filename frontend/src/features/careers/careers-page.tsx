@@ -23,6 +23,7 @@ export const CareersPage: React.FC = () => (
     <SiteNav />
 
     <Section
+      as="main"
       rhythm="none"
       bg="site.bg.surface"
       py="60px"
@@ -30,57 +31,56 @@ export const CareersPage: React.FC = () => (
     >
       <Grid rowGap="16px">
         <GridCol span={16} minH={{ lg: "138px" }}>
-          <Text
-            as="h1"
-            textStyle="h3"
-            color="site.fg.strong"
-          >
+          <Text as="h1" textStyle="h3" color="site.fg.strong">
             {/* Typed in like the about page's title. */}
             <TypedText text="Join us" />
           </Text>
         </GridCol>
 
         <GridCol span={16}>
-          <Text textStyle="label" color="slate.100" py="16px">
+          <Text as="h2" textStyle="label" color="slate.100" py="16px">
             Open roles
           </Text>
-          {OPEN_ROLES.map((role) => (
-            <Link
-              key={role.id}
-              to={rolePath(role.id)}
-              style={{ display: "block", textDecoration: "none" }}
-            >
-              {/* Ruled like the use-case accordion's rows. */}
-              <Grid
-                rowGap="12px"
-                py="24px"
-                borderTopWidth="1px"
-                borderTopStyle="dotted"
-                borderTopColor="site.border.dashed"
-                transition="background 150ms ease"
-                _hover={{ bg: "site.bg.tint" }}
-              >
-                <GridCol span={{ base: 16, lg: 5 }}>
-                  <Text textStyle="label" color="slate.100">
-                    {role.department}
-                  </Text>
-                </GridCol>
-                <GridCol
-                  span={{ base: 16, lg: 8 }}
-                  display="flex"
-                  flexDirection="column"
-                  gap="12px"
+          <Box as="ul">
+            {OPEN_ROLES.map((role) => (
+              <li key={role.id}>
+                <Link
+                  to={rolePath(role.id)}
+                  style={{ display: "block", textDecoration: "none" }}
                 >
-                  <Text textStyle="h6" color="site.fg">
-                    {role.title}
-                  </Text>
-                  <Text textStyle="body.sm" color="site.fg.muted">
-                    {role.location} • {role.employmentType}
-                  </Text>
-                </GridCol>
-              </Grid>
-            </Link>
-          ))}
+                  {/* Ruled like the use-case accordion's rows. */}
+                  <Grid
+                    rowGap="12px"
+                    py="24px"
+                    borderTopWidth="1px"
+                    borderTopStyle="dotted"
+                    borderTopColor="site.border.dashed"
+                    transition="background 150ms ease"
+                    _hover={{ bg: "site.bg.tint" }}
+                  >
+                    <GridCol span={{ base: 16, lg: 5 }}>
+                      <Text textStyle="label" color="slate.100">
+                        {role.department}
+                      </Text>
+                    </GridCol>
+                    <GridCol
+                      span={{ base: 16, lg: 8 }}
+                      display="flex"
+                      flexDirection="column"
+                      gap="12px"
+                    >
+                      <Text as="h3" textStyle="h6" color="site.fg">
+                        {role.title}
+                      </Text>
+                      <Text textStyle="body.sm" color="site.fg.muted">
+                        {role.location} • {role.employmentType}
+                      </Text>
+                    </GridCol>
+                  </Grid>
+                </Link>
+              </li>
+            ))}
+          </Box>
           {/* Closes the list with the same dotted rule as the rows'. */}
           <Box
             borderTopWidth="1px"

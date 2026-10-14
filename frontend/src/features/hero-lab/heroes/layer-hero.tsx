@@ -7,6 +7,7 @@ import {
 } from "@/components/site/mesh-field";
 import {
   CanvasFill,
+  CONTACT_HREF,
   Cursor,
   DESCRIPTION,
   HEADLINE,
@@ -1203,7 +1204,9 @@ export const LayerHero: React.FC<{
         />
       ) : null}
       <CanvasFill ref={canvasRef} />
+      {/* A div: the hero box itself is the section. */}
       <Section
+        as="div"
         rhythm="none"
         position="relative"
         h="full"
@@ -1278,7 +1281,9 @@ export const LayerHero: React.FC<{
                 onClick={(e: React.MouseEvent) => e.stopPropagation()}
                 cursor="default"
               >
-                <SolidCta h={ctaHeight ?? "27px"}>{ctaLabel}</SolidCta>
+                <SolidCta h={ctaHeight ?? "27px"} href={CONTACT_HREF}>
+                  {ctaLabel}
+                </SolidCta>
               </Box>
             </Box>
           </Box>
@@ -1384,7 +1389,10 @@ export const LayerHero: React.FC<{
                   onClick={(e: React.MouseEvent) => e.stopPropagation()}
                   cursor="default"
                 >
-                  <SolidCta {...(ctaHeight ? { h: ctaHeight } : {})}>
+                  <SolidCta
+                    href={CONTACT_HREF}
+                    {...(ctaHeight ? { h: ctaHeight } : {})}
+                  >
                     {ctaLabel}
                   </SolidCta>
                 </Box>

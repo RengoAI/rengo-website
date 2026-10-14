@@ -3,7 +3,7 @@ import { Section } from "@/components/layout/section";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
 import { TypedText } from "@/components/site/typed-text";
-import { Box, Image, Text } from "@chakra-ui/react";
+import { Box, Image, Text, VisuallyHidden } from "@chakra-ui/react";
 import React from "react";
 
 const ART = "/img/rebrand/";
@@ -84,6 +84,7 @@ const FounderRow: React.FC<Founder & { isFirst: boolean }> = ({
       alignSelf="center"
     >
       <Text
+        as="h3"
         textStyle="body.md"
         fontSize="xl"
         fontWeight={500}
@@ -106,67 +107,73 @@ export const AboutV3Page: React.FC = () => (
   <Box bg="site.bg.page">
     <SiteNav />
 
-    {/*
+    <Box as="main">
+      {/*
       The title is sticky, and a sticky element is held inside its parent. So
       the parent here spans both the team and the story, with no bottom
       padding: the title stays pinned for the whole page and lets go only
       where the footer begins.
     */}
-    <Section rhythm="none" pt={{ base: "48px", lg: "80px" }}>
-      <Text
-        as="h1"
-        textStyle="h3"
-        color="site.fg.strong"
-        // Only pinned on desktop: on narrower screens the portraits scroll
-        // right under it, where it would sit on top of them.
-        position={{ base: "static", lg: "sticky" }}
-        // Nav (52px) plus the band's 80px top inset — the title pins where it
-        // already sits, rather than jumping up under the nav.
-        top="132px"
-        w="fit-content"
-      >
-        <TypedText text="Our team and vision" />
-      </Text>
-
-      {/* --- Team ---------------------------------------------------------- */}
-      <Grid
-        rowGap={{ base: "20px", md: "36px" }}
-        mt={{ base: "16px", lg: "22px" }}
-        pb={{ base: "64px", lg: "100px" }}
-      >
-        {FOUNDERS.map((founder, i) => (
-          <FounderRow key={founder.name} {...founder} isFirst={i === 0} />
-        ))}
-      </Grid>
-
-      {/* --- Story --------------------------------------------------------- */}
-      <Grid py={{ base: "80px", md: "120px", lg: "160px" }}>
-        {/* From column 9 on desktop, under the portraits: the pinned title
-            keeps the left columns, so nothing may scroll beneath it. */}
-        <GridCol
-          span={{ base: 16, md: 12, lg: 6 }}
-          start={{ base: "auto", lg: 9 }}
+      <Section rhythm="none" pt={{ base: "48px", lg: "80px" }}>
+        <Text
+          as="h1"
+          textStyle="h3"
+          color="site.fg.strong"
+          // Only pinned on desktop: on narrower screens the portraits scroll
+          // right under it, where it would sit on top of them.
+          position={{ base: "static", lg: "sticky" }}
+          // Nav (52px) plus the band's 80px top inset — the title pins where it
+          // already sits, rather than jumping up under the nav.
+          top="132px"
+          w="fit-content"
         >
-          <Box
-            display="flex"
-            flexDirection="column"
-            gap="25px"
-            maxW="452px"
-            color="site.fg.strong"
+          <TypedText text="Our team and vision" />
+        </Text>
+
+        {/* --- Team ---------------------------------------------------------- */}
+        {/* The sections' headings are for the outline only; the design shows
+          neither. */}
+        <VisuallyHidden as="h2">Our team</VisuallyHidden>
+        <Grid
+          rowGap={{ base: "20px", md: "36px" }}
+          mt={{ base: "16px", lg: "22px" }}
+          pb={{ base: "64px", lg: "100px" }}
+        >
+          {FOUNDERS.map((founder, i) => (
+            <FounderRow key={founder.name} {...founder} isFirst={i === 0} />
+          ))}
+        </Grid>
+
+        {/* --- Story --------------------------------------------------------- */}
+        <VisuallyHidden as="h2">Our story</VisuallyHidden>
+        <Grid py={{ base: "80px", md: "120px", lg: "160px" }}>
+          {/* From column 9 on desktop, under the portraits: the pinned title
+            keeps the left columns, so nothing may scroll beneath it. */}
+          <GridCol
+            span={{ base: 16, md: 12, lg: 6 }}
+            start={{ base: "auto", lg: 9 }}
           >
-            {STORY.map((paragraph) => (
-              <Text
-                key={paragraph.slice(0, 24)}
-                textStyle="body.md"
-                fontSize="lg"
-              >
-                {paragraph}
-              </Text>
-            ))}
-          </Box>
-        </GridCol>
-      </Grid>
-    </Section>
+            <Box
+              display="flex"
+              flexDirection="column"
+              gap="25px"
+              maxW="452px"
+              color="site.fg.strong"
+            >
+              {STORY.map((paragraph) => (
+                <Text
+                  key={paragraph.slice(0, 24)}
+                  textStyle="body.md"
+                  fontSize="lg"
+                >
+                  {paragraph}
+                </Text>
+              ))}
+            </Box>
+          </GridCol>
+        </Grid>
+      </Section>
+    </Box>
 
     <SiteFooter />
   </Box>

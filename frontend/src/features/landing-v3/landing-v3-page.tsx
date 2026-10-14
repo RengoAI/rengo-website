@@ -17,9 +17,13 @@ import {
   UseCaseAccordion,
   type UseCase,
 } from "@/components/site/use-case-accordion";
+import { rootRoute } from "@/app/app-routes";
 import { Box, chakra, Image, Text } from "@chakra-ui/react";
 import { ArrowUpFromDot, CornerDownRight } from "lucide-react";
 import React from "react";
+import { Link } from "react-router-dom";
+
+const RouterLink = chakra(Link);
 
 const ART = "/img/rebrand/";
 
@@ -197,6 +201,7 @@ const FoundationLayer: React.FC<{ title: string; description: string }> = ({
   <Box display="flex" flexDirection="column" gap="16px" alignItems="flex-start">
     <Box display="flex" flexDirection="column" gap="8px" w="full">
       <Text
+        as="h3"
         textStyle="h6"
         fontSize="1.125rem" // 18px
         fontWeight={400}
@@ -354,7 +359,7 @@ const useRowFade = (ref: React.RefObject<HTMLElement>, end: number) => {
 };
 
 const SolutionSection: React.FC = () => {
-  const headingRef = React.useRef<HTMLParagraphElement>(null);
+  const headingRef = React.useRef<HTMLHeadingElement>(null);
   useRowFade(headingRef, FOUNDATION_ROW_FADE_END);
   const headingGone = useFadeOutPast(
     headingRef,
@@ -413,6 +418,7 @@ const SolutionSection: React.FC = () => {
         >
           <Text
             ref={headingRef}
+            as="h2"
             textStyle="h5"
             fontWeight={400}
             lineHeight="1.1"
@@ -427,66 +433,69 @@ const SolutionSection: React.FC = () => {
           </Text>
         </GridCol>
       </Grid>
-      {FOUNDATION_LAYERS.map((layer, i) => {
-        const [w, h] = FOUNDATION_LAYER_SIZES[i];
-        return (
-          <Grid
-            key={layer.title}
-            data-row
-            rowGap="24px"
-            pb={{ base: "64px", lg: 0 }}
-            mt={
-              i === 0
-                ? undefined
-                : {
-                    lg: `calc(${FOUNDATION_RENDER_W} * ${
-                      (-h / w) * FOUNDATION_LAYER_OVERLAP
-                    })`,
-                  }
-            }
-          >
-            {/* Text first in the source, so it reads above the render when
+      <Box as="ul">
+        {FOUNDATION_LAYERS.map((layer, i) => {
+          const [w, h] = FOUNDATION_LAYER_SIZES[i];
+          return (
+            <Grid
+              as="li"
+              key={layer.title}
+              data-row
+              rowGap="24px"
+              pb={{ base: "64px", lg: 0 }}
+              mt={
+                i === 0
+                  ? undefined
+                  : {
+                      lg: `calc(${FOUNDATION_RENDER_W} * ${
+                        (-h / w) * FOUNDATION_LAYER_OVERLAP
+                      })`,
+                    }
+              }
+            >
+              {/* Text first in the source, so it reads above the render when
               stacked; from lg it takes cols 1–5 and the render cols 6–16. */}
-            <GridCol
-              span={{ base: 16, md: 10, lg: FOUNDATION_COPY_SPAN }}
-              start={{ lg: 1 }}
-              gridRow={{ lg: 1 }}
-              alignSelf="center"
-              // From lg, sits 100px above the render's centre line.
-              position="relative"
-              top={{ lg: "-100px" }}
-              // The row's parts fade on their own rather than the row as a
-              // whole, which would flatten the renders' stacking order.
-              data-row-fade
-            >
-              <FoundationLayer {...layer} />
-            </GridCol>
-            <GridCol
-              span={{ base: 16, lg: FOUNDATION_RENDER_SPAN }}
-              start={{ lg: GRID_COLUMNS - FOUNDATION_RENDER_SPAN + 1 }}
-              gridRow={{ lg: 1 }}
-            >
-              <Image
-                data-row-fade
-                src={`${ART}foundation-layer-${i + 1}.png`}
-                alt=""
-                aria-hidden
+              <GridCol
+                span={{ base: 16, md: 10, lg: FOUNDATION_COPY_SPAN }}
+                start={{ lg: 1 }}
+                gridRow={{ lg: 1 }}
+                alignSelf="center"
+                // From lg, sits 100px above the render's centre line.
                 position="relative"
-                // Nudged into the page's right padding, short of the
-                // screen's edge.
-                left={{ lg: "20px" }}
-                zIndex={FOUNDATION_LAYERS.length - i}
-                display="block"
-                w="full"
-                h="auto"
-                maxW={FOUNDATION_LAYER_MAX_W}
-                ml="auto"
-                aspectRatio={w / h}
-              />
-            </GridCol>
-          </Grid>
-        );
-      })}
+                top={{ lg: "-100px" }}
+                // The row's parts fade on their own rather than the row as a
+                // whole, which would flatten the renders' stacking order.
+                data-row-fade
+              >
+                <FoundationLayer {...layer} />
+              </GridCol>
+              <GridCol
+                span={{ base: 16, lg: FOUNDATION_RENDER_SPAN }}
+                start={{ lg: GRID_COLUMNS - FOUNDATION_RENDER_SPAN + 1 }}
+                gridRow={{ lg: 1 }}
+              >
+                <Image
+                  data-row-fade
+                  src={`${ART}foundation-layer-${i + 1}.png`}
+                  alt=""
+                  aria-hidden
+                  position="relative"
+                  // Nudged into the page's right padding, short of the
+                  // screen's edge.
+                  left={{ lg: "20px" }}
+                  zIndex={FOUNDATION_LAYERS.length - i}
+                  display="block"
+                  w="full"
+                  h="auto"
+                  maxW={FOUNDATION_LAYER_MAX_W}
+                  ml="auto"
+                  aspectRatio={w / h}
+                />
+              </GridCol>
+            </Grid>
+          );
+        })}
+      </Box>
     </Section>
   );
 };
@@ -519,6 +528,7 @@ const FdeSection: React.FC = () => (
         gap="16px"
       >
         <Text
+          as="h2"
           textStyle="h5"
           fontWeight={400}
           lineHeight="1.1"
@@ -549,8 +559,8 @@ const FdeSection: React.FC = () => (
           launch.
         </Text>
       </Box>
-      <chakra.a
-        href="/solutions"
+      <RouterLink
+        to={rootRoute({}).solutions({}).$}
         display="inline-flex"
         alignItems="center"
         gap="20px"
@@ -563,7 +573,7 @@ const FdeSection: React.FC = () => (
       >
         See our services
         <CornerDownRight size={12} strokeWidth={1.5} aria-hidden />
-      </chakra.a>
+      </RouterLink>
     </GridCol>
   </Section>
 );
@@ -572,170 +582,210 @@ export const LandingV3Page: React.FC = () => (
   <Box bg="site.bg.page">
     <SiteNav overlay dotted />
 
-    {/* --- Hero ---------------------------------------------------------- */}
-    {/* Scattered dots are pulled into the data layer under the CTA, where
+    <Box as="main">
+      {/* --- Hero ---------------------------------------------------------- */}
+      {/* Scattered dots are pulled into the data layer under the CTA, where
         each line rolls in its own gentle wave. */}
-    <QuickSedimentHero description={HERO_DESCRIPTION} underNav />
+      <QuickSedimentHero description={HERO_DESCRIPTION} underNav />
 
-    {/* --- The problem & vision ------------------------------------------ */}
-    {/* Held open to 701px, 40px past the design's 661px band; the copy
+      {/* --- The problem & vision ------------------------------------------ */}
+      {/* Held open to 701px, 40px past the design's 661px band; the copy
         only fills the top. */}
-    <Section grid bg="site.bg.tintSubtle" minH={{ lg: "701px" }}>
-      <GridCol span={{ base: 16, lg: 12 }}>
-        <Text textStyle="h5" color="site.fg.strong" maxW="800px">
-          Firms have spent decades making the numbers in their databases
-          reliable, connecting their tools, and standardizing workflows. But
-          much of what a firm actually knows{" "}
-          <Box as="span" color="site.highlight">
-            never reaches a database.
-          </Box>
-        </Text>
-      </GridCol>
-      <GridCol span={{ base: 16, md: 10, lg: 4 }} pt={{ base: "16px", lg: 0 }}>
-        <Text textStyle="body.sm" color="site.fg">
-          Meeting conversations, the memos in a shared drive, the deal terms
-          hidden in emails - never reaches a database.
-          <br />
-          <br />
-          AI changes how work with data but it is only as good as the what you
-          feed it. We believe the key to success is{" "}
-          <Box as="span" fontWeight={700}>
-            the data layer.
-          </Box>{" "}
-          No firm&rsquo;s data looks exactly like another&rsquo;s -- which is
-          why the systems that capture this corpus has to adapt organically and
-          intelligently to how your firm changes - doing so requires agents and
-          good engineering. Our vision is to focus on the care, judgment, and
-          persistence required to govern your data, steward agentic systems, and
-          how your organization uses it.
-          <br />
-          <br />
-          --- Erik Ronning, Co-founder &amp; CEO
-        </Text>
-      </GridCol>
-    </Section>
-
-    {/* --- Solution ------------------------------------------------------- */}
-    {/* Light band, static: the foundation's layers. */}
-    <SolutionSection />
-
-    {/* --- About the FDE service ------------------------------------------- */}
-    <FdeSection />
-
-    {/* --- Use cases ------------------------------------------------------ */}
-    <Section grid bg="site.bg.tintSubtle">
-      <GridCol span={16} pb="60px">
-        <Text
-          textStyle="h3"
-          color="site.fg"
-          maxW={{ base: "160px", md: "280px" }}
-        >
-          Unlock agent driven workflows
-        </Text>
-      </GridCol>
-      <GridCol span={16}>
-        <UseCaseAccordion items={USE_CASES} />
-      </GridCol>
-    </Section>
-
-    {/* --- How we perform -------------------------------------------------- */}
-    <Section grid rhythm="tight" bg="site.bg.surface">
-      <GridCol
-        span={16}
-        display="flex"
-        flexDirection="column"
-        alignItems="flex-start"
-        gap="20px"
-        pb="40px"
-      >
-        <Text
-          textStyle="h3"
-          color="site.fg"
-          maxW={{ base: "160px", md: "360px" }}
-        >
-          How our system performs today
-        </Text>
-        <Text textStyle="label" color="soot.500" maxW="280px">
-          *Comparison between workflows using our system vs traditional tool
-          stack.
-        </Text>
-      </GridCol>
-      {/* Deliberately empty, where the first card was: from tablet up the
-          three cards fill the last 12 columns. */}
-      <GridCol span={4} display={{ base: "none", md: "block" }} />
-      {/* Two to a row on mobile, three across, 4 columns each, from tablet
-          up. */}
-      {METRICS.map((metric) => (
-        <GridCol
-          key={metric.index}
-          span={{ base: 8, md: 4 }}
-          pt={{ base: "24px", lg: 0 }}
-        >
-          <MetricCard
-            {...metric}
-            h={{ base: "200px", md: "280px", lg: "432px" }}
-          />
+      <Section grid bg="site.bg.tintSubtle" minH={{ lg: "701px" }}>
+        <GridCol span={{ base: 16, lg: 12 }}>
+          <Text as="h2" textStyle="h5" color="site.fg.strong" maxW="800px">
+            Firms have spent decades making the numbers in their databases
+            reliable, connecting their tools, and standardizing workflows. But
+            much of what a firm actually knows{" "}
+            <Box as="span" color="site.highlight">
+              never reaches a database.
+            </Box>
+          </Text>
         </GridCol>
-      ))}
-    </Section>
+        <GridCol
+          span={{ base: 16, md: 10, lg: 4 }}
+          pt={{ base: "16px", lg: 0 }}
+        >
+          {/* Separate paragraphs, a blank line (one 1.4 line height) apart.
+            `chakra.p` rather than `Text`, so they inherit body.sm. */}
+          <Box
+            textStyle="body.sm"
+            color="site.fg"
+            display="flex"
+            flexDirection="column"
+            gap="1.4em"
+          >
+            <chakra.p>
+              Meeting conversations, the memos in a shared drive, the deal terms
+              hidden in emails - never reaches a database.
+            </chakra.p>
+            <chakra.p>
+              AI changes how work with data but it is only as good as the what
+              you feed it. We believe the key to success is{" "}
+              <Box as="strong" fontWeight={700}>
+                the data layer.
+              </Box>{" "}
+              No firm&rsquo;s data looks exactly like another&rsquo;s -- which
+              is why the systems that capture this corpus has to adapt
+              organically and intelligently to how your firm changes - doing so
+              requires agents and good engineering. Our vision is to focus on
+              the care, judgment, and persistence required to govern your data,
+              steward agentic systems, and how your organization uses it.
+            </chakra.p>
+            <chakra.p>--- Erik Ronning, Co-founder &amp; CEO</chakra.p>
+          </Box>
+        </GridCol>
+      </Section>
 
-    {/* --- Testimonials ----------------------------------------------------- */}
-    {/* Canvas 350, a step lighter than canvas 400. */}
-    <Section grid bg="canvas.350">
-      <GridCol span={16} pb="40px">
-        <Box display="flex" flexDirection="column" gap="8px">
+      {/* --- Solution ------------------------------------------------------- */}
+      {/* Light band, static: the foundation's layers. */}
+      <SolutionSection />
+
+      {/* --- About the FDE service ------------------------------------------- */}
+      <FdeSection />
+
+      {/* --- Use cases ------------------------------------------------------ */}
+      <Section grid bg="site.bg.tintSubtle">
+        <GridCol span={16} pb="60px">
           <Text
+            as="h2"
             textStyle="h3"
             color="site.fg"
-            maxW={{ base: "160px", md: "296px" }}
+            maxW={{ base: "160px", md: "280px" }}
           >
-            Our customers in their own words
+            Unlock agent driven workflows
+          </Text>
+        </GridCol>
+        <GridCol span={16}>
+          <UseCaseAccordion items={USE_CASES} />
+        </GridCol>
+      </Section>
+
+      {/* --- How we perform -------------------------------------------------- */}
+      <Section grid rhythm="tight" bg="site.bg.surface">
+        <GridCol
+          span={16}
+          display="flex"
+          flexDirection="column"
+          alignItems="flex-start"
+          gap="20px"
+          pb="40px"
+        >
+          <Text
+            as="h2"
+            textStyle="h3"
+            color="site.fg"
+            maxW={{ base: "160px", md: "360px" }}
+          >
+            How our system performs today
+          </Text>
+          <Text textStyle="label" color="soot.500" maxW="280px">
+            *Comparison between workflows using our system vs traditional tool
+            stack.
+          </Text>
+        </GridCol>
+        {/* From tablet up the three cards fill the last 12 columns, leaving
+          the first 4 empty. The list sits on the section's grid (subgrid),
+          so its items still claim page columns. */}
+        <GridCol
+          as="ul"
+          span={{ base: 16, md: 12 }}
+          start={{ md: 5 }}
+          display="grid"
+          gridTemplateColumns="subgrid"
+          rowGap="gridGutter"
+        >
+          {/* Two to a row on mobile, three across, 4 columns each, from tablet
+          up. */}
+          {METRICS.map((metric) => (
+            <GridCol
+              as="li"
+              key={metric.index}
+              span={{ base: 8, md: 4 }}
+              pt={{ base: "24px", lg: 0 }}
+            >
+              <MetricCard
+                {...metric}
+                h={{ base: "200px", md: "280px", lg: "432px" }}
+              />
+            </GridCol>
+          ))}
+        </GridCol>
+      </Section>
+
+      {/* --- Testimonials ----------------------------------------------------- */}
+      {/* Canvas 350, a step lighter than canvas 400. */}
+      <Section grid bg="canvas.350">
+        <GridCol span={16} pb="40px">
+          <Box display="flex" flexDirection="column" gap="8px">
+            <Text
+              as="h2"
+              textStyle="h3"
+              color="site.fg"
+              maxW={{ base: "160px", md: "296px" }}
+            >
+              Our customers in their own words
+            </Text>
+          </Box>
+        </GridCol>
+        {/* The row of quotes starts a third of the way in, on the section's
+          grid (subgrid). Stacked below `lg`; three across doesn't fit until
+          then. */}
+        <GridCol
+          as="ul"
+          span={{ base: 16, lg: 12 }}
+          start={{ lg: 5 }}
+          display="grid"
+          gridTemplateColumns="subgrid"
+          rowGap="gridGutter"
+        >
+          {TESTIMONIALS.map((testimonial, i) => (
+            <GridCol
+              as="li"
+              key={testimonial.attribution + testimonial.quote}
+              span={{ base: 16, md: 12, lg: 4 }}
+              pb={{ base: "24px", lg: 0 }}
+            >
+              {/* Plain grey first, bluest last, so the row warms into the blue. */}
+              <TestimonialCard
+                {...testimonial}
+                wash={TESTIMONIAL_WASH_ORDER[i]}
+              />
+            </GridCol>
+          ))}
+        </GridCol>
+      </Section>
+
+      {/* --- Security --------------------------------------------------------- */}
+      <Section bg="site.bg.dark">
+        <Box pb={{ base: "40px", lg: "60px" }}>
+          <Text
+            as="h2"
+            textStyle="h3"
+            fontWeight={300}
+            color="site.fg.onDark"
+            maxW={{ base: "160px", md: "420px" }}
+          >
+            We are compliant with rigorous security standards
           </Text>
         </Box>
-      </GridCol>
-      {/* Deliberately empty: the row of quotes starts a third of the way in. */}
-      <GridCol span={4} display={{ base: "none", lg: "block" }} />
-      {/* Stacked below `lg`; three across doesn't fit until then. */}
-      {TESTIMONIALS.map((testimonial, i) => (
-        <GridCol
-          key={testimonial.attribution + testimonial.quote}
-          span={{ base: 16, md: 12, lg: 4 }}
-          pb={{ base: "24px", lg: 0 }}
-        >
-          {/* Plain grey first, bluest last, so the row warms into the blue. */}
-          <TestimonialCard {...testimonial} wash={TESTIMONIAL_WASH_ORDER[i]} />
+        <ComplianceCardGroup items={COMPLIANCE} h={{ lg: "240px" }} />
+      </Section>
+
+      {/* --- Logos ------------------------------------------------------------ */}
+      <Section grid rhythm="compact" bg="site.bg.dark">
+        <GridCol span={{ base: 16, lg: 3 }} display="flex" alignItems="center">
+          <Text textStyle="label" fontWeight={300} color="site.fg.onDarkFaint">
+            Bring industry experience from
+          </Text>
         </GridCol>
-      ))}
-    </Section>
+        <GridCol span={{ base: 16, lg: 13 }} display="flex" alignItems="center">
+          <LogoMarquee />
+        </GridCol>
+      </Section>
 
-    {/* --- Security --------------------------------------------------------- */}
-    <Section bg="site.bg.dark">
-      <Box pb={{ base: "40px", lg: "60px" }}>
-        <Text
-          textStyle="h3"
-          fontWeight={300}
-          color="site.fg.onDark"
-          maxW={{ base: "160px", md: "420px" }}
-        >
-          We are compliant with rigorous security standards
-        </Text>
-      </Box>
-      <ComplianceCardGroup items={COMPLIANCE} h={{ lg: "240px" }} />
-    </Section>
-
-    {/* --- Logos ------------------------------------------------------------ */}
-    <Section grid rhythm="compact" bg="site.bg.dark">
-      <GridCol span={{ base: 16, lg: 3 }} display="flex" alignItems="center">
-        <Text textStyle="label" fontWeight={300} color="site.fg.onDarkFaint">
-          Bring industry experience from
-        </Text>
-      </GridCol>
-      <GridCol span={{ base: 16, lg: 13 }} display="flex" alignItems="center">
-        <LogoMarquee />
-      </GridCol>
-    </Section>
-
-    <SiteOutro />
+      <SiteOutro />
+    </Box>
 
     <SiteFooter />
 

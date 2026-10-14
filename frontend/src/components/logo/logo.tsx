@@ -37,7 +37,7 @@ export const Logo: React.FC<LogoProps> = ({
 
   return (
     <Flex alignItems="center" justify="flex-start" gap={2}>
-      <Sun size={18} color={LOGO_ICON_COLOR[color]} />
+      <Sun size={18} color={LOGO_ICON_COLOR[color]} aria-hidden />
       {!isCollapsed &&
         (homeLink ? (
           <Link to={rootRoute({}).$} style={{ textDecoration: "none" }}>

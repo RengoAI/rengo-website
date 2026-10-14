@@ -51,7 +51,13 @@ export const ComplianceCard: React.FC<ComplianceCardProps> = ({
       gap="16px"
       w="full"
     >
-      <Text textStyle="d5" lineHeight="1.1" color="site.fg.onDark" w="full">
+      <Text
+        as="h3"
+        textStyle="d5"
+        lineHeight="1.1"
+        color="site.fg.onDark"
+        w="full"
+      >
         {title}
       </Text>
       <Text
@@ -79,9 +85,10 @@ export const ComplianceCardGroup: React.FC<ComplianceCardGroupProps> = ({
   items,
   ...rest
 }) => (
-  <Grid rowGap={{ base: "24px", lg: "gridGutter" }} {...rest}>
+  <Grid as="ul" rowGap={{ base: "24px", lg: "gridGutter" }} {...rest}>
     {items.map((item) => (
       <GridCol
+        as="li"
         key={item.title}
         span={{ base: 16, md: 8, lg: 4 }}
         borderLeftWidth="1px"

@@ -25,6 +25,7 @@ const ApproachCard: React.FC<{
   body: string;
 }> = ({ index, title, body }) => (
   <Box
+    as="li"
     flex="1 0 0"
     minW={0}
     display="flex"
@@ -38,7 +39,10 @@ const ApproachCard: React.FC<{
       {index}
     </Text>
     <Box display="flex" flexDirection="column" gap="12px" w="330px" maxW="full">
+      {/* Geist, like the copy around it; headings default to the serif. */}
       <Text
+        as="h3"
+        fontFamily="body"
         fontSize="20px"
         lineHeight="1"
         letterSpacing="-0.6px"
@@ -63,66 +67,69 @@ export const SolutionsPage: React.FC = () => {
     <Box bg="site.bg.page">
       <SiteNav />
 
-      {/* --- Intro --------------------------------------------------------- */}
-      {/* Taller than the design's 633px band, to hold the figure under the copy.
+      <Box as="main">
+        {/* --- Intro --------------------------------------------------------- */}
+        {/* Taller than the design's 633px band, to hold the figure under the copy.
         Under it, right of centre, the hero's marks move between a grid and a
         circle, the circle's top meeting the copy. */}
-      <Section
-        rhythm="none"
-        position="relative"
-        overflow="hidden"
-        bg="site.bg.surface"
-        pt="67px"
-        pb="80px"
-        // Room for the copy, the circle right under it, and a bottom margin.
-        minH={{ base: "660px", lg: "780px" }}
-      >
-        <GridCircleDots below={introRef} />
-        <Grid position="relative">
-          <GridCol span={{ base: 16, md: 12, lg: 8 }}>
-            <Text
-              ref={introRef}
-              as="h1"
-              textStyle="h4"
-              fontWeight={400}
-              lineHeight="1.1"
-              letterSpacing="-0.04em"
-              color="site.fg.strong"
-              maxW="682px"
-            >
-              {INTRO}
-            </Text>
-          </GridCol>
-        </Grid>
-      </Section>
+        <Section
+          rhythm="none"
+          position="relative"
+          overflow="hidden"
+          bg="site.bg.surface"
+          pt="67px"
+          pb="80px"
+          // Room for the copy, the circle right under it, and a bottom margin.
+          minH={{ base: "660px", lg: "780px" }}
+        >
+          <GridCircleDots below={introRef} />
+          <Grid position="relative">
+            <GridCol span={{ base: 16, md: 12, lg: 8 }}>
+              <Text
+                ref={introRef}
+                as="h1"
+                textStyle="h4"
+                fontWeight={400}
+                lineHeight="1.1"
+                letterSpacing="-0.04em"
+                color="site.fg.strong"
+                maxW="682px"
+              >
+                {INTRO}
+              </Text>
+            </GridCol>
+          </Grid>
+        </Section>
 
-      {/* --- Our approach -------------------------------------------------- */}
-      <Section rhythm="none" bg="site.bg.surface" py="60px">
-        <Grid rowGap="16px">
-          <GridCol span={16} minH={{ lg: "138px" }}>
-            <Text textStyle="h3" color="site.fg.strong">
-              Our approach
-            </Text>
-          </GridCol>
-          <GridCol
-            span={16}
-            display="flex"
-            flexDirection={{ base: "column", md: "row" }}
-            minH={{ md: "301px" }}
-            borderRadius="4px"
-            overflow="clip"
-          >
-            {SOLUTION_CAPABILITIES.map((c, i) => (
-              <ApproachCard
-                key={c.slug}
-                index={i + 1}
-                title={c.title}
-                body={APPROACH_BODY}
-              />
-            ))}
-          </GridCol>
-        </Grid>
-      </Section>
+        {/* --- Our approach -------------------------------------------------- */}
+        <Section rhythm="none" bg="site.bg.surface" py="60px">
+          <Grid rowGap="16px">
+            <GridCol span={16} minH={{ lg: "138px" }}>
+              <Text as="h2" textStyle="h3" color="site.fg.strong">
+                Our approach
+              </Text>
+            </GridCol>
+            <GridCol
+              as="ol"
+              span={16}
+              display="flex"
+              flexDirection={{ base: "column", md: "row" }}
+              minH={{ md: "301px" }}
+              borderRadius="4px"
+              overflow="clip"
+            >
+              {SOLUTION_CAPABILITIES.map((c, i) => (
+                <ApproachCard
+                  key={c.slug}
+                  index={i + 1}
+                  title={c.title}
+                  body={APPROACH_BODY}
+                />
+              ))}
+            </GridCol>
+          </Grid>
+        </Section>
+      </Box>
 
       <SiteFooter />
     </Box>

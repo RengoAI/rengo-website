@@ -1,6 +1,6 @@
 import { Grid, GridCol } from "@/components/layout/grid";
 import { DataMeshDiagram } from "@/components/site/data-mesh-diagram";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, chakra, Text } from "@chakra-ui/react";
 import React from "react";
 
 export type UseCase = {
@@ -20,6 +20,10 @@ export type UseCase = {
  *
  * Rows are separated by a dashed rule on their top edge, so the list reads as
  * one ruled block rather than as a stack of separate cards.
+ *
+ * Each title is an `h3` holding the row's toggle button. The button's
+ * `::before` stretches over the whole row, so the row stays clickable while
+ * the button's name is just the title.
  */
 export const UseCaseAccordion: React.FC<{
   items: UseCase[];
@@ -29,6 +33,7 @@ export const UseCaseAccordion: React.FC<{
    */
   defaultAllOpen?: boolean;
 }> = ({ items, defaultAllOpen = false }) => {
+  const idPrefix = React.useId();
   const [openIndices, setOpenIndices] = React.useState<ReadonlySet<number>>(
     () => new Set(defaultAllOpen ? items.map((_, i) => i) : [0]),
   );
@@ -44,6 +49,7 @@ export const UseCaseAccordion: React.FC<{
 
   return (
     <Box
+      as="ul"
       display="flex"
       flexDirection="column"
       alignItems="flex-start"
@@ -53,13 +59,13 @@ export const UseCaseAccordion: React.FC<{
     >
       {items.map((item, i) => {
         const isOpen = openIndices.has(i);
+        const panelId = `${idPrefix}-panel-${i}`;
         return (
           <Grid
             key={item.title}
-            as="button"
-            onClick={() => toggle(i)}
-            aria-expanded={isOpen}
-            textAlign="left"
+            as="li"
+            // Containing block for the button's row-wide hit area.
+            position="relative"
             rowGap="12px"
             py="24px"
             borderTopWidth="1px"
@@ -104,13 +110,43 @@ export const UseCaseAccordion: React.FC<{
               flexDirection="column"
               gap="10px"
             >
-              <Text textStyle="h6" color="site.fg" w="full">
-                {item.title}
+              <Text as="h3" textStyle="h6" color="site.fg" w="full">
+                <chakra.button
+                  type="button"
+                  onClick={() => toggle(i)}
+                  aria-expanded={isOpen}
+                  aria-controls={isOpen && item.body ? panelId : undefined}
+                  textAlign="left"
+                  // Buttons don't inherit tracking; the h3's h6 style sets it.
+                  letterSpacing="inherit"
+                  cursor="pointer"
+                  _before={{
+                    content: '""',
+                    position: "absolute",
+                    inset: 0,
+                    // Over the art's absolutely placed tiles too.
+                    zIndex: 1,
+                  }}
+                  css={{
+                    "&:focus-visible": { outline: "none" },
+                    "&:focus-visible::before": {
+                      outline: "2px solid var(--rengo-colors-site-highlight)",
+                      outlineOffset: "-2px",
+                    },
+                  }}
+                >
+                  {item.title}
+                </chakra.button>
               </Text>
               {isOpen && item.body && (
                 // A step lighter than body copy (soot.700), so the description
                 // sits back from the title above it.
-                <Text textStyle="body.sm" color="soot.600" w="full">
+                <Text
+                  id={panelId}
+                  textStyle="body.sm"
+                  color="soot.600"
+                  w="full"
+                >
                   {item.body}
                 </Text>
               )}

@@ -82,8 +82,9 @@ export const MetricCard: React.FC<
     ruleColor="site.border.dashed"
     top={
       // Set exactly like the caption, in the tint band's rule colour so
-      // the index stays legible against the lighter rule.
-      <Text textStyle="label" color="site.border.dashedOnTint">
+      // the index stays legible against the lighter rule. Ordinal only, so
+      // hidden from screen readers ("1, 1 month…").
+      <Text textStyle="label" color="site.border.dashedOnTint" aria-hidden>
         {index}
       </Text>
     }
@@ -186,6 +187,7 @@ export const TestimonialCard: React.FC<
   }
 > = ({ quote, avatarSrc, attribution, wash = "light", ...rest }) => (
   <SplitCard
+    as="figure"
     p="1.5rem" // 24px
     {...TESTIMONIAL_WASHES[wash]}
     borderRadius="4px"
@@ -193,12 +195,13 @@ export const TestimonialCard: React.FC<
     // Primary.800 (#0C1D34) at 4%: barely lifts the card off the band.
     boxShadow="0 2px 3px rgba(12, 29, 52, 0.04)"
     top={
-      <Text textStyle="d5" color="soot.600" w="full">
+      <Text as="blockquote" textStyle="d5" color="soot.600" w="full">
         {quote}
       </Text>
     }
     bottom={
       <Box
+        as="figcaption"
         display="flex"
         flexDirection="column"
         alignItems="flex-start"

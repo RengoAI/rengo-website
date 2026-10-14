@@ -3,13 +3,26 @@ import { Grid, GridCol } from "@/components/layout/grid";
 import { marketingLayoutBorderColor } from "@/components/layout/marketing-frame";
 import { Section } from "@/components/layout/section";
 import { Logo } from "@/components/logo/logo";
-import { NAV_H, SolidCta } from "@/features/hero-lab/hero-shared";
+import { CONTACT_HREF, NAV_H, SolidCta } from "@/features/hero-lab/hero-shared";
 import { Box, chakra } from "@chakra-ui/react";
 import { Menu, X } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
 
-const LINKS = ["Resources", "Team"];
+const RouterLink = chakra(Link);
+
+/** `to` is an in-app route; without one the link has no page yet. */
+const LINKS: { label: string; to?: string }[] = [
+  // TODO: Resources has no page yet.
+  { label: "Resources" },
+  { label: "Team", to: rootRoute({}).aboutV3({}).$ },
+];
+
+/** An in-app route as a router link, or a placeholder anchor without one. */
+const NavLink: React.FC<
+  { to?: string } & React.ComponentProps<typeof chakra.a>
+> = ({ to, ...rest }) =>
+  to ? <RouterLink to={to} {...rest} /> : <chakra.a href="#" {...rest} />;
 
 const MENU_ID = "site-nav-menu";
 
@@ -108,6 +121,7 @@ export const SiteNav: React.FC<{
   return (
     <Section
       as="nav"
+      aria-label="Main"
       rhythm="none"
       position="sticky"
       top={0}
@@ -136,6 +150,7 @@ export const SiteNav: React.FC<{
         <GridCol span={8} display="flex" alignItems="center" minW={0}>
           <Link
             to={rootRoute({}).landingV3({}).$}
+            aria-label="Rengo AI home"
             style={{ display: "flex", textDecoration: "none" }}
           >
             <Logo color="indigo.900" />
@@ -148,29 +163,30 @@ export const SiteNav: React.FC<{
           justifyContent="flex-end"
           gap="24px"
         >
-          <Box
+          <chakra.ul
             display={{ base: "none", md: "flex" }}
             alignItems="center"
             gap="20px"
           >
             {LINKS.map((link) => (
-              <chakra.a
-                key={link}
-                href="#"
-                textStyle="body.sm"
-                letterSpacing="0"
-                pt="2px"
-                textTransform="capitalize"
-                color="site.fg.strong"
-                whiteSpace="nowrap"
-                cursor="pointer"
-                transition="opacity 150ms ease"
-                _hover={{ opacity: 0.6 }}
-              >
-                {link}
-              </chakra.a>
+              <chakra.li key={link.label}>
+                <NavLink
+                  to={link.to}
+                  textStyle="body.sm"
+                  letterSpacing="0"
+                  pt="2px"
+                  textTransform="capitalize"
+                  color="site.fg.strong"
+                  whiteSpace="nowrap"
+                  cursor="pointer"
+                  transition="opacity 150ms ease"
+                  _hover={{ opacity: 0.6 }}
+                >
+                  {link.label}
+                </NavLink>
+              </chakra.li>
             ))}
-          </Box>
+          </chakra.ul>
           {/* Set like the links, between them and the CTA. */}
           <chakra.a
             href={LOGIN_URL}
@@ -189,10 +205,7 @@ export const SiteNav: React.FC<{
           </chakra.a>
           <Box display={{ base: "none", md: "block" }}>
             {/* The hero's "Book a call" button, at its 27px. */}
-            <SolidCta
-              h="27px"
-              onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
-            >
+            <SolidCta h="27px" href={CONTACT_HREF}>
               Book a call
             </SolidCta>
           </Box>
@@ -250,9 +263,9 @@ export const SiteNav: React.FC<{
             flexDirection="column"
           >
             {LINKS.map((link) => (
-              <Box as="li" key={link}>
-                <chakra.a
-                  href="#"
+              <Box as="li" key={link.label}>
+                <NavLink
+                  to={link.to}
                   onClick={close}
                   display="block"
                   py="12px"
@@ -262,8 +275,8 @@ export const SiteNav: React.FC<{
                   transition="opacity 150ms ease"
                   _hover={{ opacity: 0.6 }}
                 >
-                  {link}
-                </chakra.a>
+                  {link.label}
+                </NavLink>
               </Box>
             ))}
             <Box as="li">
@@ -284,7 +297,12 @@ export const SiteNav: React.FC<{
               </chakra.a>
             </Box>
           </Box>
-          <SolidCta w="full" justifyContent="center" onClick={close}>
+          <SolidCta
+            href={CONTACT_HREF}
+            w="full"
+            justifyContent="center"
+            onClick={close}
+          >
             Book a call
           </SolidCta>
         </Box>

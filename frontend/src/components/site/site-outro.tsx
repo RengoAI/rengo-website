@@ -2,7 +2,8 @@ import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import { ArrowLink } from "@/components/site/arrow-link";
 import { AutomataGrid } from "@/components/site/automata-grid";
-import { Box, Text } from "@chakra-ui/react";
+import { CONTACT_HREF } from "@/features/hero-lab/hero-shared";
+import { Box, chakra, Text } from "@chakra-ui/react";
 import React from "react";
 
 /**
@@ -21,6 +22,7 @@ export const SiteOutro: React.FC = () => (
   >
     <AutomataGrid />
     <Section
+      as="div"
       rhythm="none"
       position="relative"
       zIndex={1}
@@ -35,6 +37,7 @@ export const SiteOutro: React.FC = () => (
           gap={{ base: "40px", md: "60px" }}
         >
           <Text
+            as="h2"
             id="outro-heading"
             textStyle="d1"
             color="site.fg.strong"
@@ -46,8 +49,8 @@ export const SiteOutro: React.FC = () => (
               your alpha?
             </Box>
           </Text>
-          <Box
-            as="button"
+          <chakra.a
+            href={CONTACT_HREF}
             display="flex"
             alignItems="center"
             h="49px"
@@ -76,7 +79,7 @@ export const SiteOutro: React.FC = () => (
             >
               Get in touch
             </ArrowLink>
-          </Box>
+          </chakra.a>
         </GridCol>
       </Grid>
     </Section>
