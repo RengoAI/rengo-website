@@ -1,4 +1,4 @@
-import { Grid, GridCol } from "@/components/layout/grid";
+import { colSpanWidth, Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import { CanvasFill } from "@/components/site/canvas/canvas-fill";
 import { lerp } from "@/components/site/canvas/canvas-utils";
@@ -120,6 +120,16 @@ const GLOW = `radial-gradient(ellipse 70% 75% at 50% 50%, ${rgba(
 )} 100%)`;
 /** px, the split layout's width: title flush left, copy flush right. */
 const SPLIT_MEASURE = 1100;
+/**
+ * `splitOnGrid`'s box: full width below lg, then centred on the grid with
+ * the same inset either side — one column at lg (columns 2–15), two from xl
+ * (columns 3–14).
+ */
+const SPLIT_GRID = {
+  w: { base: "full", lg: colSpanWidth(14), xl: colSpanWidth(12) },
+  mx: "auto",
+} as const;
+
 /** Where the split title's second line starts: at "intelligent". */
 const SPLIT_BREAK = HEADLINE.indexOf("intelligent");
 
@@ -641,6 +651,13 @@ export const LayerHero: React.FC<{
   splitTitleTracking?: string;
   /** Split layout, Geist title: its weight. */
   splitTitleWeight?: number;
+  /**
+   * Split layout: set the copy on the page's columns instead of the centred
+   * 1100px measure — columns 2–15 at lg, 3–14 from xl. The title starts on
+   * the first column's left line; the description and CTA end on the last
+   * one's right line, the description narrowing to fit.
+   */
+  splitOnGrid?: boolean;
   /** px between the description and the CTA. */
   ctaGap?: number;
   /**
@@ -735,6 +752,7 @@ export const LayerHero: React.FC<{
   titleSize,
   splitTitleTracking = "-0.0375em",
   splitTitleWeight = 400,
+  splitOnGrid = false,
   ctaHeight,
 }) => {
   const ease = easeExponent(drift);
@@ -1240,14 +1258,15 @@ export const LayerHero: React.FC<{
       >
         {split ? (
           // Split: the title top left, the description and CTA right-aligned
-          // opposite it, both inside a centred 1100px measure.
+          // opposite it, both inside a centred 1100px measure — or, with
+          // `splitOnGrid`, on the page's columns (SPLIT_GRID).
           <Box
             ref={copy}
             position="relative"
             top={`${-lift}px`}
-            w="full"
-            maxW={`${SPLIT_MEASURE}px`}
-            mx="auto"
+            {...(splitOnGrid
+              ? SPLIT_GRID
+              : { w: "full", maxW: `${SPLIT_MEASURE}px`, mx: "auto" })}
             display="flex"
             flexDirection={{ base: "column", md: "row" }}
             justifyContent="space-between"
@@ -1285,6 +1304,8 @@ export const LayerHero: React.FC<{
               // Stacked on mobile, it spans the measure, so the 420px
               // description caps at its edge.
               w={{ base: "full", md: "auto" }}
+              // On the grid, it narrows to fit beside the title.
+              minW={splitOnGrid ? 0 : undefined}
               gap="20px"
               // Its first line sits a touch under the title's.
               pt={{ md: "8px" }}

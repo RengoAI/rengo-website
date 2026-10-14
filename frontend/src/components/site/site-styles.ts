@@ -66,23 +66,22 @@ export const tiledRuleLeft = (token: string) => ({
 });
 
 /**
- * A tiled rule along the bottom edge, in the dashed-rule colour, fading in
- * and out with `visible`. The element must be positioned.
+ * A tiled rule along the top or bottom edge, in the dashed-rule colour.
+ * The element must be positioned. Drawn in `::after`.
  */
-export const tiledRuleBottom = (visible: boolean) =>
+export const tiledRuleX = (edge: "top" | "bottom") =>
   ({
     _after: {
       content: '""',
       position: "absolute",
       left: 0,
       right: 0,
-      bottom: 0,
+      top: edge === "top" ? 0 : undefined,
+      bottom: edge === "bottom" ? 0 : undefined,
       height: "1px",
       bgImage: `linear-gradient(to right, ${colorVar("site.border.dashed")} 1px, transparent 1px)`,
       bgSize: "2px 1px",
       bgRepeat: "repeat-x",
       pointerEvents: "none",
-      opacity: visible ? 1 : 0,
-      transition: "opacity 150ms ease",
     },
   }) as const;

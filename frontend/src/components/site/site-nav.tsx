@@ -7,7 +7,7 @@ import { CONTACT_HREF, NAV_H } from "@/components/site/site-constants";
 import {
   dottedTop,
   hoverFade,
-  tiledRuleBottom,
+  tiledRuleX,
 } from "@/components/site/site-styles";
 import { SolidCta } from "@/components/site/solid-cta";
 import { Box, chakra } from "@chakra-ui/react";
@@ -49,9 +49,7 @@ const DESKTOP_QUERY = "(min-width: 768px)";
  * it. The section has to extend up behind it (e.g. `<GlyphBedHero underNav />`).
  *
  * `dotted` swaps the solid hairline under the bar for a dotted one: 1px
- * dots, 1px apart, in the site's dashed-rule colour. With `overlay` the
- * dotted rule is hidden while the page sits at the top, where the bar rests
- * on the hero, and fades in once the page scrolls.
+ * dots, 1px apart, in the site's dashed-rule colour.
  */
 const SOLID_RULE = {
   borderBottomWidth: "1px",
@@ -137,11 +135,7 @@ export const SiteNav: React.FC<{
       display="flex"
       flexDirection="column"
       justifyContent="center"
-      {...(borderless
-        ? {}
-        : dotted
-          ? tiledRuleBottom(!overlay || scrolled)
-          : SOLID_RULE)}
+      {...(borderless ? {} : dotted ? tiledRuleX("bottom") : SOLID_RULE)}
       // A soft shadow once the page scrolls, lifting the bar off what
       // passes beneath it.
       boxShadow={

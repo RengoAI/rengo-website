@@ -431,8 +431,8 @@ export const semanticColors = defineSemanticTokens.colors({
       surface: { value: "{colors.canvas.200}" },
       /** Cards lifted off a surface. */
       raised: { value: "{colors.canvas.0}" },
-      /** Footer band. */
-      footer: { value: "{colors.canvas.50}" },
+      /** Footer band: a neutral light grey, a touch under the page. */
+      footer: { value: "#F7F7F7" },
       /** Recessed chips and wells. */
       inset: { value: "{colors.canvas.300}" },
       /** The dark bands: performance, security, logos. */

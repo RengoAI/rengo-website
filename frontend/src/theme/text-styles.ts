@@ -56,7 +56,7 @@ export const textStyles = defineTextStyles({
   h4: {
     value: {
       fontFamily: "body",
-      fontSize: { base: "1.375rem", md: "1.625rem" }, // 22px → 26px
+      fontSize: { base: "1.5rem", md: "1.625rem" }, // 22px → 26px
       fontWeight: "350",
       letterSpacing: "-0.025em",
       lineHeight: "1.2",

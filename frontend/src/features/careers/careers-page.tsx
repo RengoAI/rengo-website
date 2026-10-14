@@ -16,7 +16,7 @@ const rolePath = (roleId: string) =>
   rootRoute({}).careers({}).role({ roleId }).$;
 
 /**
- * Careers, on the rebrand chrome: "Join us", then the open roles as ruled
+ * Careers, on the rebrand chrome: the title, then the open roles as ruled
  * rows — department on the left, title and terms beside it — each linking
  * to the role's own page. Held open to at least the viewport, so the footer
  * starts below the fold.
@@ -36,7 +36,7 @@ export const CareersPage: React.FC = () => (
         <GridCol span={16} minH={{ lg: "138px" }}>
           <Text as="h1" textStyle="h3" color="site.fg.strong">
             {/* Typed in like the about page's title. */}
-            <TypedText text="Join us" />
+            <TypedText text="Careers" />
           </Text>
         </GridCol>
 

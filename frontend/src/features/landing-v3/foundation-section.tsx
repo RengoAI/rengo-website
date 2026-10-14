@@ -53,7 +53,7 @@ const FoundationLayer: React.FC<{ title: string; description: string }> = ({
       <Text
         as="h3"
         textStyle="h6"
-        fontSize="1.125rem" // 18px
+        fontSize="1rem" // 16px, a step under h6
         fontWeight={400}
         lineHeight="1.1"
         letterSpacing="-0.5px"

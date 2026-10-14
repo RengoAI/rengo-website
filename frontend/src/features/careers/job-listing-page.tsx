@@ -22,16 +22,7 @@ const MetaItem: React.FC<{ label: string; value: string }> = ({
   value,
 }) => (
   <Flex direction="column" gap={1} minW={0}>
-    <Text
-      as="dt"
-      fontFamily="body"
-      fontSize="11px"
-      fontWeight="medium"
-      letterSpacing="0.08em"
-      textTransform="uppercase"
-      color="slate.50"
-      m={0}
-    >
+    <Text as="dt" textStyle="caption" color="slate.50" m={0}>
       {label}
     </Text>
     <Text as="dd" fontFamily="body" fontSize="14px" color="indigo.900" m={0}>
@@ -119,7 +110,8 @@ export const JobListingPage: React.FC = () => {
             <Button
               asChild
               variant="ghost"
-              mb={6}
+              // 2rem more than the usual 1.5rem above the title.
+              mb={14}
               h="auto"
               minH="auto"
               px={0}
@@ -156,7 +148,7 @@ export const JobListingPage: React.FC = () => {
             <Flex direction="column" gap={12}>
               {role.sections.map((section) => (
                 <Box key={section.heading}>
-                  <Text as="h2" textStyle="h4" color="indigo.900" m={0} mb={4}>
+                  <Text as="h2" textStyle="h5" color="indigo.900" m={0} mb={4}>
                     {section.heading}
                   </Text>
                   <Flex direction="column" gap={4}>

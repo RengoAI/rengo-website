@@ -26,8 +26,8 @@ export const TITLE_SIZE = { base: "32px", md: "36px" };
 /**
  * The live /v3 hero (lab variant 10), in v12's split layout: the title on
  * the left in Geist at 36px, broken before "intelligent"; the description
- * and a "Book a call" button right-aligned opposite it, in a centred 1100px
- * measure. The copy sits 138px above centre and the bed forms 144px under
+ * and a "Book a call" button right-aligned opposite it, on columns 2–15
+ * at lg and 3–14 from xl. The copy sits 138px above centre and the bed forms 144px under
  * it.
  *
  * The bed: 2,160 square dots, 3.4px across, start scattered across a 400px
@@ -77,6 +77,8 @@ export const QuickSedimentHero: React.FC<{
     // The heading scale's own weight and tracking.
     splitTitleWeight={350}
     splitTitleTracking="-0.025em"
+    // The copy on columns 2–15 at lg, 3–14 from xl.
+    splitOnGrid
     descriptionColor="site.fg"
   />
 );

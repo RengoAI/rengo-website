@@ -1,7 +1,7 @@
 import { rootRoute } from "@/app/app-routes";
 import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
-import { hoverFade } from "@/components/site/site-styles";
+import { hoverFade, tiledRuleX } from "@/components/site/site-styles";
 import { chakra, Text } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -24,8 +24,10 @@ export const SiteFooter: React.FC = () => (
     as="footer"
     rhythm="none"
     py={{ base: "64px", md: "80px", lg: "110px" }}
-    // The use-case accordion's hover fill (silver 200).
-    bg="site.bg.tint"
+    bg="site.bg.footer"
+    // The /v3 nav's dotted rule, along the top.
+    position="relative"
+    {...tiledRuleX("top")}
   >
     <Grid alignItems="center" rowGap={{ base: "32px", lg: "gridGutter" }}>
       <GridCol span={{ base: 16, lg: 4 }} display="flex" alignItems="center">

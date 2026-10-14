@@ -15,7 +15,7 @@ export type UseCase = {
 };
 
 /**
- * The use-case list. Every row is the same three-part grid — label (5),
+ * The use-case list. Every row is the same three-part grid — label (4),
  * title (10), art — and opening a row simply narrows the title column to 7
  * to make room for the 4-column art rather than changing the layout. Below
  * `lg` the three parts stack instead, label over title over art.
@@ -76,7 +76,7 @@ export const UseCaseAccordion: React.FC<{
             {/* From lg, where they share a row, the label is centred on the
                 title's first line: one h6 line box, 20px × 1.2. */}
             <GridCol
-              span={{ base: 16, lg: 5 }}
+              span={{ base: 16, lg: 4 }}
               display={{ lg: "flex" }}
               alignItems="center"
               h={{ lg: "24px" }}

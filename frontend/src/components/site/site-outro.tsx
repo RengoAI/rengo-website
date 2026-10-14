@@ -25,7 +25,8 @@ export const SiteOutro: React.FC = () => (
   <Box
     as="section"
     position="relative"
-    bg="site.bg.surface"
+    // The footer's grey, so the outro runs into it.
+    bg="site.bg.footer"
     overflow="hidden"
     aria-labelledby="outro-heading"
   >
