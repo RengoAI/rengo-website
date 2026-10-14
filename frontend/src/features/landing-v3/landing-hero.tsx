@@ -27,7 +27,7 @@ import React from "react";
  *
  * 1,728 square dots start scattered across a 400px band below the middle
  * and are pulled, staggered over about a second, into sixteen lines 4px
- * apart, 88px under the copy. Slots are handed out by each dot's starting
+ * apart, 36px under the copy. Slots are handed out by each dot's starting
  * x, so dots travel mostly vertically, and each line is slid along by a
  * golden-ratio step so the columns don't stack. Dots come up to full
  * strength as they land, then each line rolls in its own wave and every dot
@@ -59,7 +59,7 @@ const PHONE_DOTS = DOTS / 2;
 const PHONE_RAISE = 60;
 const LINES = 16;
 const LINE_GAP = 4; // px, centre to centre
-const LAYER_GAP = 148; // px below the copy where the first line forms
+const LAYER_GAP = 96; // px below the copy where the first line forms
 const DURATION = 25; // seconds until the last dot is fully pulled in
 /** Spread of per-dot start delays, as a share of DURATION. */
 const STAGGER = 0.04;
