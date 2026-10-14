@@ -7,13 +7,7 @@ export const TermsOfServicePage: React.FC = () => (
       <VStack gap={12} align="stretch">
         {/* Header */}
         <VStack gap={3} align="flex-start">
-          <Text
-            fontFamily="mono"
-            fontSize="xs"
-            letterSpacing="0.18em"
-            textTransform="uppercase"
-            color="slate.50"
-          >
+          <Text textStyle="label" textTransform="uppercase" color="slate.50">
             Legal
           </Text>
           <Text

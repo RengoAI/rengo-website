@@ -13,13 +13,7 @@ export const ValueCard: React.FC<ValueCardProps> = ({
   body,
 }) => (
   <Box borderTop="1px solid" borderColor="slate.30" pt={5}>
-    <Text
-      as="span"
-      fontFamily="mono"
-      fontSize="xs"
-      color="slate.50"
-      letterSpacing="0.08em"
-    >
+    <Text as="span" textStyle="label" color="slate.50">
       {number}
     </Text>
     <Box

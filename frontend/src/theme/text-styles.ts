@@ -29,9 +29,9 @@ export const textStyles = defineTextStyles({
   h1: {
     value: {
       fontFamily: "body",
-      fontSize: { base: "2.5rem", md: "3.75rem" }, // 40px → 60px
+      fontSize: { base: "2.5rem", md: "3.5rem" }, // 40px → 60px
       fontWeight: "350",
-      letterSpacing: "-0.05em",
+      letterSpacing: "-0.04em",
       lineHeight: "1",
     },
   },
@@ -40,7 +40,7 @@ export const textStyles = defineTextStyles({
       fontFamily: "body",
       fontSize: { base: "2rem", md: "2.5rem" }, // 32px → 40px
       fontWeight: "350",
-      letterSpacing: "-0.04em",
+      letterSpacing: "-0.02em",
       lineHeight: "1.1",
     },
   },
@@ -49,7 +49,7 @@ export const textStyles = defineTextStyles({
       fontFamily: "body",
       fontSize: { base: "1.625rem", md: "2.125rem" }, // 26px → 32px
       fontWeight: "350",
-      letterSpacing: "-0.04em",
+      letterSpacing: "-0.02em",
       lineHeight: "1.1",
     },
   },
@@ -95,18 +95,18 @@ export const textStyles = defineTextStyles({
   d2: {
     value: {
       fontFamily: "display",
-      fontSize: { base: "2.25rem", md: "2.75rem" }, // 36px → 44px — stat figures
+      fontSize: { base: "2.25rem", md: "2.5rem" }, // 36px → 44px — stat figures
       fontWeight: "300",
-      letterSpacing: "-0.04em",
+      letterSpacing: "-0.02em",
       lineHeight: "1",
     },
   },
   d3: {
     value: {
       fontFamily: "display",
-      fontSize: { base: "2rem", md: "2.5rem" }, // 32px → 36px
+      fontSize: { base: "2rem", md: "2.25rem" }, // 32px → 36px
       fontWeight: "300",
-      letterSpacing: "-0.04em",
+      letterSpacing: "-0.02em",
       lineHeight: "1",
     },
   },
@@ -115,7 +115,7 @@ export const textStyles = defineTextStyles({
       fontFamily: "display",
       fontSize: "1.625rem", // 26px — accordion titles
       fontWeight: "300",
-      letterSpacing: "-0.03em",
+      letterSpacing: "-0.02em",
       lineHeight: "1",
     },
   },
@@ -124,7 +124,7 @@ export const textStyles = defineTextStyles({
       fontFamily: "display",
       fontSize: { base: "1.125rem", md: "1.25rem" }, // 20px → 24px — pull quotes, compliance titles
       fontWeight: "300",
-      letterSpacing: "-0.02em",
+      letterSpacing: "-0.01em",
       lineHeight: "1.25",
     },
   },
@@ -168,16 +168,6 @@ export const textStyles = defineTextStyles({
       fontWeight: "300",
       letterSpacing: "0.02em",
       lineHeight: "1.15",
-    },
-  },
-  /** 11px Geist Mono — copyright, metadata. */
-  mono: {
-    value: {
-      fontFamily: "mono",
-      fontSize: "0.6875rem", // 11px
-      fontWeight: "400",
-      letterSpacing: "0",
-      lineHeight: "1.5",
     },
   },
 });

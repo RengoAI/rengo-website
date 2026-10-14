@@ -28,9 +28,7 @@ export const SectionBlock: React.FC<SectionBlockProps> = ({
         <Box>
           {eyebrow && (
             <Text
-              fontFamily="mono"
-              fontSize="xs"
-              letterSpacing="0.15em"
+              textStyle="label"
               textTransform="uppercase"
               color="slate.50"
               mb={6}

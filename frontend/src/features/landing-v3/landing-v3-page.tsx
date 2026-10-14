@@ -23,11 +23,8 @@ import React from "react";
 
 const ART = "/img/rebrand/";
 
-/** The blue that picks out key phrases in section headings. */
-const HEADING_BLUE = "site.highlight";
-
 const HERO_DESCRIPTION =
-  "Rengo is the embedded partner that builds the data intelligence layer for AI systems to learn and act from your firm’s knowledge.";
+  "We are the embedded partner that builds the data layer for AI systems to learn and act from your firm’s knowledge.";
 
 const USE_CASES: UseCase[] = [
   {
@@ -56,17 +53,12 @@ const METRICS = [
   {
     index: "1",
     value: "1 month",
-    caption: "vs ~1 year for previous vendor to deliver X for an asset manager",
-  },
-  {
-    index: "2",
-    value: "1 month",
     caption: "of documents/models/files unified under one system",
   },
-  { index: "3", value: "X", caption: "amount of portcos unified" },
+  { index: "2", value: "X", caption: "amount of portcos unified" },
   {
-    index: "4",
-    value: "26 % time saved",
+    index: "3",
+    value: "26% time saved",
     caption: "per LP reporting cycle",
     // Lucide's own glyph rather than the exported SVG, so it takes the
     // card's text colour.
@@ -398,9 +390,12 @@ const SolutionSection: React.FC = () => {
         }}
       >
         {/* A band-coloured strip, edge to edge, from the nav's bottom to just
-          under the heading, so nothing shows as it scrolls up beneath.
-          Before the heading pins, it sits in the section's own top padding,
-          the same colour. */}
+          under the heading, so nothing shows behind the heading as it
+          scrolls up beneath. Only the left half (the heading's side) is
+          solid: it fades out by the middle, leaving the right half clear so
+          the renders scroll up there without a hard-edged block. Before the
+          heading pins, it sits in the section's own top padding, the same
+          colour. */}
         <Box
           aria-hidden
           display={{ base: "none", lg: "block" }}
@@ -409,7 +404,7 @@ const SolutionSection: React.FC = () => {
           bottom="32px"
           left="calc(-1 * var(--site-gutter))"
           right="calc(-1 * var(--site-gutter))"
-          bg="site.bg.surface"
+          bgImage="linear-gradient(to right, var(--rengo-colors-site-bg-surface) 0%, var(--rengo-colors-site-bg-surface) 35%, transparent 50%)"
         />
         <GridCol
           span={{ base: 16, md: 10, lg: 8 }}
@@ -418,14 +413,14 @@ const SolutionSection: React.FC = () => {
         >
           <Text
             ref={headingRef}
-            textStyle="h4"
+            textStyle="h5"
             fontWeight={400}
             lineHeight="1.1"
             letterSpacing="-0.5px"
             color="site.fg"
           >
             To solve this, we build a{" "}
-            <Box as="span" color={HEADING_BLUE}>
+            <Box as="span" color="site.highlight">
               unified data foundation
             </Box>{" "}
             for your team
@@ -457,6 +452,9 @@ const SolutionSection: React.FC = () => {
               start={{ lg: 1 }}
               gridRow={{ lg: 1 }}
               alignSelf="center"
+              // From lg, sits 100px above the render's centre line.
+              position="relative"
+              top={{ lg: "-100px" }}
               // The row's parts fade on their own rather than the row as a
               // whole, which would flatten the renders' stacking order.
               data-row-fade
@@ -521,7 +519,7 @@ const FdeSection: React.FC = () => (
         gap="16px"
       >
         <Text
-          textStyle="h4"
+          textStyle="h5"
           fontWeight={400}
           lineHeight="1.1"
           color="site.fg"
@@ -529,7 +527,7 @@ const FdeSection: React.FC = () => (
           maxW="full"
         >
           We maintain your data over time and manage your systems from{" "}
-          <Box as="span" color={HEADING_BLUE}>
+          <Box as="span" color="site.highlight">
             strategy → deployment
           </Box>
         </Text>
@@ -580,14 +578,15 @@ export const LandingV3Page: React.FC = () => (
     <QuickSedimentHero description={HERO_DESCRIPTION} underNav />
 
     {/* --- The problem & vision ------------------------------------------ */}
-    {/* Held open to the design's 661px band; the copy only fills the top. */}
-    <Section grid bg="site.bg.tintSubtle" minH={{ lg: "661px" }}>
+    {/* Held open to 701px, 40px past the design's 661px band; the copy
+        only fills the top. */}
+    <Section grid bg="site.bg.tintSubtle" minH={{ lg: "701px" }}>
       <GridCol span={{ base: 16, lg: 12 }}>
-        <Text textStyle="h4" color="site.fg.strong" maxW="800px">
+        <Text textStyle="h5" color="site.fg.strong" maxW="800px">
           Firms have spent decades making the numbers in their databases
           reliable, connecting their tools, and standardizing workflows. But
           much of what a firm actually knows{" "}
-          <Box as="span" color="site.accent">
+          <Box as="span" color="site.highlight">
             never reaches a database.
           </Box>
         </Text>
@@ -656,12 +655,16 @@ export const LandingV3Page: React.FC = () => (
         >
           How our system performs today
         </Text>
-        <Text textStyle="label" color="soot.600" maxW="280px">
+        <Text textStyle="label" color="soot.500" maxW="280px">
           *Comparison between workflows using our system vs traditional tool
           stack.
         </Text>
       </GridCol>
-      {/* Two by two on mobile, four across the full width from tablet up. */}
+      {/* Deliberately empty, where the first card was: from tablet up the
+          three cards fill the last 12 columns. */}
+      <GridCol span={4} display={{ base: "none", md: "block" }} />
+      {/* Two to a row on mobile, three across, 4 columns each, from tablet
+          up. */}
       {METRICS.map((metric) => (
         <GridCol
           key={metric.index}
@@ -677,8 +680,8 @@ export const LandingV3Page: React.FC = () => (
     </Section>
 
     {/* --- Testimonials ----------------------------------------------------- */}
-    {/* Canvas 400; the first card takes the darker #E5E5E6. */}
-    <Section grid bg="canvas.400">
+    {/* Canvas 350, a step lighter than canvas 400. */}
+    <Section grid bg="canvas.350">
       <GridCol span={16} pb="40px">
         <Box display="flex" flexDirection="column" gap="8px">
           <Text

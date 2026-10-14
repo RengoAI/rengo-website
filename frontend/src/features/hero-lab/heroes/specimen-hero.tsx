@@ -175,7 +175,7 @@ const buildLayout = (w: number, h: number, scale: number): Layout => {
   c.strokeStyle = INK.soot400;
   c.fillStyle = INK.soot400;
   c.lineWidth = 0.8;
-  c.font = "300 8px 'Geist Mono', ui-monospace, monospace";
+  c.font = "300 8px Geist, ui-sans-serif, sans-serif";
   for (let y = dp * 8, n = 8; y < h - dp; y += dp * 8, n += 8) {
     for (const x of [g.inset / 2, w - g.inset / 2]) {
       c.beginPath();

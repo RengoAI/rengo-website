@@ -13,6 +13,9 @@ const LINKS = ["Resources", "Team"];
 
 const MENU_ID = "site-nav-menu";
 
+/** The product's sign-in, opened in a new tab. */
+const LOGIN_URL = "https://app.rengoai.com/";
+
 // Matches the `md` breakpoint, where the links come out of the menu.
 const DESKTOP_QUERY = "(min-width: 768px)";
 
@@ -61,23 +64,24 @@ const dottedRule = (visible: boolean) =>
   }) as const;
 
 /** Whether the page has scrolled at all. */
-const useScrolled = (enabled: boolean) => {
+const useScrolled = () => {
   const [scrolled, setScrolled] = React.useState(false);
   React.useEffect(() => {
-    if (!enabled) return;
     const onScroll = () => setScrolled(window.scrollY > 0);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [enabled]);
+  }, []);
   return scrolled;
 };
 
-export const SiteNav: React.FC<{ overlay?: boolean; dotted?: boolean }> = ({
-  overlay = false,
-  dotted = false,
-}) => {
-  const scrolled = useScrolled(overlay && dotted);
+export const SiteNav: React.FC<{
+  overlay?: boolean;
+  dotted?: boolean;
+  /** Drop the rule under the bar. */
+  borderless?: boolean;
+}> = ({ overlay = false, dotted = false, borderless = false }) => {
+  const scrolled = useScrolled();
   const [isOpen, setIsOpen] = React.useState(false);
   const close = React.useCallback(() => setIsOpen(false), []);
 
@@ -116,7 +120,17 @@ export const SiteNav: React.FC<{ overlay?: boolean; dotted?: boolean }> = ({
       display="flex"
       flexDirection="column"
       justifyContent="center"
-      {...(dotted ? dottedRule(!overlay || scrolled) : SOLID_RULE)}
+      {...(borderless
+        ? {}
+        : dotted
+          ? dottedRule(!overlay || scrolled)
+          : SOLID_RULE)}
+      // A soft shadow once the page scrolls, lifting the bar off what
+      // passes beneath it.
+      boxShadow={
+        scrolled ? "0 2px 12px rgba(12, 29, 52, 0.03)" : "0 0 0 transparent"
+      }
+      transition="box-shadow 200ms ease"
     >
       <Grid alignItems="center">
         <GridCol span={8} display="flex" alignItems="center" minW={0}>
@@ -157,11 +171,30 @@ export const SiteNav: React.FC<{ overlay?: boolean; dotted?: boolean }> = ({
               </chakra.a>
             ))}
           </Box>
+          {/* Set like the links, between them and the CTA. */}
+          <chakra.a
+            href={LOGIN_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            display={{ base: "none", md: "block" }}
+            textStyle="body.sm"
+            letterSpacing="0"
+            pt="2px"
+            color="site.fg.strong"
+            whiteSpace="nowrap"
+            transition="opacity 150ms ease"
+            _hover={{ opacity: 0.6 }}
+          >
+            Log in
+          </chakra.a>
           <Box display={{ base: "none", md: "block" }}>
+            {/* The hero's "Book a call" button, at its 27px. */}
             <SolidCta
-              h="28px"
+              h="27px"
               onClick={() => window.open("mailto:sales@rengoai.com", "_blank")}
-            />
+            >
+              Book a call
+            </SolidCta>
           </Box>
           {/* 32px hit area around a 20px glyph; the negative margin keeps the
               glyph itself flush with the gutter and the bar at its height. */}
@@ -233,8 +266,27 @@ export const SiteNav: React.FC<{ overlay?: boolean; dotted?: boolean }> = ({
                 </chakra.a>
               </Box>
             ))}
+            <Box as="li">
+              <chakra.a
+                href={LOGIN_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={close}
+                display="block"
+                py="12px"
+                textStyle="h4"
+                fontWeight={300}
+                color="site.fg.strong"
+                transition="opacity 150ms ease"
+                _hover={{ opacity: 0.6 }}
+              >
+                Log in
+              </chakra.a>
+            </Box>
           </Box>
-          <SolidCta w="full" justifyContent="center" onClick={close} />
+          <SolidCta w="full" justifyContent="center" onClick={close}>
+            Book a call
+          </SolidCta>
         </Box>
       )}
     </Section>

@@ -78,8 +78,7 @@ export const MetricCard: React.FC<
   }
 > = ({ index, value, caption, icon, ...rest }) => (
   <SplitCard
-    // Tucked in closer to the rule than SplitCard's 16px.
-    pl="12px"
+    px="1.5rem" // 24px, as the testimonial cards; no top or bottom
     ruleColor="site.border.dashed"
     top={
       // Set exactly like the caption, in the tint band's rule colour so
@@ -103,9 +102,20 @@ export const MetricCard: React.FC<
         <Text textStyle="d2" color="soot.600" w="full">
           {value}
         </Text>
-        {/* A step lighter than body copy (soot.700), so the caption sits
-            back from the figure above it. */}
-        <Text textStyle="label" color="soot.600" w="full">
+        {/* Two steps lighter than body copy (soot.500), so the caption
+            sits back from the figure above it; held narrow so it wraps
+            into a short block. */}
+        {/* 12px from the figure, closer than the column's 16px gap. */}
+        <Text
+          textStyle="label"
+          color="soot.500"
+          w="full"
+          maxW="200px"
+          mt="-4px"
+          // Two lines tall (2 × the label's 1.25 line height) whatever the
+          // caption's length, so the figures line up across the cards.
+          minH="2.5em"
+        >
           {caption}
         </Text>
       </Box>
@@ -127,10 +137,10 @@ export const WASH_BLUE = "#BCCFEC";
  * step leans further toward the blue.
  */
 const TESTIMONIAL_WASHES = {
-  /** Flat, no blobs — the palest blue band colour (silver 100), lighter
-   * than the other two cards' blues. */
+  /** Flat, no blobs — a pale blue, a touch stronger than silver 100 but
+   * still lighter than the other two cards' blues. */
   plain: {
-    bg: "site.bg.tintSubtle",
+    bg: "#E2EAF6",
     bgImage: "none",
   },
   light: {

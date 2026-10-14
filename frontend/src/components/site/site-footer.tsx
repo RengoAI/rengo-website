@@ -66,7 +66,7 @@ export const SiteFooter: React.FC = () => (
         display="flex"
         justifyContent={{ base: "flex-start", lg: "flex-end" }}
       >
-        <Text textStyle="mono" color="site.fg" whiteSpace="nowrap">
+        <Text textStyle="label" color="site.fg" whiteSpace="nowrap">
           © 2026 Rengo AI
         </Text>
       </GridCol>

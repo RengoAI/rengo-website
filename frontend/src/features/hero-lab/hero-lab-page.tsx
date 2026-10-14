@@ -4,6 +4,7 @@ import { GlyphBedHero } from "@/features/hero-lab/heroes/glyph-bed-hero";
 import { LayerHero } from "@/features/hero-lab/heroes/layer-hero";
 import { LedgerHero } from "@/features/hero-lab/heroes/ledger-hero";
 import { QuickSedimentHero } from "@/features/hero-lab/heroes/quick-sediment-hero";
+import { SplitSedimentHero } from "@/features/hero-lab/heroes/split-sediment-hero";
 import { V3SnapshotHero } from "@/features/hero-lab/heroes/v3-snapshot-hero";
 import { SpecimenHero } from "@/features/hero-lab/heroes/specimen-hero";
 import { YELLOW } from "@/features/hero-lab/hero-designs-button";
@@ -31,6 +32,8 @@ type Variant = {
   /** Mark → meaning. */
   legend: [string, string][];
   layout: string;
+  /** Show the nav without its bottom rule over this variant. */
+  navBorderless?: boolean;
 };
 
 const SedimentHero: React.FC = () => (
@@ -222,7 +225,7 @@ const VARIANTS: Variant[] = [
       "p5.js sketch — dots coalescing into a layer (06), shorter float",
     Hero: QuickSedimentHero,
     source:
-      "Sediment (06) with the opening float in the flow field cut from about 5s to 1s: start delays spread over the first second instead of the first five, and the pull toward the bed reaches half strength five times sooner. Same twenty lines, dot count, field, palette and 25s finish. The title is set in Geist (h3 at 30px) instead of Serrif, the description in Regular, and the CTA is 28px tall.",
+      "Sediment (06) with the opening float in the flow field cut from about 5s to 1s: start delays spread over the first second instead of the first five, and the pull toward the bed reaches half strength five times sooner. Same twenty lines, dot count, field, palette and 25s finish. The title is set in Geist at 36px, the description in Regular, and the CTA is 28px tall.",
     concept: [
       "The same sediment, with less time adrift: the knowledge leaves the currents of day-to-day work almost at once, so the bed starts forming within a second of the page loading.",
       "Click the hero (or press R) to run it again.",
@@ -233,7 +236,7 @@ const VARIANTS: Variant[] = [
       ["The bed", "The data layer, twenty lines deep"],
     ],
     layout:
-      "As Sediment, with the title and description side by side in one row, 40px apart (the description left-aligned), centred on the page, and the CTA centred below; on phones they stack. The opening float is confined to a 400px band, centred 190px below the middle of the hero. The hero is 60px shorter than the others. The copy is raised 90px above centre, and the bed forms 152px under the CTA. The description sits 11px under the title (8px tighter than Sediment), and the CTA 44px under the description (16px looser). As each dot lands it eases into a slow travelling wave. Each line's wave has its own height, between 12 and 24px, and three lines, picked at random, swell to 72px (three times the 24px base). Each line waves on its own: its own phase, a wavelength of 480–800px, a 5–9s cycle, and a direction left or right, so the rows slide past one another. There is no background glow: the dots sit on the plain surface. Dots are 3.4px across, 1px larger than Sediment's. Each dot, at its own random moments every 1–6s, swells 2px wider and eases back over 0.8s. 40% of the dots are a solid pale grey (#E7EDF5). Of the rest, the light greys are #D3D9E3, #C3CCD7 and #ACB6C5, and the light blues are just the brighter two, #94AED6 (in place of Sky) and Rengo 300; the silver blues are dropped. A quarter of the dots are a vivid light blue (#ABC8F7) rather than the light greys and blues. There is no flow field: the dots start at random positions across the float band and hold still until the pull draws them into the bed.",
+      'The live /v3 hero, in v12\'s split layout: the title on the left in Geist at 36px, broken before "intelligent"; the description and a "Book a call" button right-aligned opposite it in a centred 1100px measure. The copy sits 138px above centre and the bed forms 144px under it. The bed: twenty lines 4px apart, each in its own wave (12–24px, three lines at 3x); 3.4px dots that swell 2px now and then; a quarter #ABC8F7, 10% #425366 (the dark navy of the description), 40% #E7EDF5, the rest light greys and blues; no flow field or glow.',
   },
   {
     id: "11",
@@ -253,6 +256,26 @@ const VARIANTS: Variant[] = [
     ],
     layout:
       "As Quick sediment (10) on 2026-10-13, after its copy was centred, except the text and CTA are left-aligned within the centred block.",
+  },
+  {
+    id: "12",
+    name: "Split sediment",
+    navBorderless: true,
+    reference: "Figma, Rengo Marketing Site — Frame 162606 (559:224)",
+    Hero: SplitSedimentHero,
+    source:
+      "v11's dot bed (no flow field, per-row waves, size pulses, the same palette) under a split layout from the Figma frame.",
+    concept: [
+      "The promise and the ask sit on either side of the page, with the data layer running the full width beneath them.",
+      "Click the hero (or press R) to run it again.",
+    ],
+    legend: [
+      ["Scattered dots", "Knowledge spread through day-to-day work"],
+      ["The bed", "The data layer, twenty lines deep"],
+      ["Swelling dots", "Records being touched and updated"],
+    ],
+    layout:
+      'Inside a centred 1100px measure: the title top left, in Geist at 36px, set in two lines with the second starting at \"intelligent\"; opposite it, right-aligned, the 14px description (body.sm, 420px wide so it sets in two balanced lines, 8px lower than the title) and a 27px-tall "Book a call" button 20px below. On phones they stack. The copy is raised 138px above centre and the bed forms 144px under it.',
   },
 ];
 
@@ -351,7 +374,7 @@ const VariantSwitcher: React.FC<{
                 transition="background 150ms ease, color 150ms ease"
                 _hover={on ? {} : { color: "black" }}
               >
-                <Text as="span" textStyle="mono" opacity={0.6}>
+                <Text as="span" textStyle="label" opacity={0.6}>
                   {v.id.padStart(2, "0")}
                 </Text>
                 <Text as="span" textStyle="body.sm">
@@ -395,7 +418,7 @@ const VersionLabel: React.FC<{ variant: Variant }> = ({ variant }) => (
       boxShadow="0 2px 8px rgba(0, 0, 0, 0.18)"
       whiteSpace="nowrap"
     >
-      <Text as="span" textStyle="mono" opacity={0.6}>
+      <Text as="span" textStyle="label" opacity={0.6}>
         {variant.id.padStart(2, "0")}
       </Text>
       <Text as="span" textStyle="body.sm" lineHeight="1">
@@ -426,7 +449,7 @@ export const HeroLabPage: React.FC = () => {
   const { Hero } = active;
   return (
     <Box bg="site.bg.page" minH="100vh">
-      <SiteNav />
+      <SiteNav borderless={active.navBorderless} />
       {/* Keyed so each variant mounts fresh and only one canvas runs. */}
       <Hero key={active.id} />
       <VersionLabel variant={active} />

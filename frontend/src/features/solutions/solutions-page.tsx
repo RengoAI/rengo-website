@@ -55,7 +55,7 @@ const ApproachCard: React.FC<{
 
 /**
  * The Solutions overview, on the rebrand chrome: the promise on the page
- * surface, then the approach — the two capabilities — on a white band.
+ * surface, then the approach — the two capabilities — on the same surface.
  */
 export const SolutionsPage: React.FC = () => {
   const introRef = React.useRef<HTMLHeadingElement>(null);
@@ -80,10 +80,6 @@ export const SolutionsPage: React.FC = () => {
         <GridCircleDots below={introRef} />
         <Grid position="relative">
           <GridCol span={{ base: 16, md: 12, lg: 8 }}>
-            {/* Eyebrow: the page's name, set as a label. */}
-            <Text textStyle="label" color="site.fg.muted" mb="16px">
-              Solutions
-            </Text>
             <Text
               ref={introRef}
               as="h1"
@@ -101,7 +97,7 @@ export const SolutionsPage: React.FC = () => {
       </Section>
 
       {/* --- Our approach -------------------------------------------------- */}
-      <Section rhythm="none" bg="site.bg.raised" py="60px">
+      <Section rhythm="none" bg="site.bg.surface" py="60px">
         <Grid rowGap="16px">
           <GridCol span={16} minH={{ lg: "138px" }}>
             <Text textStyle="h3" color="site.fg.strong">

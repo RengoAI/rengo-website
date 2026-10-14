@@ -84,7 +84,6 @@ const TYPE_SPECIMENS: {
   },
   { style: "label", label: "12 / +0.02em / 1.2", sample: "Investor relations" },
   { style: "caption", label: "10 / +0.02em / 1.0", sample: "Your systems" },
-  { style: "mono", label: "Geist Mono 11 / 1.5", sample: "© 2026 Rengo AI" },
 ];
 
 const STEPS = [100, 200, 300, 400, 500, 600, 700, 800];

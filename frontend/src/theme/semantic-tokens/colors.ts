@@ -482,8 +482,8 @@ export const semanticColors = defineSemanticTokens.colors({
     },
     /** Maroon. The emphasised phrase, one rule, one glyph — sparing. */
     accent: { value: "{colors.crimson}" },
-    /** Blue for key phrases in headings. */
-    highlight: { value: "#2E65BC" },
+    /** Blue for emphasised phrases in headings — the text accent. */
+    highlight: { value: "#296DDB" },
     /** Rengo blue. Links, primary actions. */
     brand: { value: "{colors.rengo.500}" },
   },

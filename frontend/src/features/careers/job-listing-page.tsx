@@ -1,6 +1,7 @@
 import { rootRoute } from "@/app/app-routes";
 import { PageContainer } from "@/components/layout/page-container";
-import { TOP_NAV_HEIGHT } from "@/components/nav/nav-styles";
+import { SiteFooter } from "@/components/site/site-footer";
+import { SiteNav } from "@/components/site/site-nav";
 import {
   ButtonArrowLabel,
   ctaButtonHoverWithArrowProps,
@@ -104,12 +105,8 @@ export const JobListingPage: React.FC = () => {
   }
 
   return (
-    <Box
-      fontFamily="body"
-      bg="slate.10"
-      minH="100vh"
-      pt={`${TOP_NAV_HEIGHT}px`}
-    >
+    <Box fontFamily="body" bg="site.bg.surface" minH="100vh">
+      <SiteNav />
       <PageContainer>
         <Box
           maxW="760px"
@@ -136,19 +133,9 @@ export const JobListingPage: React.FC = () => {
             <RouterLink to={rootRoute({}).careers({}).$}>← Back</RouterLink>
           </Button>
 
-          <Box
-            as="h1"
-            fontFamily="heading"
-            fontWeight={350}
-            fontSize={{ base: "34px", md: "44px" }}
-            lineHeight={1.1}
-            letterSpacing="-0.03em"
-            color="indigo.900"
-            m={0}
-            mb={6}
-          >
+          <Text as="h1" textStyle="d2" color="indigo.900" m={0} mb="84px">
             {role.title}
-          </Box>
+          </Text>
 
           <Flex
             gap={{ base: 6, md: 10 }}
@@ -166,19 +153,9 @@ export const JobListingPage: React.FC = () => {
           <Flex direction="column" gap={12}>
             {role.sections.map((section) => (
               <Box key={section.heading}>
-                <Box
-                  as="h2"
-                  fontFamily="heading"
-                  fontWeight={350}
-                  fontSize={{ base: "22px", md: "26px" }}
-                  lineHeight={1.25}
-                  letterSpacing="-1px"
-                  color="indigo.900"
-                  m={0}
-                  mb={4}
-                >
+                <Text as="h2" textStyle="h4" color="indigo.900" m={0} mb={4}>
                   {section.heading}
-                </Box>
+                </Text>
                 <Flex direction="column" gap={4}>
                   {section.blocks.map((block, i) => (
                     <JobBlock key={`${section.heading}-${i}`} block={block} />
@@ -193,6 +170,7 @@ export const JobListingPage: React.FC = () => {
           </Box>
         </Box>
       </PageContainer>
+      <SiteFooter />
     </Box>
   );
 };

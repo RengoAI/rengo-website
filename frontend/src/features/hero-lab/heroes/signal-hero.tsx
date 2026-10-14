@@ -180,7 +180,7 @@ export const SignalHero: React.FC = () => {
               transition="background 150ms ease"
               _hover={{ bg: "site.bg.raised" }}
             >
-              <ArrowLink color="site.fg.strong" gap="40px" _hover={{}}>
+              <ArrowLink color="site.fg.strong" gap="20px" _hover={{}}>
                 Get started
               </ArrowLink>
             </Box>

@@ -133,6 +133,11 @@ const shortened = (underNav: boolean, by: number) => {
   };
 };
 
+/** px, the split layout's width: title flush left, copy flush right. */
+const SPLIT_MEASURE = 1100;
+/** Where the split title's second line starts: at "intelligent". */
+const SPLIT_BREAK = HEADLINE.indexOf("intelligent");
+
 /** px between the title and the description when they sit side by side. */
 const TITLE_BESIDE_GAP = 40;
 
@@ -538,8 +543,13 @@ export const LayerHero: React.FC<{
    * rises with it.
    */
   lift?: number;
-  /** Set the title in Serrif (the d3 display style) instead of Geist. */
-  serifTitle?: boolean;
+  /**
+   * Set the title in Serrif: `true` for its d3 step, or name the display
+   * step to use.
+   */
+  serifTitle?: boolean | "d2" | "d3";
+  /** The serif title's weight: Regular (400) by default, or Light (300). */
+  serifWeight?: 300 | 400;
   /**
    * `start` left-aligns the description and button with the title's left
    * edge. The title stays centered on the page. `edge` left-aligns them
@@ -589,12 +599,36 @@ export const LayerHero: React.FC<{
    * light families. Pass a module-level object: compared by reference.
    */
   pale?: { color: string; share: number };
+  /**
+   * Another solid colour for this share (0–1) of all dots, taken after the
+   * accent and before the pale share. Pass a module-level object.
+   */
+  highlight?: { color: string; share: number };
   /** Heading step. The live hero uses `h1`, the same size as Ledger. */
   titleStyle?: "h1" | "h3";
   /** Overrides the title's font size, e.g. { base: "26px", md: "30px" }. */
   titleSize?: string | { base: string; md: string };
   /** px between the description and the CTA. */
   ctaGap?: number;
+  /**
+   * Split layout: title on the left, description and CTA right-aligned on
+   * the right, in a centred measure. Overrides the copy alignment props.
+   */
+  split?: boolean;
+  /** The CTA's label. */
+  ctaLabel?: string;
+  /**
+   * Left-align the description to its container — the block the title
+   * sets the width of — while the title and CTA stay centred.
+   */
+  descriptionStart?: boolean;
+  /** The description's colour token. Defaults to muted (slate 100 when
+   * split). */
+  descriptionColor?: string;
+  /** Make the description exactly as wide as the title. */
+  descriptionMatchTitle?: boolean;
+  /** With `descriptionMatchTitle`: px narrower than the title. */
+  descriptionInset?: number;
   /**
    * Set the title and description side by side in one row (from `md` up),
    * the description left-aligned, with the CTA centred below.
@@ -634,6 +668,7 @@ export const LayerHero: React.FC<{
   shorten = 0,
   lift = 0,
   serifTitle = false,
+  serifWeight = 400,
   mesh = false,
   copyAlign = "center",
   floatBand,
@@ -645,6 +680,7 @@ export const LayerHero: React.FC<{
   waveBigScale = 2,
   accentShare = 0,
   pale,
+  highlight,
   dotSize = DOT_SIZE,
   pulse = false,
   greys,
@@ -654,11 +690,21 @@ export const LayerHero: React.FC<{
   descriptionWeight = 300,
   descriptionGap = 19,
   titleBeside = false,
+  descriptionStart = false,
+  split = false,
+  ctaLabel = "Get started",
+  descriptionMatchTitle = false,
+  descriptionInset = 0,
+  descriptionColor,
   ctaGap = 28,
   titleSize,
   ctaHeight,
 }) => {
   const ease = easeExponent(drift);
+  const highlightShade = React.useMemo(
+    () => (highlight ? parseToRgba(highlight.color).slice(0, 3) : undefined),
+    [highlight],
+  );
   const paleShade = React.useMemo(
     () => (pale ? parseToRgba(pale.color).slice(0, 3) : undefined),
     [pale],
@@ -779,11 +825,17 @@ export const LayerHero: React.FC<{
             ? lineCount * perLine
             : count;
       const inPlace = glyphs && !float;
-      // Accent first, then the pale share, then the two light families.
+      // Accent first, then the highlight and pale shares, then the two
+      // light families.
       const lightShade = () => {
-        const u = Math.random();
+        let u = Math.random();
         if (u < accentShare) return ACCENT_BLUE;
-        if (paleShade && u < accentShare + (pale?.share ?? 0)) return paleShade;
+        u -= accentShare;
+        if (highlightShade && highlight) {
+          if (u < highlight.share) return highlightShade;
+          u -= highlight.share;
+        }
+        if (paleShade && pale && u < pale.share) return paleShade;
         return randomShade(greyShades, blueShades);
       };
       s.dots = Array.from({ length: n }, () => ({
@@ -1153,90 +1205,187 @@ export const LayerHero: React.FC<{
         alignItems="center"
         pointerEvents="none"
       >
-        <Grid w="full">
-          <GridCol
-            span={titleBeside ? 16 : 10}
-            start={titleBeside || copyAlign === "edge" ? 1 : 4}
+        {split ? (
+          // Split: the title top left, the description and CTA right-aligned
+          // opposite it, both inside a centred 1100px measure.
+          <Box
+            ref={copy}
+            position="relative"
+            top={`${-lift}px`}
+            w="full"
+            maxW={`${SPLIT_MEASURE}px`}
+            mx="auto"
             display="flex"
-            justifyContent={copyAlign === "edge" ? "flex-start" : "center"}
+            flexDirection={{ base: "column", md: "row" }}
+            justifyContent="space-between"
+            alignItems="flex-start"
+            gap="32px"
           >
+            <Text
+              as="h1"
+              // Geist at h2 by default; with `serifTitle`, that Serrif step
+              // at `serifWeight`, on its own tracking.
+              {...(serifTitle
+                ? {
+                    textStyle: serifTitle === true ? "d3" : serifTitle,
+                    fontWeight: serifWeight,
+                  }
+                : {
+                    textStyle: "h2",
+                    fontWeight: 400,
+                    letterSpacing: "-0.0375em",
+                  })}
+              {...(titleSize ? { fontSize: titleSize } : {})}
+              color="site.fg"
+              // Two set lines, broken before "intelligent"; held on them
+              // from md up, free to wrap on phones.
+              whiteSpace={{ md: "nowrap" }}
+            >
+              {HEADLINE.slice(0, SPLIT_BREAK).trimEnd()}
+              <br />
+              {HEADLINE.slice(SPLIT_BREAK)}
+            </Text>
             <Box
-              ref={copy}
-              position="relative"
-              top={`${-lift}px`}
-              w={
-                titleStyle === "h1" && !serifTitle
-                  ? "560px"
-                  : left
-                    ? "fit-content"
-                    : "full"
-              }
-              maxW="full"
               display="flex"
               flexDirection="column"
-              alignItems={left ? "flex-start" : "center"}
-              textAlign={left ? "left" : "center"}
+              alignItems={{ base: "flex-start", md: "flex-end" }}
+              gap="20px"
+              // Its first line sits a touch under the title's.
+              pt={{ md: "8px" }}
             >
-              {/* Title and description set as the /v3 hero, with the title
-                  in Regular. With `titleBeside` they share one row from md
-                  up, the description left-aligned beside the title. */}
-              <Box
-                display="flex"
-                flexDirection={
-                  titleBeside ? { base: "column", md: "row" } : "column"
-                }
-                alignItems={
-                  titleBeside
-                    ? { base: left ? "flex-start" : "center", md: "center" }
-                    : left
-                      ? "flex-start"
-                      : "center"
-                }
-                columnGap={`${TITLE_BESIDE_GAP}px`}
-                rowGap={titleBeside ? `${descriptionGap}px` : 0}
+              <Text
+                textStyle="body.sm"
+                lineHeight="1.2"
+                color={descriptionColor ?? "slate.100"}
+                textAlign={{ base: "left", md: "right" }}
+                // Wide enough that the description sets in two lines at
+                // body.sm, balanced so they come out about even.
+                w="420px"
                 maxW="full"
+                css={{ textWrap: "balance" }}
               >
-                <Text
-                  as="h1"
-                  // Serrif's display step for this level, held at Regular.
-                  // `h1` is left on its own metrics so it matches Ledger.
-                  textStyle={serifTitle ? "d3" : titleStyle}
-                  {...(serifTitle || titleStyle === "h3"
-                    ? { letterSpacing: "-0.04em", fontWeight: 400 }
-                    : {})}
-                  {...(titleSize ? { fontSize: titleSize } : {})}
-                  color="site.fg"
-                  textAlign={left || titleBeside ? "left" : "center"}
-                  maxW="full"
-                >
-                  {HEADLINE}
-                  {titleStyle === "h1" && !serifTitle ? <Cursor /> : null}
-                </Text>
-                <Text
-                  textStyle="body.sm"
-                  fontWeight={descriptionWeight}
-                  lineHeight="1.2"
-                  color="site.fg.muted"
-                  textAlign={left || titleBeside ? "left" : "center"}
-                  w="465px"
-                  maxW="full"
-                  mt={titleBeside ? undefined : `${descriptionGap}px`}
-                >
-                  {description}
-                </Text>
-              </Box>
+                {description}
+              </Text>
               <Box
-                mt={`${ctaGap}px`}
                 pointerEvents="auto"
                 // The CTA shouldn't restart the animation.
                 onClick={(e: React.MouseEvent) => e.stopPropagation()}
                 cursor="default"
               >
-                <SolidCta {...(ctaHeight ? { h: ctaHeight } : {})} />
+                <SolidCta h={ctaHeight ?? "27px"}>{ctaLabel}</SolidCta>
               </Box>
             </Box>
-          </GridCol>
-        </Grid>
+          </Box>
+        ) : (
+          <Grid w="full">
+            <GridCol
+              span={titleBeside ? 16 : 10}
+              start={titleBeside || copyAlign === "edge" ? 1 : 4}
+              display="flex"
+              justifyContent={copyAlign === "edge" ? "flex-start" : "center"}
+            >
+              <Box
+                ref={copy}
+                position="relative"
+                top={`${-lift}px`}
+                w={
+                  titleStyle === "h1" && !serifTitle
+                    ? "560px"
+                    : left
+                      ? "fit-content"
+                      : "full"
+                }
+                maxW="full"
+                display="flex"
+                flexDirection="column"
+                alignItems={left ? "flex-start" : "center"}
+                textAlign={left ? "left" : "center"}
+              >
+                {/* Title and description set as the /v3 hero, with the title
+                  in Regular. With `titleBeside` they share one row from md
+                  up, the description left-aligned beside the title. */}
+                <Box
+                  display="flex"
+                  flexDirection={
+                    titleBeside ? { base: "column", md: "row" } : "column"
+                  }
+                  alignItems={
+                    titleBeside
+                      ? { base: left ? "flex-start" : "center", md: "center" }
+                      : left
+                        ? "flex-start"
+                        : "center"
+                  }
+                  columnGap={`${TITLE_BESIDE_GAP}px`}
+                  rowGap={titleBeside ? `${descriptionGap}px` : 0}
+                  maxW="full"
+                >
+                  <Text
+                    as="h1"
+                    // Serrif's display step for this level, held at Regular,
+                    // with d3's own tracking. Geist h3 is tightened to -0.04em.
+                    // `h1` is left on its own metrics so it matches Ledger.
+                    textStyle={
+                      serifTitle
+                        ? serifTitle === true
+                          ? "d3"
+                          : serifTitle
+                        : titleStyle
+                    }
+                    {...(serifTitle
+                      ? { fontWeight: serifWeight }
+                      : titleStyle === "h3"
+                        ? { letterSpacing: "-0.04em", fontWeight: 400 }
+                        : {})}
+                    {...(titleSize ? { fontSize: titleSize } : {})}
+                    color="site.fg"
+                    textAlign={left || titleBeside ? "left" : "center"}
+                    maxW="full"
+                  >
+                    {HEADLINE}
+                    {titleStyle === "h1" && !serifTitle ? <Cursor /> : null}
+                  </Text>
+                  <Text
+                    textStyle="body.sm"
+                    fontWeight={descriptionWeight}
+                    lineHeight="1.2"
+                    color={descriptionColor ?? "site.fg.muted"}
+                    textAlign={
+                      left || titleBeside || descriptionStart
+                        ? "left"
+                        : "center"
+                    }
+                    alignSelf={descriptionStart ? "flex-start" : undefined}
+                    // Matching the title: zero width plus a full-width floor,
+                    // so the description fills the block without widening it.
+                    {...(descriptionMatchTitle
+                      ? {
+                          w: 0,
+                          minW: descriptionInset
+                            ? `calc(100% - ${descriptionInset}px)`
+                            : "full",
+                        }
+                      : { w: "465px", maxW: "full" })}
+                    mt={titleBeside ? undefined : `${descriptionGap}px`}
+                  >
+                    {description}
+                  </Text>
+                </Box>
+                <Box
+                  mt={`${ctaGap}px`}
+                  pointerEvents="auto"
+                  // The CTA shouldn't restart the animation.
+                  onClick={(e: React.MouseEvent) => e.stopPropagation()}
+                  cursor="default"
+                >
+                  <SolidCta {...(ctaHeight ? { h: ctaHeight } : {})}>
+                    {ctaLabel}
+                  </SolidCta>
+                </Box>
+              </Box>
+            </GridCol>
+          </Grid>
+        )}
       </Section>
     </Box>
   );

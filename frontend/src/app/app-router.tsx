@@ -18,7 +18,6 @@ import { createBrowserRouter, RouteObject } from "react-router-dom";
 export const ALL_ROUTES: RouteObject[] = [
   landingRoutes,
   legalRoutes,
-  careersRoutes,
   companyRoute,
   solutionsRoutes,
   blogRoutes,
@@ -34,6 +33,7 @@ const STANDALONE_ROUTES: RouteObject[] = [
   aboutV3Routes,
   heroLabRoutes,
   solutionsOverviewRoute,
+  careersRoutes,
 ];
 
 export const appRouter = createBrowserRouter([

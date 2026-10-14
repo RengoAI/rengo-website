@@ -42,9 +42,9 @@ export const HEADLINE = "Building your intelligent data layer";
 export const DESCRIPTION =
   "We’re the embedded partner that builds the data intelligence layer for AI systems to learn and act from your firm’s knowledge.";
 
-/** The maroon underscore that closes the headline on the live page. */
+/** The blue underscore that closes the headline. */
 export const Cursor: React.FC = () => (
-  <Box as="span" color="site.accent">
+  <Box as="span" color="site.highlight">
     _
   </Box>
 );
@@ -127,7 +127,7 @@ export const SolidCta: React.FC<{ tone?: "dark" | "light" } & BoxProps> = ({
       transition="color 150ms ease"
       _groupHover={tone === "dark" ? { color: "site.fg.strong" } : undefined}
       fontWeight={300}
-      gap="40px"
+      gap="20px"
       _hover={{}}
     >
       {children}

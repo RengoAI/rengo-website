@@ -61,16 +61,31 @@ export const UseCaseAccordion: React.FC<{
             aria-expanded={isOpen}
             textAlign="left"
             rowGap="12px"
-            py="20px"
+            py="24px"
             borderTopWidth="1px"
             borderTopStyle="dotted"
             borderTopColor="site.border.dashed"
+            // The last row closes the list with the same rule underneath.
+            {...(i === items.length - 1
+              ? {
+                  borderBottomWidth: "1px",
+                  borderBottomStyle: "dotted",
+                  borderBottomColor: "site.border.dashed",
+                }
+              : {})}
             cursor="pointer"
             transition="background 150ms ease"
             // A step up from the blue band the list sits on.
             _hover={{ bg: "site.bg.tint" }}
           >
-            <GridCol span={{ base: 16, lg: 5 }}>
+            {/* From lg, where they share a row, the label is centred on the
+                title's first line: one h6 line box, 20px × 1.2. */}
+            <GridCol
+              span={{ base: 16, lg: 5 }}
+              display={{ lg: "flex" }}
+              alignItems="center"
+              h={{ lg: "24px" }}
+            >
               <Text
                 textStyle="label"
                 fontWeight={300}

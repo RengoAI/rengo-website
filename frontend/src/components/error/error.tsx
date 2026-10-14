@@ -37,7 +37,7 @@ export const ErrorComponent: React.FC<ErrorBoundaryFallbackProps> = ({
             <Text textStyle="overline" color="purple.500" cursor="pointer">
               Error Details
             </Text>
-            <Text fontFamily="mono" whiteSpace="pre-wrap" textStyle="small">
+            <Text whiteSpace="pre-wrap" textStyle="small">
               {error.message}
             </Text>
           </Box>
