@@ -1,43 +1,40 @@
 import AppRoot from "@/app/app-root";
+import { SiteShell } from "@/app/site-shell";
 import NotFoundPage from "@/components/empty/app-not-found-page";
-import { aboutV3Routes } from "@/features/about-v3/about-v3-routes";
-import { blogRoutes } from "@/features/blog/blog-routes";
 import { careersRoutes } from "@/features/careers/careers-routes";
-import { companyRoute } from "@/features/company/company-routes";
-import { landingV3Routes } from "@/features/landing-v3/landing-v3-routes";
-import { landingRoutes } from "@/features/landing/landing-routes";
-import { legalRoutes } from "@/features/legal/legal-routes";
 import {
-  solutionsOverviewRoute,
-  solutionsRoutes,
-} from "@/features/solutions/solutions-routes";
+  landingV3Routes,
+  legacyV3Redirect,
+} from "@/features/landing-v3/landing-v3-routes";
+import { legalRoutes } from "@/features/legal/legal-routes";
+import { solutionsOverviewRoute } from "@/features/solutions/solutions-routes";
 import { styleguideRoutes } from "@/features/styleguide/styleguide-routes";
-import { createBrowserRouter, RouteObject } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouteObject } from "react-router-dom";
 
-export const ALL_ROUTES: RouteObject[] = [
-  landingRoutes,
-  legalRoutes,
-  companyRoute,
-  solutionsRoutes,
-  blogRoutes,
-  styleguideRoutes,
-];
+export const ALL_ROUTES: RouteObject[] = [styleguideRoutes];
 
 /**
- * Rebrand surfaces ship their own chrome — SiteNav and SiteFooter — so they
- * sit outside AppRoot rather than inheriting AppLayout's nav on top of it.
+ * The public site. These ship SiteNav and SiteFooter themselves, so they sit
+ * outside AppRoot rather than inheriting the old marketing nav.
  */
 const STANDALONE_ROUTES: RouteObject[] = [
   landingV3Routes,
-  aboutV3Routes,
+  legacyV3Redirect,
   solutionsOverviewRoute,
   careersRoutes,
+  legalRoutes,
+  {
+    id: "companyRedirect",
+    path: "company",
+    element: <Navigate to="/careers" replace />,
+  },
 ];
 
 export const appRouter = createBrowserRouter([
-  // First, so a standalone route wins a tie with an AppRoot one: /solutions
-  // is the overview here, while its capability pages live under AppRoot.
-  ...STANDALONE_ROUTES,
+  {
+    element: <SiteShell />,
+    children: STANDALONE_ROUTES,
+  },
   {
     id: "root",
     element: <AppRoot />,

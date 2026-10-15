@@ -3,7 +3,7 @@ import React from "react";
 
 export const PrivacyPolicyPage: React.FC = () => (
   <Box w="full">
-    <Container maxW="3xl" pt={40} pb={28} px={8}>
+    <Container maxW="3xl" pt={{ base: 16, md: 20 }} pb={28} px={8}>
       <VStack gap={12} align="stretch">
         {/* Header */}
         <VStack gap={3} align="flex-start">

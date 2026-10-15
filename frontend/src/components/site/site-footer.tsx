@@ -1,7 +1,8 @@
 import { rootRoute } from "@/app/app-routes";
 import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
-import { hoverFade, tiledRuleX } from "@/components/site/site-styles";
+import { Logo } from "@/components/logo/logo";
+import { hoverFade } from "@/components/site/site-styles";
 import { chakra, Text } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -9,8 +10,8 @@ import { Link } from "react-router-dom";
 const RouterLink = chakra(Link);
 
 const LINKS = [
-  { label: "Product", to: rootRoute({}).solutions({}).$ },
-  { label: "Team", to: rootRoute({}).aboutV3({}).$ },
+  { label: "Solutions", to: rootRoute({}).solutions({}).$ },
+  { label: "Careers", to: rootRoute({}).careers({}).$ },
   { label: "Privacy", to: rootRoute({}).legal({}).privacyPolicy({}).$ },
   { label: "Terms", to: rootRoute({}).legal({}).termsOfService({}).$ },
 ];
@@ -25,33 +26,27 @@ export const SiteFooter: React.FC = () => (
     rhythm="none"
     py={{ base: "64px", md: "80px", lg: "110px" }}
     bg="site.bg.footer"
-    // The /v3 nav's dotted rule, along the top.
-    position="relative"
-    {...tiledRuleX("top")}
+    borderTop="1px solid"
+    borderTopColor="border.muted"
   >
     <Grid alignItems="center" rowGap={{ base: "32px", lg: "gridGutter" }}>
       <GridCol span={{ base: 16, lg: 4 }} display="flex" alignItems="center">
-        <Text
-          fontFamily="heading"
-          fontSize="0.875rem"
-          fontWeight={500}
-          letterSpacing="-0.05em"
-          lineHeight="1"
-          textTransform="lowercase"
-          color="site.fg"
-          whiteSpace="nowrap"
+        <Link
+          to={rootRoute({}).$}
+          aria-label="Rengo AI home"
+          style={{ display: "flex", textDecoration: "none" }}
         >
-          rengo_ai
-        </Text>
+          <Logo color="indigo.900" />
+        </Link>
       </GridCol>
       <GridCol as="nav" aria-label="Footer" span={{ base: 16, lg: 8 }}>
         <chakra.ul
           display="flex"
           flexDirection={{ base: "column", md: "row" }}
           flexWrap="wrap"
-          alignItems="flex-start"
-          justifyContent={{ base: "flex-start", lg: "center" }}
-          gap={{ base: "12px", md: "24px" }}
+          alignItems="center"
+          justifyContent="center"
+          gap={{ base: "12px", md: "20px" }}
         >
           {LINKS.map((link) => (
             <chakra.li key={link.label}>
@@ -77,7 +72,7 @@ export const SiteFooter: React.FC = () => (
         justifyContent={{ base: "flex-start", lg: "flex-end" }}
       >
         <Text textStyle="label" color="site.fg" whiteSpace="nowrap">
-          © 2026 Rengo AI
+          © 2026 Rengo AI, Inc.
         </Text>
       </GridCol>
     </Grid>

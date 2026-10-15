@@ -16,7 +16,6 @@ const RouterLink = chakra(Link);
 const LINKS: { label: string; to: string }[] = [
   { label: "Solutions", to: rootRoute({}).solutions({}).$ },
   { label: "Careers", to: rootRoute({}).careers({}).$ },
-  { label: "Team", to: rootRoute({}).aboutV3({}).$ },
 ];
 
 const MENU_ID = "site-nav-menu";
@@ -136,7 +135,7 @@ export const SiteNav: React.FC<{
           minW={0}
         >
           <Link
-            to={rootRoute({}).landingV3({}).$}
+            to={rootRoute({}).$}
             aria-label="Rengo AI home"
             style={{ display: "flex", textDecoration: "none" }}
           >
@@ -178,7 +177,7 @@ export const SiteNav: React.FC<{
           </chakra.a>
           <Box display={{ base: "none", md: "block" }}>
             {/* The hero's "Book a call" button, at its 27px. */}
-            <SolidCta h="27px" href={CONTACT_HREF}>
+            <SolidCta h="27px" href={CONTACT_HREF} labelProps={{ gap: "8px" }}>
               Book a call
             </SolidCta>
           </Box>
@@ -257,6 +256,7 @@ export const SiteNav: React.FC<{
             w="full"
             justifyContent="center"
             onClick={close}
+            labelProps={{ gap: "8px" }}
           >
             Book a call
           </SolidCta>

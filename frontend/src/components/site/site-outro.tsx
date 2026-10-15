@@ -3,6 +3,7 @@ import { Section } from "@/components/layout/section";
 import { AutomataGrid } from "@/components/site/automata-grid";
 import { CONTACT_HREF } from "@/components/site/site-constants";
 import { SolidCta } from "@/components/site/solid-cta";
+import { prefersReducedMotion } from "@/shared/utils/motion";
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 
@@ -15,66 +16,109 @@ const OUTRO_LABEL = {
   _hover: { opacity: 0.65 },
 } as const;
 
+const DEFAULT_HEADING = (
+  <>
+    Ready to make your data{" "}
+    <Box as="span" color="site.highlight">
+      your alpha?
+    </Box>
+  </>
+);
+
 /**
- * The closing "Ready to make your data your alpha?" band that every rebrand
- * page ends on, just above the footer. Behind the copy, across the whole
- * band, the /solutions grid of squares runs as a cellular automaton, with
- * new patches seeded sporadically.
+ * The closing band: a centred line and the Book a call button, over the
+ * /solutions grid of squares running as a cellular automaton. The landing
+ * ends on "Ready to make your data your alpha?". Careers uses the same band
+ * as its hero.
  */
-export const SiteOutro: React.FC = () => (
-  <Box
-    as="section"
-    position="relative"
-    // The footer's grey, so the outro runs into it.
-    bg="site.bg.footer"
-    overflow="hidden"
-    aria-labelledby="outro-heading"
-  >
-    <AutomataGrid />
-    <Section
-      as="div"
-      rhythm="none"
+export const SiteOutro: React.FC<{
+  /** Replaces the closing line. */
+  heading?: React.ReactNode;
+  /** `h1` when this band is the page hero. */
+  headingAs?: "h1" | "h2";
+  /** Button label. The landing books a call; careers jumps to the roles. */
+  cta?: string;
+  ctaHref?: string;
+  /** Fill the viewport, the way the landing hero does. Careers uses this. */
+  fill?: boolean;
+}> = ({
+  heading = DEFAULT_HEADING,
+  headingAs = "h2",
+  cta = "Book a call",
+  ctaHref = CONTACT_HREF,
+  fill = false,
+}) => {
+  // An in-page target scrolls into view instead of jumping. The landing
+  // button is a mailto, so it is left alone.
+  const scrollToTarget = (event: React.MouseEvent) => {
+    if (!ctaHref.startsWith("#")) return;
+    const target = document.querySelector(ctaHref);
+    if (!(target instanceof HTMLElement)) return;
+    event.preventDefault();
+    target.scrollIntoView({
+      behavior: prefersReducedMotion() ? "auto" : "smooth",
+      block: "start",
+    });
+    history.pushState(null, "", ctaHref);
+  };
+
+  return (
+    <Box
+      as="section"
       position="relative"
-      zIndex={1}
-      py={{ base: "100px", md: "140px", lg: "188px" }}
+      // The footer's grey, so the outro runs into it.
+      bg="site.bg.footer"
+      overflow="hidden"
+      h={fill ? "100svh" : undefined}
+      display={fill ? "flex" : undefined}
+      alignItems={fill ? "center" : undefined}
+      aria-labelledby="outro-heading"
     >
-      <Grid>
-        <GridCol
-          span={16}
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          gap={{ base: "40px", md: "60px" }}
-        >
-          <Text
-            as="h2"
-            id="outro-heading"
-            textStyle="d1"
-            color="site.fg.strong"
-            maxW="496px"
-            textAlign="center"
+      <AutomataGrid />
+      <Section
+        as="div"
+        rhythm="none"
+        position="relative"
+        zIndex={1}
+        w={fill ? "full" : undefined}
+        py={fill ? 0 : { base: "100px", md: "140px", lg: "188px" }}
+      >
+        <Grid>
+          <GridCol
+            span={16}
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            gap={{ base: "40px", md: "60px" }}
           >
-            Ready to make your data{" "}
-            <Box as="span" color="site.highlight">
-              your alpha?
-            </Box>
-          </Text>
-          {/* The hero and nav button, larger and on soot: lightens to the
+            <Text
+              as={headingAs}
+              id="outro-heading"
+              textStyle="d1"
+              color="site.fg.strong"
+              maxW="496px"
+              textAlign="center"
+            >
+              {heading}
+            </Text>
+            {/* The hero and nav button, larger and on soot: lightens to the
               footer's silver on hover, its label turning dark. Hugs its
               label, a set 20px to the arrow. */}
-          <SolidCta
-            href={CONTACT_HREF}
-            display="flex"
-            h="49px"
-            px="16px"
-            py="6px"
-            bg="site.bg.darkRaised"
-            labelProps={OUTRO_LABEL}
-          >
-            Get in touch
-          </SolidCta>
-        </GridCol>
-      </Grid>
-    </Section>
-  </Box>
-);
+            <SolidCta
+              href={ctaHref}
+              onClick={ctaHref.startsWith("#") ? scrollToTarget : undefined}
+              display="flex"
+              h="49px"
+              px="16px"
+              py="6px"
+              bg="site.bg.darkRaised"
+              labelProps={OUTRO_LABEL}
+            >
+              {cta}
+            </SolidCta>
+          </GridCol>
+        </Grid>
+      </Section>
+    </Box>
+  );
+};

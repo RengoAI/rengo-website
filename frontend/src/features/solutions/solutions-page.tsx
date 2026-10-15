@@ -9,7 +9,7 @@ import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 
 const INTRO =
-  "We build and run your firm's data infrastructure, then develop the applications and agents that work on top of it.";
+  "We build and run your data infrastructure, then develop the applications and agents that work on top of it.";
 
 /** Each approach card's gloss, as set in the design. */
 const APPROACH_BODY =

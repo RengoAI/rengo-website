@@ -3,11 +3,10 @@ import { RouteObject, Navigate } from "react-router-dom";
 
 /**
  * The overview at /solutions, on the rebrand chrome (SiteNav, SiteFooter), so
- * it sits outside AppRoot with the other standalone routes. The capability
- * pages below stay inside AppRoot.
+ * it sits outside AppRoot with the other standalone routes.
  */
 export const solutionsOverviewRoute: RouteObject = {
-  id: "solutionsOverview",
+  id: "solutions",
   path: "solutions",
   handle: {
     pageTitle: "Solutions",

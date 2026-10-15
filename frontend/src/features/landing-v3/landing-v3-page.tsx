@@ -71,19 +71,19 @@ const TESTIMONIALS = [
     quote:
       "“It was really impressive how quickly you were able to adapt and add new features within the system. Once I gave you access to some of our high-level data, you could turn around, understand it, and funnel it in pretty quickly.”",
     avatarSrc: `${ART}avatar-1.png`,
-    attribution: "Asset manager at $1 billion fund",
+    attribution: "VP of Data & AI Strategy at $20B+ real estate fund",
   },
   {
     quote:
       "“Rengo has evolved tremendously in just a few months. Being able to centralize our portfolio data, recall every deal we've evaluated, and make that knowledge instantly accessible across the team is incredibly powerful and something we're genuinely excited about.”",
     avatarSrc: `${ART}avatar-2.png`,
-    attribution: "CFO at $1.5 billion real estate fund",
+    attribution: "Senior Associate at $1B Growth Equity Fund",
   },
   {
     quote:
       "“The platform does the heavy lifting, so our team doesn't have to burn a lot of calories just to make the system usable.”",
     avatarSrc: `${ART}avatar-3.png`,
-    attribution: "CFO at $1.5 billion real estate fund",
+    attribution: "VP of Investor Relations at $4.5B real estate fund",
   },
 ];
 
@@ -206,9 +206,9 @@ export const LandingV3Page: React.FC = () => (
       <Section grid bg="site.bg.tintSubtle" minH={{ lg: "741px" }}>
         <GridCol span={{ base: 16, lg: 11 }}>
           <Text as="h2" textStyle="h5" color="site.fg.strong" maxW="800px">
-            Firms have spent decades making the numbers in their databases
+            Companies have spent decades making the numbers in their databases
             reliable, connecting their tools, and standardizing workflows. But
-            much of what a firm actually knows{" "}
+            much of what an organization actually knows{" "}
             <Box as="span" color="site.highlight">
               never reaches a database.
             </Box>
@@ -232,23 +232,26 @@ export const LandingV3Page: React.FC = () => (
             gap="1.4em"
           >
             <chakra.p>
-              Meeting conversations, the memos in a shared drive, the deal terms
-              hidden in emails - never reaches a database.
-            </chakra.p>
-            <chakra.p>
-              AI changes how work with data but it is only as good as the what
-              you feed it. We believe the key to success is{" "}
+              AI is changing how we work with data, but its usefulness depends
+              on the information it can access. We believe the foundation is{" "}
               <Box as="strong" fontWeight={700}>
                 the data layer.
-              </Box>{" "}
-              No firm&rsquo;s data looks exactly like another&rsquo;s -- which
-              is why the systems that capture this corpus has to adapt
-              organically and intelligently to how your firm changes - doing so
-              requires agents and good engineering. Our vision is to focus on
-              the care, judgment, and persistence required to govern your data,
-              steward agentic systems, and how your organization uses it.
+              </Box>
             </chakra.p>
-            <chakra.p>--- Erik Ronning, Co-founder &amp; CEO</chakra.p>
+            <chakra.p>
+              No two organizations operate the same way, and neither does their
+              data. The systems that capture and organize this information need
+              to adapt as the business evolves. That requires more than
+              traditional data pipelines. It requires agents that can understand
+              and structure information, alongside the engineering judgment to
+              ensure it remains accurate, reliable, and useful.
+            </chakra.p>
+            <chakra.p>
+              Our vision is to build and maintain that foundation, combining
+              intelligent systems with the ongoing care and oversight needed to
+              make AI useful across an organization.
+            </chakra.p>
+            <chakra.p>- Erik Ronning, Co-founder &amp; CEO</chakra.p>
           </Box>
         </GridCol>
       </Section>

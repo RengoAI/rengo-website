@@ -44,7 +44,7 @@ const HEADLINE = "Building your intelligent data layer";
 /** Where the title's second line starts: at "intelligent". */
 const HEADLINE_BREAK = HEADLINE.indexOf("intelligent");
 const DESCRIPTION =
-  "We are the embedded partner that builds the data layer for AI systems to learn and act from your firm’s knowledge.";
+  "We build the data layer that enables AI to learn from and act on your organization’s knowledge.";
 
 // ---- Formation ---------------------------------------------------------
 const DOTS = 1728;
@@ -558,8 +558,7 @@ export const LandingHero: React.FC = () => {
               lineHeight="1.2"
               color="site.fg"
               textAlign={{ base: "left", md: "right" }}
-              // Wide enough that the description sets in two lines, balanced
-              // so they come out about even.
+              // Beside the title it stays 420px wide, and the lines balance.
               w="420px"
               maxW="full"
               css={{ textWrap: "balance" }}
@@ -571,7 +570,11 @@ export const LandingHero: React.FC = () => {
               // The CTA shouldn't restart the animation.
               onClick={(e: React.MouseEvent) => e.stopPropagation()}
             >
-              <SolidCta h="27px" href={CONTACT_HREF}>
+              <SolidCta
+                h="27px"
+                href={CONTACT_HREF}
+                labelProps={{ gap: "8px" }}
+              >
                 Book a call
               </SolidCta>
             </Box>

@@ -245,11 +245,16 @@ export const FoundationSection: React.FC = () => {
             letterSpacing="-0.5px"
             color="site.fg"
           >
-            To solve this, we build a{" "}
-            <Box as="span" color="site.highlight">
-              unified data foundation
-            </Box>{" "}
-            on top of your existing systems
+            To solve this, we bring together data{" "}
+            {/* The measure fits the whole sentence on one line except the
+                last phrase. Break before "from" so the second line carries
+                the rest. */}
+            <Box as="span" display={{ base: "inline", lg: "block" }}>
+              from across your existing systems into a{" "}
+              <Box as="span" color="site.highlight">
+                unified data foundation
+              </Box>
+            </Box>
           </Text>
         </GridCol>
       </Grid>
