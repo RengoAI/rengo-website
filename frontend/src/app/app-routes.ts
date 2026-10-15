@@ -12,7 +12,6 @@ export const rootRoute = route(
   {
     landing: route("/", {}, {}),
     legacyV3: route("/v3", {}, {}),
-    solutions: route("/solutions", {}, {}),
     careers: route(
       "/careers",
       {},

@@ -10,7 +10,6 @@ import { Link } from "react-router-dom";
 const RouterLink = chakra(Link);
 
 const LINKS = [
-  { label: "Solutions", to: rootRoute({}).solutions({}).$ },
   { label: "Careers", to: rootRoute({}).careers({}).$ },
   { label: "Privacy", to: rootRoute({}).legal({}).privacyPolicy({}).$ },
   { label: "Terms", to: rootRoute({}).legal({}).termsOfService({}).$ },

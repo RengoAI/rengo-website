@@ -1,24 +1,6 @@
 import { SOLUTION_CAPABILITIES } from "@/features/solutions/solutions";
 import { RouteObject, Navigate } from "react-router-dom";
 
-/**
- * The overview at /solutions, on the rebrand chrome (SiteNav, SiteFooter), so
- * it sits outside AppRoot with the other standalone routes.
- */
-export const solutionsOverviewRoute: RouteObject = {
-  id: "solutions",
-  path: "solutions",
-  handle: {
-    pageTitle: "Solutions",
-  },
-  lazy: async () => {
-    const { SolutionsPage } = await import(
-      "@/features/solutions/solutions-page"
-    );
-    return { Component: SolutionsPage };
-  },
-};
-
 export const solutionsRoutes: RouteObject = {
   id: "solutions",
   path: "solutions",

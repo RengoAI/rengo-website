@@ -3,11 +3,10 @@ import { DataMeshDiagram } from "@/components/site/data-mesh-diagram";
 import { RULED_ROW_RULE, RuledRow } from "@/components/site/ruled-row";
 import { colorVar, dottedBottom } from "@/components/site/site-styles";
 import { Box, chakra, Text } from "@chakra-ui/react";
+import { ChevronDown } from "lucide-react";
 import React from "react";
 
 export type UseCase = {
-  /** Who the row is about — the small capitalised label on the left. */
-  audience: string;
   title: string;
   /** Only the open row carries body copy and art. */
   body?: string;
@@ -15,10 +14,9 @@ export type UseCase = {
 };
 
 /**
- * The use-case list. Every row is the same three-part grid — label (4),
- * title (10), art — and opening a row simply narrows the title column to 7
- * to make room for the 4-column art rather than changing the layout. Below
- * `lg` the three parts stack instead, label over title over art.
+ * The use-case list. Each row is the title and, when open, its description,
+ * starting at the left of the grid. Opening a row with art narrows the title
+ * column to leave room for it.
  *
  * Rows are separated by a dashed rule on their top edge, so the list reads as
  * one ruled block rather than as a stack of separate cards.
@@ -31,18 +29,18 @@ export const UseCaseAccordion: React.FC<{
   items: UseCase[];
   /**
    * Start with every row open, and let each row toggle on its own. By default
-   * only the first row is open and opening another closes it.
+   * every row starts closed, and opening one closes the others.
    */
   defaultAllOpen?: boolean;
 }> = ({ items, defaultAllOpen = false }) => {
   const idPrefix = React.useId();
   const [openIndices, setOpenIndices] = React.useState<ReadonlySet<number>>(
-    () => new Set(defaultAllOpen ? items.map((_, i) => i) : [0]),
+    () => new Set(defaultAllOpen ? items.map((_, i) => i) : []),
   );
 
   const toggle = (i: number) =>
     setOpenIndices((prev) => {
-      if (!defaultAllOpen) return new Set([i]);
+      if (!defaultAllOpen) return prev.has(i) ? new Set() : new Set([i]);
       const next = new Set(prev);
       if (next.has(i)) next.delete(i);
       else next.add(i);
@@ -75,33 +73,22 @@ export const UseCaseAccordion: React.FC<{
             {...(i === items.length - 1 ? dottedBottom(RULED_ROW_RULE) : {})}
             cursor="pointer"
           >
-            {/* From lg, where they share a row, the label is centred on the
-                title's first line: one h6 line box, 20px × 1.2. */}
-            <GridCol
-              span={{ base: 16, lg: 4 }}
-              display={{ lg: "flex" }}
-              alignItems="center"
-              h={{ lg: "24px" }}
-            >
-              <Text
-                textStyle="label"
-                fontWeight={300}
-                letterSpacing="0"
-                textTransform="capitalize"
-                color="site.fg.muted"
-                lineHeight="1.1"
-              >
-                {item.audience}
-              </Text>
-            </GridCol>
-
             <GridCol
               span={titleSpan}
+              start={1}
               display="flex"
               flexDirection="column"
+              alignItems="flex-start"
               gap="10px"
+              textAlign="left"
             >
-              <Text as="h3" textStyle="h6" color="site.fg" w="full">
+              <Text
+                as="h3"
+                textStyle="h6"
+                color="site.fg"
+                w="full"
+                textAlign="left"
+              >
                 <chakra.button
                   type="button"
                   onClick={() => toggle(i)}
@@ -127,6 +114,19 @@ export const UseCaseAccordion: React.FC<{
                   }}
                 >
                   {item.title}
+                  {/* Sits on the row's right edge, level with the title. */}
+                  <ChevronDown
+                    size={16}
+                    strokeWidth={1.5}
+                    aria-hidden
+                    style={{
+                      position: "absolute",
+                      right: 0,
+                      top: 28,
+                      transform: isOpen ? "rotate(180deg)" : undefined,
+                      transition: "transform 150ms ease",
+                    }}
+                  />
                 </chakra.button>
               </Text>
               {isOpen && item.body && (

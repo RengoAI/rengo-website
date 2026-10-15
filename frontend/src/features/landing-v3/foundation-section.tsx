@@ -171,7 +171,7 @@ const useRowFade = (ref: React.RefObject<HTMLElement>, end: number) => {
 };
 
 /**
- * The unified data foundation on a white band. Each layer is one row: its
+ * The unified data layer on a white band. Each layer is one row: its
  * copy on the left and its render on the right, flush to the right edge.
  * From lg each row pulls up by 30% of its render's height, so the planes
  * stack on one another, the top layer in front. The row is exactly as tall
@@ -252,7 +252,7 @@ export const FoundationSection: React.FC = () => {
             <Box as="span" display={{ base: "inline", lg: "block" }}>
               from across your existing systems into a{" "}
               <Box as="span" color="site.highlight">
-                unified data foundation
+                unified data layer
               </Box>
             </Box>
           </Text>

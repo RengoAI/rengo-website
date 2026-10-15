@@ -93,12 +93,14 @@ export const GridCircleDots: React.FC<{
   /** The copy above the figure: its tallest shape starts at this element's
    * bottom edge. */
   below?: React.RefObject<HTMLElement | null>;
-}> = ({ below }) => {
+  /** Multiplier on the figure's full size. */
+  scale?: number;
+}> = ({ below, scale = 1 }) => {
   const marks = React.useMemo(makeMarks, []);
 
   const canvasRef = useCanvasLoop(({ ctx, w, h, t, reduced }) => {
     // Fit the grid to narrow screens, never past full size, then scale.
-    const pitch = Math.min(PITCH, (w - 32) / COLS) * SCALE;
+    const pitch = Math.min(PITCH, (w - 32) / COLS) * SCALE * scale;
     // A quarter of the band's width right of centre, less 120px, its
     // tallest shape (the circle) starting right at the bottom of the copy.
     const ox = w * 0.75 - 120;
@@ -117,7 +119,8 @@ export const GridCircleDots: React.FC<{
       const x = ox + lerp(m.gx, m.cx, p) * pitch;
       const y = oy + lerp(m.gy, m.cy, p) * pitch;
 
-      const r = (HERO_DOT * SCALE) / 2 + (reduced ? 0 : pulseGrowth(m, t));
+      const r =
+        (HERO_DOT * SCALE * scale) / 2 + (reduced ? 0 : pulseGrowth(m, t));
 
       ctx.fillStyle = m.color;
       ctx.beginPath();

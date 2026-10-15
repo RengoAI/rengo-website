@@ -44,7 +44,7 @@ const HEADLINE = "Building your intelligent data layer";
 /** Where the title's second line starts: at "intelligent". */
 const HEADLINE_BREAK = HEADLINE.indexOf("intelligent");
 const DESCRIPTION =
-  "We build the data layer that enables AI to learn from and act on your organization’s knowledge.";
+  "We build the data layer that enables AI to learn from and act on your organization’s knowledge";
 
 // ---- Formation ---------------------------------------------------------
 const DOTS = 1728;

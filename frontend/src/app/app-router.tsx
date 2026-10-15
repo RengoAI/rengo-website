@@ -7,7 +7,6 @@ import {
   legacyV3Redirect,
 } from "@/features/landing-v3/landing-v3-routes";
 import { legalRoutes } from "@/features/legal/legal-routes";
-import { solutionsOverviewRoute } from "@/features/solutions/solutions-routes";
 import { styleguideRoutes } from "@/features/styleguide/styleguide-routes";
 import { createBrowserRouter, Navigate, RouteObject } from "react-router-dom";
 
@@ -20,7 +19,6 @@ export const ALL_ROUTES: RouteObject[] = [styleguideRoutes];
 const STANDALONE_ROUTES: RouteObject[] = [
   landingV3Routes,
   legacyV3Redirect,
-  solutionsOverviewRoute,
   careersRoutes,
   legalRoutes,
   {

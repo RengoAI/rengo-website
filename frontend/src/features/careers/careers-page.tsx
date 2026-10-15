@@ -6,6 +6,7 @@ import { NAV_H } from "@/components/site/site-constants";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
 import { SiteOutro } from "@/components/site/site-outro";
+import { TypedText } from "@/components/site/typed-text";
 import { dottedTop } from "@/components/site/site-styles";
 import { OPEN_ROLES } from "@/features/careers/open-roles";
 import { LogoMarquee } from "@/features/landing-v3/logo-marquee";
@@ -28,7 +29,7 @@ export const CareersPage: React.FC = () => (
 
     <Box as="main" minH={`calc(100svh - ${NAV_H}px)`}>
       <SiteOutro
-        heading="Join us"
+        heading={<TypedText text="Join us" />}
         headingAs="h1"
         cta="See open roles"
         ctaHref="#open-roles"
@@ -70,7 +71,8 @@ export const CareersPage: React.FC = () => (
         rhythm="none"
         bg="site.bg.surface"
         minH="100svh"
-        py="60px"
+        pt="96px"
+        pb="60px"
         scrollMarginTop={`${NAV_H}px`}
       >
         <Grid rowGap="40px">

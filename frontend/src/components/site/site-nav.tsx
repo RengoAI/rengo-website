@@ -14,7 +14,6 @@ const RouterLink = chakra(Link);
 
 /** The nav's in-app pages. */
 const LINKS: { label: string; to: string }[] = [
-  { label: "Solutions", to: rootRoute({}).solutions({}).$ },
   { label: "Careers", to: rootRoute({}).careers({}).$ },
 ];
 
