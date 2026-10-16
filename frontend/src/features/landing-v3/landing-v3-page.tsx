@@ -21,22 +21,22 @@ import React from "react";
 
 const ART = "/img/rebrand/";
 
-const USE_CASES: UseCase[] = [
+const HOW_WE_WORK: UseCase[] = [
   {
-    title: "Compare new deals without rebuilding context",
-    body: 'Every new opportunity usually starts with associates pulling CIMs, past IC memos, and comps from scattered drives and inboxes, then rebuilding the same comparison spreadsheets by hand. A unified data layer puts deal history, pipeline data, market comps, and portfolio performance in one governed store. The managed ontology ensures terms like "EBITDA," "sector," and "deal stage" mean the same thing across every source.',
+    title: "Scope the work",
+    body: "We learn how your team works today, what information they need, and where the process breaks down.",
   },
   {
-    title: "LP updates draw on one current, verified set of numbers.",
-    body: "Quarterly letters and LP requests usually mean chasing the latest figures across fund admin reports, portfolio updates, and last quarter’s deck, then reconciling which version is right. Rengo connects those sources into one governed data layer, with every number traced back to the document it came from. Updates and answers to LP questions are drafted from that single verified set, so what goes out matches what finance signed off on.",
+    title: "Set the roadmap",
+    body: "Together, we choose what to build first, the data needed to support it, and what comes next.",
   },
   {
-    title: "Portfolio financials auto-ingested with accuracy",
-    body: "Portfolio companies report in their own formats and on their own schedules — PDFs, spreadsheets, and emailed packs that someone has to key into the firm’s models. Rengo ingests those files as they arrive and maps each line item to the firm’s own definitions through the managed ontology, so revenue, EBITDA, and covenants line up across every company. Finance reviews exceptions instead of retyping statements, and every figure stays linked to its source.",
+    title: "Build with your team",
+    body: "We connect the relevant systems, organize the data, and build the tools your team will use.",
   },
   {
-    title: "Unlock collective intelligence",
-    body: "Much of what a firm knows lives in meeting notes, memos, email threads, and the heads of the people who were in the room. Rengo captures that knowledge alongside the firm’s structured data, links it to the deals, companies, and people it concerns, and makes it searchable in plain language. New team members get up to speed faster, and hard-won insight stays with the firm when people move on.",
+    title: "Support and expand",
+    body: "We maintain the system, support your team, and add new workflows as priorities change.",
   },
 ];
 
@@ -203,17 +203,22 @@ export const LandingV3Page: React.FC = () => (
         apart from the off-white sections around it. */}
       <Section grid bg="canvas.400">
         <GridCol span={16} pb="60px">
-          <Text
-            as="h2"
-            textStyle="h3"
-            color="site.fg"
-            maxW={{ base: "75vw", md: "280px" }}
-          >
-            Our approach
-          </Text>
+          <Box display="flex" flexDirection="column" gap="12px">
+            <Text
+              as="h2"
+              textStyle="h3"
+              color="site.fg"
+              maxW={{ base: "75vw", md: "280px" }}
+            >
+              Our approach
+            </Text>
+            <Text textStyle="body.md" color="site.fg" maxW="480px">
+              We map how your team works today, then build with you.
+            </Text>
+          </Box>
         </GridCol>
         <GridCol span={16}>
-          <UseCaseAccordion items={USE_CASES} />
+          <UseCaseAccordion items={HOW_WE_WORK} showStepNumbers />
         </GridCol>
       </Section>
 

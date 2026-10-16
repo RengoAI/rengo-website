@@ -32,7 +32,9 @@ export const UseCaseAccordion: React.FC<{
    * every row starts closed, and opening one closes the others.
    */
   defaultAllOpen?: boolean;
-}> = ({ items, defaultAllOpen = false }) => {
+  /** Show a two-digit sequence number before every title. */
+  showStepNumbers?: boolean;
+}> = ({ items, defaultAllOpen = false, showStepNumbers = false }) => {
   const idPrefix = React.useId();
   const [openIndices, setOpenIndices] = React.useState<ReadonlySet<number>>(
     () => new Set(defaultAllOpen ? items.map((_, i) => i) : []),
@@ -113,7 +115,28 @@ export const UseCaseAccordion: React.FC<{
                     },
                   }}
                 >
-                  {item.title}
+                  {showStepNumbers ? (
+                    <Box
+                      as="span"
+                      display="inline-flex"
+                      alignItems="center"
+                      gap="16px"
+                    >
+                      <Box
+                        as="span"
+                        color="site.highlight"
+                        fontSize="0.75rem"
+                        fontWeight={500}
+                        letterSpacing="0.08em"
+                        lineHeight="1"
+                      >
+                        {String(i + 1).padStart(2, "0")}.
+                      </Box>
+                      <Box as="span">{item.title}</Box>
+                    </Box>
+                  ) : (
+                    item.title
+                  )}
                   {/* Sits on the row's right edge, level with the title. */}
                   <ChevronDown
                     size={16}
