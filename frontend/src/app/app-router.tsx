@@ -1,23 +1,38 @@
 import AppRoot from "@/app/app-root";
+import { SiteShell } from "@/app/site-shell";
 import NotFoundPage from "@/components/empty/app-not-found-page";
-import { blogRoutes } from "@/features/blog/blog-routes";
 import { careersRoutes } from "@/features/careers/careers-routes";
-import { companyRoute } from "@/features/company/company-routes";
-import { landingRoutes } from "@/features/landing/landing-routes";
-import { legalRoutes } from "@/features/legal/legal-routes";
-import { solutionsRoutes } from "@/features/solutions/solutions-routes";
-import { createBrowserRouter, RouteObject } from "react-router-dom";
-
-export const ALL_ROUTES: RouteObject[] = [
+import {
   landingRoutes,
-  legalRoutes,
+  legacyLandingRedirect,
+} from "@/features/landing/landing-routes";
+import { legalRoutes } from "@/features/legal/legal-routes";
+import { styleguideRoutes } from "@/features/styleguide/styleguide-routes";
+import { createBrowserRouter, Navigate, RouteObject } from "react-router-dom";
+
+export const ALL_ROUTES: RouteObject[] = [styleguideRoutes];
+
+/**
+ * The public site. These ship SiteNav and SiteFooter themselves, so they sit
+ * outside AppRoot rather than inheriting the old marketing nav.
+ */
+const STANDALONE_ROUTES: RouteObject[] = [
+  landingRoutes,
+  legacyLandingRedirect,
   careersRoutes,
-  companyRoute,
-  solutionsRoutes,
-  blogRoutes,
+  legalRoutes,
+  {
+    id: "companyRedirect",
+    path: "company",
+    element: <Navigate to="/careers" replace />,
+  },
 ];
 
 export const appRouter = createBrowserRouter([
+  {
+    element: <SiteShell />,
+    children: STANDALONE_ROUTES,
+  },
   {
     id: "root",
     element: <AppRoot />,

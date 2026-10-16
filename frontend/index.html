@@ -13,6 +13,7 @@
       secondary source; whichever resolves first wins.
     -->
     <link rel="preload" href="/fonts/noto-serif-latin-variable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/Serrif-Light.woff2" as="font" type="font/woff2" crossorigin />
     <style>
       @font-face {
         font-family: 'Noto Serif';
@@ -21,10 +22,29 @@
         font-display: swap;
         src: url('/fonts/noto-serif-latin-variable.woff2') format('woff2');
       }
+      /*
+        Serrif — the rebrand display face. Only Light and Regular ship today;
+        the design also calls for Thin (stat figures) and Medium (nav CTA),
+        which live in the variable package. Add them here when available.
+      */
+      @font-face {
+        font-family: 'Serrif';
+        font-style: normal;
+        font-weight: 300;
+        font-display: swap;
+        src: url('/fonts/Serrif-Light.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'Serrif';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url('/fonts/Serrif-Regular.woff2') format('woff2');
+      }
     </style>
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;500&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&family=Noto+Serif:wght@300..500&family=Space+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;500&family=Geist:wght@200..600&family=Geist+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&family=Noto+Serif:wght@300..500&family=Space+Mono:wght@400;700&display=swap"
     />
     <title>Rengo AI</title>
     <!-- Reb2b Tracking -->

@@ -19,7 +19,9 @@ import * as ts from "typescript";
 import { extractPathParams } from "../shared/utils/path-utils";
 
 // NOTE: Vite requires a global window object and associated deps.
-(globalThis.window as unknown as Window) = new Window();
+(globalThis.window as unknown as Window) = new Window({
+  url: "http://localhost/",
+});
 globalThis.document = window.document;
 globalThis.localStorage = window.localStorage;
 

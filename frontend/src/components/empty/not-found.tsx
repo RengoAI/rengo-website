@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 export const NotFound = () => {
   const navigate = useNavigate();
   return (
-    <Center w="100%" minH="100vh">
+    <Center w="100%" flex="1">
       <VStack alignItems="flex-start" gap={12} w="100%" maxW="450px">
         <VStack alignItems="flex-start" gap={4}>
           <Text fontSize="5xl" color="ink.body">

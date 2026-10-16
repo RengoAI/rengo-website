@@ -1,6 +1,7 @@
 import { rootRoute } from "@/app/app-routes";
 import { PageContainer } from "@/components/layout/page-container";
-import { TOP_NAV_HEIGHT } from "@/components/nav/nav-styles";
+import { SiteFooter } from "@/components/site/site-footer";
+import { SiteNav } from "@/components/site/site-nav";
 import {
   ButtonArrowLabel,
   ctaButtonHoverWithArrowProps,
@@ -21,18 +22,10 @@ const MetaItem: React.FC<{ label: string; value: string }> = ({
   value,
 }) => (
   <Flex direction="column" gap={1} minW={0}>
-    <Text
-      fontFamily="body"
-      fontSize="11px"
-      fontWeight="medium"
-      letterSpacing="0.08em"
-      textTransform="uppercase"
-      color="slate.50"
-      m={0}
-    >
+    <Text as="dt" textStyle="caption" color="slate.50" m={0}>
       {label}
     </Text>
-    <Text fontFamily="body" fontSize="14px" color="indigo.900" m={0}>
+    <Text as="dd" fontFamily="body" fontSize="14px" color="indigo.900" m={0}>
       {value}
     </Text>
   </Flex>
@@ -104,95 +97,76 @@ export const JobListingPage: React.FC = () => {
   }
 
   return (
-    <Box
-      fontFamily="body"
-      bg="slate.10"
-      minH="100vh"
-      pt={`${TOP_NAV_HEIGHT}px`}
-    >
-      <PageContainer>
-        <Box
-          maxW="760px"
-          mx="auto"
-          pt={{ base: 8, md: 12 }}
-          pb={{ base: 12, md: 16 }}
-        >
-          <Button
-            asChild
-            variant="ghost"
-            mb={6}
-            h="auto"
-            minH="auto"
-            px={0}
-            py={0}
-            border="none"
-            color="slate.100"
-            fontFamily="body"
-            fontSize="14px"
-            fontWeight="normal"
-            bg="transparent"
-            _hover={{ bg: "transparent", color: "indigo.900" }}
-          >
-            <RouterLink to={rootRoute({}).careers({}).$}>← Back</RouterLink>
-          </Button>
-
+    <Box fontFamily="body" bg="site.bg.surface" minH="100vh">
+      <SiteNav />
+      <Box as="main">
+        <PageContainer>
           <Box
-            as="h1"
-            fontFamily="heading"
-            fontWeight={350}
-            fontSize={{ base: "34px", md: "44px" }}
-            lineHeight={1.1}
-            letterSpacing="-0.03em"
-            color="indigo.900"
-            m={0}
-            mb={6}
+            maxW="760px"
+            mx="auto"
+            pt={{ base: 8, md: 12 }}
+            pb={{ base: 12, md: 16 }}
           >
-            {role.title}
-          </Box>
+            <Button
+              asChild
+              variant="ghost"
+              // 2rem more than the usual 1.5rem above the title.
+              mb={14}
+              h="auto"
+              minH="auto"
+              px={0}
+              py={0}
+              border="none"
+              color="slate.100"
+              fontFamily="body"
+              fontSize="14px"
+              fontWeight="normal"
+              bg="transparent"
+              _hover={{ bg: "transparent", color: "indigo.900" }}
+            >
+              <RouterLink to={rootRoute({}).careers({}).$}>← Back</RouterLink>
+            </Button>
 
-          <Flex
-            gap={{ base: 6, md: 10 }}
-            flexWrap="wrap"
-            pb={8}
-            mb={10}
-            borderBottom="1px solid"
-            borderColor="slate.30"
-          >
-            <MetaItem label="Location" value={role.location} />
-            <MetaItem label="Department" value={role.department} />
-            <MetaItem label="Employment" value={role.employmentType} />
-          </Flex>
+            <Text as="h1" textStyle="d2" color="indigo.900" m={0} mb="84px">
+              {role.title}
+            </Text>
 
-          <Flex direction="column" gap={12}>
-            {role.sections.map((section) => (
-              <Box key={section.heading}>
-                <Box
-                  as="h2"
-                  fontFamily="heading"
-                  fontWeight={350}
-                  fontSize={{ base: "22px", md: "26px" }}
-                  lineHeight={1.25}
-                  letterSpacing="-1px"
-                  color="indigo.900"
-                  m={0}
-                  mb={4}
-                >
-                  {section.heading}
+            <Flex
+              as="dl"
+              gap={{ base: 6, md: 10 }}
+              flexWrap="wrap"
+              pb={8}
+              mb={10}
+              borderBottom="1px solid"
+              borderColor="slate.30"
+            >
+              <MetaItem label="Location" value={role.location} />
+              <MetaItem label="Department" value={role.department} />
+              <MetaItem label="Employment" value={role.employmentType} />
+            </Flex>
+
+            <Flex direction="column" gap={12}>
+              {role.sections.map((section) => (
+                <Box key={section.heading}>
+                  <Text as="h2" textStyle="h5" color="indigo.900" m={0} mb={4}>
+                    {section.heading}
+                  </Text>
+                  <Flex direction="column" gap={4}>
+                    {section.blocks.map((block, i) => (
+                      <JobBlock key={`${section.heading}-${i}`} block={block} />
+                    ))}
+                  </Flex>
                 </Box>
-                <Flex direction="column" gap={4}>
-                  {section.blocks.map((block, i) => (
-                    <JobBlock key={`${section.heading}-${i}`} block={block} />
-                  ))}
-                </Flex>
-              </Box>
-            ))}
-          </Flex>
+              ))}
+            </Flex>
 
-          <Box pt={12}>
-            <ApplyButton role={role} />
+            <Box pt={12}>
+              <ApplyButton role={role} />
+            </Box>
           </Box>
-        </Box>
-      </PageContainer>
+        </PageContainer>
+      </Box>
+      <SiteFooter />
     </Box>
   );
 };

@@ -8,16 +8,6 @@ export const solutionsRoutes: RouteObject = {
     pageTitle: "Solutions",
   },
   children: [
-    {
-      id: "solutionsIndex",
-      index: true,
-      lazy: async () => {
-        const { SolutionsPage } = await import(
-          "@/features/solutions/solutions-page"
-        );
-        return { Component: SolutionsPage };
-      },
-    },
     ...SOLUTION_CAPABILITIES.map((c) => ({
       id: `solutions-${c.slug}`,
       path: c.slug,

@@ -10,15 +10,8 @@ export const rootRoute = route(
   "/",
   {},
   {
-    landingIndex: route("/", {}, {}),
-    legal: route(
-      "/legal",
-      {},
-      {
-        termsOfService: route("/terms-of-service", {}, {}),
-        privacyPolicy: route("/privacy-policy", {}, {}),
-      },
-    ),
+    landing: route("/", {}, {}),
+    legacyLanding: route("/v3", {}, {}),
     careers: route(
       "/careers",
       {},
@@ -34,41 +27,16 @@ export const rootRoute = route(
         ),
       },
     ),
-    company: route("/company", {}, {}),
-    solutions: route(
-      "/solutions",
+    legal: route(
+      "/legal",
       {},
       {
-        index: route("/", {}, {}),
-        appliedAi: route("/applied-ai", {}, {}),
-        dataInfrastructure: route("/data-infrastructure", {}, {}),
-        aiDataPlatformRedirect: route("/ai-data-platform", {}, {}),
-        customAiApplicationsRedirect: route("/custom-ai-applications", {}, {}),
-        managedOperationsRedirect: route("/managed-operations", {}, {}),
+        termsOfService: route("/terms-of-service", {}, {}),
+        privacyPolicy: route("/privacy-policy", {}, {}),
       },
     ),
-    blog: route(
-      "/blog",
-      {},
-      {
-        changelog: route(
-          "/changelog",
-          {},
-          {
-            index: route("/", {}, {}),
-            entry: route(
-              "/changelog/:year/:month/:id",
-              {
-                year: stringParser,
-                month: stringParser,
-                id: stringParser,
-              },
-              {},
-            ),
-          },
-        ),
-      },
-    ),
+    companyRedirect: route("/company", {}, {}),
+    styleguide: route("/styleguide", {}, {}),
     notFound: route("/*", {}, {}),
   },
 );
