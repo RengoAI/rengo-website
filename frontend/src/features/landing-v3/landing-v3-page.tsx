@@ -67,19 +67,20 @@ const COMPLIANCE = [
   {
     title: "SOC2 Type II",
     description:
-      "Security controls designed correctly and operating effectively.",
+      "Independently audited controls for data protection and access.",
   },
   {
     title: "Pen-tested",
-    description: "Security controls suitably implemented. Continuously tested.",
+    description: "Built to industry-leading security standards.",
   },
   {
     title: "No training on your data",
-    description: "Security controls suitably implemented. Continuously tested.",
+    description:
+      "Your data is never used to train or improve models.",
   },
   {
     title: "Encrypted everywhere",
-    description: "Security controls suitably implemented. Continuously tested.",
+    description: "Data is encrypted in transit and at rest across the platform.",
   },
 ];
 
@@ -270,7 +271,7 @@ export const LandingV3Page: React.FC = () => (
             color="site.fg.onDark"
             maxW={{ base: "75vw", md: "420px" }}
           >
-            We are compliant with rigorous security standards
+            Security built for your most sensitive data
           </Text>
         </Box>
         <ComplianceCardGroup items={COMPLIANCE} h={{ lg: "240px" }} />
