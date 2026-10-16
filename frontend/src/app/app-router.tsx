@@ -3,9 +3,9 @@ import { SiteShell } from "@/app/site-shell";
 import NotFoundPage from "@/components/empty/app-not-found-page";
 import { careersRoutes } from "@/features/careers/careers-routes";
 import {
-  landingV3Routes,
-  legacyV3Redirect,
-} from "@/features/landing-v3/landing-v3-routes";
+  landingRoutes,
+  legacyLandingRedirect,
+} from "@/features/landing/landing-routes";
 import { legalRoutes } from "@/features/legal/legal-routes";
 import { styleguideRoutes } from "@/features/styleguide/styleguide-routes";
 import { createBrowserRouter, Navigate, RouteObject } from "react-router-dom";
@@ -17,8 +17,8 @@ export const ALL_ROUTES: RouteObject[] = [styleguideRoutes];
  * outside AppRoot rather than inheriting the old marketing nav.
  */
 const STANDALONE_ROUTES: RouteObject[] = [
-  landingV3Routes,
-  legacyV3Redirect,
+  landingRoutes,
+  legacyLandingRedirect,
   careersRoutes,
   legalRoutes,
   {

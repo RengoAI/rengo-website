@@ -12,9 +12,9 @@ import {
   UseCaseAccordion,
   type UseCase,
 } from "@/components/site/use-case-accordion";
-import { FoundationSection } from "@/features/landing-v3/foundation-section";
-import { LandingHero } from "@/features/landing-v3/landing-hero";
-import { LogoMarquee } from "@/features/landing-v3/logo-marquee";
+import { FoundationSection } from "@/features/landing/foundation-section";
+import { LandingHero } from "@/features/landing/landing-hero";
+import { LogoMarquee } from "@/features/landing/logo-marquee";
 import { GridCircleDots } from "@/features/solutions/grid-circle-dots";
 import { Box, chakra, Text } from "@chakra-ui/react";
 import React from "react";
@@ -75,12 +75,12 @@ const COMPLIANCE = [
   },
   {
     title: "No training on your data",
-    description:
-      "Your data is never used to train or improve models.",
+    description: "Your data is never used to train or improve models.",
   },
   {
     title: "Encrypted everywhere",
-    description: "Data is encrypted in transit and at rest across the platform.",
+    description:
+      "Data is encrypted in transit and at rest across the platform.",
   },
 ];
 
@@ -126,7 +126,7 @@ const FdeSection: React.FC = () => {
   );
 };
 
-export const LandingV3Page: React.FC = () => (
+export const LandingPage: React.FC = () => (
   <Box bg="site.bg.page">
     <SiteNav overlay />
 

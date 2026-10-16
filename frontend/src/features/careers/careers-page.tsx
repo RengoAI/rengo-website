@@ -9,7 +9,7 @@ import { SiteOutro } from "@/components/site/site-outro";
 import { TypedText } from "@/components/site/typed-text";
 import { dottedTop } from "@/components/site/site-styles";
 import { OPEN_ROLES } from "@/features/careers/open-roles";
-import { LogoMarquee } from "@/features/landing-v3/logo-marquee";
+import { LogoMarquee } from "@/features/landing/logo-marquee";
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
