@@ -15,28 +15,28 @@ const FOUNDATION_LAYERS: { title: string; description: string }[] = [
   {
     title: "Applications",
     description:
-      "We connect your source systems, structure them into permission-ed ontology, and build applications and agents for your work.",
+      "Purpose-built tools that turn governed data into workflows, analysis, and decisions for your team.",
   },
   {
     title: "Agents",
     description:
-      "We connect your source systems, structure them into permission-ed ontology, and build applications and agents for your work.",
+      "Secure frontier-intelligence agents that retrieve context, reason over your data, and work through MCP and connected tools.",
   },
   {
-    title: "Data ontology",
+    title: "Ontology",
     description:
-      "We connect your source systems, structure them into permission-ed ontology, and build applications and agents for your work.",
+      "A shared operational model that connects the information, metrics, and context your teams need to make better decisions.",
   },
   {
     title: "Infrastructure",
     description:
-      "Configuration for agents to run securely and performance. Database isolation, provisioned for agents and user requests to only reach what is necessary. Row-level security",
+      "Dedicated, secure runtimes with isolation, governance, and permissions built into how people and agents access data.",
   },
 ];
 
-/** Columns a callout spans from lg, and how many its description fills. */
+/** Columns a callout spans from lg. The description fills its full width. */
 const FOUNDATION_COPY_SPAN = 5;
-const FOUNDATION_DESCRIPTION_SPAN = 4;
+const FOUNDATION_DESCRIPTION_SPAN = 5;
 /** From lg, how far a callout's divider runs: past its copy into the render. */
 const FOUNDATION_DIVIDER_W = "654px";
 
@@ -62,8 +62,7 @@ const FoundationLayer: React.FC<{ title: string; description: string }> = ({
         {title}
       </Text>
       {/* Set like the rest of the page's body copy. From lg the callout
-          spans FOUNDATION_COPY_SPAN columns; the description stops at
-          FOUNDATION_DESCRIPTION_SPAN of them. */}
+          spans FOUNDATION_COPY_SPAN columns. */}
       <Text
         textStyle="body.sm"
         color="site.fg"
