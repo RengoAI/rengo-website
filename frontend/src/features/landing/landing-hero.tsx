@@ -235,8 +235,9 @@ type Dot = {
  * Evenly spaced slots along the lines, handed out in order of each dot's
  * starting x so dots travel mostly vertically and don't cross. Each run of
  * LINES dots shares a column, and within it the dot that starts highest
- * takes the top line. Each line is slid along by a golden-ratio fraction of
- * the spacing so the columns don't read as vertical stripes.
+ * takes the top line. The smaller-wave lines' dots share each column's x,
+ * so they stack on one vertical axis; the BIG_LINES are slid along by a
+ * golden-ratio fraction of the spacing, off those columns.
  */
 const assignSlots = (dots: Dot[], width: number) => {
   const cols = Math.ceil(dots.length / LINES);
@@ -247,7 +248,10 @@ const assignSlots = (dots: Dot[], width: number) => {
       .slice(col * LINES, (col + 1) * LINES)
       .sort((a, b) => a.y - b.y)
       .forEach((d, line) => {
-        d.tx = ((col + ((line * 0.618034) % 1)) * spacing) % width;
+        const shift = BIG_LINES.has(Math.round(line * LINE_GAP))
+          ? (line * 0.618034) % 1
+          : 0;
+        d.tx = ((col + shift) * spacing) % width;
         d.ty = line * LINE_GAP;
       });
   }
