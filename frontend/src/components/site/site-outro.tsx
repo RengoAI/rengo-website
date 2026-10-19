@@ -115,8 +115,8 @@ export const SiteOutro: React.FC<{
             >
               {heading}
             </Text>
-            {/* The hero and nav button, larger and on soot: lightens to the
-              footer's silver on hover, its label turning dark. Hugs its
+            {/* The hero and nav button, larger and on soot: lightens to Sky
+              on hover, its label turning dark. Hugs its
               label, a set 20px to the arrow. */}
             <SolidCta
               href={ctaHref}

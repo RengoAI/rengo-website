@@ -13,7 +13,7 @@ const TONE_BG = {
 } as const;
 
 const TONE_HOVER = {
-  dark: { bg: "site.bg.tint" },
+  dark: { bg: "site.bg.tintSky" },
   light: { opacity: 0.88 },
   // Two steps down the silver ramp from the resting fill.
   secondary: { bg: "silver.300" },
@@ -21,8 +21,8 @@ const TONE_HOVER = {
 
 /**
  * Filled CTA in the v3 shape, in a dark, a light or a secondary tone. The
- * dark tone lightens to the footer's silver on hover, its label turning dark.
- * The secondary tone starts on that silver and darkens on hover.
+ * dark tone lightens to Sky on hover, its label turning dark. The
+ * secondary tone starts on silver 200 and darkens on hover.
  *
  * With `href` it renders as a link, since it navigates; without, a button.
  * `labelProps` restyles the label, e.g. for the outro's larger CTA.
