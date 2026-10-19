@@ -239,7 +239,7 @@ export const FoundationSection: React.FC = () => {
             fontWeight={400}
             lineHeight="1.1"
             letterSpacing="-0.5px"
-            color="site.fg"
+            color="site.fg.heading"
           >
             To solve this, we bring together data from across your existing
             systems into a{" "}

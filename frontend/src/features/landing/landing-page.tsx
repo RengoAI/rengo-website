@@ -1,18 +1,15 @@
-import { colSpanWidth, Grid, GridCol } from "@/components/layout/grid";
+import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import { ComplianceCardGroup } from "@/components/site/compliance-card";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
 import { SiteOutro } from "@/components/site/site-outro";
 import {
+  StepCard,
   TESTIMONIAL_WASHES,
   TestimonialCard,
   type TestimonialWash,
 } from "@/components/site/split-card";
-import {
-  UseCaseAccordion,
-  type UseCase,
-} from "@/components/site/use-case-accordion";
 import { FoundationSection } from "@/features/landing/foundation-section";
 import { LandingHero } from "@/features/landing/landing-hero";
 import { LogoMarquee } from "@/features/landing/logo-marquee";
@@ -22,7 +19,7 @@ import React from "react";
 
 const ART = "/img/rebrand/";
 
-const HOW_WE_WORK: UseCase[] = [
+const HOW_WE_WORK = [
   {
     title: "Scope the work",
     body: "We learn how your team works today, what information they need, and where the process breaks down.",
@@ -86,7 +83,7 @@ const COMPLIANCE = [
 ];
 
 /**
- * The partner promise. Under that heading, against the right edge, the
+ * The partner promise. Under that heading, right-aligned on desktop, the
  * solutions figure moves between a grid and a circle. The band is tall
  * enough to hold the circle below the heading.
  */
@@ -111,7 +108,7 @@ const FdeSection: React.FC = () => {
             textStyle="h4"
             fontWeight={400}
             lineHeight="1.1"
-            color="site.fg"
+            color="site.fg.heading"
             // Caps at the column's edge instead of running off the screen.
             w="673px"
             maxW="full"
@@ -143,7 +140,7 @@ export const LandingPage: React.FC = () => (
       {/* The second testimonial card's wash, stretched over the band. */}
       <Section grid {...TESTIMONIAL_WASHES.mid} minH={{ lg: "741px" }}>
         <GridCol span={{ base: 16, lg: 11 }}>
-          <Text as="h2" textStyle="h4" color="site.fg.strong">
+          <Text as="h2" textStyle="h4" color="site.fg.heading">
             Companies have spent decades making the numbers in their databases
             reliable, connecting their tools, and standardizing workflows. But
             much of what an organization actually knows{" "}
@@ -152,12 +149,13 @@ export const LandingPage: React.FC = () => (
             </Box>
           </Text>
         </GridCol>
-        {/* Hidden on phones. Flush right, behind an empty spacer: 8 columns
-          on tablets, and 1 on desktop, where it sits beside the heading. */}
+        {/* Hidden on phones. Flush right, behind an empty spacer: 7 columns
+          wide on tablets, and 4 on desktop, where it sits beside the
+          heading. */}
         <GridCol
           display={{ base: "none", md: "block" }}
-          span={{ base: 15, md: 8, lg: 4 }}
-          start={{ base: 2, md: 9, lg: 13 }}
+          span={{ base: 15, md: 7, lg: 4 }}
+          start={{ base: 2, md: 10, lg: 13 }}
           pt={{ md: "16px", lg: 0 }}
         >
           {/* Separate paragraphs, a blank line (one 1.4 line height) apart.
@@ -204,13 +202,19 @@ export const LandingPage: React.FC = () => (
       {/* The problem band's pale blue, so it reads apart from the off-white
         sections around it. */}
       {/* The problem band's wash, turned the other way round. */}
-      <Section grid {...TESTIMONIAL_WASHES.midReversed} py="72px">
+      <Section
+        grid
+        {...TESTIMONIAL_WASHES.midReversed}
+        py="72px"
+        // 20px between the step cards, across and when stacked.
+        gridProps={{ gap: "1.25rem" }}
+      >
         <GridCol span={16} pb="36px">
           <Box display="flex" flexDirection="column" gap="12px">
             <Text
               as="h2"
               textStyle="h3"
-              color="site.fg"
+              color="site.fg.heading"
               maxW={{ base: "75vw", md: "280px" }}
             >
               Our approach
@@ -218,18 +222,21 @@ export const LandingPage: React.FC = () => (
             <Text
               textStyle="body.sm"
               color="site.fg"
-              // Three of the band's 16 columns from lg up.
-              maxW={{ base: "480px", lg: colSpanWidth(3) }}
+              // Hidden on phones; one line from md up.
+              display={{ base: "none", md: "block" }}
+              whiteSpace="nowrap"
             >
               We map how your team works today, then build with you.
             </Text>
           </Box>
         </GridCol>
-        {/* Same 12 columns as the testimonial row below, a third of the way
-          in from lg up. */}
-        <GridCol span={{ base: 16, lg: 12 }} start={{ lg: 5 }}>
-          <UseCaseAccordion items={HOW_WE_WORK} showStepNumbers />
-        </GridCol>
+        {/* The metrics layout, filling the grid: four 4-column steps. Two
+          across on tablets, stacked on phones. */}
+        {HOW_WE_WORK.map((step, i) => (
+          <GridCol key={step.title} span={{ base: 16, md: 8, lg: 4 }}>
+            <StepCard step={i + 1} title={step.title} body={step.body} />
+          </GridCol>
+        ))}
       </Section>
 
       {/* --- Testimonials ----------------------------------------------------- */}
@@ -240,7 +247,7 @@ export const LandingPage: React.FC = () => (
             <Text
               as="h2"
               textStyle="h3"
-              color="site.fg"
+              color="site.fg.heading"
               maxW={{ base: "75vw", md: "296px" }}
             >
               Our customers in their own words
@@ -296,7 +303,7 @@ export const LandingPage: React.FC = () => (
       <Section grid rhythm="compact" bg="site.bg.dark">
         <GridCol span={{ base: 16, lg: 3 }} display="flex" alignItems="center">
           <Text textStyle="label" fontWeight={300} color="site.fg.onDarkFaint">
-            Bring industry experience from
+            Bringing industry experience from
           </Text>
         </GridCol>
         <GridCol span={{ base: 16, lg: 13 }} display="flex" alignItems="center">

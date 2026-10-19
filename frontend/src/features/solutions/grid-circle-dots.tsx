@@ -42,7 +42,11 @@ const GOLDEN = Math.PI * (3 - Math.sqrt(5));
 const CIRCLE_R = Math.sqrt((COLS * ROWS) / Math.PI);
 /** The grid's spacing, as a multiple of the circle's. */
 const GRID_SPREAD = 1.5;
-/** Gap between the figure's right edge and the band's, in px. */
+/** Gap between the copy's bottom and the figure's tallest shape, in px. */
+const TOP_GAP = 24;
+/** From the `lg` breakpoint (px), the figure sits RIGHT_PAD from the band's
+ * right edge instead of centred. */
+const DESKTOP_MIN_W = 1024;
 const RIGHT_PAD = 60;
 
 type Mark = {
@@ -112,16 +116,17 @@ export const GridCircleDots: React.FC<{
     // Half the figure at its widest and tallest, grid or circle, in px.
     const halfW = Math.max(((COLS - 1) / 2) * gridPitch, CIRCLE_R * pitch);
     const halfH = Math.max((ROWS / 2) * gridPitch, CIRCLE_R * pitch);
-    // Its widest shape ends RIGHT_PAD in from the band's right edge, its
-    // tallest starting right at the bottom of the copy.
-    const ox = w - RIGHT_PAD - halfW - half;
+    // From desktop, its widest shape ends RIGHT_PAD in from the band's
+    // right edge; below that it's centred. Its tallest shape starts TOP_GAP
+    // below the copy.
+    const ox = w >= DESKTOP_MIN_W ? w - RIGHT_PAD - halfW - half : w / 2;
     const el = below?.current;
     const canvas = canvasRef.current;
     const top =
       el && canvas
         ? el.getBoundingClientRect().bottom - canvas.getBoundingClientRect().top
         : 0;
-    const oy = top + halfH;
+    const oy = top + TOP_GAP + halfH;
 
     ctx.clearRect(0, 0, w, h);
     for (const m of marks) {

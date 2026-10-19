@@ -33,8 +33,8 @@ const DESKTOP_QUERY = "(min-width: 768px)";
  * `overlay` lays the bar over the top of the first section instead of above
  * it. The section has to extend up behind it, as the /v3 hero does.
  *
- * The bar draws a solid hairline underneath; once the page scrolls, a soft
- * shadow also lifts it off what passes beneath.
+ * Once the page scrolls, a solid hairline underneath and a soft shadow lift
+ * the bar off what passes beneath; at the very top it draws neither.
  */
 
 /** The bar's links, "Log in" among them, from `md` up. */
@@ -107,7 +107,9 @@ export const SiteNav: React.FC<{
       // Opaque, including while content scrolls underneath.
       bg="site.bg.surface"
       borderBottom="1px solid"
-      borderColor="site.border"
+      // The hairline only once the page scrolls; at the very top it's
+      // transparent, keeping the bar's height.
+      borderColor={scrolled ? "site.border" : "transparent"}
       mb={overlay ? `-${NAV_H}px` : undefined}
       py="8px"
       minH={`${NAV_H}px`}
@@ -119,7 +121,7 @@ export const SiteNav: React.FC<{
       boxShadow={
         scrolled ? "0 2px 12px rgba(12, 29, 52, 0.03)" : "0 0 0 transparent"
       }
-      transition="box-shadow 200ms ease"
+      transition="box-shadow 200ms ease, border-color 200ms ease"
     >
       <Grid alignItems="center">
         {/* From md: the wordmark on the left, the links from column 4 —

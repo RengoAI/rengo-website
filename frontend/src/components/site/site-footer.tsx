@@ -1,9 +1,8 @@
 import { rootRoute } from "@/app/app-routes";
-import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import { Logo } from "@/components/logo/logo";
-import { hoverFade } from "@/components/site/site-styles";
-import { chakra, Text } from "@chakra-ui/react";
+import { GRAIN_TILE, hoverFade } from "@/components/site/site-styles";
+import { Box, chakra, Text } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -16,8 +15,9 @@ const LINKS = [
 ];
 
 /**
- * Closing band. On the same 16-column grid as the nav and the sections.
- * Below `lg` the wordmark, links and copyright stack vertically.
+ * Closing band: the wordmark, the links and the copyright. On phones they
+ * stack in a left-aligned column; from tablets up they sit in one row,
+ * spread across the band and centred on each other.
  */
 export const SiteFooter: React.FC = () => (
   <Section
@@ -25,26 +25,31 @@ export const SiteFooter: React.FC = () => (
     rhythm="none"
     py={{ base: "64px", md: "80px", lg: "110px" }}
     bg="site.bg.footer"
+    // The hero's grain.
+    bgImage={GRAIN_TILE}
+    bgSize="200px 200px"
     borderTop="1px solid"
     borderTopColor="border.muted"
   >
-    <Grid alignItems="center" rowGap={{ base: "32px", lg: "gridGutter" }}>
-      <GridCol span={{ base: 16, lg: 4 }} display="flex" alignItems="center">
-        <Link
-          to={rootRoute({}).$}
-          aria-label="Rengo AI home"
-          style={{ display: "flex", textDecoration: "none" }}
-        >
-          <Logo color="indigo.900" />
-        </Link>
-      </GridCol>
-      <GridCol as="nav" aria-label="Footer" span={{ base: 16, lg: 8 }}>
+    <Box
+      display="flex"
+      flexDirection={{ base: "column", md: "row" }}
+      alignItems={{ base: "flex-start", md: "center" }}
+      justifyContent={{ md: "space-between" }}
+      gap={{ base: "32px", md: "gridGutter" }}
+    >
+      <Link
+        to={rootRoute({}).$}
+        aria-label="Rengo AI home"
+        style={{ display: "flex", textDecoration: "none" }}
+      >
+        <Logo color="indigo.900" />
+      </Link>
+      <chakra.nav aria-label="Footer">
         <chakra.ul
           display="flex"
           flexDirection={{ base: "column", md: "row" }}
-          flexWrap="wrap"
-          alignItems="center"
-          justifyContent="center"
+          alignItems={{ base: "flex-start", md: "center" }}
           gap={{ base: "12px", md: "20px" }}
         >
           {LINKS.map((link) => (
@@ -64,16 +69,10 @@ export const SiteFooter: React.FC = () => (
             </chakra.li>
           ))}
         </chakra.ul>
-      </GridCol>
-      <GridCol
-        span={{ base: 16, lg: 4 }}
-        display="flex"
-        justifyContent={{ base: "flex-start", lg: "flex-end" }}
-      >
-        <Text textStyle="label" color="site.fg" whiteSpace="nowrap">
-          © 2026 Rengo AI, Inc.
-        </Text>
-      </GridCol>
-    </Grid>
+      </chakra.nav>
+      <Text textStyle="label" color="site.fg" whiteSpace="nowrap">
+        © 2026 Rengo AI, Inc.
+      </Text>
+    </Box>
   </Section>
 );

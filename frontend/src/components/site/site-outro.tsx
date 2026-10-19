@@ -8,9 +8,9 @@ import { prefersReducedMotion } from "@/shared/utils/motion";
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 
-/** The CTA's label, a size up from the other buttons'. */
+/** The CTA's label: 14px at every width, the other buttons' size. */
 const OUTRO_LABEL = {
-  fontSize: "1.25rem",
+  fontSize: "0.875rem",
   lineHeight: "21px",
   letterSpacing: "0",
   color: "canvas.50",
@@ -103,6 +103,8 @@ export const SiteOutro: React.FC<{
               as={headingAs}
               id="outro-heading"
               textStyle="d1"
+              // d2's 40px on tablets, a size under d1's 60px; d1 from lg.
+              fontSize={{ base: "2.5rem", md: "2.5rem", lg: "3.75rem" }}
               color="site.fg.strong"
               maxW={`calc(496px + ${2 * OUTRO_HEADING_PAD_X}px)`}
               textAlign="center"

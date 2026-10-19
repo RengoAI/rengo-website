@@ -16,7 +16,7 @@ import {
 import { INK } from "@/components/site/canvas/ink";
 import { useCanvasLoop } from "@/components/site/canvas/use-canvas-loop";
 import { CONTACT_HREF } from "@/components/site/site-constants";
-import { CTA_SHADOW } from "@/components/site/site-styles";
+import { CTA_SHADOW, GRAIN_TILE } from "@/components/site/site-styles";
 import { SolidCta } from "@/components/site/solid-cta";
 import { Box, Text } from "@chakra-ui/react";
 import { parseToRgba } from "color2k";
@@ -35,7 +35,7 @@ import React from "react";
  * strength as they land, then each line rolls in its own wave and every dot
  * now and then swells from 4px to 5.6px. Ten seconds after the bed forms,
  * every dot drifts back to where it started and the bed forms again. On
- * phones there are half as many dots, sitting 60px higher still.
+ * phones there are half as many dots, sitting 20px lower.
  *
  * Click the hero (or press R) to restart with a fresh scatter. Reduced
  * motion gets the formed bed, still.
@@ -53,12 +53,12 @@ const DOTS = 1728;
 /**
  * The whole graphic — the starting scatter and the bed — is raised RAISE
  * px. Phones (canvas narrower than the `md` breakpoint) get half the dots,
- * raised PHONE_RAISE px more.
+ * raised PHONE_RAISE px more — negative, so they sit lower.
  */
 const RAISE = 60;
 const PHONE_MAX_W = 768;
 const PHONE_DOTS = DOTS / 2;
-const PHONE_RAISE = 60;
+const PHONE_RAISE = -20; // 80px lower than the earlier 60px raise
 const LINES = 16;
 const LINE_GAP = 4; // px, centre to centre
 const LAYER_GAP = 96; // px below the copy where the first line forms
@@ -502,6 +502,8 @@ export const LandingHero: React.FC = () => {
       overflow="hidden"
       {...HERO_BOX}
       bg="site.bg.surface"
+      bgImage={GRAIN_TILE}
+      bgSize="200px 200px"
       onClick={restart}
       cursor="default"
     >
@@ -559,6 +561,8 @@ export const LandingHero: React.FC = () => {
           >
             <Text
               textStyle="body.md"
+              // A step down on phones: 14px, 16px from md.
+              fontSize={{ base: "0.875rem", md: "1rem" }}
               lineHeight="1.2"
               color="site.fg"
               textAlign={{ base: "left", md: "right" }}
