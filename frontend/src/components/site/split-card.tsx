@@ -181,6 +181,8 @@ export const StepCard: React.FC<
           as="h3"
           textStyle="h6"
           fontFamily="display"
+          // Serrif Light, its lighter cut.
+          fontWeight={300}
           fontSize={{ lg: "1.5rem" }}
           color="site.fg"
         >

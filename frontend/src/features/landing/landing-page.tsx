@@ -97,7 +97,12 @@ const FdeSection: React.FC = () => {
       rhythm="tight"
       bg="site.bg.surface"
       borderBottomRadius="4px"
-      minH={{ base: "420px", md: "640px", lg: "680px" }}
+      // Held open 2rem past the figure's bottom.
+      minH={{
+        base: "calc(420px + 2rem)",
+        md: "calc(640px + 2rem)",
+        lg: "calc(680px + 2rem)",
+      }}
     >
       <GridCircleDots below={copyRef} scale={0.8} />
       <Grid position="relative" zIndex={1}>
@@ -205,7 +210,7 @@ export const LandingPage: React.FC = () => (
       <Section
         grid
         {...TESTIMONIAL_WASHES.midReversed}
-        py="72px"
+        py="calc(72px + 2rem)"
         // 20px between the step cards, across and when stacked.
         gridProps={{ gap: "1.25rem" }}
       >
