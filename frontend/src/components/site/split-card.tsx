@@ -147,11 +147,13 @@ export const StepCard: React.FC<
     pl={{ base: 0, md: "12px" }}
     pr={{ base: 0, md: "1.5rem" }} // 24px, as the metric cards
     pb={{ base: "1.25rem", md: 0 }}
-    // A quarter taller on phones (~123px → ~154px): the extra goes between
-    // the number and the title.
-    gap={{ base: "3.9375rem", md: "32px" }}
-    // Tablets match the phones' height; desktop keeps the full 472px.
-    h={{ base: "auto", md: "154px", lg: "472px" }}
+    // ~114px tall on phones: the space sits between the number and the
+    // title.
+    gap={{ base: "1.4375rem", md: "32px" }}
+    // Tablets match the phones' height, growing if the copy needs it;
+    // desktop 432px.
+    h={{ base: "auto", lg: "432px" }}
+    minH={{ md: "114px", lg: "auto" }}
     rule={false}
     {...STEP_RULE}
     top={
@@ -174,10 +176,11 @@ export const StepCard: React.FC<
         gap={{ base: "0.25rem", md: "0.5rem" }}
         w="full"
       >
-        {/* h6, stepping up to h5's 24px on desktop. */}
+        {/* h6 set in Serrif, stepping up to h5's 24px on desktop. */}
         <Text
           as="h3"
           textStyle="h6"
+          fontFamily="display"
           fontSize={{ lg: "1.5rem" }}
           color="site.fg"
         >

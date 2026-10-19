@@ -124,7 +124,11 @@ const DRIFT_STRENGTH = 0.6;
 /** The lightest grey on 60% of the dots, more than the shared palette's. */
 const PALE = { ...HERO_PALE, share: 0.6 };
 
+/** Share of dots in the site's accent crimson. */
+const CRIMSON_SHARE = 0.08;
+
 const toRgb = (c: string) => parseToRgba(c).slice(0, 3);
+const CRIMSON_RGB = toRgb(INK.crimson);
 const ACCENT_RGB = toRgb(HERO_ACCENT.color);
 const HIGHLIGHT_RGB = toRgb(HERO_HIGHLIGHT.color);
 const PALE_RGB = toRgb(PALE.color);
@@ -132,10 +136,12 @@ const GREYS_RGB = HERO_GREYS.map(toRgb);
 const BLUES_RGB = HERO_BLUES.map(toRgb);
 
 /**
- * A dot's shade: the accent's share, then the navy's, then the pale grey's,
- * then half greys and half blues, each a random mix of two of its family.
+ * A dot's shade: CRIMSON_SHARE in crimson; the rest split as before — the
+ * accent's share, then the navy's, then the pale grey's, then half greys
+ * and half blues, each a random mix of two of its family.
  */
 const dotShade = () => {
+  if (Math.random() < CRIMSON_SHARE) return CRIMSON_RGB;
   let u = Math.random();
   if (u < HERO_ACCENT.share) return ACCENT_RGB;
   u -= HERO_ACCENT.share;
