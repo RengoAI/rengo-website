@@ -468,7 +468,7 @@ export const semanticColors = defineSemanticTokens.colors({
     },
     border: {
       /** Solid hairline. */
-      DEFAULT: { value: "{colors.canvas.500}" },
+      DEFAULT: { value: "{colors.canvas.400}" },
       /** The dashed rule that separates cards and rows. */
       dashed: { value: "{colors.silver.300}" },
       /** Same rule, over a tinted band. */

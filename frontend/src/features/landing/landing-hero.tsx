@@ -512,11 +512,11 @@ export const LandingHero: React.FC = () => {
       >
         <Box
           ref={copy}
-          // Centred on the viewport, then raised 40px + 4rem. The raise is a
+          // Centred on the viewport, then raised 80px + 4rem. The raise is a
           // transform, which the bed (hung off the box's laid-out bottom
           // edge) doesn't follow.
           position="relative"
-          transform="translateY(calc(-40px - 4rem))"
+          transform="translateY(calc(-80px - 4rem))"
           {...COPY_BOX}
           display="flex"
           flexDirection={{ base: "column", md: "row" }}
@@ -552,9 +552,7 @@ export const LandingHero: React.FC = () => {
             gap="20px"
           >
             <Text
-              textStyle="body.sm"
-              // 14px on phones too, where body.sm steps down to 12px.
-              fontSize="0.875rem"
+              textStyle="body.md"
               lineHeight="1.2"
               color="site.fg"
               textAlign={{ base: "left", md: "right" }}
