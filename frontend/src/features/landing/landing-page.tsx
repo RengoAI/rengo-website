@@ -85,9 +85,9 @@ const COMPLIANCE = [
 ];
 
 /**
- * The partner promise. Under that heading, right of centre, the solutions
- * figure moves between a grid and a circle. The band is tall enough to hold
- * the circle below the heading.
+ * The partner promise. Under that heading, against the right edge, the
+ * solutions figure moves between a grid and a circle. The band is tall
+ * enough to hold the circle below the heading.
  */
 const FdeSection: React.FC = () => {
   // The tallest shape (the circle) starts at the bottom of this heading.
@@ -199,9 +199,9 @@ export const LandingPage: React.FC = () => (
       {/* --- About the FDE service ------------------------------------------- */}
       <FdeSection />
 
-      {/* Canvas 400: a grey darker than the footer's, so the band reads
-        apart from the off-white sections around it. */}
-      <Section grid bg="canvas.400">
+      {/* The problem band's pale blue, so it reads apart from the off-white
+        sections around it. */}
+      <Section grid bg="site.bg.tintSubtle">
         <GridCol span={16} pb="60px">
           <Box display="flex" flexDirection="column" gap="12px">
             <Text
@@ -217,7 +217,9 @@ export const LandingPage: React.FC = () => (
             </Text>
           </Box>
         </GridCol>
-        <GridCol span={16}>
+        {/* Same 12 columns as the testimonial row below, a third of the way
+          in from lg up. */}
+        <GridCol span={{ base: 16, lg: 12 }} start={{ lg: 5 }}>
           <UseCaseAccordion items={HOW_WE_WORK} showStepNumbers />
         </GridCol>
       </Section>
@@ -274,7 +276,7 @@ export const LandingPage: React.FC = () => (
             textStyle="h3"
             fontWeight={300}
             color="site.fg.onDark"
-            maxW={{ base: "75vw", md: "420px" }}
+            maxW={{ base: "60vw", md: "336px" }}
           >
             Security built for your most sensitive data
           </Text>

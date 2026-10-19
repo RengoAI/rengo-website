@@ -86,7 +86,9 @@ export const UseCaseAccordion: React.FC<{
             >
               <Text
                 as="h3"
-                textStyle="h6"
+                textStyle="h5"
+                // h5's size at h6's weight.
+                fontWeight={350}
                 color="site.fg"
                 w="full"
                 textAlign="left"
@@ -97,7 +99,7 @@ export const UseCaseAccordion: React.FC<{
                   aria-expanded={isOpen}
                   aria-controls={isOpen && item.body ? panelId : undefined}
                   textAlign="left"
-                  // Buttons don't inherit tracking; the h3's h6 style sets it.
+                  // Buttons don't inherit tracking; the h3's h5 style sets it.
                   letterSpacing="inherit"
                   cursor="pointer"
                   _before={{
@@ -130,7 +132,7 @@ export const UseCaseAccordion: React.FC<{
                         letterSpacing="0.08em"
                         lineHeight="1"
                       >
-                        {String(i + 1).padStart(2, "0")}.
+                        {String(i + 1).padStart(2, "0")}
                       </Box>
                       <Box as="span">{item.title}</Box>
                     </Box>

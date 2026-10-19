@@ -40,6 +40,10 @@ const GOLDEN = Math.PI * (3 - Math.sqrt(5));
 const CIRCLE_R = Math.sqrt((COLS * ROWS) / Math.PI);
 /** Half the figure's height at its tallest (grid or circle), in pitches. */
 const HALF_H = Math.max(ROWS / 2, CIRCLE_R);
+/** Half the figure's width at its widest (grid or circle), in pitches. */
+const HALF_W = Math.max((COLS - 1) / 2, CIRCLE_R);
+/** Gap between the figure's right edge and the band's, in px. */
+const RIGHT_PAD = 60;
 
 type Mark = {
   /** Grid and circle positions, relative to the figure's centre, in pitches. */
@@ -101,9 +105,10 @@ export const GridCircleDots: React.FC<{
   const canvasRef = useCanvasLoop(({ ctx, w, h, t, reduced }) => {
     // Fit the grid to narrow screens, never past full size, then scale.
     const pitch = Math.min(PITCH, (w - 32) / COLS) * SCALE * scale;
-    // A quarter of the band's width right of centre, less 120px, its
-    // tallest shape (the circle) starting right at the bottom of the copy.
-    const ox = w * 0.75 - 120;
+    const half = (HERO_DOT * SCALE * scale) / 2;
+    // Its widest shape (the grid) ends RIGHT_PAD in from the band's right
+    // edge, its tallest (the circle) starting right at the bottom of the copy.
+    const ox = w - RIGHT_PAD - HALF_W * pitch - half;
     const el = below?.current;
     const canvas = canvasRef.current;
     const top =
@@ -119,8 +124,7 @@ export const GridCircleDots: React.FC<{
       const x = ox + lerp(m.gx, m.cx, p) * pitch;
       const y = oy + lerp(m.gy, m.cy, p) * pitch;
 
-      const r =
-        (HERO_DOT * SCALE * scale) / 2 + (reduced ? 0 : pulseGrowth(m, t));
+      const r = half + (reduced ? 0 : pulseGrowth(m, t));
 
       ctx.fillStyle = m.color;
       ctx.beginPath();
