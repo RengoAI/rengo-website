@@ -255,8 +255,8 @@ export const colors = defineTokens.colors({
     200: { value: "#F8F8F8" }, // page, and the default surface
     300: { value: "#F5F5F6" }, // inset chip ← brand (gray #F5F5F5)
     350: { value: "#F1F1F2" }, // testimonial cards — halfway from 300 to 400
-    400: { value: "#EDEDEE" },
-    500: { value: "#D5D5D5" }, // hairline border
+    400: { value: "#EDEDEE" }, // hairline border
+    500: { value: "#D5D5D5" },
   },
 
   /** Rengo blue — the primary. Anchored at 500. */

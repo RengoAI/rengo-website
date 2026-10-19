@@ -31,7 +31,7 @@ export const textStyles = defineTextStyles({
       fontFamily: "body",
       fontSize: { base: "2.5rem", md: "3.5rem" }, // 40px → 60px
       fontWeight: "350",
-      letterSpacing: "-0.03em",
+      letterSpacing: "-0.025em",
       lineHeight: "1",
     },
   },
@@ -41,7 +41,7 @@ export const textStyles = defineTextStyles({
       fontSize: { base: "2rem", md: "2.5rem" }, // 32px → 40px
       fontWeight: "350",
       letterSpacing: "-0.025em",
-      lineHeight: "1.1",
+      lineHeight: "1",
     },
   },
   h3: {
@@ -50,14 +50,14 @@ export const textStyles = defineTextStyles({
       fontSize: { base: "1.625rem", md: "2.125rem" }, // 26px → 32px
       fontWeight: "350",
       letterSpacing: "-0.025em",
-      lineHeight: "1.1",
+      lineHeight: "1",
     },
   },
   h4: {
     value: {
       fontFamily: "body",
       fontSize: { base: "1.5rem", md: "1.625rem" }, // 22px → 26px
-      fontWeight: "350",
+      fontWeight: "400",
       letterSpacing: "-0.025em",
       lineHeight: "1.2",
     },
@@ -66,16 +66,16 @@ export const textStyles = defineTextStyles({
     value: {
       fontFamily: "body",
       fontSize: { base: "1.375rem", md: "1.5rem" }, // 20px → 24px
-      fontWeight: "350",
-      letterSpacing: "-0.02em",
+      fontWeight: "400",
+      letterSpacing: "-0.025em",
       lineHeight: "1.2",
     },
   },
   h6: {
     value: {
       fontFamily: "body",
-      fontSize: "1.125rem", // 20px — accordion titles
-      fontWeight: "350",
+      fontSize: { base: "1.125rem", md: "1.125rem" }, // 20px — accordion titles
+      fontWeight: "400",
       letterSpacing: "-0.02em",
       lineHeight: "1.2",
     },

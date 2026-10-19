@@ -453,6 +453,9 @@ export const semanticColors = defineSemanticTokens.colors({
       DEFAULT: { value: "{colors.soot.700}" },
       /** Headings. */
       strong: { value: "{colors.soot.800}" },
+      /** Section subheaders on light bands: a step lighter than the dark
+       * bands' navy. */
+      heading: { value: "{colors.silver.700}" },
       /** Secondary copy. */
       muted: { value: "{colors.soot.500}" },
       /** Captions, metadata. */
@@ -468,7 +471,7 @@ export const semanticColors = defineSemanticTokens.colors({
     },
     border: {
       /** Solid hairline. */
-      DEFAULT: { value: "{colors.canvas.500}" },
+      DEFAULT: { value: "{colors.canvas.400}" },
       /** The dashed rule that separates cards and rows. */
       dashed: { value: "{colors.silver.300}" },
       /** Same rule, over a tinted band. */

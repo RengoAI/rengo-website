@@ -7,6 +7,7 @@ import {
   HERO_ACCENT,
   HERO_BLUES,
   HERO_DOT,
+  HERO_DOT_GROW,
   HERO_GREYS,
   HERO_HIGHLIGHT,
   HERO_PALE,
@@ -15,6 +16,7 @@ import {
 import { INK } from "@/components/site/canvas/ink";
 import { useCanvasLoop } from "@/components/site/canvas/use-canvas-loop";
 import { CONTACT_HREF } from "@/components/site/site-constants";
+import { CTA_SHADOW, GRAIN_TILE } from "@/components/site/site-styles";
 import { SolidCta } from "@/components/site/solid-cta";
 import { Box, Text } from "@chakra-ui/react";
 import { parseToRgba } from "color2k";
@@ -31,9 +33,9 @@ import React from "react";
  * x, so dots travel mostly vertically, and each line is slid along by a
  * golden-ratio step so the columns don't stack. Dots come up to full
  * strength as they land, then each line rolls in its own wave and every dot
- * swells 2px now and then. Ten seconds after the bed forms, every dot drifts
- * back to where it started and the bed forms again. On phones there are
- * half as many dots, sitting 60px higher still.
+ * now and then swells from 4px to 5.6px. Ten seconds after the bed forms,
+ * every dot drifts back to where it started and the bed forms again. On
+ * phones there are half as many dots, sitting 20px lower.
  *
  * Click the hero (or press R) to restart with a fresh scatter. Reduced
  * motion gets the formed bed, still.
@@ -51,12 +53,12 @@ const DOTS = 1728;
 /**
  * The whole graphic — the starting scatter and the bed — is raised RAISE
  * px. Phones (canvas narrower than the `md` breakpoint) get half the dots,
- * raised PHONE_RAISE px more.
+ * raised PHONE_RAISE px more — negative, so they sit lower.
  */
 const RAISE = 60;
 const PHONE_MAX_W = 768;
 const PHONE_DOTS = DOTS / 2;
-const PHONE_RAISE = 60;
+const PHONE_RAISE = -20; // 80px lower than the earlier 60px raise
 const LINES = 16;
 const LINE_GAP = 4; // px, centre to centre
 const LAYER_GAP = 96; // px below the copy where the first line forms
@@ -122,7 +124,11 @@ const DRIFT_STRENGTH = 0.6;
 /** The lightest grey on 60% of the dots, more than the shared palette's. */
 const PALE = { ...HERO_PALE, share: 0.6 };
 
+/** Share of dots in the site's accent crimson. */
+const CRIMSON_SHARE = 0.08;
+
 const toRgb = (c: string) => parseToRgba(c).slice(0, 3);
+const CRIMSON_RGB = toRgb(INK.crimson);
 const ACCENT_RGB = toRgb(HERO_ACCENT.color);
 const HIGHLIGHT_RGB = toRgb(HERO_HIGHLIGHT.color);
 const PALE_RGB = toRgb(PALE.color);
@@ -130,10 +136,12 @@ const GREYS_RGB = HERO_GREYS.map(toRgb);
 const BLUES_RGB = HERO_BLUES.map(toRgb);
 
 /**
- * A dot's shade: the accent's share, then the navy's, then the pale grey's,
- * then half greys and half blues, each a random mix of two of its family.
+ * A dot's shade: CRIMSON_SHARE in crimson; the rest split as before — the
+ * accent's share, then the navy's, then the pale grey's, then half greys
+ * and half blues, each a random mix of two of its family.
  */
 const dotShade = () => {
+  if (Math.random() < CRIMSON_SHARE) return CRIMSON_RGB;
   let u = Math.random();
   if (u < HERO_ACCENT.share) return ACCENT_RGB;
   u -= HERO_ACCENT.share;
@@ -235,8 +243,9 @@ type Dot = {
  * Evenly spaced slots along the lines, handed out in order of each dot's
  * starting x so dots travel mostly vertically and don't cross. Each run of
  * LINES dots shares a column, and within it the dot that starts highest
- * takes the top line. Each line is slid along by a golden-ratio fraction of
- * the spacing so the columns don't read as vertical stripes.
+ * takes the top line. The smaller-wave lines' dots share each column's x,
+ * so they stack on one vertical axis; the BIG_LINES are slid along by a
+ * golden-ratio fraction of the spacing, off those columns.
  */
 const assignSlots = (dots: Dot[], width: number) => {
   const cols = Math.ceil(dots.length / LINES);
@@ -247,7 +256,10 @@ const assignSlots = (dots: Dot[], width: number) => {
       .slice(col * LINES, (col + 1) * LINES)
       .sort((a, b) => a.y - b.y)
       .forEach((d, line) => {
-        d.tx = ((col + ((line * 0.618034) % 1)) * spacing) % width;
+        const shift = BIG_LINES.has(Math.round(line * LINE_GAP))
+          ? (line * 0.618034) % 1
+          : 0;
+        d.tx = ((col + shift) * spacing) % width;
         d.ty = line * LINE_GAP;
       });
   }
@@ -405,7 +417,7 @@ export const LandingHero: React.FC = () => {
         ctx.fillRect(d.trail[i * 2] - r, d.trail[i * 2 + 1] - r, r * 2, r * 2);
       }
       ctx.globalAlpha = 1;
-      mark(ctx, x, y, r + pulseGrowth(d, elapsed));
+      mark(ctx, x, y, r + pulseGrowth(d, elapsed, HERO_DOT_GROW));
       d.trail[d.head * 2] = x;
       d.trail[d.head * 2 + 1] = y;
       d.head = (d.head + 1) % TRAIL_LEN;
@@ -496,6 +508,8 @@ export const LandingHero: React.FC = () => {
       overflow="hidden"
       {...HERO_BOX}
       bg="site.bg.surface"
+      bgImage={GRAIN_TILE}
+      bgSize="200px 200px"
       onClick={restart}
       cursor="default"
     >
@@ -512,11 +526,11 @@ export const LandingHero: React.FC = () => {
       >
         <Box
           ref={copy}
-          // Centred on the viewport, then raised 40px + 4rem. The raise is a
+          // Centred on the viewport, then raised 80px + 4rem. The raise is a
           // transform, which the bed (hung off the box's laid-out bottom
           // edge) doesn't follow.
           position="relative"
-          transform="translateY(calc(-40px - 4rem))"
+          transform="translateY(calc(-80px - 4rem))"
           {...COPY_BOX}
           display="flex"
           flexDirection={{ base: "column", md: "row" }}
@@ -552,9 +566,9 @@ export const LandingHero: React.FC = () => {
             gap="20px"
           >
             <Text
-              textStyle="body.sm"
-              // 14px on phones too, where body.sm steps down to 12px.
-              fontSize="0.875rem"
+              textStyle="body.md"
+              // A step down on phones: 14px, 16px from md.
+              fontSize={{ base: "0.875rem", md: "1rem" }}
               lineHeight="1.2"
               color="site.fg"
               textAlign={{ base: "left", md: "right" }}
@@ -572,6 +586,7 @@ export const LandingHero: React.FC = () => {
             >
               <SolidCta
                 h="27px"
+                boxShadow={CTA_SHADOW}
                 href={CONTACT_HREF}
                 labelProps={{ gap: "8px" }}
               >

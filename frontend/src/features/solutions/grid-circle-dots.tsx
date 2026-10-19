@@ -2,7 +2,6 @@ import { CanvasFill } from "@/components/site/canvas/canvas-fill";
 import { easeInOut, lerp } from "@/components/site/canvas/canvas-utils";
 import {
   firstPulseAt,
-  HERO_DOT,
   heroDotColor,
   pulseGrowth,
 } from "@/components/site/canvas/hero-dots";
@@ -12,9 +11,10 @@ import React from "react";
 
 /**
  * The hero's marks, in its colours, moving between an even grid and a
- * filled circle on a seamless loop. In the grid they are squares; as each
- * one travels to the circle its corners round off into a dot, and back.
- * Like the hero's dots, each one now and then swells 2px and settles.
+ * filled circle on a seamless loop, square marks throughout. The grid is
+ * spread GRID_SPREAD times wider than the circle's packing, so the marks
+ * draw in as they gather into the circle. Like the hero's dots, each one now
+ * and then swells 2px and settles.
  *
  * Grid cells are paired with circle spots by distance from the centre, so
  * the middle of the grid becomes the middle of the circle and the marks
@@ -25,8 +25,10 @@ import React from "react";
 const COLS = 56;
 const ROWS = 18;
 const PITCH = 14; // px, grid spacing at full size
-/** The whole figure, spacing and marks, at this scale. */
+/** The figure's spacing at this scale. */
 const SCALE = 1.2;
+/** A mark's size, px, at any scale. */
+const MARK = 4;
 /** Share of marks in the site's accent red; the rest take the hero's mix. */
 const ACCENT_SHARE = 0.1;
 /** Seconds held as a grid, and as a circle; seconds for each change. */
@@ -38,11 +40,18 @@ const RIPPLE = 0.6;
 const GOLDEN = Math.PI * (3 - Math.sqrt(5));
 /** The circle's radius in pitches: the same area as the grid. */
 const CIRCLE_R = Math.sqrt((COLS * ROWS) / Math.PI);
-/** Half the figure's height at its tallest (grid or circle), in pitches. */
-const HALF_H = Math.max(ROWS / 2, CIRCLE_R);
+/** The grid's spacing, as a multiple of the circle's. */
+const GRID_SPREAD = 1.5;
+/** Gap between the copy's bottom and the figure's tallest shape, in px. */
+const TOP_GAP = 24;
+/** From the `lg` breakpoint (px), the figure sits RIGHT_PAD from the band's
+ * right edge instead of centred. */
+const DESKTOP_MIN_W = 1024;
+const RIGHT_PAD = 60;
 
 type Mark = {
-  /** Grid and circle positions, relative to the figure's centre, in pitches. */
+  /** Grid positions in grid pitches and circle positions in circle
+   * pitches, relative to the figure's centre. */
   gx: number;
   gy: number;
   cx: number;
@@ -99,34 +108,37 @@ export const GridCircleDots: React.FC<{
   const marks = React.useMemo(makeMarks, []);
 
   const canvasRef = useCanvasLoop(({ ctx, w, h, t, reduced }) => {
-    // Fit the grid to narrow screens, never past full size, then scale.
-    const pitch = Math.min(PITCH, (w - 32) / COLS) * SCALE * scale;
-    // A quarter of the band's width right of centre, less 120px, its
-    // tallest shape (the circle) starting right at the bottom of the copy.
-    const ox = w * 0.75 - 120;
+    // Fit each shape to narrow screens, never past full size, then scale.
+    const fit = (w - 32) / COLS;
+    const pitch = Math.min(PITCH, fit) * SCALE * scale;
+    const gridPitch = Math.min(PITCH * GRID_SPREAD, fit) * SCALE * scale;
+    const half = MARK / 2;
+    // Half the figure at its widest and tallest, grid or circle, in px.
+    const halfW = Math.max(((COLS - 1) / 2) * gridPitch, CIRCLE_R * pitch);
+    const halfH = Math.max((ROWS / 2) * gridPitch, CIRCLE_R * pitch);
+    // From desktop, its widest shape ends RIGHT_PAD in from the band's
+    // right edge; below that it's centred. Its tallest shape starts TOP_GAP
+    // below the copy.
+    const ox = w >= DESKTOP_MIN_W ? w - RIGHT_PAD - halfW - half : w / 2;
     const el = below?.current;
     const canvas = canvasRef.current;
     const top =
       el && canvas
         ? el.getBoundingClientRect().bottom - canvas.getBoundingClientRect().top
         : 0;
-    const oy = top + HALF_H * pitch;
+    const oy = top + TOP_GAP + halfH;
 
     ctx.clearRect(0, 0, w, h);
     for (const m of marks) {
       // Reduced motion: the grid, still.
       const p = reduced ? 0 : progress(t, m.delay);
-      const x = ox + lerp(m.gx, m.cx, p) * pitch;
-      const y = oy + lerp(m.gy, m.cy, p) * pitch;
+      const x = ox + lerp(m.gx * gridPitch, m.cx * pitch, p);
+      const y = oy + lerp(m.gy * gridPitch, m.cy * pitch, p);
 
-      const r =
-        (HERO_DOT * SCALE * scale) / 2 + (reduced ? 0 : pulseGrowth(m, t));
+      const r = half + (reduced ? 0 : pulseGrowth(m, t));
 
       ctx.fillStyle = m.color;
-      ctx.beginPath();
-      // Square in the grid, round in the circle.
-      ctx.roundRect(x - r, y - r, r * 2, r * 2, r * p);
-      ctx.fill();
+      ctx.fillRect(x - r, y - r, r * 2, r * 2);
     }
   });
 

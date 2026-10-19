@@ -5,13 +5,11 @@ import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
 import { SiteOutro } from "@/components/site/site-outro";
 import {
+  StepCard,
+  TESTIMONIAL_WASHES,
   TestimonialCard,
   type TestimonialWash,
 } from "@/components/site/split-card";
-import {
-  UseCaseAccordion,
-  type UseCase,
-} from "@/components/site/use-case-accordion";
 import { FoundationSection } from "@/features/landing/foundation-section";
 import { LandingHero } from "@/features/landing/landing-hero";
 import { LogoMarquee } from "@/features/landing/logo-marquee";
@@ -21,7 +19,7 @@ import React from "react";
 
 const ART = "/img/rebrand/";
 
-const HOW_WE_WORK: UseCase[] = [
+const HOW_WE_WORK = [
   {
     title: "Scope the work",
     body: "We learn how your team works today, what information they need, and where the process breaks down.",
@@ -85,9 +83,9 @@ const COMPLIANCE = [
 ];
 
 /**
- * The partner promise. Under that heading, right of centre, the solutions
- * figure moves between a grid and a circle. The band is tall enough to hold
- * the circle below the heading.
+ * The partner promise. Under that heading, right-aligned on desktop, the
+ * solutions figure moves between a grid and a circle. The band is tall
+ * enough to hold the circle below the heading.
  */
 const FdeSection: React.FC = () => {
   // The tallest shape (the circle) starts at the bottom of this heading.
@@ -107,10 +105,10 @@ const FdeSection: React.FC = () => {
           <Text
             ref={copyRef}
             as="h2"
-            textStyle="h5"
+            textStyle="h4"
             fontWeight={400}
             lineHeight="1.1"
-            color="site.fg"
+            color="site.fg.heading"
             // Caps at the column's edge instead of running off the screen.
             w="673px"
             maxW="full"
@@ -139,9 +137,10 @@ export const LandingPage: React.FC = () => (
       {/* --- The problem & vision ------------------------------------------ */}
       {/* Held open to 741px, 80px past the design's 661px band; the copy
         only fills the top. */}
-      <Section grid bg="site.bg.tintSubtle" minH={{ lg: "741px" }}>
+      {/* The second testimonial card's wash, stretched over the band. */}
+      <Section grid {...TESTIMONIAL_WASHES.mid} minH={{ lg: "741px" }}>
         <GridCol span={{ base: 16, lg: 11 }}>
-          <Text as="h2" textStyle="h5" color="site.fg.strong" maxW="800px">
+          <Text as="h2" textStyle="h4" color="site.fg.heading">
             Companies have spent decades making the numbers in their databases
             reliable, connecting their tools, and standardizing workflows. But
             much of what an organization actually knows{" "}
@@ -150,12 +149,13 @@ export const LandingPage: React.FC = () => (
             </Box>
           </Text>
         </GridCol>
-        {/* Hidden on phones. Flush right, behind an empty spacer: 8 columns
-          on tablets, and 1 on desktop, where it sits beside the heading. */}
+        {/* Hidden on phones. Flush right, behind an empty spacer: 7 columns
+          wide on tablets, and 4 on desktop, where it sits beside the
+          heading. */}
         <GridCol
           display={{ base: "none", md: "block" }}
-          span={{ base: 15, md: 8, lg: 4 }}
-          start={{ base: 2, md: 9, lg: 13 }}
+          span={{ base: 15, md: 7, lg: 4 }}
+          start={{ base: 2, md: 10, lg: 13 }}
           pt={{ md: "16px", lg: 0 }}
         >
           {/* Separate paragraphs, a blank line (one 1.4 line height) apart.
@@ -199,38 +199,55 @@ export const LandingPage: React.FC = () => (
       {/* --- About the FDE service ------------------------------------------- */}
       <FdeSection />
 
-      {/* Canvas 400: a grey darker than the footer's, so the band reads
-        apart from the off-white sections around it. */}
-      <Section grid bg="canvas.400">
-        <GridCol span={16} pb="60px">
+      {/* The problem band's pale blue, so it reads apart from the off-white
+        sections around it. */}
+      {/* The problem band's wash, turned the other way round. */}
+      <Section
+        grid
+        {...TESTIMONIAL_WASHES.midReversed}
+        py="72px"
+        // 20px between the step cards, across and when stacked.
+        gridProps={{ gap: "1.25rem" }}
+      >
+        <GridCol span={16} pb="36px">
           <Box display="flex" flexDirection="column" gap="12px">
             <Text
               as="h2"
               textStyle="h3"
-              color="site.fg"
+              color="site.fg.heading"
               maxW={{ base: "75vw", md: "280px" }}
             >
               Our approach
             </Text>
-            <Text textStyle="body.md" color="site.fg" maxW="480px">
+            <Text
+              textStyle="body.sm"
+              color="site.fg"
+              // Hidden on phones; one line from md up.
+              display={{ base: "none", md: "block" }}
+              whiteSpace="nowrap"
+            >
               We map how your team works today, then build with you.
             </Text>
           </Box>
         </GridCol>
-        <GridCol span={16}>
-          <UseCaseAccordion items={HOW_WE_WORK} showStepNumbers />
-        </GridCol>
+        {/* The metrics layout, filling the grid: four 4-column steps. Two
+          across on tablets, stacked on phones. */}
+        {HOW_WE_WORK.map((step, i) => (
+          <GridCol key={step.title} span={{ base: 16, md: 8, lg: 4 }}>
+            <StepCard step={i + 1} title={step.title} body={step.body} />
+          </GridCol>
+        ))}
       </Section>
 
       {/* --- Testimonials ----------------------------------------------------- */}
       {/* On the page surface, under the solutions band. */}
-      <Section grid bg="site.bg.surface">
+      <Section grid bg="site.bg.surface" py="72px">
         <GridCol span={16} pb="40px">
           <Box display="flex" flexDirection="column" gap="8px">
             <Text
               as="h2"
               textStyle="h3"
-              color="site.fg"
+              color="site.fg.heading"
               maxW={{ base: "75vw", md: "296px" }}
             >
               Our customers in their own words
@@ -274,7 +291,7 @@ export const LandingPage: React.FC = () => (
             textStyle="h3"
             fontWeight={300}
             color="site.fg.onDark"
-            maxW={{ base: "75vw", md: "420px" }}
+            maxW={{ base: "60vw", md: "336px" }}
           >
             Security built for your most sensitive data
           </Text>
@@ -286,7 +303,7 @@ export const LandingPage: React.FC = () => (
       <Section grid rhythm="compact" bg="site.bg.dark">
         <GridCol span={{ base: 16, lg: 3 }} display="flex" alignItems="center">
           <Text textStyle="label" fontWeight={300} color="site.fg.onDarkFaint">
-            Bring industry experience from
+            Bringing industry experience from
           </Text>
         </GridCol>
         <GridCol span={{ base: 16, lg: 13 }} display="flex" alignItems="center">

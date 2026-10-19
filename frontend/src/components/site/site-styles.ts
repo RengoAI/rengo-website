@@ -7,13 +7,37 @@
  * tokens inside of: gradients, and outline or border shorthands.
  */
 export const colorVar = (token: string) =>
-  `var(--rengo-colors-${token.replace(/\./g, "-")})`;
+  // Chakra kebab-cases camelCase segments: dashedOnTint → dashed-on-tint.
+  `var(--rengo-colors-${token
+    .replace(/\./g, "-")
+    .replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`)})`;
 
 /** The text links' hover: a quick fade. */
 export const hoverFade = {
   transition: "opacity 150ms ease",
   _hover: { opacity: 0.6 },
 } as const;
+
+/**
+ * The light bands' ground grain (hero, footer): a duotone of fine speckles,
+ * a light grey and white, each on about half the pixels of a stitched 200px
+ * tile and laid on faintly, so the ground reads as paper rather than flat
+ * colour. Two noise seeds, so the tones don't share pixels. Lay it at
+ * `bgSize="200px 200px"`.
+ */
+export const GRAIN_TILE = `url("data:image/svg+xml,${encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200">` +
+    `<filter id="a"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3" stitchTiles="stitch"/>` +
+    `<feColorMatrix values="0 0 0 0 0.8255 0 0 0 0 0.8255 0 0 0 0 0.8333 20 0 0 0 -10"/></filter>` +
+    `<filter id="b"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="11" stitchTiles="stitch"/>` +
+    `<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 20 0 0 0 -10"/></filter>` +
+    `<rect width="100%" height="100%" filter="url(#a)" opacity="0.45"/>` +
+    `<rect width="100%" height="100%" filter="url(#b)" opacity="0.6"/></svg>`,
+)}")`;
+
+/** The primary CTAs' soft lift, in the nav shadow's navy. */
+export const CTA_SHADOW =
+  "0 1px 2px rgba(12, 29, 52, 0.10), 0 6px 16px rgba(12, 29, 52, 0.10)";
 
 /** A 1px dotted rule along the top edge, in the site's dashed-rule colour. */
 export const dottedTop = (color = "site.border.dashed") =>

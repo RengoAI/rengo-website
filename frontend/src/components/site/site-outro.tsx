@@ -2,19 +2,24 @@ import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import { AutomataGrid } from "@/components/site/automata-grid";
 import { CONTACT_HREF } from "@/components/site/site-constants";
+import { CTA_SHADOW } from "@/components/site/site-styles";
 import { SolidCta } from "@/components/site/solid-cta";
 import { prefersReducedMotion } from "@/shared/utils/motion";
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 
-/** The CTA's label, a size up from the other buttons'. */
+/** The CTA's label: 14px at every width, the other buttons' size. */
 const OUTRO_LABEL = {
-  fontSize: "1.25rem",
+  fontSize: "0.875rem",
   lineHeight: "21px",
   letterSpacing: "0",
   color: "canvas.50",
   _hover: { opacity: 0.65 },
 } as const;
+
+/** The heading box's padding past the line, px. */
+const OUTRO_HEADING_PAD_X = 24;
+const OUTRO_HEADING_PAD_Y = 16;
 
 const DEFAULT_HEADING = (
   <>
@@ -91,18 +96,29 @@ export const SiteOutro: React.FC<{
             alignItems="center"
             gap={{ base: "40px", md: "60px" }}
           >
+            {/* On a box of the band's own grey, so no squares run behind
+              the line. The negative margins take the padding back out, so
+              the layout is unchanged. */}
             <Text
               as={headingAs}
               id="outro-heading"
               textStyle="d1"
+              // d2's 40px on tablets, a size under d1's 60px; d1 from lg.
+              fontSize={{ base: "2.5rem", md: "2.5rem", lg: "3.75rem" }}
               color="site.fg.strong"
-              maxW="496px"
+              maxW={`calc(496px + ${2 * OUTRO_HEADING_PAD_X}px)`}
               textAlign="center"
+              bg="site.bg.footer"
+              borderRadius="4px"
+              px={`${OUTRO_HEADING_PAD_X}px`}
+              py={`${OUTRO_HEADING_PAD_Y}px`}
+              mx={`-${OUTRO_HEADING_PAD_X}px`}
+              my={`-${OUTRO_HEADING_PAD_Y}px`}
             >
               {heading}
             </Text>
-            {/* The hero and nav button, larger and on soot: lightens to the
-              footer's silver on hover, its label turning dark. Hugs its
+            {/* The hero and nav button, larger and on soot: lightens to Sky
+              on hover, its label turning dark. Hugs its
               label, a set 20px to the arrow. */}
             <SolidCta
               href={ctaHref}
@@ -112,6 +128,7 @@ export const SiteOutro: React.FC<{
               px="16px"
               py="6px"
               bg="site.bg.darkRaised"
+              boxShadow={CTA_SHADOW}
               labelProps={OUTRO_LABEL}
             >
               {cta}

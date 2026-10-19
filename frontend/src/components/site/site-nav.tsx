@@ -13,9 +13,7 @@ import { Link } from "react-router-dom";
 const RouterLink = chakra(Link);
 
 /** The nav's in-app pages. */
-const LINKS: { label: string; to: string }[] = [
-  { label: "Careers", to: rootRoute({}).careers({}).$ },
-];
+const LINKS: { label: string; to: string }[] = [];
 
 const MENU_ID = "site-nav-menu";
 
@@ -35,8 +33,8 @@ const DESKTOP_QUERY = "(min-width: 768px)";
  * `overlay` lays the bar over the top of the first section instead of above
  * it. The section has to extend up behind it, as the /v3 hero does.
  *
- * The bar draws no rule underneath; once the page scrolls, a soft shadow
- * lifts it off what passes beneath.
+ * Once the page scrolls, a solid hairline underneath and a soft shadow lift
+ * the bar off what passes beneath; at the very top it draws neither.
  */
 
 /** The bar's links, "Log in" among them, from `md` up. */
@@ -108,6 +106,10 @@ export const SiteNav: React.FC<{
       zIndex={10}
       // Opaque, including while content scrolls underneath.
       bg="site.bg.surface"
+      borderBottom="1px solid"
+      // The hairline only once the page scrolls; at the very top it's
+      // transparent, keeping the bar's height.
+      borderColor={scrolled ? "site.border" : "transparent"}
       mb={overlay ? `-${NAV_H}px` : undefined}
       py="8px"
       minH={`${NAV_H}px`}
@@ -119,7 +121,7 @@ export const SiteNav: React.FC<{
       boxShadow={
         scrolled ? "0 2px 12px rgba(12, 29, 52, 0.03)" : "0 0 0 transparent"
       }
-      transition="box-shadow 200ms ease"
+      transition="box-shadow 200ms ease, border-color 200ms ease"
     >
       <Grid alignItems="center">
         {/* From md: the wordmark on the left, the links from column 4 —
@@ -175,8 +177,13 @@ export const SiteNav: React.FC<{
             Log in
           </chakra.a>
           <Box display={{ base: "none", md: "block" }}>
-            {/* The hero's "Book a call" button, at its 27px. */}
-            <SolidCta h="27px" href={CONTACT_HREF} labelProps={{ gap: "8px" }}>
+            {/* "Book a call" at the hero button's 27px, in the secondary tone. */}
+            <SolidCta
+              tone="secondary"
+              h="27px"
+              href={CONTACT_HREF}
+              labelProps={{ gap: "8px" }}
+            >
               Book a call
             </SolidCta>
           </Box>
@@ -251,6 +258,7 @@ export const SiteNav: React.FC<{
             </Box>
           </Box>
           <SolidCta
+            tone="secondary"
             href={CONTACT_HREF}
             w="full"
             justifyContent="center"
