@@ -174,11 +174,20 @@ export const StepCard: React.FC<
         gap={{ base: "0.25rem", md: "0.5rem" }}
         w="full"
       >
-        <Text as="h3" textStyle="h6" color="site.fg">
+        {/* h6, stepping up to h5's 24px on desktop. */}
+        <Text
+          as="h3"
+          textStyle="h6"
+          fontSize={{ lg: "1.5rem" }}
+          color="site.fg"
+        >
           {title}
         </Text>
-        {/* A step lighter than body copy, so it sits back from the title. */}
-        <Text textStyle="body.sm" color="soot.600">
+        {/* A step lighter than body copy, so it sits back from the title.
+            On desktop it's held open to three lines (3 × body.sm's 1.4 line
+            height), so the titles line up across the cards; a longer one,
+            at narrow desktop widths, grows rather than overflowing. */}
+        <Text textStyle="body.sm" color="soot.600" minH={{ lg: "4.2em" }}>
           {body}
         </Text>
       </Box>
@@ -286,7 +295,11 @@ export const TestimonialCard: React.FC<
           lineHeight="1.2"
           letterSpacing="0"
           color="soot.600"
-          w="full"
+          // 80px short of the card's width, so it wraps sooner.
+          w="calc(100% - 80px)"
+          // Two lines tall on desktop (2 × the 1.2 line height) whatever
+          // its length, so the avatars line up across the cards.
+          minH={{ lg: "2.4em" }}
         >
           {attribution}
         </Text>

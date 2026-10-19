@@ -31,7 +31,7 @@ export const textStyles = defineTextStyles({
       fontFamily: "body",
       fontSize: { base: "2.5rem", md: "3.5rem" }, // 40px → 60px
       fontWeight: "350",
-      letterSpacing: "-0.03em",
+      letterSpacing: "-0.025em",
       lineHeight: "1",
     },
   },
@@ -40,17 +40,17 @@ export const textStyles = defineTextStyles({
       fontFamily: "body",
       fontSize: { base: "2rem", md: "2.5rem" }, // 32px → 40px
       fontWeight: "350",
-      letterSpacing: "-0.04em",
-      lineHeight: "1.05",
+      letterSpacing: "-0.025em",
+      lineHeight: "1",
     },
   },
   h3: {
     value: {
       fontFamily: "body",
       fontSize: { base: "1.625rem", md: "2.125rem" }, // 26px → 32px
-      fontWeight: "400",
+      fontWeight: "350",
       letterSpacing: "-0.025em",
-      lineHeight: "1.05",
+      lineHeight: "1",
     },
   },
   h4: {
