@@ -7,6 +7,7 @@ import {
   HERO_ACCENT,
   HERO_BLUES,
   HERO_DOT,
+  HERO_DOT_GROW,
   HERO_GREYS,
   HERO_HIGHLIGHT,
   HERO_PALE,
@@ -15,6 +16,7 @@ import {
 import { INK } from "@/components/site/canvas/ink";
 import { useCanvasLoop } from "@/components/site/canvas/use-canvas-loop";
 import { CONTACT_HREF } from "@/components/site/site-constants";
+import { CTA_SHADOW } from "@/components/site/site-styles";
 import { SolidCta } from "@/components/site/solid-cta";
 import { Box, Text } from "@chakra-ui/react";
 import { parseToRgba } from "color2k";
@@ -31,9 +33,9 @@ import React from "react";
  * x, so dots travel mostly vertically, and each line is slid along by a
  * golden-ratio step so the columns don't stack. Dots come up to full
  * strength as they land, then each line rolls in its own wave and every dot
- * swells 2px now and then. Ten seconds after the bed forms, every dot drifts
- * back to where it started and the bed forms again. On phones there are
- * half as many dots, sitting 60px higher still.
+ * now and then swells from 4px to 5.6px. Ten seconds after the bed forms,
+ * every dot drifts back to where it started and the bed forms again. On
+ * phones there are half as many dots, sitting 60px higher still.
  *
  * Click the hero (or press R) to restart with a fresh scatter. Reduced
  * motion gets the formed bed, still.
@@ -409,7 +411,7 @@ export const LandingHero: React.FC = () => {
         ctx.fillRect(d.trail[i * 2] - r, d.trail[i * 2 + 1] - r, r * 2, r * 2);
       }
       ctx.globalAlpha = 1;
-      mark(ctx, x, y, r + pulseGrowth(d, elapsed));
+      mark(ctx, x, y, r + pulseGrowth(d, elapsed, HERO_DOT_GROW));
       d.trail[d.head * 2] = x;
       d.trail[d.head * 2 + 1] = y;
       d.head = (d.head + 1) % TRAIL_LEN;
@@ -574,6 +576,7 @@ export const LandingHero: React.FC = () => {
             >
               <SolidCta
                 h="27px"
+                boxShadow={CTA_SHADOW}
                 href={CONTACT_HREF}
                 labelProps={{ gap: "8px" }}
               >

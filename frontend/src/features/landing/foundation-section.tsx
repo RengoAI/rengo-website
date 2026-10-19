@@ -34,9 +34,8 @@ const FOUNDATION_LAYERS: { title: string; description: string }[] = [
   },
 ];
 
-/** Columns a callout spans from lg. The description fills its full width. */
+/** Columns a callout spans from lg. The description caps at half of it. */
 const FOUNDATION_COPY_SPAN = 5;
-const FOUNDATION_DESCRIPTION_SPAN = 5;
 /** From lg, how far a callout's divider runs: past its copy into the render. */
 const FOUNDATION_DIVIDER_W = "654px";
 
@@ -61,14 +60,12 @@ const FoundationLayer: React.FC<{ title: string; description: string }> = ({
       >
         {title}
       </Text>
-      {/* Set like the rest of the page's body copy. From lg the callout
-          spans FOUNDATION_COPY_SPAN columns. */}
+      {/* Set like the rest of the page's body copy. From md it caps at half the
+          callout's width plus 80px; on phones it fills it. */}
       <Text
         textStyle="body.sm"
         color="site.fg"
-        maxW={{
-          lg: colSpanWidth(FOUNDATION_DESCRIPTION_SPAN, FOUNDATION_COPY_SPAN),
-        }}
+        maxW={{ md: "calc(50% + 80px)" }}
       >
         {description}
       </Text>
@@ -110,7 +107,7 @@ const FOUNDATION_RENDER_W = `min(${FOUNDATION_LAYER_MAX_W.lg}, ${colSpanWidth(
 const FOUNDATION_RENDER_W_PHONE = `min(${FOUNDATION_LAYER_MAX_W.base}, 100%)`;
 
 /** px between the nav and the foundation heading while it's pinned. */
-const FOUNDATION_HEADING_TOP = 60;
+const FOUNDATION_HEADING_TOP = 44; // 60px less 1rem
 
 /** Share of the section the pinned heading has passed when it fades out. */
 const FOUNDATION_HEADING_FADE_AT = 0.8;
@@ -231,28 +228,23 @@ export const FoundationSection: React.FC = () => {
           bgImage={`linear-gradient(to right, ${colorVar("site.bg.surface")} 0%, ${colorVar("site.bg.surface")} 35%, transparent 50%)`}
         />
         <GridCol
-          span={{ base: 16, md: 10, lg: 10 }}
+          span={{ base: 16, lg: 7 }}
           position="relative"
           pointerEvents={headingGone ? "none" : "auto"}
         >
           <Text
             ref={headingRef}
             as="h2"
-            textStyle="h5"
+            textStyle="h4"
             fontWeight={400}
             lineHeight="1.1"
             letterSpacing="-0.5px"
             color="site.fg"
           >
-            To solve this, we bring together data{" "}
-            {/* The measure fits the whole sentence on one line except the
-                last phrase. Break before "from" so the second line carries
-                the rest. */}
-            <Box as="span" display={{ base: "inline", lg: "block" }}>
-              from across your existing systems into a{" "}
-              <Box as="span" color="site.highlight">
-                unified data layer
-              </Box>
+            To solve this, we bring together data from across your existing
+            systems into a{" "}
+            <Box as="span" color="site.highlight">
+              unified data layer
             </Box>
           </Text>
         </GridCol>

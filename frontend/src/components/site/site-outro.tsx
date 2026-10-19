@@ -2,6 +2,7 @@ import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import { AutomataGrid } from "@/components/site/automata-grid";
 import { CONTACT_HREF } from "@/components/site/site-constants";
+import { CTA_SHADOW } from "@/components/site/site-styles";
 import { SolidCta } from "@/components/site/solid-cta";
 import { prefersReducedMotion } from "@/shared/utils/motion";
 import { Box, Text } from "@chakra-ui/react";
@@ -15,6 +16,10 @@ const OUTRO_LABEL = {
   color: "canvas.50",
   _hover: { opacity: 0.65 },
 } as const;
+
+/** The heading box's padding past the line, px. */
+const OUTRO_HEADING_PAD_X = 24;
+const OUTRO_HEADING_PAD_Y = 16;
 
 const DEFAULT_HEADING = (
   <>
@@ -91,13 +96,22 @@ export const SiteOutro: React.FC<{
             alignItems="center"
             gap={{ base: "40px", md: "60px" }}
           >
+            {/* On a box of the band's own grey, so no squares run behind
+              the line. The negative margins take the padding back out, so
+              the layout is unchanged. */}
             <Text
               as={headingAs}
               id="outro-heading"
               textStyle="d1"
               color="site.fg.strong"
-              maxW="496px"
+              maxW={`calc(496px + ${2 * OUTRO_HEADING_PAD_X}px)`}
               textAlign="center"
+              bg="site.bg.footer"
+              borderRadius="4px"
+              px={`${OUTRO_HEADING_PAD_X}px`}
+              py={`${OUTRO_HEADING_PAD_Y}px`}
+              mx={`-${OUTRO_HEADING_PAD_X}px`}
+              my={`-${OUTRO_HEADING_PAD_Y}px`}
             >
               {heading}
             </Text>
@@ -112,6 +126,7 @@ export const SiteOutro: React.FC<{
               px="16px"
               py="6px"
               bg="site.bg.darkRaised"
+              boxShadow={CTA_SHADOW}
               labelProps={OUTRO_LABEL}
             >
               {cta}

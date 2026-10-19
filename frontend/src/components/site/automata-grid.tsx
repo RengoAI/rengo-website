@@ -1,6 +1,7 @@
 import { CanvasFill } from "@/components/site/canvas/canvas-fill";
 import { rand } from "@/components/site/canvas/canvas-utils";
 import { heroDotColor } from "@/components/site/canvas/hero-dots";
+import { INK } from "@/components/site/canvas/ink";
 import { useCanvasLoop } from "@/components/site/canvas/use-canvas-loop";
 import React from "react";
 
@@ -9,14 +10,16 @@ import React from "react";
  * cellular automaton (Conway's Life, B3/S23). Every so often a small random
  * patch is seeded somewhere new, so activity breaks out sporadically across
  * the spread, grows or settles, and dies back. Live cells ink in as the
- * hero's marks — same size and colours, without the red — and fade out when
- * they die, so steps read as a soft flicker rather than a hard switch. No
- * cell lives past MAX_AGE generations, so Life's still debris clears away
- * and the spread never silts up.
+ * hero's marks — same size and colours, with ACCENT_SHARE in the accent red
+ * — and fade out when they die, so steps read as a soft flicker rather than
+ * a hard switch. No cell lives past MAX_AGE generations, so Life's still
+ * debris clears away and the spread never silts up.
  */
 
-const PITCH = 16.8; // px, the /solutions grid's spacing (14px × 1.2)
-const MARK = 4.1; // px, its squares (the hero's 3.4px dot × 1.2)
+const PITCH = 12.6; // px, a quarter tighter than the /solutions grid's 16.8px
+const MARK = 4; // px, its squares at full ink
+/** Share of cells in the site's accent red; the rest take the hero's mix. */
+const ACCENT_SHARE = 0.08;
 /** Seconds between generations. */
 const STEP = 0.32;
 /** Seconds between new seeds, min–max, and a seed's radius in cells. */
@@ -65,7 +68,9 @@ const makeField = (w: number, h: number, t: number): Field => {
     next: new Uint8Array(n),
     age: new Uint8Array(n),
     ink: new Float32Array(n),
-    color: Array.from({ length: n }, heroDotColor),
+    color: Array.from({ length: n }, () =>
+      Math.random() < ACCENT_SHARE ? INK.crimson : heroDotColor(),
+    ),
     acc: 0,
     nextSeed: t + rand(SEED_EVERY[0], SEED_EVERY[1]),
   };

@@ -1,10 +1,11 @@
-import { Grid, GridCol } from "@/components/layout/grid";
+import { colSpanWidth, Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import { ComplianceCardGroup } from "@/components/site/compliance-card";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
 import { SiteOutro } from "@/components/site/site-outro";
 import {
+  TESTIMONIAL_WASHES,
   TestimonialCard,
   type TestimonialWash,
 } from "@/components/site/split-card";
@@ -107,7 +108,7 @@ const FdeSection: React.FC = () => {
           <Text
             ref={copyRef}
             as="h2"
-            textStyle="h5"
+            textStyle="h4"
             fontWeight={400}
             lineHeight="1.1"
             color="site.fg"
@@ -139,9 +140,10 @@ export const LandingPage: React.FC = () => (
       {/* --- The problem & vision ------------------------------------------ */}
       {/* Held open to 741px, 80px past the design's 661px band; the copy
         only fills the top. */}
-      <Section grid bg="site.bg.tintSubtle" minH={{ lg: "741px" }}>
+      {/* The second testimonial card's wash, stretched over the band. */}
+      <Section grid {...TESTIMONIAL_WASHES.mid} minH={{ lg: "741px" }}>
         <GridCol span={{ base: 16, lg: 11 }}>
-          <Text as="h2" textStyle="h5" color="site.fg.strong" maxW="800px">
+          <Text as="h2" textStyle="h4" color="site.fg.strong">
             Companies have spent decades making the numbers in their databases
             reliable, connecting their tools, and standardizing workflows. But
             much of what an organization actually knows{" "}
@@ -201,8 +203,9 @@ export const LandingPage: React.FC = () => (
 
       {/* The problem band's pale blue, so it reads apart from the off-white
         sections around it. */}
-      <Section grid bg="site.bg.tintSubtle">
-        <GridCol span={16} pb="60px">
+      {/* The problem band's wash, turned the other way round. */}
+      <Section grid {...TESTIMONIAL_WASHES.midReversed} py="72px">
+        <GridCol span={16} pb="36px">
           <Box display="flex" flexDirection="column" gap="12px">
             <Text
               as="h2"
@@ -212,7 +215,12 @@ export const LandingPage: React.FC = () => (
             >
               Our approach
             </Text>
-            <Text textStyle="body.md" color="site.fg" maxW="480px">
+            <Text
+              textStyle="body.sm"
+              color="site.fg"
+              // Three of the band's 16 columns from lg up.
+              maxW={{ base: "480px", lg: colSpanWidth(3) }}
+            >
               We map how your team works today, then build with you.
             </Text>
           </Box>
@@ -226,7 +234,7 @@ export const LandingPage: React.FC = () => (
 
       {/* --- Testimonials ----------------------------------------------------- */}
       {/* On the page surface, under the solutions band. */}
-      <Section grid bg="site.bg.surface">
+      <Section grid bg="site.bg.surface" py="72px">
         <GridCol span={16} pb="40px">
           <Box display="flex" flexDirection="column" gap="8px">
             <Text

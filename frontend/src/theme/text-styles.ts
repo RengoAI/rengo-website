@@ -49,7 +49,7 @@ export const textStyles = defineTextStyles({
       fontFamily: "body",
       fontSize: { base: "1.625rem", md: "2.125rem" }, // 26px → 32px
       fontWeight: "400",
-      letterSpacing: "-0.02em",
+      letterSpacing: "-0.025em",
       lineHeight: "1.05",
     },
   },

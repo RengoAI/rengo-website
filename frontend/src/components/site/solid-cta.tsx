@@ -2,6 +2,10 @@ import { ArrowLink, type ArrowLinkProps } from "@/components/site/arrow-link";
 import { Box, type BoxProps } from "@chakra-ui/react";
 import React from "react";
 
+/** The hover's colour change: a gentle ease in and out, fill and label
+ * together. */
+const HOVER_EASE = "300ms ease-in-out";
+
 const TONE_BG = {
   dark: "site.bg.dark",
   light: "site.bg.raised",
@@ -46,13 +50,13 @@ export const SolidCta: React.FC<
     display="inline-flex"
     alignItems="center"
     cursor="pointer"
-    transition="opacity 150ms ease, background-color 150ms ease"
+    transition={`opacity ${HOVER_EASE}, background-color ${HOVER_EASE}`}
     _hover={TONE_HOVER[tone]}
     {...rest}
   >
     <ArrowLink
       color={tone === "dark" ? "site.fg.onDark" : "site.fg.strong"}
-      transition="color 150ms ease"
+      transition={`color ${HOVER_EASE}`}
       _groupHover={tone === "dark" ? { color: "site.fg.strong" } : undefined}
       fontWeight={300}
       gap="20px"

@@ -1,7 +1,7 @@
 import { colSpanWidth, GridCol } from "@/components/layout/grid";
 import { DataMeshDiagram } from "@/components/site/data-mesh-diagram";
-import { RULED_ROW_RULE, RuledRow } from "@/components/site/ruled-row";
-import { colorVar, dottedBottom } from "@/components/site/site-styles";
+import { RuledRow } from "@/components/site/ruled-row";
+import { colorVar } from "@/components/site/site-styles";
 import { Box, chakra, Text } from "@chakra-ui/react";
 import { ChevronDown } from "lucide-react";
 import React from "react";
@@ -12,6 +12,11 @@ export type UseCase = {
   body?: string;
   art?: boolean;
 };
+
+/** The step number's fixed slot, and the gap after it, in px. The
+ * description indents by both to line up with the title. */
+const STEP_W = 20;
+const STEP_GAP = 16;
 
 /**
  * The use-case list. Each row is the title and, when open, its description,
@@ -61,8 +66,12 @@ export const UseCaseAccordion: React.FC<{
     >
       {items.map((item, i) => {
         const isOpen = openIndices.has(i);
-        // The title's column, and the description one column narrower.
-        const titleSpan = { base: 16, md: 12, lg: isOpen && item.art ? 7 : 10 };
+        // The title's column. Without art it spans the row and the
+        // description fills it; with art, the description runs one column
+        // narrower than the title.
+        const titleSpan = item.art
+          ? { base: 16, md: 12, lg: isOpen ? 7 : 10 }
+          : { base: 16, md: 16, lg: 16 };
         const panelId = `${idPrefix}-panel-${i}`;
         return (
           // Its hover tint, silver 200, reads against the grey band.
@@ -71,8 +80,8 @@ export const UseCaseAccordion: React.FC<{
             as="li"
             // Containing block for the button's row-wide hit area.
             position="relative"
-            // The last row closes the list with the same rule underneath.
-            {...(i === items.length - 1 ? dottedBottom(RULED_ROW_RULE) : {})}
+            // Rules only between rows: none above the first.
+            {...(i === 0 ? { borderTopWidth: 0 } : {})}
             cursor="pointer"
           >
             <GridCol
@@ -122,10 +131,12 @@ export const UseCaseAccordion: React.FC<{
                       as="span"
                       display="inline-flex"
                       alignItems="center"
-                      gap="16px"
+                      gap={`${STEP_GAP}px`}
                     >
                       <Box
                         as="span"
+                        w={`${STEP_W}px`}
+                        flexShrink={0}
                         color="site.highlight"
                         fontSize="0.75rem"
                         fontWeight={500}
@@ -162,11 +173,20 @@ export const UseCaseAccordion: React.FC<{
                   textStyle="body.sm"
                   color="soot.600"
                   w="full"
-                  maxW={{
-                    base: colSpanWidth(titleSpan.base - 1, titleSpan.base),
-                    md: colSpanWidth(titleSpan.md - 1, titleSpan.md),
-                    lg: colSpanWidth(titleSpan.lg - 1, titleSpan.lg),
-                  }}
+                  // In line with the title, past the step number.
+                  pl={showStepNumbers ? `${STEP_W + STEP_GAP}px` : undefined}
+                  maxW={
+                    item.art
+                      ? {
+                          base: colSpanWidth(
+                            titleSpan.base - 1,
+                            titleSpan.base,
+                          ),
+                          md: colSpanWidth(titleSpan.md - 1, titleSpan.md),
+                          lg: colSpanWidth(titleSpan.lg - 1, titleSpan.lg),
+                        }
+                      : undefined
+                  }
                 >
                   {item.body}
                 </Text>

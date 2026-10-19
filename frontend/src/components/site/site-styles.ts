@@ -15,6 +15,10 @@ export const hoverFade = {
   _hover: { opacity: 0.6 },
 } as const;
 
+/** The primary CTAs' soft lift, in the nav shadow's navy. */
+export const CTA_SHADOW =
+  "0 1px 2px rgba(12, 29, 52, 0.10), 0 6px 16px rgba(12, 29, 52, 0.10)";
+
 /** A 1px dotted rule along the top edge, in the site's dashed-rule colour. */
 export const dottedTop = (color = "site.border.dashed") =>
   ({

@@ -118,7 +118,7 @@ const WASH_BLUE = "#BCCFEC";
  * colour drifts across the card instead of running in a straight line. Each
  * step leans further toward the blue.
  */
-const TESTIMONIAL_WASHES = {
+export const TESTIMONIAL_WASHES = {
   /** Flat, no blobs — a pale blue, a touch stronger than silver 100 but
    * still lighter than the other two cards' blues. */
   plain: {
@@ -139,6 +139,16 @@ const TESTIMONIAL_WASHES = {
       `radial-gradient(ellipse 85% 65% at 12% 10%, ${WASH_GREY} 0%, transparent 70%)`,
       `radial-gradient(ellipse 80% 70% at 92% 88%, ${WASH_BLUE}b3 0%, transparent 70%)`,
       `radial-gradient(ellipse 60% 45% at 70% 35%, ${WASH_MIST} 0%, transparent 80%)`,
+    ].join(", "),
+  },
+  /** `mid` flipped top to bottom: grey in the bottom left, blue in the top
+   * right. For bands rather than cards. */
+  midReversed: {
+    bg: WASH_MIST,
+    bgImage: [
+      `radial-gradient(ellipse 85% 65% at 12% 90%, ${WASH_GREY} 0%, transparent 70%)`,
+      `radial-gradient(ellipse 80% 70% at 92% 12%, ${WASH_BLUE}b3 0%, transparent 70%)`,
+      `radial-gradient(ellipse 60% 45% at 70% 65%, ${WASH_MIST} 0%, transparent 80%)`,
     ].join(", "),
   },
   deep: {
