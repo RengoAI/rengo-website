@@ -1,0 +1,124 @@
+# AI Review — unattended PR reviewer that posts a GitHub review as a
+# dedicated App (advisory APPROVE / COMMENT).
+#
+# This workflow is pull_request_target: it always runs the YAML and Python
+# from the PR's *base* ref. Only reviews targeting main and manual dispatches
+# from main run. Never check out head.sha. Never execute code from the PR.
+#
+# A PR that already carries an approval is not re-reviewed on later pushes:
+# the review job checks the PR's current reviews (latest state per reviewer)
+# and skips the model call when any of them is APPROVED. Dismissing the
+# approval, or a manual dispatch, brings the reviewer back.
+#
+# Setup (once, before the job will do anything):
+#   1. Install the org-owned GitHub App "AI Review" (shared with
+#      RengoAI/rengo) on RengoAI/rengo-website. Permissions: Pull requests
+#      R/W, Metadata R. No contents, no admin, no workflows, no webhooks.
+#   2. Put these in repository Actions secrets:
+#        AI_REVIEW_APP_ID
+#        AI_REVIEW_APP_PRIVATE_KEY
+#        AI_REVIEW_OPENAI_API_KEY
+#   3. Optional repo variable AI_REVIEW_NO_APPROVE_LOGINS excludes a
+#      comma-separated list of GitHub logins from auto-approval.
+#   4. Optional repo variable AI_REVIEW_TRUSTED_AUTHOR_LOGINS adds logins to
+#      TRUSTED_AUTHOR_LOGINS in policy.py: their PRs can still be approved when
+#      a diff is too large to review in full.
+#
+# Do not reuse the deploy App (DEPLOY_APP_ID).
+
+name: AI Review
+
+on:
+  pull_request_target:
+    branches: [main]
+    types: [opened, synchronize, ready_for_review, reopened]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: PR number to review
+        required: true
+        type: string
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.inputs.pr_number || github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  review:
+    name: Review
+    if: >
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
+      (
+        github.event_name == 'pull_request_target' &&
+        github.event.pull_request.draft == false &&
+        github.event.pull_request.head.repo.full_name == github.repository &&
+        github.event.pull_request.base.ref == 'main'
+      )
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout base ref
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+
+      - name: Skip when the PR is already approved
+        id: approval
+        if: github.event_name == 'pull_request_target'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          approved=$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/reviews?per_page=100" --jq '
+            [ .[] | select(.state == "APPROVED" or .state == "CHANGES_REQUESTED" or .state == "DISMISSED") ]
+            | group_by(.user.login) | map(max_by(.submitted_at))
+            | any(.state == "APPROVED")')
+          echo "approved=${approved}" >> "$GITHUB_OUTPUT"
+          if [ "$approved" = "true" ]; then
+            echo "::notice::AI Review skipped: the pull request already has an approval."
+          fi
+
+      - name: Guard secrets
+        id: guard
+        if: steps.approval.outputs.approved != 'true'
+        env:
+          APP_ID: ${{ secrets.AI_REVIEW_APP_ID }}
+          APP_KEY: ${{ secrets.AI_REVIEW_APP_PRIVATE_KEY }}
+          LLM_KEY: ${{ secrets.AI_REVIEW_OPENAI_API_KEY }}
+        run: |
+          if [ -n "$APP_ID" ] && [ -n "$APP_KEY" ] && [ -n "$LLM_KEY" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::AI Review is inert: repository Actions secrets are not configured."
+          fi
+
+      - name: Mint GitHub App token
+        id: app-token
+        if: steps.approval.outputs.approved != 'true' && steps.guard.outputs.configured == 'true'
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ secrets.AI_REVIEW_APP_ID }}
+          private-key: ${{ secrets.AI_REVIEW_APP_PRIVATE_KEY }}
+
+      - name: Review pull request
+        if: steps.approval.outputs.approved != 'true' && steps.guard.outputs.configured == 'true'
+        env:
+          AI_REVIEW_GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+          AI_REVIEW_APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.inputs.pr_number || github.event.pull_request.number }}
+          AI_REVIEW_OPENAI_API_KEY: ${{ secrets.AI_REVIEW_OPENAI_API_KEY }}
+          AI_REVIEW_NO_APPROVE_LOGINS: ${{ vars.AI_REVIEW_NO_APPROVE_LOGINS }}
+          AI_REVIEW_TRUSTED_AUTHOR_LOGINS: ${{ vars.AI_REVIEW_TRUSTED_AUTHOR_LOGINS }}
+        run: python .github/pr-review/review.py
