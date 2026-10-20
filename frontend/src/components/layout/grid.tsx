@@ -32,8 +32,7 @@ export const Grid: React.FC<GridProps> = ({ children, ...rest }) => (
 
 /** A column count, either flat or per-breakpoint. */
 type Span =
-  | number
-  | Partial<Record<"base" | "sm" | "md" | "lg" | "xl", number>>;
+  number | Partial<Record<"base" | "sm" | "md" | "lg" | "xl", number>>;
 
 /**
  * `span N` alone leaves the implicit start line in place, which lets an item

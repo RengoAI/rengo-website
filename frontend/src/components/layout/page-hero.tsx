@@ -20,13 +20,9 @@ interface PageHeroProps {
   /** Default matches landing hero; use `"auto"` for compact bands. */
   minH?: string | { base?: string; md?: string; lg?: string };
   contentPt?:
-    | string
-    | number
-    | { base?: string | number; lg?: string | number };
+    string | number | { base?: string | number; lg?: string | number };
   contentPb?:
-    | string
-    | number
-    | { base?: string | number; lg?: string | number };
+    string | number | { base?: string | number; lg?: string | number };
 }
 
 export const PageHero: React.FC<PageHeroProps> = ({

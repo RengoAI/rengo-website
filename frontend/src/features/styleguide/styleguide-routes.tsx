@@ -7,9 +7,8 @@ export const styleguideRoutes: RouteObject = {
     pageTitle: "Styleguide",
   },
   lazy: async () => {
-    const { StyleguidePage } = await import(
-      "@/features/styleguide/styleguide-page"
-    );
+    const { StyleguidePage } =
+      await import("@/features/styleguide/styleguide-page");
     return { Component: StyleguidePage };
   },
 };

@@ -33,9 +33,8 @@ export const careersRoutes: RouteObject = {
         pageTitle: "Careers",
       },
       lazy: async () => {
-        const { JobListingPage } = await import(
-          "@/features/careers/job-listing-page"
-        );
+        const { JobListingPage } =
+          await import("@/features/careers/job-listing-page");
         return { Component: JobListingPage };
       },
     },
