@@ -5,12 +5,13 @@
 PR Title must follow the format of:
 
 ```
-feat(ENG-#): add `button` component
-^    ^    ^
-|    |    |__ Subject (lowercase)
-|    |_______ Scope
-|____________ Type (fix, feat, docs, style, refactor, perf, test, ci, chore, revert)
+feat: add `button` component
+^     ^
+|     |__ Subject (lowercase)
+|________ Type (fix, feat, docs, style, refactor, perf, test, ci, chore, revert)
 ```
+
+No scope: area labels are added from the changed files.
 -->
 
 ## Description
