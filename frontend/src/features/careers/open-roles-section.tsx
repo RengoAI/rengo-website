@@ -11,7 +11,7 @@ import { OPEN_ROLES, type OpenRole } from "@/features/careers/open-roles";
 import { SectionHeading } from "@/features/landing/sections/section-heading";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import React from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router";
 
 export const OPEN_ROLES_SECTION_ID = "open-roles";
 

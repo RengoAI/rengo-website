@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { ScrollToTop } from "@/shared/utils/scroll-to-top";
 
 import { ErrorBoundary } from "@suspensive/react";
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router";
 
 const AppRoot = () => (
   <>

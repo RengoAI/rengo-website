@@ -3,7 +3,7 @@ import { ExistingToolsArt } from "@/features/landing/sections/existing-tools-art
 import { SectionShell } from "@/features/landing/sections/section-shell";
 import { Box, Button, Text } from "@chakra-ui/react";
 import React from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router";
 
 /**
  * Baseten “product card” layout: illustration, title, body, optional outlined CTA.

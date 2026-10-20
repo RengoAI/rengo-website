@@ -1,5 +1,5 @@
 import { SOLUTION_CAPABILITIES } from "@/features/solutions/solutions";
-import { RouteObject, Navigate } from "react-router-dom";
+import { RouteObject, Navigate } from "react-router";
 
 export const solutionsRoutes: RouteObject = {
   id: "solutions",

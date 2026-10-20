@@ -14,7 +14,7 @@ import { Window } from "happy-dom";
 import { camelCase } from "lodash-es";
 import path from "path";
 import prettier from "prettier";
-import { RouteObject } from "react-router-dom";
+import { RouteObject } from "react-router";
 import * as ts from "typescript";
 import { extractPathParams } from "../shared/utils/path-utils";
 

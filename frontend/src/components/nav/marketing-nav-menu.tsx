@@ -2,7 +2,7 @@ import { marketingLayoutBorderColor } from "@/components/layout/marketing-frame"
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { ChevronDown } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 export interface MarketingNavMenuItem {
   id: string;

@@ -4,7 +4,7 @@ import { Logo } from "@/components/logo/logo";
 import { GRAIN_TILE, hoverFade } from "@/components/site/site-styles";
 import { Box, chakra, Text } from "@chakra-ui/react";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 const RouterLink = chakra(Link);
 

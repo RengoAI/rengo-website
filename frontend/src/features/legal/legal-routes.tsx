@@ -1,5 +1,5 @@
 import { LegalLayout } from "@/features/legal/legal-layout";
-import { RouteObject } from "react-router-dom";
+import { RouteObject } from "react-router";
 
 export const legalRoutes: RouteObject = {
   id: "legal",

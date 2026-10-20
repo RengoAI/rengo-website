@@ -4,7 +4,7 @@ import { AppTopNav } from "@/components/nav/top-nav";
 import { Box } from "@chakra-ui/react";
 import { ErrorBoundary } from "@suspensive/react";
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 
 export const AppLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const location = useLocation();
