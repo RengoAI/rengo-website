@@ -1,0 +1,14 @@
+.DS_Store
+.idea
+.vscode
+
+# Python bytecode, anywhere in the tree
+__pycache__/
+*.pyc
+*.pyo
+
+# Claude Code generated files
+.claude/worktrees/
+
+# Authentication tokens
+.npmrc

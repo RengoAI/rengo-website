@@ -3,9 +3,9 @@ name: "Frontend PR Tests"
 on:
   pull_request:
     types: [opened, synchronize]
-    paths:
-      - frontend/**
-      - .github/**
+    # No `paths` filter: `Lint` and `Test` are required checks on main, so a
+    # PR that skipped these workflows (e.g. README-only) would wait forever
+    # on "Expected" statuses.
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
