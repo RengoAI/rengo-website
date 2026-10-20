@@ -22,7 +22,7 @@
     "@chakra-ui/react": "^3.21.0",
     "@paper-design/shaders-react": "^0.0.80",
     "@suspensive/react": "^3.21.4",
-    "color2k": "^2.0.3",
+    "color2k": "^2.0.4",
     "lodash-es": "^4.18.1",
     "lucide-react": "^0.475.0",
     "react": "^18.3.1",
