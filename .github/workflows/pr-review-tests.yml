@@ -1,0 +1,69 @@
+# Tests proposed reviewer changes without exposing production reviewer secrets.
+name: Review Safety Tests
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+    paths:
+      - .github/pr-review/**
+      - .github/workflows/pr-review.yml
+      - .github/workflows/pr-review-tests.yml
+  merge_group:
+    types: [checks_requested]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test
+    if: >
+      github.event_name == 'merge_group' ||
+      github.event_name == 'workflow_dispatch' ||
+      github.event.pull_request.draft == false
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .github/pr-review
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+
+      - name: Install pytest
+        run: pip install pytest==9.1.1
+
+      - name: Run tests
+        run: python -m pytest tests
+
+  lint-result:
+    name: Lint
+    needs: test
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require reviewer lint and tests to pass
+        env:
+          RESULT: ${{ needs.test.result }}
+        run: test "$RESULT" = success
+
+  integration-result:
+    name: Integration Test
+    needs: test
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require reviewer safety tests to pass
+        env:
+          RESULT: ${{ needs.test.result }}
+        run: test "$RESULT" = success
