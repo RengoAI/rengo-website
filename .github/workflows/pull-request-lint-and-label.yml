@@ -15,9 +15,9 @@ jobs:
     permissions:
       pull-requests: read
     steps:
-      - uses: amannn/action-semantic-pull-request@v5
+      - uses: amannn/action-semantic-pull-request@v6
         env:
-          GITHUB_TOKEN: ${{ secrets.PULL_REQUEST_LINT_AND_LABEL_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           # Configure which types are allowed (newline-delimited).
           # Default: https://github.com/commitizen/conventional-commit-types
@@ -32,14 +32,8 @@ jobs:
             ci
             chore
             revert
-          # Configure which scopes are allowed (newline-delimited).
-          # These are regex patterns auto-wrapped in `^ $`.
-          scopes: |
-            deps
-            main
-            ENG-\d+
-          # Configure that a scope must always be provided.
-          requireScope: true
+          # Routine dependency batches use chore(deps); other PRs keep no scope.
+          disallowScopes: ${{ startsWith(github.event.pull_request.head.ref, 'chore/dependency-upgrades-') && '^(?!deps$).+' || '.+' }}
           # Configure additional validation for the subject based on a regex.
           # This example ensures the subject doesn't start with an uppercase character.
           ignoreLabels: |
@@ -59,7 +53,7 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - uses: actions/labeler@v5
+      - uses: actions/labeler@v7
         with:
-          repo-token: ${{secrets.PULL_REQUEST_LINT_AND_LABEL_GITHUB_TOKEN}}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
           sync-labels: true
