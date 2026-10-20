@@ -22,7 +22,7 @@ import {
 import { Box, Button, Flex, IconButton } from "@chakra-ui/react";
 import { Menu } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router";
 
 export { TOP_NAV_HEIGHT };
 

@@ -1,6 +1,6 @@
 import { appRouter } from "@/app/app-router";
 import { Provider } from "@/components/ui/provider";
-import { RouterProvider } from "react-router-dom";
+import { RouterProvider } from "react-router/dom";
 
 export const App = () => (
   <Provider>

@@ -12,7 +12,7 @@ import { OPEN_ROLES } from "@/features/careers/open-roles";
 import { LogoMarquee } from "@/features/landing/logo-marquee";
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 const rolePath = (roleId: string) =>
   rootRoute({}).careers({}).role({ roleId }).$;

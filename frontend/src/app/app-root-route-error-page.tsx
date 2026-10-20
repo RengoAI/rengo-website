@@ -1,6 +1,6 @@
 import { ErrorComponent } from "@/components/error/error";
 import React from "react";
-import { isRouteErrorResponse, useRouteError } from "react-router-dom";
+import { isRouteErrorResponse, useRouteError } from "react-router";
 
 export const AppRootRouteErrorPage: React.FC = () => {
   const error = useRouteError();

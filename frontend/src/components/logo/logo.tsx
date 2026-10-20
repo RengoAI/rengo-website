@@ -1,7 +1,7 @@
 import { rootRoute } from "@/app/app-routes";
 import { Flex, Text } from "@chakra-ui/react";
 import { Sun } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 type LogoColor = "white" | "indigo.700" | "indigo.900" | "slate.30";
 

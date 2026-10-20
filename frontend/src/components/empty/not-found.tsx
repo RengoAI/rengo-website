@@ -1,7 +1,7 @@
 import { rootRoute } from "@/app/app-routes";
 import { Button, Center, Text, VStack } from "@chakra-ui/react";
 import { Home } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 export const NotFound = () => {
   const navigate = useNavigate();

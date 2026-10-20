@@ -3,7 +3,7 @@ import { topNavLinkStyles } from "@/components/nav/nav-styles";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { ChevronDown, type LucideIcon } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 export interface NavDropdownItem {
   id: string;

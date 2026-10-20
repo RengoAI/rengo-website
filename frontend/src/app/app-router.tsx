@@ -8,7 +8,7 @@ import {
 } from "@/features/landing/landing-routes";
 import { legalRoutes } from "@/features/legal/legal-routes";
 import { styleguideRoutes } from "@/features/styleguide/styleguide-routes";
-import { createBrowserRouter, Navigate, RouteObject } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouteObject } from "react-router";
 
 export const ALL_ROUTES: RouteObject[] = [styleguideRoutes];
 

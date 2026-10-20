@@ -8,7 +8,7 @@ import { SolidCta } from "@/components/site/solid-cta";
 import { Box, chakra } from "@chakra-ui/react";
 import { Menu, X } from "lucide-react";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 const RouterLink = chakra(Link);
 

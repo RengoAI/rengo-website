@@ -1,5 +1,5 @@
 import { CareersLayout } from "@/features/careers/careers-layout";
-import { Navigate, RouteObject } from "react-router-dom";
+import { Navigate, RouteObject } from "react-router";
 
 /**
  * /careers and its role pages, on the rebrand chrome (SiteNav, SiteFooter),

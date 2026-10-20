@@ -2,7 +2,7 @@ import { Box, Button, Center, HStack, Text, VStack } from "@chakra-ui/react";
 
 import { ErrorBoundaryFallbackProps } from "@suspensive/react";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 export const ErrorComponent: React.FC<ErrorBoundaryFallbackProps> = ({
   error,
