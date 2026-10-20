@@ -11,6 +11,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 env:
   NODE_OPTIONS: "--max-old-space-size=8192"
   ACTOR: ${{ github.actor }}

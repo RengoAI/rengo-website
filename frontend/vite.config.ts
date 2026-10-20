@@ -18,15 +18,6 @@ export default defineConfig(() => ({
     react(),
     viteTsconfigPaths(),
     vitePluginSvgr(),
-    {
-      name: "html-inject-nonce-into-script-tag",
-      enforce: "post",
-      transformIndexHtml(html) {
-        const regex = /<script(.*?)>/gi;
-        const replacement = `<script nonce="ena5Ul0L1OFgf4ox9BNOaA=="$1>`;
-        return html.replace(regex, replacement);
-      },
-    },
   ],
   resolve: {
     alias: {
