@@ -13,9 +13,8 @@ export const solutionsRoutes: RouteObject = {
       path: c.slug,
       handle: { pageTitle: c.title },
       lazy: async () => {
-        const { CapabilityPage } = await import(
-          "@/features/solutions/capability-page"
-        );
+        const { CapabilityPage } =
+          await import("@/features/solutions/capability-page");
         return {
           Component: () => <CapabilityPage capability={c} />,
         };

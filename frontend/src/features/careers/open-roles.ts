@@ -1,6 +1,5 @@
 export type JobContentBlock =
-  | { type: "paragraph"; text: string }
-  | { type: "list"; items: string[] };
+  { type: "paragraph"; text: string } | { type: "list"; items: string[] };
 
 export type JobSection = {
   heading: string;

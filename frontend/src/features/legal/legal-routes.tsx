@@ -13,9 +13,8 @@ export const legalRoutes: RouteObject = {
       id: "legalTermsOfService",
       path: "terms-of-service",
       lazy: async () => {
-        const { TermsOfServicePage } = await import(
-          "@/features/legal/terms-of-service-page"
-        );
+        const { TermsOfServicePage } =
+          await import("@/features/legal/terms-of-service-page");
         return { Component: TermsOfServicePage };
       },
     },
@@ -26,9 +25,8 @@ export const legalRoutes: RouteObject = {
         pageTitle: "Privacy Policy",
       },
       lazy: async () => {
-        const { PrivacyPolicyPage } = await import(
-          "@/features/legal/privacy-policy-page"
-        );
+        const { PrivacyPolicyPage } =
+          await import("@/features/legal/privacy-policy-page");
         return { Component: PrivacyPolicyPage };
       },
     },
