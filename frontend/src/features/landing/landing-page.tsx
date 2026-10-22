@@ -144,7 +144,7 @@ export const LandingPage: React.FC = () => (
         only fills the top. */}
       {/* The second testimonial card's wash, stretched over the band. */}
       <Section grid {...TESTIMONIAL_WASHES.mid} minH={{ lg: "741px" }}>
-        <GridCol span={{ base: 16, lg: 11 }}>
+        <GridCol span={{ base: 16, lg: 10 }}>
           <Text as="h2" textStyle="h4" color="site.fg.heading">
             Companies have spent decades making the numbers in their databases
             reliable, connecting their tools, and standardizing workflows. But
@@ -155,12 +155,12 @@ export const LandingPage: React.FC = () => (
           </Text>
         </GridCol>
         {/* Hidden on phones. Flush right, behind an empty spacer: 7 columns
-          wide on tablets, and 4 on desktop, where it sits beside the
+          wide on tablets, and 5 on desktop, where it sits beside the
           heading. */}
         <GridCol
           display={{ base: "none", md: "block" }}
-          span={{ base: 15, md: 7, lg: 4 }}
-          start={{ base: 2, md: 10, lg: 13 }}
+          span={{ base: 15, md: 7, lg: 5 }}
+          start={{ base: 2, md: 10, lg: 12 }}
           pt={{ md: "16px", lg: 0 }}
         >
           {/* Separate paragraphs, a blank line (one 1.4 line height) apart.
