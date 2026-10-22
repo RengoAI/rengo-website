@@ -41,9 +41,9 @@ const HOW_WE_WORK = [
 const TESTIMONIALS = [
   {
     quote:
-      "“It was really impressive how quickly you were able to adapt and add new features within the system. Once I gave you access to some of our high-level data, you could turn around, understand it, and funnel it in pretty quickly.”",
-    avatarSrc: `${ART}avatar-1.png`,
-    attribution: "VP of Data & AI Strategy at $20B+ real estate fund",
+      "“Everyone has been asking for a single source of truth. Rengo brings it all together, and we're excited to roll it out across the firm.”",
+    avatarSrc: `${ART}avatar-3.png`,
+    attribution: "Investment Associate at $3.5B mid-market PE firm",
   },
   {
     quote:
@@ -53,9 +53,9 @@ const TESTIMONIALS = [
   },
   {
     quote:
-      "“Everyone has been asking for a single source of truth. Rengo brings it all together, and we're excited to roll it out across the firm.”",
-    avatarSrc: `${ART}avatar-3.png`,
-    attribution: "Investment Associate at $3.5B mid-market PE firm",
+      "“It was really impressive how quickly you were able to adapt and add new features within the system. Once I gave you access to some of our high-level data, you could turn around, understand it, and funnel it in pretty quickly.”",
+    avatarSrc: `${ART}avatar-1.png`,
+    attribution: "VP of Data & AI Strategy at $20B+ real estate fund",
   },
 ];
 
