@@ -144,7 +144,7 @@ export const LandingPage: React.FC = () => (
         only fills the top. */}
       {/* The second testimonial card's wash, stretched over the band. */}
       <Section grid {...TESTIMONIAL_WASHES.mid} minH={{ lg: "741px" }}>
-        <GridCol span={{ base: 16, lg: 11 }}>
+        <GridCol span={{ base: 16, lg: 10 }}>
           <Text as="h2" textStyle="h4" color="site.fg.heading">
             Companies have spent decades making the numbers in their databases
             reliable, connecting their tools, and standardizing workflows. But
