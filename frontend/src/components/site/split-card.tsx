@@ -151,8 +151,8 @@ export const StepCard: React.FC<
     // title.
     gap={{ base: "1.4375rem", md: "32px" }}
     // Tablets match the phones' height, growing if the copy needs it;
-    // desktop 432px.
-    h={{ base: "auto", lg: "432px" }}
+    // desktop 320px.
+    h={{ base: "auto", lg: "320px" }}
     minH={{ md: "114px", lg: "auto" }}
     rule={false}
     {...STEP_RULE}

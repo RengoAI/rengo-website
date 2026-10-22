@@ -210,7 +210,7 @@ export const LandingPage: React.FC = () => (
       <Section
         grid
         {...TESTIMONIAL_WASHES.midReversed}
-        py="72px"
+        py="calc(72px + 2rem)"
         // 20px between the step cards, across and when stacked.
         gridProps={{ gap: "1.25rem" }}
       >
