@@ -47,15 +47,15 @@ const TESTIMONIALS = [
   },
   {
     quote:
-      "“Rengo has evolved tremendously in just a few months. Being able to centralize our portfolio data, recall every deal we've evaluated, and make that knowledge instantly accessible across the team is incredibly powerful and something we're genuinely excited about.”",
-    avatarSrc: `${ART}avatar-2.png`,
-    attribution: "Senior Associate at $1B Growth Equity Fund",
-  },
-  {
-    quote:
       "“It was really impressive how quickly you were able to adapt and add new features within the system. Once I gave you access to some of our high-level data, you could turn around, understand it, and funnel it in pretty quickly.”",
     avatarSrc: `${ART}avatar-1.png`,
     attribution: "VP of Data & AI Strategy at $20B+ real estate fund",
+  },
+  {
+    quote:
+      "“Rengo has evolved tremendously in just a few months. Being able to centralize our portfolio data, recall every deal we've evaluated, and make that knowledge instantly accessible across the team is incredibly powerful and something we're genuinely excited about.”",
+    avatarSrc: `${ART}avatar-2.png`,
+    attribution: "Senior Associate at $1B Growth Equity Fund",
   },
 ];
 
