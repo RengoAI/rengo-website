@@ -155,12 +155,12 @@ export const LandingPage: React.FC = () => (
           </Text>
         </GridCol>
         {/* Hidden on phones. Flush right, behind an empty spacer: 7 columns
-          wide on tablets, and 4 on desktop, where it sits beside the
+          wide on tablets, and 5 on desktop, where it sits beside the
           heading. */}
         <GridCol
           display={{ base: "none", md: "block" }}
-          span={{ base: 15, md: 7, lg: 4 }}
-          start={{ base: 2, md: 10, lg: 13 }}
+          span={{ base: 15, md: 7, lg: 5 }}
+          start={{ base: 2, md: 10, lg: 12 }}
           pt={{ md: "16px", lg: 0 }}
         >
           {/* Separate paragraphs, a blank line (one 1.4 line height) apart.
