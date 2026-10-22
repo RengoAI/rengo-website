@@ -24,10 +24,10 @@ const TESTIMONIALS: readonly Testimonial[] = [
       "Rengo has evolved tremendously in just a few months. Being able to centralize our portfolio data, recall every deal we've evaluated, and make that knowledge instantly accessible across the team is incredibly powerful and something we're genuinely excited about.",
   },
   {
-    role: "Vice President - Investor Relations",
-    organization: "Real Estate Asset Manager",
+    role: "Investment Associate",
+    organization: "Mid-Market Private Equity Firm",
     quote:
-      "The platform does the heavy lifting, so our team doesn't have to burn a lot of calories just to make the system usable.",
+      "Everyone has been asking for a single source of truth. Rengo brings it all together, and we're excited to roll it out across the firm.",
   },
 ] as const;
 

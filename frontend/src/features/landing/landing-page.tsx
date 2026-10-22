@@ -53,9 +53,9 @@ const TESTIMONIALS = [
   },
   {
     quote:
-      "“The platform does the heavy lifting, so our team doesn't have to burn a lot of calories just to make the system usable.”",
+      "“Everyone has been asking for a single source of truth. Rengo brings it all together, and we're excited to roll it out across the firm.”",
     avatarSrc: `${ART}avatar-3.png`,
-    attribution: "VP of Investor Relations at $4.5B real estate fund",
+    attribution: "Investment Associate at $3.5B mid-market PE firm",
   },
 ];
 
