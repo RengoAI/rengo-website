@@ -41,6 +41,12 @@ const HOW_WE_WORK = [
 const TESTIMONIALS = [
   {
     quote:
+      "“Everyone has been asking for a single source of truth. Rengo brings it all together, and we're excited to roll it out across the firm.”",
+    avatarSrc: `${ART}avatar-3.png`,
+    attribution: "Investment Associate at $3.5B mid-market PE firm",
+  },
+  {
+    quote:
       "“It was really impressive how quickly you were able to adapt and add new features within the system. Once I gave you access to some of our high-level data, you could turn around, understand it, and funnel it in pretty quickly.”",
     avatarSrc: `${ART}avatar-1.png`,
     attribution: "VP of Data & AI Strategy at $20B+ real estate fund",
@@ -50,12 +56,6 @@ const TESTIMONIALS = [
       "“Rengo has evolved tremendously in just a few months. Being able to centralize our portfolio data, recall every deal we've evaluated, and make that knowledge instantly accessible across the team is incredibly powerful and something we're genuinely excited about.”",
     avatarSrc: `${ART}avatar-2.png`,
     attribution: "Senior Associate at $1B Growth Equity Fund",
-  },
-  {
-    quote:
-      "“The platform does the heavy lifting, so our team doesn't have to burn a lot of calories just to make the system usable.”",
-    avatarSrc: `${ART}avatar-3.png`,
-    attribution: "VP of Investor Relations at $4.5B real estate fund",
   },
 ];
 
