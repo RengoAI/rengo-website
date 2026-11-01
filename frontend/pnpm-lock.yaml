@@ -15,8 +15,8 @@ importers:
         specifier: ^3.37.0
         version: 3.37.0(@emotion/react@11.14.0(@types/react@18.3.31)(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@paper-design/shaders-react':
-        specifier: ^0.0.80
-        version: 0.0.80(@types/react@18.3.31)(react@18.3.1)
+        specifier: ^0.0.82
+        version: 0.0.82(@types/react@18.3.31)(react@18.3.1)
       '@suspensive/react':
         specifier: ^3.21.4
         version: 3.21.4(react@18.3.1)
@@ -753,8 +753,8 @@ packages:
     resolution: {integrity: sha512-JFmahiSKrpBE48NHl8NIsNO5e5y1SrOrOGvyle9h9rkNrYw+RJrm5CLeGimmyhg2FIymsmZE76sDnw5Zuu2LVA==}
     engines: {node: '>=20'}
 
-  '@paper-design/shaders-react@0.0.80':
-    resolution: {integrity: sha512-Y1oxUeh5D2AECo05O+4UYRbaMfQzKKYH3Q5jcvirOcoX0hTPYbezCLn5g94nvcuzxy5LN/uqwsL3jDUp8r3E+A==}
+  '@paper-design/shaders-react@0.0.82':
+    resolution: {integrity: sha512-DSPvsCgqagN23sYJP4vB9UpKj0IM6Aq9DOulI8c6ByHdDD6mIKRCNN6tqHK1FDdzCEQNz0dstlRtcdImAWcqqQ==}
     peerDependencies:
       '@types/react': ^18 || ^19
       react: ^18 || ^19
@@ -762,8 +762,8 @@ packages:
       '@types/react':
         optional: true
 
-  '@paper-design/shaders@0.0.80':
-    resolution: {integrity: sha512-pcabvt5xDlFoEhpjUj4b1tGJMfqb0i5mXifWMNQf6z7FoOJYxYDo7F8R6k0JAh5D/7ouxjX5+N0cIq5WURyQ1Q==}
+  '@paper-design/shaders@0.0.82':
+    resolution: {integrity: sha512-eCxYQrrCxRVc4KG8sLSQecsq8Ymstbaq/FqZjq/fhOa6UiR1ZZfdMO5IJpHmwL0GYmfzvZVQ4l8ZOLux0uLVdg==}
 
   '@pkgr/core@0.3.6':
     resolution: {integrity: sha512-SEeaJLb3qBNF/OaXnaR1NmmBbFYk1zC0ZH/52fATcRPLFg/p791YrcyFFy44Bo9sLaGuSuLp5Q6axbb/O+v/RA==}
@@ -1102,6 +1102,9 @@ packages:
 
   '@types/eslint@9.6.1':
     resolution: {integrity: sha512-FXx2pKgId/WyYo2jXw63kk7/+TY7u7AziEJxJAnSFzHlqTAS3Ync6SvgYAN/k4/PQpnnVuzoMuVnByKK2qp0ag==}
+
+  '@types/estree@1.0.10':
+    resolution: {integrity: sha512-lTyOMnOcmRBzdCv6/4zUZCrEhV0xrqQiUZBZtVcbmLHBXKLnN8q89v/wKRF/Q0HbwVsqbIG3o5HDoFl9sduM+g==}
 
   '@types/estree@1.0.9':
     resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
@@ -3694,14 +3697,14 @@ snapshots:
 
   '@pandacss/is-valid-prop@1.12.1': {}
 
-  '@paper-design/shaders-react@0.0.80(@types/react@18.3.31)(react@18.3.1)':
+  '@paper-design/shaders-react@0.0.82(@types/react@18.3.31)(react@18.3.1)':
     dependencies:
-      '@paper-design/shaders': 0.0.80
+      '@paper-design/shaders': 0.0.82
       react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.31
 
-  '@paper-design/shaders@0.0.80': {}
+  '@paper-design/shaders@0.0.82': {}
 
   '@pkgr/core@0.3.6': {}
 
@@ -3948,8 +3951,11 @@ snapshots:
 
   '@types/eslint@9.6.1':
     dependencies:
-      '@types/estree': 1.0.9
+      '@types/estree': 1.0.10
       '@types/json-schema': 7.0.15
+    optional: true
+
+  '@types/estree@1.0.10':
     optional: true
 
   '@types/estree@1.0.9': {}
