@@ -15,3 +15,6 @@ else
     echo "vite build set to preview."
     pnpx vite build --mode preview --outDir build
 fi
+
+# Give each public page its own index.html, so deep links return 200.
+pnpm exec vite-node src/scripts/prerender-routes.ts build

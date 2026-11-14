@@ -5,7 +5,7 @@ import React from "react";
 /**
  * The card shape shared by the metrics band and the testimonials band.
  *
- * Both are the same object: a tall column held open to a fixed height, hung
+ * Both are the same object: a tall column held open to a minimum height, hung
  * off a dotted rule on its left edge, with one thing pinned to the top and
  * one to the bottom. Only the children differ — an index and a figure in one
  * case, a quote and an attribution in the other. Keeping them one component
@@ -36,7 +36,10 @@ export const SplitCard: React.FC<SplitCardProps> = ({
     justifyContent="space-between"
     alignItems="flex-start"
     gap="32px"
-    h={{ base: "auto", lg: "472px" }}
+    // A floor, not a fixed height: where the copy needs more (small laptops,
+    // 1024–1200px), the card grows rather than spilling, and its row
+    // neighbours stretch with it.
+    minH={{ base: "auto", lg: "472px" }}
     px="16px"
     {...(rule ? tiledRuleLeft(ruleColor) : {})}
     {...rest}

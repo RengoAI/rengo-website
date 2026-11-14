@@ -20,6 +20,13 @@ export const GRID_GUTTER = "16px";
  */
 export const SECTION_GUTTER = "40px";
 
+/**
+ * The viewport width past which content stops growing. Wider screens get a
+ * wider gutter instead, so lines and diagrams don't stretch across a large
+ * monitor.
+ */
+export const SITE_CONTENT_CAP_AT = "1440px";
+
 /** Global top/bottom padding for a content section, at desktop widths. */
 export const SECTION_GUTTER_Y = "120px";
 
@@ -46,6 +53,12 @@ export const layoutVars = {
       "--site-gutter-y": SECTION_GUTTER_Y,
       "--site-gutter-y-tight": "100px",
       "--site-gutter-y-compact": "80px",
+    },
+    // Past 1440px the gutter grows instead of the content, so the content
+    // holds at its 1440px width and centres; backgrounds still run edge to
+    // edge. It meets the 40px gutter at 1440px, so there's no jump.
+    [`@media screen and (min-width: ${SITE_CONTENT_CAP_AT})`]: {
+      "--site-gutter": `calc((100vw - ${SITE_CONTENT_CAP_AT}) / 2 + ${SECTION_GUTTER})`,
     },
   },
 };

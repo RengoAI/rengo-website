@@ -528,9 +528,12 @@ export const LandingHero: React.FC = () => {
           ref={copy}
           // Centred on the viewport, then raised 80px + 4rem. The raise is a
           // transform, which the bed (hung off the box's laid-out bottom
-          // edge) doesn't follow.
+          // edge) doesn't follow. Viewports shorter than 844px (a small
+          // phone, a phone on its side) can't spare the full raise without
+          // the title sliding under the nav, so it shrinks with the height,
+          // to nothing at 556px.
           position="relative"
-          transform="translateY(calc(-80px - 4rem))"
+          transform="translateY(calc(-1 * clamp(0px, (100svh - 556px) / 2, 80px + 4rem)))"
           {...COPY_BOX}
           display="flex"
           flexDirection={{ base: "column", md: "row" }}
