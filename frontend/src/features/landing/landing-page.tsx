@@ -279,7 +279,10 @@ export const LandingPage: React.FC = () => (
               pb={{ base: "4px", md: "24px", lg: 0 }}
             >
               {/* Plain grey first, bluest last, so the row warms into the blue. */}
+              {/* Full height, so when one quote grows its card, the row
+                  grows together. */}
               <TestimonialCard
+                h="full"
                 {...testimonial}
                 wash={TESTIMONIAL_WASH_ORDER[i]}
               />
