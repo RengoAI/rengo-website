@@ -146,22 +146,40 @@ export const ArticleHeader: React.FC<{
           {dek}
         </Text>
       )}
+      {/* A byline under a hairline: the first property (the author, the
+          department) on the left, the rest on the right with an en dash
+          between them, as on the blog index. Stacks on narrow screens. */}
       {properties.length > 0 && (
         <Box
           display="flex"
           flexWrap="wrap"
-          columnGap={{ base: "20px", md: "28px" }}
+          justifyContent="space-between"
+          alignItems="baseline"
+          columnGap="24px"
           rowGap="4px"
-          mt={{ base: "20px", md: "24px" }}
+          mt={{ base: "24px", md: "32px" }}
+          pt="14px"
+          // A hairline of the ink at low opacity, so it shows on the wash.
+          borderTop="1px solid rgba(21, 23, 24, 0.12)"
           {...PROSE}
           fontSize="0.9375rem"
           color={ARTICLE_MUTED}
         >
-          {properties.map((property, i) => (
-            <chakra.span key={i} color={i === 0 ? ARTICLE_INK : undefined}>
-              {property}
-            </chakra.span>
-          ))}
+          <chakra.span color={ARTICLE_INK}>{properties[0]}</chakra.span>
+          {properties.length > 1 && (
+            <span>
+              {properties.slice(1).map((property, i) => (
+                <React.Fragment key={i}>
+                  {i > 0 && (
+                    <chakra.span aria-hidden mx="8px">
+                      –
+                    </chakra.span>
+                  )}
+                  {property}
+                </React.Fragment>
+              ))}
+            </span>
+          )}
         </Box>
       )}
     </Box>

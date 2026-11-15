@@ -265,7 +265,7 @@ export const BlogPostPage: React.FC = () => {
             title={post.title}
             dek={post.dek}
             properties={[
-              post.author.name,
+              `${post.author.name}, ${post.author.role}`,
               <chakra.time key="date" dateTime={post.date}>
                 {formatPostDate(post.date)}
               </chakra.time>,
