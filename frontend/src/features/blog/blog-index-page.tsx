@@ -1,4 +1,5 @@
 import { Section } from "@/components/layout/section";
+import { ARTICLE_MEASURE, ArticleHeader } from "@/components/site/article";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
 import { PostTile } from "@/features/blog/blog-tile";
@@ -15,27 +16,24 @@ import { Link } from "react-router";
 
 const RouterLink = chakra(Link);
 
-/** The post page's type: one ink, with a muted tier. */
 /*
- * As in the app's settings cards: descriptions in ink, a size down, with
- * the title in medium weight; only the smallest details (the date line) go
- * grey, and a darker, neutral one.
+ * As in the app's settings cards: descriptions in ink, a size down; only
+ * the smallest details (the date line) go grey, a darker, neutral one.
  */
 const INK = "site.fg.strong";
 const TEXT = "site.fg";
 const MUTED = "soot.600";
 const BODY = { fontFamily: "body", fontSize: "1rem", lineHeight: "1.6" };
 
-/** The list's column, centred, as on Ode's press page. */
-const COLUMN = "760px";
+/** The list's column: the header's reading measure, so the two align. */
+const COLUMN = `${ARTICLE_MEASURE}px`;
 
-/** The date and read time: small, spaced and monospaced. */
+/** The date and read time, as the app sets small details: the body face, a
+ * size down, normal case, in grey. */
 const META = {
-  fontFamily: "mono",
-  fontSize: "11px",
-  lineHeight: "1.4",
-  letterSpacing: "0.06em",
-  textTransform: "uppercase",
+  fontFamily: "body",
+  fontSize: "0.8125rem",
+  lineHeight: "1.5",
   color: MUTED,
 } as const;
 
@@ -85,7 +83,7 @@ const PostItem: React.FC<{ post: Post }> = ({ post }) => (
         {post.summary}
       </Text>
       {/* "Nov 15, 2026 – 2 min read": an en dash between the two. */}
-      <Text {...META} mt="12px">
+      <Text {...META} mt="10px">
         <chakra.time dateTime={post.date}>
           {formatPostDateShort(post.date)}
         </chakra.time>
@@ -99,41 +97,23 @@ const PostItem: React.FC<{ post: Post }> = ({ post }) => (
 );
 
 /**
- * The blog's index: the heading, then the posts in one
- * centred column, each a tile with its title beside it, well spaced, after
- * Ode's press page.
+ * The blog's index: the shared article header, then the posts in the same
+ * centred column, each a tile with its title beside it, after Ode's press
+ * page.
  */
 export const BlogIndexPage: React.FC = () => (
   // At least a screen tall, so the footer sits at the bottom while the
   // list is short.
   <Box bg="site.bg.page" minH="100svh" display="flex" flexDirection="column">
-    <SiteNav />
+    <SiteNav edge />
 
     <Box as="main" id="main" flex="1" bg="site.bg.surface">
-      <Section
-        rhythm="none"
-        pt={{ base: "48px", md: "72px" }}
-        pb="0"
-        bg="site.bg.surface"
-      >
-        <Box maxW={COLUMN} mx="auto">
-          <Text
-            as="h1"
-            fontFamily="body"
-            fontSize={{ base: "2rem", md: "2.75rem" }}
-            fontWeight={300}
-            lineHeight="1.2"
-            letterSpacing="-0.02em"
-            color={INK}
-          >
-            Blog
-          </Text>
-        </Box>
-      </Section>
+      {/* The same header as the posts it lists. */}
+      <ArticleHeader title="Blog" />
 
       <Section
         rhythm="none"
-        pt={{ base: "36px", md: "48px" }}
+        pt={{ base: "40px", md: "56px" }}
         pb={{ base: "76px", md: "100px" }}
         bg="site.bg.surface"
       >

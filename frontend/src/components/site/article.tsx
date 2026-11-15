@@ -102,8 +102,9 @@ export const ArticleHeader: React.FC<{
   back?: { to: string; label: string };
   title: string;
   dek?: string;
-  properties: React.ReactNode[];
-}> = ({ back, title, dek, properties }) => (
+  /** Who, when, how long; an index page has none. */
+  properties?: React.ReactNode[];
+}> = ({ back, title, dek, properties = [] }) => (
   <Section
     as="header"
     rhythm="none"
@@ -142,22 +143,24 @@ export const ArticleHeader: React.FC<{
           {dek}
         </Text>
       )}
-      <Box
-        display="flex"
-        flexWrap="wrap"
-        columnGap={{ base: "20px", md: "28px" }}
-        rowGap="4px"
-        mt={{ base: "20px", md: "24px" }}
-        {...PROSE}
-        fontSize="0.9375rem"
-        color={ARTICLE_MUTED}
-      >
-        {properties.map((property, i) => (
-          <chakra.span key={i} color={i === 0 ? ARTICLE_INK : undefined}>
-            {property}
-          </chakra.span>
-        ))}
-      </Box>
+      {properties.length > 0 && (
+        <Box
+          display="flex"
+          flexWrap="wrap"
+          columnGap={{ base: "20px", md: "28px" }}
+          rowGap="4px"
+          mt={{ base: "20px", md: "24px" }}
+          {...PROSE}
+          fontSize="0.9375rem"
+          color={ARTICLE_MUTED}
+        >
+          {properties.map((property, i) => (
+            <chakra.span key={i} color={i === 0 ? ARTICLE_INK : undefined}>
+              {property}
+            </chakra.span>
+          ))}
+        </Box>
+      )}
     </Box>
   </Section>
 );
