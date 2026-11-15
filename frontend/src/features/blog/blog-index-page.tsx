@@ -66,6 +66,10 @@ const PostItem: React.FC<{ post: Post }> = ({ post }) => (
       justifyContent="space-between"
       gap="12px"
       minW={0}
+      // Inset from the tile's top and bottom and the column's right edge,
+      // so the text doesn't run flush to them.
+      py={{ base: "4px", md: "8px" }}
+      pr={{ base: "4px", md: "12px" }}
     >
       <Box>
         <Text
@@ -84,7 +88,7 @@ const PostItem: React.FC<{ post: Post }> = ({ post }) => (
           {...BODY}
           fontSize="0.9375rem"
           color={TEXT}
-          mt="10px"
+          mt="4px"
           display={{ base: "none", md: "-webkit-box" }}
           css={{ WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}
           overflow="hidden"
