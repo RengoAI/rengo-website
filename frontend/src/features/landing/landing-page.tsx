@@ -316,7 +316,9 @@ export const LandingPage: React.FC = () => (
         </GridCol>
       </Section>
 
-      <SiteOutro />
+      {/* Fills the screen under the nav, so the page closes on a full
+          screen as it opens. */}
+      <SiteOutro fill="below-nav" />
     </Box>
 
     <SiteFooter />

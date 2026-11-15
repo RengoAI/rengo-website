@@ -1,7 +1,7 @@
 import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import { AutomataGrid } from "@/components/site/automata-grid";
-import { CONTACT_HREF } from "@/components/site/site-constants";
+import { CONTACT_HREF, NAV_H } from "@/components/site/site-constants";
 import { CTA_SHADOW } from "@/components/site/site-styles";
 import { SolidCta } from "@/components/site/solid-cta";
 import { prefersReducedMotion } from "@/shared/utils/motion";
@@ -44,8 +44,13 @@ export const SiteOutro: React.FC<{
   /** Button label. The landing books a call; careers jumps to the roles. */
   cta?: string;
   ctaHref?: string;
-  /** Fill the viewport, the way the landing hero does. Careers uses this. */
-  fill?: boolean;
+  /**
+   * Fill the viewport, the way the landing hero does: `true` when the band
+   * sits under the overlaid nav at the top of the page (careers), or
+   * "below-nav" when it's scrolled to under the sticky nav (the landing's
+   * close), so it fills the screen left under the bar.
+   */
+  fill?: boolean | "below-nav";
 }> = ({
   heading = DEFAULT_HEADING,
   headingAs = "h2",
@@ -74,7 +79,14 @@ export const SiteOutro: React.FC<{
       // The footer's grey, so the outro runs into it.
       bg="site.bg.footer"
       overflow="hidden"
-      h={fill ? "100svh" : undefined}
+      // A minimum, so content still fits on a very short screen.
+      minH={
+        fill === "below-nav"
+          ? `calc(100svh - ${NAV_H}px)`
+          : fill
+            ? "100svh"
+            : undefined
+      }
       display={fill ? "flex" : undefined}
       alignItems={fill ? "center" : undefined}
       aria-labelledby="outro-heading"
