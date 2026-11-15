@@ -23,9 +23,9 @@ const rolePath = (roleId: string) =>
 const ROW_RULE = "1px solid rgba(21, 23, 24, 0.08)";
 
 /**
- * One open role: the title with its department under it on the left, and
- * the location and terms with an arrow on the right. The arrow nudges on
- * hover; on phones the right side drops under the title.
+ * One open role: the title on the left, the location and terms with an
+ * arrow on the right. The row fills softly on hover and the arrow nudges;
+ * on phones the right side drops under the title.
  */
 const RoleRow: React.FC<{ role: OpenRole }> = ({ role }) => (
   <RouterLink
@@ -35,37 +35,30 @@ const RoleRow: React.FC<{ role: OpenRole }> = ({ role }) => (
     alignItems="center"
     justifyContent="space-between"
     columnGap="24px"
-    rowGap="6px"
-    py={{ base: "18px", md: "22px" }}
+    rowGap="4px"
+    px="12px"
+    mx="-12px"
+    py={{ base: "16px", md: "18px" }}
+    borderRadius="6px"
     textDecoration="none"
+    transition="background 150ms ease"
+    _hover={{ bg: "site.bg.inset" }}
     css={{
-      "& h3": { transition: "opacity 150ms ease" },
-      "&:hover h3": { opacity: 0.6 },
       "& svg": { transition: "transform 150ms ease" },
       "&:hover svg": { transform: "translateX(3px)" },
     }}
   >
-    <Box minW={0}>
-      <Text
-        as="h3"
-        fontFamily="body"
-        fontSize={{ base: "1.0625rem", md: "1.25rem" }}
-        fontWeight={400}
-        lineHeight="1.3"
-        letterSpacing="-0.01em"
-        color="site.fg.strong"
-      >
-        {role.title}
-      </Text>
-      <Text
-        fontFamily="body"
-        fontSize="0.875rem"
-        color="site.fg.muted"
-        mt="4px"
-      >
-        {role.department}
-      </Text>
-    </Box>
+    <Text
+      as="h3"
+      fontFamily="body"
+      fontSize={{ base: "1.0625rem", md: "1.125rem" }}
+      fontWeight={400}
+      lineHeight="1.35"
+      color="site.fg.strong"
+      minW={0}
+    >
+      {role.title}
+    </Text>
     <Box
       display="flex"
       alignItems="center"
@@ -82,11 +75,21 @@ const RoleRow: React.FC<{ role: OpenRole }> = ({ role }) => (
   </RouterLink>
 );
 
+/** The open roles, grouped by team, in the order they first appear. */
+const TEAMS = OPEN_ROLES.reduce<{ team: string; roles: OpenRole[] }[]>(
+  (groups, role) => {
+    const group = groups.find((g) => g.team === role.department);
+    if (group) group.roles.push(role);
+    else groups.push({ team: role.department, roles: [role] });
+    return groups;
+  },
+  [],
+);
+
 /**
  * Careers, on the rebrand chrome: the landing's closing band as the hero,
- * then the team line with the scrolling logo strip, then the open roles as
- * ruled rows — department on the left, title and terms beside it — each
- * linking to the role's own page.
+ * then the team line with the scrolling logo strip, then the open roles
+ * grouped by team, each row linking to the role's own page.
  */
 export const CareersPage: React.FC = () => (
   <Box bg="site.bg.page">
@@ -156,10 +159,31 @@ export const CareersPage: React.FC = () => (
           >
             Open roles
           </Text>
-          <Box as="ul" borderTop={ROW_RULE}>
-            {OPEN_ROLES.map((role) => (
-              <Box as="li" key={role.id} borderBottom={ROW_RULE}>
-                <RoleRow role={role} />
+          {/* Each team once, as a small grey heading over its roles. */}
+          <Box
+            display="flex"
+            flexDirection="column"
+            gap={{ base: "36px", md: "48px" }}
+          >
+            {TEAMS.map(({ team, roles }) => (
+              <Box as="section" key={team} aria-label={team}>
+                <Text
+                  as="h3"
+                  fontFamily="body"
+                  fontSize="0.875rem"
+                  color="site.fg.muted"
+                  pb="10px"
+                  borderBottom={ROW_RULE}
+                >
+                  {team}
+                </Text>
+                <Box as="ul">
+                  {roles.map((role) => (
+                    <Box as="li" key={role.id} borderBottom={ROW_RULE}>
+                      <RoleRow role={role} />
+                    </Box>
+                  ))}
+                </Box>
               </Box>
             ))}
           </Box>
