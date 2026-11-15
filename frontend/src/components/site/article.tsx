@@ -147,7 +147,7 @@ export const ArticleHeader: React.FC<{
         </Text>
       )}
       {/* A byline under a hairline: the first property (the author, the
-          department) on the left, the rest on the right with an en dash
+          department) on the left, the rest on the right with a hyphen
           between them, as on the blog index. Stacks on narrow screens. */}
       {properties.length > 0 && (
         <Box
@@ -172,7 +172,7 @@ export const ArticleHeader: React.FC<{
                 <React.Fragment key={i}>
                   {i > 0 && (
                     <chakra.span aria-hidden mx="8px">
-                      –
+                      -
                     </chakra.span>
                   )}
                   {property}
