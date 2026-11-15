@@ -1,21 +1,86 @@
 import { rootRoute } from "@/app/app-routes";
-import { Grid, GridCol } from "@/components/layout/grid";
+import { GridCol } from "@/components/layout/grid";
+import { ARTICLE_MEASURE } from "@/components/site/article";
 import { Section } from "@/components/layout/section";
-import { RULED_ROW_RULE, RuledRow } from "@/components/site/ruled-row";
 import { NAV_H } from "@/components/site/site-constants";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
 import { SiteOutro } from "@/components/site/site-outro";
 import { TypedText } from "@/components/site/typed-text";
-import { dottedTop } from "@/components/site/site-styles";
-import { OPEN_ROLES } from "@/features/careers/open-roles";
+import { OPEN_ROLES, type OpenRole } from "@/features/careers/open-roles";
 import { LogoMarquee } from "@/features/landing/logo-marquee";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, chakra, Text } from "@chakra-ui/react";
+import { ArrowRight } from "lucide-react";
 import React from "react";
 import { Link } from "react-router";
 
+const RouterLink = chakra(Link);
+
 const rolePath = (roleId: string) =>
   rootRoute({}).careers({}).role({ roleId }).$;
+
+/** The rows' rules: the soft solid hairline the article bylines use. */
+const ROW_RULE = "1px solid rgba(21, 23, 24, 0.08)";
+
+/**
+ * One open role: the title with its department under it on the left, and
+ * the location and terms with an arrow on the right. The arrow nudges on
+ * hover; on phones the right side drops under the title.
+ */
+const RoleRow: React.FC<{ role: OpenRole }> = ({ role }) => (
+  <RouterLink
+    to={rolePath(role.id)}
+    display="flex"
+    flexWrap="wrap"
+    alignItems="center"
+    justifyContent="space-between"
+    columnGap="24px"
+    rowGap="6px"
+    py={{ base: "18px", md: "22px" }}
+    textDecoration="none"
+    css={{
+      "& h3": { transition: "opacity 150ms ease" },
+      "&:hover h3": { opacity: 0.6 },
+      "& svg": { transition: "transform 150ms ease" },
+      "&:hover svg": { transform: "translateX(3px)" },
+    }}
+  >
+    <Box minW={0}>
+      <Text
+        as="h3"
+        fontFamily="body"
+        fontSize={{ base: "1.0625rem", md: "1.25rem" }}
+        fontWeight={400}
+        lineHeight="1.3"
+        letterSpacing="-0.01em"
+        color="site.fg.strong"
+      >
+        {role.title}
+      </Text>
+      <Text
+        fontFamily="body"
+        fontSize="0.875rem"
+        color="site.fg.muted"
+        mt="4px"
+      >
+        {role.department}
+      </Text>
+    </Box>
+    <Box
+      display="flex"
+      alignItems="center"
+      gap="12px"
+      fontFamily="body"
+      fontSize="0.875rem"
+      color="site.fg.muted"
+    >
+      <span>
+        {role.location} - {role.employmentType}
+      </span>
+      <Box as={ArrowRight} boxSize="16px" color="site.fg.strong" aria-hidden />
+    </Box>
+  </RouterLink>
+);
 
 /**
  * Careers, on the rebrand chrome: the landing's closing band as the hero,
@@ -76,59 +141,29 @@ export const CareersPage: React.FC = () => (
         pb="60px"
         scrollMarginTop={`${NAV_H}px`}
       >
-        <Grid rowGap="40px">
-          <GridCol span={16} textAlign="center">
-            <Text as="h2" textStyle="h2" color="site.fg.strong">
-              Open roles
-            </Text>
-          </GridCol>
-          <GridCol span={16}>
-            <Box as="ul">
-              {OPEN_ROLES.map((role) => (
-                <li key={role.id}>
-                  <Link
-                    to={rolePath(role.id)}
-                    style={{ display: "block", textDecoration: "none" }}
-                  >
-                    {/* Ruled like the use-case accordion's rows. */}
-                    <RuledRow>
-                      <GridCol span={{ base: 16, lg: 5 }}>
-                        <Text textStyle="label" color="slate.100">
-                          {role.department}
-                        </Text>
-                      </GridCol>
-                      <GridCol
-                        span={{ base: 16, lg: 8 }}
-                        display="flex"
-                        flexDirection="column"
-                        gap="12px"
-                      >
-                        <Text as="h3" textStyle="h6" color="site.fg">
-                          {role.title}
-                        </Text>
-                        {/* Set apart by space rather than a separator, like
-                            the blog's property lines. */}
-                        <Box
-                          display="flex"
-                          flexWrap="wrap"
-                          columnGap="20px"
-                          rowGap="2px"
-                          textStyle="body.sm"
-                          color="site.fg.muted"
-                        >
-                          <span>{role.location}</span>
-                          <span>{role.employmentType}</span>
-                        </Box>
-                      </GridCol>
-                    </RuledRow>
-                  </Link>
-                </li>
-              ))}
-            </Box>
-            {/* Closes the list with the same dotted rule as the rows'. */}
-            <Box {...dottedTop(RULED_ROW_RULE)} />
-          </GridCol>
-        </Grid>
+        {/* The article column, as on the blog index: a left-aligned
+            heading, then one row per role. */}
+        <Box maxW={`${ARTICLE_MEASURE}px`} mx="auto">
+          <Text
+            as="h2"
+            fontFamily="body"
+            fontSize={{ base: "2rem", md: "2.75rem" }}
+            fontWeight={300}
+            lineHeight="1.15"
+            letterSpacing="-0.025em"
+            color="site.fg.strong"
+            mb={{ base: "28px", md: "40px" }}
+          >
+            Open roles
+          </Text>
+          <Box as="ul" borderTop={ROW_RULE}>
+            {OPEN_ROLES.map((role) => (
+              <Box as="li" key={role.id} borderBottom={ROW_RULE}>
+                <RoleRow role={role} />
+              </Box>
+            ))}
+          </Box>
+        </Box>
       </Section>
     </Box>
 
