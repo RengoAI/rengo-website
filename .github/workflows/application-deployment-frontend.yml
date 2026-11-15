@@ -38,9 +38,8 @@ jobs:
         working-directory: ./frontend
         run: pnpm build production
 
-      - name: Create 404.html for SPA routing
-        working-directory: ./frontend
-        run: cp build/index.html build/404.html
+      # 404.html, sitemap.xml and robots.txt are written by the build
+      # (src/scripts/prerender-routes.ts).
 
       - name: Copy CNAME file to build directory
         working-directory: ./frontend

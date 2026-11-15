@@ -4,6 +4,8 @@ import {
   firstPulseAt,
   heroDotColor,
   pulseGrowth,
+  dotScale,
+  SITE_DOT,
 } from "@/components/site/canvas/hero-dots";
 import { INK } from "@/components/site/canvas/ink";
 import { useCanvasLoop } from "@/components/site/canvas/use-canvas-loop";
@@ -27,8 +29,15 @@ const ROWS = 18;
 const PITCH = 14; // px, grid spacing at full size
 /** The figure's spacing at this scale. */
 const SCALE = 1.2;
-/** A mark's size, px, at any scale. */
-const MARK = 4;
+/**
+ * A mark's size, px: the site's shared dot up to the scale (dotScale) where
+ * the figure reads best, about 860px wide; above it, marks grow with the
+ * spacing, so the figure keeps that weight on larger screens (3px at 1440px
+ * and up) instead of thinning out.
+ */
+const MARK = SITE_DOT;
+const MARK_GROWS_FROM = 0.6;
+const markAt = (k: number) => MARK * Math.max(1, k / MARK_GROWS_FROM);
 /** Share of marks in the site's accent red; the rest take the hero's mix. */
 const ACCENT_SHARE = 0.1;
 /** Seconds held as a grid, and as a circle; seconds for each change. */
@@ -44,10 +53,13 @@ const CIRCLE_R = Math.sqrt((COLS * ROWS) / Math.PI);
 const GRID_SPREAD = 1.5;
 /** Gap between the copy's bottom and the figure's tallest shape, in px. */
 const TOP_GAP = 24;
-/** From the `lg` breakpoint (px), the figure sits RIGHT_PAD from the band's
- * right edge instead of centred. */
+/** Space held under the figure's tallest shape, px (2rem). */
+const BOTTOM_GAP = 32;
+/** From the `lg` breakpoint (px), the figure sits RIGHT_PAD in from the
+ * content's right edge (the band's padding: the gutter, which grows past the
+ * 1440px content cap) instead of centred. */
 const DESKTOP_MIN_W = 1024;
-const RIGHT_PAD = 60;
+const RIGHT_PAD = 20;
 
 type Mark = {
   /** Grid positions in grid pitches and circle positions in circle
@@ -108,25 +120,39 @@ export const GridCircleDots: React.FC<{
   const marks = React.useMemo(makeMarks, []);
 
   const canvasRef = useCanvasLoop(({ ctx, w, h, t, reduced }) => {
-    // Fit each shape to narrow screens, never past full size, then scale.
+    // Scaled with the screen like the hero (full size from 1440px, down to
+    // half), fit to the narrowest screens, then scaled. The marks grow with
+    // it on larger screens (markAt).
     const fit = (w - 32) / COLS;
-    const pitch = Math.min(PITCH, fit) * SCALE * scale;
-    const gridPitch = Math.min(PITCH * GRID_SPREAD, fit) * SCALE * scale;
-    const half = MARK / 2;
+    const k = dotScale(w);
+    const pitch = Math.min(PITCH * k, fit) * SCALE * scale;
+    const gridPitch = Math.min(PITCH * GRID_SPREAD * k, fit) * SCALE * scale;
+    const mark = markAt(k);
+    const half = mark / 2;
     // Half the figure at its widest and tallest, grid or circle, in px.
     const halfW = Math.max(((COLS - 1) / 2) * gridPitch, CIRCLE_R * pitch);
     const halfH = Math.max((ROWS / 2) * gridPitch, CIRCLE_R * pitch);
-    // From desktop, its widest shape ends RIGHT_PAD in from the band's
+    // From desktop, its widest shape ends RIGHT_PAD in from the content's
     // right edge; below that it's centred. Its tallest shape starts TOP_GAP
     // below the copy.
-    const ox = w >= DESKTOP_MIN_W ? w - RIGHT_PAD - halfW - half : w / 2;
-    const el = below?.current;
     const canvas = canvasRef.current;
+    const band = canvas?.parentElement;
+    const gutter = band ? parseFloat(getComputedStyle(band).paddingRight) : 0;
+    const ox =
+      w >= DESKTOP_MIN_W ? w - gutter - RIGHT_PAD - halfW - half : w / 2;
+    const el = below?.current;
     const top =
       el && canvas
         ? el.getBoundingClientRect().bottom - canvas.getBoundingClientRect().top
         : 0;
     const oy = top + TOP_GAP + halfH;
+    // Hold the band open BOTTOM_GAP past the figure, whatever the copy's
+    // wrapping, so it's never clipped or left with empty space. The band's
+    // own min-height is only the first paint's estimate.
+    const need = `${Math.ceil(oy + halfH + half + BOTTOM_GAP)}px`;
+    if (el && band && band.style.minHeight !== need) {
+      band.style.minHeight = need;
+    }
 
     ctx.clearRect(0, 0, w, h);
     for (const m of marks) {
@@ -135,7 +161,8 @@ export const GridCircleDots: React.FC<{
       const x = ox + lerp(m.gx * gridPitch, m.cx * pitch, p);
       const y = oy + lerp(m.gy * gridPitch, m.cy * pitch, p);
 
-      const r = half + (reduced ? 0 : pulseGrowth(m, t));
+      // Swells by half its size, as the site's dots do.
+      const r = half + (reduced ? 0 : pulseGrowth(m, t, half));
 
       ctx.fillStyle = m.color;
       ctx.fillRect(x - r, y - r, r * 2, r * 2);

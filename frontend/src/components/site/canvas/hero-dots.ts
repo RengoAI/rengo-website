@@ -18,9 +18,31 @@ export const HERO_ACCENT = { color: "#B9CCE9", share: 0.25 };
 /** 10% of dots in the hero description's dark navy (slate.100). */
 export const HERO_HIGHLIGHT = { color: "#425366", share: 0.1 };
 
-/** The hero's dot diameter, px, and how much wider a swell takes it. */
-export const HERO_DOT = 4;
-export const HERO_DOT_GROW = 1.6; // to 5.6px
+/**
+ * Every dot figure's dot size, px, at every screen width: the size the app's
+ * spaces empty state (rengo `space-landing-art.tsx`) draws its marks at full
+ * width, 4/14 of its 6.4px spacing. Keep the two in step.
+ */
+export const SITE_DOT = 1.8;
+/**
+ * The figures' spacing was designed around 4px dots; this shrinks it by the
+ * same ratio the dots shrank, so dots sit as densely as the app's do.
+ */
+export const SITE_SPACING = SITE_DOT / 4;
+/** The hero's dot diameter, px, and how much wider a swell takes it (40%). */
+export const HERO_DOT = SITE_DOT;
+export const HERO_DOT_GROW = SITE_DOT * 0.4;
+
+/**
+ * How big the site's dot figures lay out on a canvas `w` px wide, as a share
+ * of full size: full from 1440px, shrinking in proportion below that, to no
+ * less than half. It scales spacing and shape only; the dots themselves stay
+ * SITE_DOT, so they match from section to section at any width.
+ */
+const DOT_DESIGN_W = 1440;
+const DOT_MIN_SCALE = 0.5;
+export const dotScale = (w: number) =>
+  Math.min(Math.max(w / DOT_DESIGN_W, DOT_MIN_SCALE), 1);
 
 const pick = <T>(xs: readonly T[]) => xs[Math.floor(Math.random() * xs.length)];
 
@@ -40,11 +62,12 @@ export const heroDotColor = () => {
 };
 
 /**
- * The pulse: now and then each dot swells by PULSE_GROW px across (unless
+ * The pulse: now and then each dot swells by PULSE_GROW px across, half its
+ * size, as the app's marks do (unless
  * given its own amount) and eases back, over PULSE_DUR seconds, resting
  * PULSE_REST seconds between.
  */
-const PULSE_GROW = 2;
+const PULSE_GROW = SITE_DOT / 2;
 const PULSE_DUR = 0.8;
 const PULSE_REST = [1, 6] as const;
 

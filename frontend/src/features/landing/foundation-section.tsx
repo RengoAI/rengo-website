@@ -301,7 +301,7 @@ export const FoundationSection: React.FC = () => {
               >
                 <Image
                   data-row-fade
-                  src={`${ART}foundation-layer-${i + 1}.png`}
+                  src={`${ART}foundation-layer-${i + 1}.webp`}
                   alt=""
                   aria-hidden
                   position="relative"
@@ -320,6 +320,21 @@ export const FoundationSection: React.FC = () => {
             </Grid>
           );
         })}
+      </Box>
+      {/* Phones show the renders alone, stacked, so the layers' names and
+          descriptions follow underneath as a list, top layer first. */}
+      <Box
+        as="ul"
+        display={{ base: "flex", md: "none" }}
+        flexDirection="column"
+        gap="24px"
+        mt="48px"
+      >
+        {FOUNDATION_LAYERS.map((layer) => (
+          <Box as="li" key={layer.title}>
+            <FoundationLayer {...layer} />
+          </Box>
+        ))}
       </Box>
     </Section>
   );

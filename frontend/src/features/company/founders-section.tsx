@@ -11,7 +11,7 @@ export const FoundersSection: React.FC = () => (
         We&apos;re a team of builders
         <br />
         <Box as="span" color="slate.50" fontWeight={300}>
-          From world class engineering teams
+          From world-class engineering teams
         </Box>
       </SectionHeading>
 

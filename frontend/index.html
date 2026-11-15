@@ -3,8 +3,24 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Rengo AI" />
+    <!-- page-meta: defaults for the homepage. The build rewrites this block
+         for each page (src/scripts/prerender-routes.ts), and the app keeps it
+         current as it navigates (src/shared/hooks/use-page-meta.ts). -->
+    <title>Rengo AI</title>
+    <meta name="description" content="We build the data layer that enables AI to learn from and act on your organization’s knowledge." />
+    <link rel="canonical" href="https://rengoai.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Rengo AI" />
+    <meta property="og:title" content="Rengo AI" />
+    <meta property="og:description" content="We build the data layer that enables AI to learn from and act on your organization’s knowledge." />
+    <meta property="og:url" content="https://rengoai.com/" />
+    <meta property="og:image" content="https://rengoai.com/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <!-- /page-meta -->
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
     <!--
@@ -44,9 +60,8 @@
     </style>
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;500&family=Geist:wght@200..600&family=Geist+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&family=Noto+Serif:wght@300..500&family=Space+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@200..600&family=Geist+Mono:wght@400;500&family=Noto+Serif:wght@300..500&display=swap"
     />
-    <title>Rengo AI</title>
     <!-- Reb2b Tracking -->
     <script>
       !(function (key) {

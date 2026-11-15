@@ -1,41 +1,42 @@
 import { rootRoute } from "@/app/app-routes";
-import { Button, Center, Text, VStack } from "@chakra-ui/react";
-import { Home } from "lucide-react";
-import { useNavigate } from "react-router";
+import { hoverFade } from "@/components/site/site-styles";
+import { Box, Center, chakra, Text, VStack } from "@chakra-ui/react";
+import { Link } from "react-router";
 
-export const NotFound = () => {
-  const navigate = useNavigate();
-  return (
-    <Center w="100%" flex="1">
-      <VStack alignItems="flex-start" gap={12} w="100%" maxW="450px">
-        <VStack alignItems="flex-start" gap={4}>
-          <Text fontSize="5xl" color="ink.body">
-            Not Found
-          </Text>
-          <Text fontSize="md" color="slate.50">
-            Looks like the page you are looking for does not exist. If you need
-            help, please contact support.
-          </Text>
-          <Button
-            variant="outline"
-            border="1px solid"
-            borderColor="slate.30"
-            borderRadius="md"
-            _hover={{
-              borderColor: "slate.30",
-              bg: "slate.10",
-            }}
-            onClick={() =>
-              navigate(rootRoute({}).$, {
-                replace: true,
-              })
-            }
-          >
-            <Home size={16} />
-            <Text>Home</Text>
-          </Button>
-        </VStack>
-      </VStack>
-    </Center>
-  );
-};
+const RouterLink = chakra(Link);
+
+const LINK = {
+  display: "inline-flex",
+  alignItems: "center",
+  minH: "44px",
+  textStyle: "body.sm",
+  color: "site.fg.strong",
+  textDecoration: "underline",
+  textUnderlineOffset: "3px",
+  ...hoverFade,
+} as const;
+
+export const NotFound = () => (
+  <Center w="100%" flex="1" px="gutter" py="96px">
+    <VStack alignItems="flex-start" gap={6} w="100%" maxW="450px">
+      <Text as="h1" textStyle="h3" color="site.fg.heading">
+        Page not found
+      </Text>
+      <Text textStyle="body.md" color="site.fg">
+        The page you&rsquo;re looking for doesn&rsquo;t exist or has moved.
+      </Text>
+      <Box as="ul" display="flex" gap="24px">
+        <li>
+          <RouterLink to={rootRoute({}).$} {...LINK}>
+            Go to the homepage
+          </RouterLink>
+        </li>
+        <li>
+          <RouterLink to={rootRoute({}).careers({}).$} {...LINK}>
+            See open roles
+          </RouterLink>
+        </li>
+      </Box>
+    </VStack>
+  </Center>
+);

@@ -9,7 +9,7 @@ export const LegalLayout: React.FC = () => (
     <SiteNav />
     {/* Long URLs in the policies break rather than widening the page on
         phones. */}
-    <Box css={{ "& a": { overflowWrap: "anywhere" } }}>
+    <Box as="main" id="main" css={{ "& a": { overflowWrap: "anywhere" } }}>
       <Outlet />
     </Box>
     <SiteFooter />

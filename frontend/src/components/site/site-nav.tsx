@@ -15,6 +15,15 @@ const RouterLink = chakra(Link);
 /** The nav's in-app pages. */
 const LINKS: { label: string; to: string }[] = [];
 
+/**
+ * The mobile sheet's in-app pages: the bar's, plus Careers, which on larger
+ * screens is in the footer.
+ */
+const SHEET_LINKS: { label: string; to: string }[] = [
+  ...LINKS,
+  { label: "Careers", to: rootRoute({}).careers({}).$ },
+];
+
 const MENU_ID = "site-nav-menu";
 
 /** The product's sign-in, opened in a new tab. */
@@ -123,6 +132,25 @@ export const SiteNav: React.FC<{
       }
       transition="box-shadow 200ms ease, border-color 200ms ease"
     >
+      {/* Skip link: the first thing a keyboard reaches, hidden until it has
+          focus. Every page's <main> carries id="main". */}
+      <chakra.a
+        href="#main"
+        position="absolute"
+        top="8px"
+        left="gutter"
+        zIndex={1}
+        px="12px"
+        py="8px"
+        bg="site.fg.strong"
+        color="site.bg.surface"
+        textStyle="body.sm"
+        borderRadius="4px"
+        transform="translateY(-200%)"
+        _focusVisible={{ transform: "none" }}
+      >
+        Skip to content
+      </chakra.a>
       <Grid alignItems="center">
         {/* From md: the wordmark on the left, the links from column 4 —
             column 3 from lg, where the wordmark leaves room (and, from xl,
@@ -187,16 +215,17 @@ export const SiteNav: React.FC<{
               Book a call
             </SolidCta>
           </Box>
-          {/* 32px hit area around a 20px glyph; the negative margin keeps the
-              glyph itself flush with the gutter and the bar at its height. */}
+          {/* 44px hit area (the minimum comfortable tap target) around a 20px
+              glyph; the negative margin keeps the glyph itself flush with the
+              gutter and the bar at its height. */}
           <chakra.button
             type="button"
             display={{ base: "flex", md: "none" }}
             alignItems="center"
             justifyContent="center"
-            boxSize="32px"
-            my="-8px"
-            mr="-6px"
+            boxSize="44px"
+            my="-14px"
+            mr="-12px"
             color="site.fg.strong"
             cursor="pointer"
             aria-label={isOpen ? "Close menu" : "Open menu"}
@@ -238,7 +267,7 @@ export const SiteNav: React.FC<{
             display="flex"
             flexDirection="column"
           >
-            {LINKS.map((link) => (
+            {SHEET_LINKS.map((link) => (
               <Box as="li" key={link.label}>
                 <RouterLink to={link.to} onClick={close} {...SHEET_LINK}>
                   {link.label}

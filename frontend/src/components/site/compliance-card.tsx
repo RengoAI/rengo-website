@@ -26,7 +26,7 @@ export const ComplianceCard: React.FC<ComplianceCardProps> = ({
     h="full"
     // Holds the tiles open below lg, where they lose the group's fixed
     // height.
-    minH={{ base: "160px", md: "200px" }}
+    minH={{ base: "112px", md: "144px" }}
     // Phones: no vertical padding, 1rem either side.
     px={{ base: "1rem", md: "20px" }}
     py={{ base: 0, md: "20px" }}

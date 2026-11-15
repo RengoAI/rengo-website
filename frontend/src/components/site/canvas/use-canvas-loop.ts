@@ -1,4 +1,4 @@
-import { prefersReducedMotion } from "@/shared/utils/motion";
+import { usePrefersReducedMotion } from "@/shared/utils/motion";
 import React from "react";
 
 export type Frame = {
@@ -39,13 +39,15 @@ export const useCanvasLoop = (
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const drawRef = React.useRef(draw);
   drawRef.current = draw;
+  // Followed live: changing the setting restarts the loop below.
+  const reducedMotion = usePrefersReducedMotion();
 
   React.useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx) return;
 
-    const still = prefersReducedMotion();
+    const still = reducedMotion;
     let w = 0;
     let h = 0;
     let resized = true;
@@ -64,7 +66,10 @@ export const useCanvasLoop = (
       canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       resized = true;
-      if (still) frame(performance.now());
+      // Draw at the new size now, even while paused off screen, so anything
+      // laid out from the drawing (a band's height) is right before it
+      // scrolls into view.
+      frame(performance.now());
     };
 
     const frame = (now: number) => {
@@ -137,7 +142,7 @@ export const useCanvasLoop = (
       window.removeEventListener("pointermove", onMove);
       document.removeEventListener("pointerleave", onLeave);
     };
-  }, [trackPointer]);
+  }, [trackPointer, reducedMotion]);
 
   return canvasRef;
 };

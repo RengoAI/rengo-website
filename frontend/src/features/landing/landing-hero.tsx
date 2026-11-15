@@ -8,6 +8,8 @@ import {
   HERO_BLUES,
   HERO_DOT,
   HERO_DOT_GROW,
+  SITE_SPACING,
+  dotScale,
   HERO_GREYS,
   HERO_HIGHLIGHT,
   HERO_PALE,
@@ -27,15 +29,16 @@ import React from "react";
  * button right-aligned opposite it, and under them a bed of dots — the data
  * layer — forming out of a scatter.
  *
- * 1,728 square dots start scattered across a 400px band below the middle
- * and are pulled, staggered over about a second, into sixteen lines 4px
- * apart, 36px under the copy. Slots are handed out by each dot's starting
+ * Up to 3,840 square dots (on a 1440px desktop) start scattered across a
+ * 400px band around the bed, below the copy, and are pulled, staggered over
+ * about a second, into sixteen lines 1.8px apart, 180px under the copy. Slots are handed out by each dot's starting
  * x, so dots travel mostly vertically, and each line is slid along by a
  * golden-ratio step so the columns don't stack. Dots come up to full
  * strength as they land, then each line rolls in its own wave and every dot
- * now and then swells from 4px to 5.6px. Ten seconds after the bed forms,
+ * now and then swells 40% larger. Ten seconds after the bed forms,
  * every dot drifts back to where it started and the bed forms again. On
- * phones there are half as many dots, sitting 20px lower.
+ * narrower screens the whole figure, and its distance from the copy, shrink
+ * together (see `figureScale`).
  *
  * Click the hero (or press R) to restart with a fresh scatter. Reduced
  * motion gets the formed bed, still.
@@ -49,19 +52,24 @@ const DESCRIPTION =
   "We build the data layer that enables AI to learn from and act on your organization’s knowledge";
 
 // ---- Formation ---------------------------------------------------------
-const DOTS = 1728;
 /**
- * The whole graphic — the starting scatter and the bed — is raised RAISE
- * px. Phones (canvas narrower than the `md` breakpoint) get half the dots,
- * raised PHONE_RAISE px more — negative, so they sit lower.
+ * Column spacing, px: designed as 108 columns over a 1440px desktop (13⅓px
+ * apart for 4px dots), tightened by SITE_SPACING for the site's smaller
+ * dots — about 6px. Narrower canvases get fewer columns at the same spacing
+ * (never more than a 1440px desktop's), so a phone's bed is as dense as a
+ * desktop's.
  */
-const RAISE = 60;
-const PHONE_MAX_W = 768;
-const PHONE_DOTS = DOTS / 2;
-const PHONE_RAISE = -20; // 80px lower than the earlier 60px raise
+const DOT_COL_SPACING = (1440 / 108) * SITE_SPACING;
+const MAX_COLS = Math.ceil(1440 / DOT_COL_SPACING);
+const dotCount = (w: number) =>
+  Math.min(MAX_COLS, Math.ceil(w / (DOT_COL_SPACING * figureScale(w)))) * 16;
 const LINES = 16;
 const LINE_GAP = 4; // px, centre to centre
-const LAYER_GAP = 96; // px below the copy where the first line forms
+/**
+ * px from the copy's drawn bottom edge to the bed's first line, at full
+ * size; scaled with the rest of the figure.
+ */
+const BED_GAP = 180;
 const DURATION = 25; // seconds until the last dot is fully pulled in
 /** Spread of per-dot start delays, as a share of DURATION. */
 const STAGGER = 0.04;
@@ -74,9 +82,15 @@ const EASE = (() => {
   return Math.log(0.5) / Math.log(1 - half);
 })();
 const PULL = 0.02; // spring strength toward the slot
-/** Dots start inside a band this tall, this far below the hero's middle. */
-const FLOAT_BAND = 400;
-const FLOAT_OFFSET = 190;
+/**
+ * Dots start inside a band this tall, placed around the bed so its first line
+ * sits FLOAT_BED_AT of the way down. Anchored to the bed (not the screen), the
+ * pull runs the same way at every screen size. The band never comes higher
+ * than FLOAT_COPY_CLEAR px under the copy, so no dot starts over the text.
+ */
+const FLOAT_BAND = 400; // px at full size; scaled with the figure
+const FLOAT_BED_AT = 0.37;
+const FLOAT_COPY_CLEAR = 24;
 
 // ---- The wave ------------------------------------------------------------
 // Each line of the formed bed rolls in its own slow travelling wave — its own
@@ -91,6 +105,13 @@ const WAVE_LENGTH: [number, number] = [480, 800]; // px, crest to crest
 const WAVE_PERIOD: [number, number] = [5, 9]; // seconds per cycle
 /** px from its slot at which a landing dot starts to join the wave. */
 const WAVE_JOIN = 8;
+/**
+ * The figure's px sizes are set for a full-width canvas. A narrower canvas
+ * shrinks the figure evenly — wavelength, wave height, line gap and column
+ * spacing alike — so it keeps the desktop's proportions, stopping at half
+ * size (see `dotScale`). The dots stay HERO_DOT at every width.
+ */
+const figureScale = dotScale;
 
 // ---- The loop ------------------------------------------------------------
 /** Seconds the formed bed holds its wave before the dots drift back. */
@@ -110,10 +131,19 @@ const LOOP_LANDED = 1;
 // ---- Trails ----------------------------------------------------------------
 /**
  * Each dot keeps its recent positions and draws them behind it, each step
- * back RETAIN dimmer, so moving dots leave a short trail.
+ * back RETAIN dimmer, so moving dots leave a short trail. Kept short: a long
+ * one smears fast dots into a blur.
  */
-const RETAIN = 1 - 55 / 255;
-const TRAIL_LEN = 14; // RETAIN^14 ≈ 3%, past which a trail point is invisible
+const RETAIN = 0.55;
+const TRAIL_LEN = 6; // RETAIN^6 ≈ 3%, past which a trail point is invisible
+
+/**
+ * A gap this long (s) between frames means the loop was paused: the hero
+ * scrolled off screen or the tab was hidden. The clock skips the gap, so the
+ * animation resumes where it left off instead of jumping ahead, and trails
+ * are dropped so no dot streaks from where it was.
+ */
+const PAUSE_GAP = 0.25;
 
 // ---- Colour ----------------------------------------------------------------
 /** The ground: the site surface. The canvas is transparent over it. */
@@ -216,8 +246,10 @@ type Dot = {
   vy: number;
   /** Share of DURATION before this dot's pull begins. */
   delay: number;
-  /** Its slot: x, and its line's offset below the first line. */
+  /** Its slot: x, its line (0 is the top), and that line's offset below the
+   * first. */
   tx: number;
+  line: number;
   ty: number;
   /** Its shade, [r, g, b]. */
   shade: number[];
@@ -231,12 +263,20 @@ type Dot = {
    * settled dot doesn't rebuild the same string every frame. */
   k: number;
   fill: string;
-  /** Where it started, which it drifts back to; its strength when the
-   * drift began; and when in the drift it sets off, 0..1. */
-  sx: number;
-  sy: number;
+  /**
+   * Where it starts, which it drifts back to: across the width as a share of
+   * it, and below the bed's first line in full-size px. Stored relative to
+   * the layout, so a resize moves it along with everything else.
+   */
+  sxN: number;
+  syN: number;
+  /** Its strength when the drift began; and when in the drift it sets off,
+   * 0..1. */
   sk: number;
   stagger: number;
+  /** Where it was last drawn, so a retrigger can disperse from there. */
+  lx: number;
+  ly: number;
 };
 
 /**
@@ -260,7 +300,8 @@ const assignSlots = (dots: Dot[], width: number) => {
           ? (line * 0.618034) % 1
           : 0;
         d.tx = ((col + shift) * spacing) % width;
-        d.ty = line * LINE_GAP;
+        d.line = line;
+        d.ty = line * LINE_GAP * SITE_SPACING * figureScale(width);
       });
   }
 };
@@ -291,15 +332,24 @@ export const LandingHero: React.FC = () => {
     dots: [] as Dot[],
     start: 0,
     restart: true,
-    /** Whether the dots were laid out for a phone. */
-    phone: false,
     /** When (seconds into this pass) the bed formed, and when the dots
      * began drifting back to their starts. */
     formedAt: null as number | null,
     scatterAt: null as number | null,
+    /** The previous frame's time, to spot a pause. */
+    lastT: 0,
+    /** The canvas width and bed position last frame, to carry the dots
+     * across a resize. */
+    w: 0,
+    layerY: 0,
+    /** A click or R asked for a fresh pass. */
+    retrigger: false,
+    /** The current drift starts from where the dots were drawn (a
+     * retrigger) rather than from the formed bed. */
+    driftFromDrawn: false,
   });
   const restart = React.useCallback(() => {
-    sim.current.restart = true;
+    sim.current.retrigger = true;
   }, []);
 
   React.useEffect(() => {
@@ -313,44 +363,120 @@ export const LandingHero: React.FC = () => {
   const canvasRef = useCanvasLoop(({ ctx, w, h, t, dt, reduced, resized }) => {
     const s = sim.current;
     const c = copy.current;
-    const phone = w < PHONE_MAX_W;
-    const raise = RAISE + (phone ? PHONE_RAISE : 0);
-    const layerY =
-      (c ? c.offsetTop + c.offsetHeight + LAYER_GAP : h * 0.5) - raise;
-    // Crossing the breakpoint changes the dot count: start a fresh pass.
-    if (resized && phone !== s.phone) s.restart = true;
+    const g = figureScale(w);
+    // The copy's drawn bottom edge (after its raise), in canvas px.
+    const copyBottom = c
+      ? c.getBoundingClientRect().bottom -
+        ctx.canvas.getBoundingClientRect().top
+      : h * 0.5;
+    const layerY = copyBottom + BED_GAP * g;
+    // A resize carries the dots with the layout: stretched to the new width
+    // and moved with the bed, so nothing bunches up or jumps.
+    if (resized && s.w && s.dots.length) {
+      const kx = w / s.w;
+      const dy = layerY - s.layerY;
+      for (const d of s.dots) {
+        d.x *= kx;
+        d.lx *= kx;
+        d.y += dy;
+        d.ly += dy;
+        d.count = 0;
+      }
+    }
+    s.w = w;
+    s.layerY = layerY;
+
+    /** A new dot, its start not yet picked. */
+    const makeDot = (): Dot => ({
+      x: 0,
+      y: 0,
+      vx: 0,
+      vy: 0,
+      delay: Math.random() * STAGGER,
+      tx: 0,
+      line: 0,
+      ty: 0,
+      shade: dotShade(),
+      pulseAt: firstPulseAt(),
+      trail: new Float32Array(TRAIL_LEN * 2),
+      head: 0,
+      count: 0,
+      k: NaN,
+      fill: "",
+      sxN: 0,
+      syN: 0,
+      sk: 1,
+      stagger: Math.random(),
+      lx: 0,
+      ly: 0,
+    });
+
+    /** A fresh random start in the band around the bed, as stored on a dot. */
+    const bandTopN =
+      Math.max(
+        layerY - FLOAT_BAND * g * FLOAT_BED_AT,
+        copyBottom + FLOAT_COPY_CLEAR,
+      ) - layerY;
+    const pickStart = (d: Pick<Dot, "sxN" | "syN">) => {
+      d.sxN = Math.random();
+      d.syN = bandTopN / g + Math.random() * FLOAT_BAND;
+    };
+    /** A dot's start in canvas px, never above the copy. */
+    const startX = (d: Dot) => d.sxN * w;
+    const startY = (d: Dot) =>
+      Math.max(layerY + d.syN * g, copyBottom + FLOAT_COPY_CLEAR);
+
+    // A resize that changes how many dots fit: add or drop dots to match,
+    // the new ones appearing in the scatter, then disperse and form again.
+    const count = dotCount(w);
+    if (resized && s.dots.length && count !== s.dots.length && !s.restart) {
+      if (count < s.dots.length) {
+        s.dots.length = count;
+      } else {
+        while (s.dots.length < count) {
+          const d = makeDot();
+          pickStart(d);
+          d.lx = startX(d);
+          d.ly = startY(d);
+          s.dots.push(d);
+        }
+      }
+      if (reduced) assignSlots(s.dots, w);
+      else s.retrigger = true;
+    }
+
+    if (s.retrigger) {
+      s.retrigger = false;
+      if (s.dots.length && !s.restart && !reduced) {
+        // Disperse from wherever the dots are drawn now to fresh starts,
+        // then form again, rather than jumping to a new scatter.
+        const elapsedNow = t - s.start;
+        for (const d of s.dots) {
+          d.x = d.lx;
+          d.y = d.ly;
+          d.vx = 0;
+          d.vy = 0;
+          d.sk = Number.isNaN(d.k) ? DRIFT_STRENGTH : d.k;
+          d.count = 0;
+          pickStart(d);
+        }
+        s.formedAt = null;
+        s.scatterAt = elapsedNow;
+        s.driftFromDrawn = true;
+      } else {
+        s.restart = true;
+      }
+    }
 
     if (s.restart) {
-      s.phone = phone;
-      s.dots = Array.from({ length: phone ? PHONE_DOTS : DOTS }, () => ({
-        x: Math.random() * w,
-        y:
-          (h - FLOAT_BAND) / 2 +
-          FLOAT_OFFSET -
-          raise +
-          Math.random() * FLOAT_BAND,
-        vx: 0,
-        vy: 0,
-        delay: Math.random() * STAGGER,
-        tx: 0,
-        ty: 0,
-        shade: dotShade(),
-        pulseAt: firstPulseAt(),
-        trail: new Float32Array(TRAIL_LEN * 2),
-        head: 0,
-        count: 0,
-        k: NaN,
-        fill: "",
-        sx: 0,
-        sy: 0,
-        sk: 1,
-        stagger: Math.random(),
-      }));
-      assignSlots(s.dots, w);
+      s.dots = Array.from({ length: count }, makeDot);
       for (const d of s.dots) {
-        d.sx = d.x;
-        d.sy = d.y;
+        pickStart(d);
+        d.x = startX(d);
+        d.y = startY(d);
       }
+      assignSlots(s.dots, w);
+      s.driftFromDrawn = false;
       s.start = t;
       s.restart = false;
       s.formedAt = null;
@@ -371,6 +497,13 @@ export const LandingHero: React.FC = () => {
       return;
     }
 
+    // Skip over a pause rather than jumping ahead by it.
+    if (s.lastT && t - s.lastT > PAUSE_GAP) {
+      s.start += t - s.lastT;
+      for (const d of s.dots) d.count = 0;
+    }
+    s.lastT = t;
+
     // The motion is tuned per 60fps frame; scale to real frame time.
     const f = dt * 60;
     const damp = 1 - (1 - 0.08) ** f;
@@ -384,17 +517,22 @@ export const LandingHero: React.FC = () => {
 
     /** A dot's wave offset, eased in over its last few px of landing so the
      * bed only moves once it has formed. */
+
     const waveAt = (d: Dot) => {
       const join = Math.min(
         Math.max(1 - Math.abs(layerY + d.ty - d.y) / WAVE_JOIN, 0),
         1,
       );
-      const { length, period, dir, offset, amp } = waveLine(Math.round(d.ty));
+      const { length, period, dir, offset, amp } = waveLine(
+        // Keyed by the line's desktop offset, so each line keeps its own wave
+        // at every size.
+        Math.round(d.line * LINE_GAP),
+      );
       const phase =
-        (d.tx / length) * Math.PI * 2 +
+        (d.tx / (length * g)) * Math.PI * 2 +
         offset * Math.PI * 2 -
         dir * (elapsed / period) * Math.PI * 2;
-      return amp * Math.sin(phase) * join * join * (3 - 2 * join);
+      return amp * g * Math.sin(phase) * join * join * (3 - 2 * join);
     };
 
     /** One dot at x, y and strength k, behind its trail unless `still`. */
@@ -418,6 +556,8 @@ export const LandingHero: React.FC = () => {
       }
       ctx.globalAlpha = 1;
       mark(ctx, x, y, r + pulseGrowth(d, elapsed, HERO_DOT_GROW));
+      d.lx = x;
+      d.ly = y;
       d.trail[d.head * 2] = x;
       d.trail[d.head * 2 + 1] = y;
       d.head = (d.head + 1) % TRAIL_LEN;
@@ -435,8 +575,8 @@ export const LandingHero: React.FC = () => {
         const e = easeInOut(Math.min(Math.max(own, 0), 1));
         drawDot(
           d,
-          lerp(d.x, d.sx, e),
-          lerp(d.y + waveAt(d), d.sy, e),
+          lerp(d.x, startX(d), e),
+          lerp(s.driftFromDrawn ? d.y : d.y + waveAt(d), startY(d), e),
           lerp(d.sk, DRIFT_STRENGTH, e),
           false,
         );
@@ -488,13 +628,17 @@ export const LandingHero: React.FC = () => {
       // Back where they started: form the bed again from here, keeping each
       // dot's pulse on its schedule across the new pass's clock.
       for (const d of s.dots) {
-        d.x = d.sx;
-        d.y = d.sy;
+        d.x = startX(d);
+        d.y = startY(d);
         d.vx = 0;
         d.vy = 0;
         d.count = 0;
         d.pulseAt -= elapsed;
       }
+      // Slots by the dots' new starting x, so they travel straight down or
+      // up to the bed, even if the starts or the layout have changed.
+      assignSlots(s.dots, w);
+      s.driftFromDrawn = false;
       s.start = t;
       s.formedAt = null;
       s.scatterAt = null;

@@ -24,7 +24,7 @@ const OUTRO_HEADING_PAD_Y = 16;
 const DEFAULT_HEADING = (
   <>
     Ready to make your data{" "}
-    <Box as="span" color="site.highlight">
+    <Box as="span" color="site.highlight" whiteSpace="nowrap">
       your alpha?
     </Box>
   </>
