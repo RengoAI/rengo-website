@@ -27,9 +27,10 @@ const rolePath = (roleId: string) =>
 const ROW_RULE = "1px solid rgba(21, 23, 24, 0.08)";
 
 /**
- * One open role: the title on the left, the location with an arrow on the
- * right. The row fills softly on hover and the arrow nudges;
- * on phones the right side drops under the title.
+ * One open role, under its group's heading: the team ("Applied AI") on
+ * the left, as the heading already says the rest of the title; the
+ * location with an arrow on the right. The row fills softly on hover and
+ * the arrow nudges; on phones the right side drops under the team.
  */
 const RoleRow: React.FC<{ role: OpenRole }> = ({ role }) => (
   <RouterLink
@@ -61,7 +62,7 @@ const RoleRow: React.FC<{ role: OpenRole }> = ({ role }) => (
       color="site.fg.strong"
       minW={0}
     >
-      {role.title}
+      {role.team}
     </Text>
     <Box
       display="flex"
@@ -79,9 +80,9 @@ const RoleRow: React.FC<{ role: OpenRole }> = ({ role }) => (
 
 /** The open roles by staff group, Technical Staff first; a group with no
  * open roles isn't shown. */
-const TEAMS = STAFF_GROUPS.map((team) => ({
-  team,
-  roles: OPEN_ROLES.filter((role) => role.group === team),
+const GROUPS = STAFF_GROUPS.map((group) => ({
+  group,
+  roles: OPEN_ROLES.filter((role) => role.group === group),
 })).filter(({ roles }) => roles.length > 0);
 
 /**
@@ -164,8 +165,8 @@ export const CareersPage: React.FC = () => (
             flexDirection="column"
             gap={{ base: "36px", md: "48px" }}
           >
-            {TEAMS.map(({ team, roles }) => (
-              <Box as="section" key={team} aria-label={team}>
+            {GROUPS.map(({ group, roles }) => (
+              <Box as="section" key={group} aria-label={group}>
                 <Text
                   as="h3"
                   fontFamily="body"
@@ -174,7 +175,7 @@ export const CareersPage: React.FC = () => (
                   pb="10px"
                   borderBottom={ROW_RULE}
                 >
-                  {team}
+                  {group}
                 </Text>
                 <Box as="ul">
                   {roles.map((role) => (

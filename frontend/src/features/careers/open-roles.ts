@@ -17,7 +17,12 @@ export type StaffGroup = (typeof STAFF_GROUPS)[number];
 
 export type OpenRole = {
   id: string;
+  /** The role's full title, "Member of Technical Staff, Applied AI": for the
+   * tab title, page meta and the application email. */
   title: string;
+  /** The team within the group, "Applied AI": what the careers list and the
+   * role page's byline show, under the group's own name. */
+  team: string;
   location: string;
   group: StaffGroup;
   employmentType: string;
@@ -76,21 +81,22 @@ const HOW_RENGO_IS_DIFFERENT: JobSection = {
 
 const engineeringRole = ({
   id,
-  title,
+  team,
   summary,
   roleFocus,
   whatYoullDo,
   specialty,
 }: {
   id: string;
-  title: string;
+  team: string;
   summary: string;
   roleFocus: string;
   whatYoullDo: string[];
   specialty: string;
 }): OpenRole => ({
   id,
-  title,
+  title: `Member of Technical Staff, ${team}`,
+  team,
   location: "New York",
   group: "Technical Staff",
   employmentType: "Full-time",
@@ -126,7 +132,7 @@ const engineeringRole = ({
 export const OPEN_ROLES: readonly OpenRole[] = [
   engineeringRole({
     id: "member-of-technical-staff-data-infrastructure",
-    title: "Member of Technical Staff, Data Infrastructure",
+    team: "Data Infrastructure",
     summary:
       "Build the governed data foundation that turns fragmented knowledge into a source of truth applications and agents can run on.",
     roleFocus:
@@ -142,7 +148,7 @@ export const OPEN_ROLES: readonly OpenRole[] = [
   }),
   engineeringRole({
     id: "member-of-technical-staff-applied-ai",
-    title: "Member of Technical Staff, Applied AI",
+    team: "Applied AI",
     summary:
       "Build the applications and agents that turn proprietary knowledge into operating leverage.",
     roleFocus:
