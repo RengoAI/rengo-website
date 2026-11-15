@@ -162,9 +162,9 @@ export const ArticleHeader: React.FC<{
           rowGap="4px"
           mt={{ base: "24px", md: "32px" }}
           pt="14px"
-          // A soft dotted rule, like the site's other dividers, in the ink
-          // at low opacity so it shows faintly on the wash.
-          borderTop="1px dotted rgba(21, 23, 24, 0.14)"
+          // A soft solid hairline: the ink at low opacity, so it shows
+          // faintly on the wash.
+          borderTop="1px solid rgba(21, 23, 24, 0.08)"
           {...PROSE}
           fontSize="0.9375rem"
           color={ARTICLE_MUTED}
