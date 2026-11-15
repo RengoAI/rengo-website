@@ -285,7 +285,19 @@ export const BlogPostPage: React.FC = () => {
               </Box>
             )}
 
-            <Box mt={post.shortVersion ? { base: "36px", md: "44px" } : 0}>
+            <Box
+              mt={post.shortVersion ? { base: "36px", md: "44px" } : 0}
+              // The body's paragraphs and lists in the Business Overview's
+              // face, EB Garamond, set a size up for its smaller x-height.
+              // Figures and tables keep the site's sans.
+              css={{
+                "& > div > p, & > div > ul, & > div > ol": {
+                  fontFamily: "var(--rengo-fonts-garamond)",
+                  fontSize: "1.1875rem",
+                  lineHeight: "1.55",
+                },
+              }}
+            >
               <ArticleFlow>
                 {post.body.map((block, i) => (
                   <Block key={i} block={block} />

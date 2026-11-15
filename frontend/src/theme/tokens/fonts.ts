@@ -12,6 +12,10 @@ export const fonts = defineTokens.fonts({
   body: {
     value: `Geist, "Inter Tight", Inter, ui-sans-serif, -apple-system, system-ui, sans-serif`,
   },
+  // The Business Overview's reading face, for blog post body text.
+  garamond: {
+    value: `"EB Garamond", Garamond, "Times New Roman", ui-serif, serif`,
+  },
   mono: {
     value: `"Geist Mono", "Space Mono", SFMono-Regular, Menlo, Monaco, ui-monospace, monospace`,
   },

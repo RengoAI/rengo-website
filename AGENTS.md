@@ -35,6 +35,9 @@ Run these from `frontend/`.
 - Titles and headings are regular (400) or lighter: Geist at medium reads
   as bold at title sizes. Keep medium for emphasis within text and for tiny
   spaced-capital labels (12px and under), which need it to stay legible.
+- Blog post body text (paragraphs and lists) is EB Garamond, the Business
+  Overview's face; everything else, including figures and tables, is Geist.
+  In Garamond, medium (500) reads as bold, so emphasis stays at 500.
 - Secondary text uses `site.fg.muted` (a dark, neutral grey), not a lighter
   grey. Descriptions under a title stay in the body ink at a smaller size,
   as in the app's settings cards; keep grey for small details such as dates.
