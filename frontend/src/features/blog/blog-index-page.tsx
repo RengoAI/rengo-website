@@ -84,12 +84,16 @@ const PostItem: React.FC<{ post: Post }> = ({ post }) => (
       >
         {post.summary}
       </Text>
-      <Box mt="12px" display="flex" flexWrap="wrap" columnGap="16px">
-        <chakra.time {...META} dateTime={post.date}>
+      {/* "Nov 15, 2026 – 2 min read": an en dash between the two. */}
+      <Text {...META} mt="12px">
+        <chakra.time dateTime={post.date}>
           {formatPostDateShort(post.date)}
         </chakra.time>
-        <Text {...META}>{readMinutes(post)} min read</Text>
-      </Box>
+        <chakra.span aria-hidden mx="8px">
+          –
+        </chakra.span>
+        {readMinutes(post)} min read
+      </Text>
     </Box>
   </RouterLink>
 );
