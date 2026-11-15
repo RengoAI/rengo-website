@@ -29,7 +29,8 @@ export const PAGE_META: Readonly<Record<string, PageMeta>> = {
   },
   "/careers": {
     title: "Careers",
-    description: "Open roles at Rengo AI across engineering and product.",
+    description:
+      "Open roles at Rengo AI on the Technical Staff and Operating Staff.",
   },
   ...Object.fromEntries(
     OPEN_ROLES.map((role) => [

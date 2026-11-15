@@ -150,7 +150,7 @@ export const ArticleHeader: React.FC<{
         </Text>
       )}
       {/* A byline under a soft rule: the first property (the author, the
-          department) on the left, the rest on the right with a hyphen
+          group) on the left, the rest on the right with a hyphen
           between them, as on the blog index. Stacks on narrow screens. */}
       {properties.length > 0 && (
         <Box

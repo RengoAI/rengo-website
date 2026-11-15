@@ -6,11 +6,20 @@ export type JobSection = {
   blocks: JobContentBlock[];
 };
 
+/**
+ * The two groups every role belongs to, like "Member of Technical Staff":
+ * broad on purpose. Technical Staff build (engineering, research, design,
+ * product, implementation); Operating Staff run the business and its
+ * relationships (sales, partnerships, operations, finance, people).
+ */
+export const STAFF_GROUPS = ["Technical Staff", "Operating Staff"] as const;
+export type StaffGroup = (typeof STAFF_GROUPS)[number];
+
 export type OpenRole = {
   id: string;
   title: string;
   location: string;
-  department: string;
+  group: StaffGroup;
   employmentType: string;
   summary: string;
   sections: JobSection[];
@@ -83,7 +92,7 @@ const engineeringRole = ({
   id,
   title,
   location: "New York",
-  department: "Engineering",
+  group: "Technical Staff",
   employmentType: "Full-time",
   summary,
   sections: [

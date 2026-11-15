@@ -7,7 +7,11 @@ import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
 import { SiteOutro } from "@/components/site/site-outro";
 import { TypedText } from "@/components/site/typed-text";
-import { OPEN_ROLES, type OpenRole } from "@/features/careers/open-roles";
+import {
+  OPEN_ROLES,
+  STAFF_GROUPS,
+  type OpenRole,
+} from "@/features/careers/open-roles";
 import { LogoMarquee } from "@/features/landing/logo-marquee";
 import { Box, chakra, Text } from "@chakra-ui/react";
 import { ArrowRight } from "lucide-react";
@@ -73,21 +77,18 @@ const RoleRow: React.FC<{ role: OpenRole }> = ({ role }) => (
   </RouterLink>
 );
 
-/** The open roles, grouped by team, in the order they first appear. */
-const TEAMS = OPEN_ROLES.reduce<{ team: string; roles: OpenRole[] }[]>(
-  (groups, role) => {
-    const group = groups.find((g) => g.team === role.department);
-    if (group) group.roles.push(role);
-    else groups.push({ team: role.department, roles: [role] });
-    return groups;
-  },
-  [],
-);
+/** The open roles by staff group, Technical Staff first; a group with no
+ * open roles isn't shown. */
+const TEAMS = STAFF_GROUPS.map((team) => ({
+  team,
+  roles: OPEN_ROLES.filter((role) => role.group === team),
+})).filter(({ roles }) => roles.length > 0);
 
 /**
  * Careers, on the rebrand chrome: the landing's closing band as the hero,
  * then the team line with the scrolling logo strip, then the open roles
- * grouped by team, each row linking to the role's own page.
+ * by staff group (Technical Staff, Operating Staff), each row linking to
+ * the role's own page.
  */
 export const CareersPage: React.FC = () => (
   <Box bg="site.bg.page">
@@ -157,7 +158,7 @@ export const CareersPage: React.FC = () => (
           >
             Open roles
           </Text>
-          {/* Each team once, as a small grey heading over its roles. */}
+          {/* Each staff group once, as a small grey heading over its roles. */}
           <Box
             display="flex"
             flexDirection="column"

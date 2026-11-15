@@ -30,7 +30,7 @@ const JobBlock: React.FC<{ block: JobContentBlock }> = ({ block }) =>
 /**
  * One open role, in the site's long-read layout like a blog post: the
  * header on the colour wash (back to careers, the title, and the
- * department, location and terms as its properties), then the sections in
+ * group and location as its properties), then the sections in
  * one reading column, ending on the apply button.
  */
 export const JobListingPage: React.FC = () => {
@@ -50,7 +50,7 @@ export const JobListingPage: React.FC = () => {
           <ArticleHeader
             back={{ to: rootRoute({}).careers({}).$, label: "Careers" }}
             title={role.title}
-            properties={[role.department, role.location]}
+            properties={[role.group, role.location]}
           />
 
           <ArticleBody
