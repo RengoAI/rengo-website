@@ -26,6 +26,10 @@ export const ARTICLE_MUTED = "soot.600";
 /** The reading measure, px. */
 export const ARTICLE_MEASURE = 680;
 
+/** How far a title may run on wide screens, px: past the column, so the
+ * longest current titles (about 890px at 44px) hold one line. */
+const TITLE_MEASURE = 920;
+
 /** Body copy. */
 export const PROSE = {
   fontFamily: "body",
@@ -130,6 +134,10 @@ export const ArticleHeader: React.FC<{
         letterSpacing="-0.025em"
         color={ARTICLE_INK}
         textWrap="balance"
+        // From 1280px the title may run past the reading column to the
+        // right, up to TITLE_MEASURE, so most titles hold one line; its left
+        // edge stays with the text.
+        mr={{ xl: `${ARTICLE_MEASURE - TITLE_MEASURE}px` }}
       >
         {typed ? <TypedText text={title} /> : title}
       </Text>
@@ -210,9 +218,12 @@ const useActiveHeading = (ids: string[]) => {
         if (el && el.getBoundingClientRect().top <= line) current = id;
       }
       // At the foot of the page the last sections can't scroll that high.
+      // Only once the reader has scrolled: on load the page may not have
+      // its full height yet, and would look as if it were at the foot.
       const atEnd =
+        window.scrollY > 0 &&
         window.innerHeight + window.scrollY >=
-        document.documentElement.scrollHeight - 4;
+          document.documentElement.scrollHeight - 4;
       setActive(atEnd ? ids[ids.length - 1] : current);
     };
     const onScroll = () => {
