@@ -121,7 +121,8 @@ export const BlogIndexPage: React.FC = () => (
       bg="site.bg.surface"
     >
       {/* The same header as the posts it lists. */}
-      <ArticleHeader title="Blog" typed />
+      {/* The sales deck's cover title; the nav, address and tab stay "Blog". */}
+      <ArticleHeader title="Institutional Intelligence" typed />
 
       <Section
         rhythm="none"
