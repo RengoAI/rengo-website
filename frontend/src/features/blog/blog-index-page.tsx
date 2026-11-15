@@ -38,15 +38,16 @@ const META = {
 } as const;
 
 /**
- * One post: its tile on the left, and beside it, centred on the tile, the
- * title, summary, and the date and read time.
+ * One post: its tile on the left, and beside it, as tall as the tile, the
+ * title and summary at the top and, along the bottom, the date on the left
+ * and the read time on the right.
  */
 const PostItem: React.FC<{ post: Post }> = ({ post }) => (
   <RouterLink
     to={postPath(post.slug)}
     display="grid"
     gridTemplateColumns={{ base: "80px 1fr", md: "120px 1fr" }}
-    alignItems="center"
+    alignItems="stretch"
     columnGap={{ base: "16px", md: "24px" }}
     textDecoration="none"
     // The title fades on hover, like the site's text links; the tile lifts
@@ -58,40 +59,45 @@ const PostItem: React.FC<{ post: Post }> = ({ post }) => (
     }}
   >
     <PostTile post={post} data-tile="" />
-    <Box display="flex" flexDirection="column" minW={0}>
-      <Text
-        as="h2"
-        fontFamily="body"
-        fontSize={{ base: "1rem", md: "1.25rem" }}
-        fontWeight={400}
-        lineHeight="1.3"
-        letterSpacing="-0.01em"
-        color={INK}
-        textWrap="balance"
-      >
-        {post.title}
-      </Text>
-      <Text
-        {...BODY}
-        fontSize="0.9375rem"
-        color={TEXT}
-        mt="10px"
-        display={{ base: "none", md: "-webkit-box" }}
-        css={{ WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}
-        overflow="hidden"
-      >
-        {post.summary}
-      </Text>
-      {/* "Nov 15, 2026 – 2 min read": an en dash between the two. */}
-      <Text {...META} mt="10px">
-        <chakra.time dateTime={post.date}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="space-between"
+      gap="12px"
+      minW={0}
+    >
+      <Box>
+        <Text
+          as="h2"
+          fontFamily="body"
+          fontSize={{ base: "1rem", md: "1.25rem" }}
+          fontWeight={400}
+          lineHeight="1.3"
+          letterSpacing="-0.01em"
+          color={INK}
+          textWrap="balance"
+        >
+          {post.title}
+        </Text>
+        <Text
+          {...BODY}
+          fontSize="0.9375rem"
+          color={TEXT}
+          mt="10px"
+          display={{ base: "none", md: "-webkit-box" }}
+          css={{ WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}
+          overflow="hidden"
+        >
+          {post.summary}
+        </Text>
+      </Box>
+      {/* Along the foot of the tile: the date left, the read time right. */}
+      <Box display="flex" justifyContent="space-between" gap="16px">
+        <chakra.time {...META} dateTime={post.date}>
           {formatPostDateShort(post.date)}
         </chakra.time>
-        <chakra.span aria-hidden mx="8px">
-          –
-        </chakra.span>
-        {readMinutes(post)} min read
-      </Text>
+        <Text {...META}>{readMinutes(post)} min read</Text>
+      </Box>
     </Box>
   </RouterLink>
 );
