@@ -311,7 +311,8 @@ const BoxContents: React.FC<{ headings: string[] }> = ({ headings }) => (
   <chakra.details
     display={{ base: "block", xl: "none" }}
     open
-    bg="site.bg.inset"
+    // A step under the inset grey, so the box reads against the page.
+    bg="canvas.350"
     borderRadius="4px"
     px="16px"
     py="14px"
