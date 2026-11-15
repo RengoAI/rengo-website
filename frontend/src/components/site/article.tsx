@@ -229,12 +229,21 @@ const useActiveHeading = (ids: string[]) => {
   return active;
 };
 
-/** The sections as links, the one being read in ink. */
+/**
+ * The sections as links on a thin rail; the one being read in ink, with a
+ * short blue bar on the rail beside it.
+ */
 const ContentsLinks: React.FC<{
   headings: string[];
   active?: string;
 }> = ({ headings, active }) => (
-  <Box as="ol" display="flex" flexDirection="column" gap="6px">
+  <Box
+    as="ol"
+    display="flex"
+    flexDirection="column"
+    gap="2px"
+    borderLeft="1px solid rgba(21, 23, 24, 0.12)"
+  >
     {headings.map((text) => {
       const id = headingId(text);
       const current = id === active;
@@ -246,9 +255,15 @@ const ContentsLinks: React.FC<{
             aria-current={current ? "location" : undefined}
             {...SMALL}
             display="block"
+            py="3px"
+            pl="12px"
+            // The bar sits over the rail, so it reads as the rail lit up.
+            ml="-1px"
+            borderLeft="2px solid"
+            borderColor={current ? "site.highlight" : "transparent"}
             color={current ? ARTICLE_INK : ARTICLE_MUTED}
             textDecoration="none"
-            transition="color 150ms ease"
+            transition="color 150ms ease, border-color 150ms ease"
             _hover={{ color: ARTICLE_INK }}
           >
             {text}
@@ -280,7 +295,8 @@ const MarginContents: React.FC<{ headings: string[] }> = ({ headings }) => {
         position="sticky"
         top={`${NAV_H + 32}px`}
       >
-        <Text {...SMALL} color={ARTICLE_INK} mb="10px">
+        {/* A label for the list, not an entry in it: smaller and grey. */}
+        <Text {...SMALL} fontSize="0.75rem" color={ARTICLE_MUTED} mb="10px">
           On this page
         </Text>
         <ContentsLinks headings={headings} active={active} />
