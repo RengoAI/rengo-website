@@ -7,7 +7,7 @@ export const TermsOfServicePage: React.FC = () => (
       <VStack gap={12} align="stretch">
         {/* Header */}
         <VStack gap={3} align="flex-start">
-          <Text textStyle="label" textTransform="uppercase" color="slate.50">
+          <Text textStyle="label" textTransform="uppercase" color="slate.100">
             Legal
           </Text>
           <Text
@@ -20,7 +20,7 @@ export const TermsOfServicePage: React.FC = () => (
           >
             Terms of Use
           </Text>
-          <Text fontSize="sm" color="slate.40">
+          <Text fontSize="sm" color="slate.100">
             Effective: July 24, 2025
           </Text>
         </VStack>

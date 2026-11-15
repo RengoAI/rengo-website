@@ -1,6 +1,11 @@
 import { CanvasFill } from "@/components/site/canvas/canvas-fill";
 import { rand } from "@/components/site/canvas/canvas-utils";
-import { heroDotColor } from "@/components/site/canvas/hero-dots";
+import {
+  dotScale,
+  heroDotColor,
+  SITE_SPACING,
+  siteDotAt,
+} from "@/components/site/canvas/hero-dots";
 import { INK } from "@/components/site/canvas/ink";
 import { useCanvasLoop } from "@/components/site/canvas/use-canvas-loop";
 import React from "react";
@@ -17,7 +22,6 @@ import React from "react";
  */
 
 const PITCH = 12.6; // px, a quarter tighter than the /solutions grid's 16.8px
-const MARK = 4; // px, its squares at full ink
 /** Share of cells in the site's accent red; the rest take the hero's mix. */
 const ACCENT_SHARE = 0.08;
 /** Seconds between generations. */
@@ -43,6 +47,9 @@ type Field = {
   rows: number;
   ox: number;
   oy: number;
+  /** Cell spacing and full-ink mark size, px, for this width. */
+  pitch: number;
+  mark: number;
   live: Uint8Array;
   /** The next generation's buffer, swapped with `live` each step. */
   next: Uint8Array;
@@ -54,16 +61,22 @@ type Field = {
 };
 
 const makeField = (w: number, h: number, t: number): Field => {
-  const cols = Math.max(1, Math.floor(w / PITCH));
-  const rows = Math.max(1, Math.floor(h / PITCH));
+  // Spacing scales with the site's dot figures, and the marks grow with it
+  // on larger screens, as theirs do.
+  const k = dotScale(w);
+  const pitch = PITCH * SITE_SPACING * k;
+  const cols = Math.max(1, Math.floor(w / pitch));
+  const rows = Math.max(1, Math.floor(h / pitch));
   const n = cols * rows;
   const live = new Uint8Array(n);
   for (let k = 0; k < n; k++) live[k] = Math.random() < START_DENSITY ? 1 : 0;
   return {
     cols,
     rows,
-    ox: (w - (cols - 1) * PITCH) / 2,
-    oy: (h - (rows - 1) * PITCH) / 2,
+    ox: (w - (cols - 1) * pitch) / 2,
+    oy: (h - (rows - 1) * pitch) / 2,
+    pitch,
+    mark: siteDotAt(k),
     live,
     next: new Uint8Array(n),
     age: new Uint8Array(n),
@@ -159,10 +172,15 @@ export const AutomataGrid: React.FC = () => {
         f.ink[k] = a + (target - a) * (target > a ? easeIn : easeOut);
         if (f.ink[k] < 0.02) continue;
         // Marks swell in with their ink.
-        const r = (MARK / 2) * (0.5 + 0.5 * f.ink[k]);
+        const r = (f.mark / 2) * (0.5 + 0.5 * f.ink[k]);
         ctx.globalAlpha = f.ink[k];
         ctx.fillStyle = f.color[k];
-        ctx.fillRect(f.ox + i * PITCH - r, f.oy + j * PITCH - r, r * 2, r * 2);
+        ctx.fillRect(
+          f.ox + i * f.pitch - r,
+          f.oy + j * f.pitch - r,
+          r * 2,
+          r * 2,
+        );
       }
     }
     ctx.globalAlpha = 1;

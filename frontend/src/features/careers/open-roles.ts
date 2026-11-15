@@ -84,20 +84,20 @@ const engineeringRole = ({
   title,
   location: "New York",
   department: "Engineering",
-  employmentType: "Full time",
+  employmentType: "Full-time",
   summary,
   sections: [
     ABOUT_RENGO,
     {
-      heading: "The Role",
+      heading: "The role",
       blocks: [THE_ROLE_OPENING, { type: "paragraph", text: roleFocus }],
     },
     {
-      heading: "What You'll Do",
+      heading: "What you'll do",
       blocks: [{ type: "list", items: whatYoullDo }],
     },
     {
-      heading: "What You Bring",
+      heading: "What you bring",
       blocks: [
         {
           type: "list",
@@ -117,7 +117,7 @@ const engineeringRole = ({
 export const OPEN_ROLES: readonly OpenRole[] = [
   engineeringRole({
     id: "software-engineer-data-infrastructure",
-    title: "Software Engineer - Data Infrastructure",
+    title: "Software Engineer – Data Infrastructure",
     summary:
       "Build the governed data foundation that turns fragmented knowledge into a source of truth applications and agents can run on.",
     roleFocus:
@@ -133,7 +133,7 @@ export const OPEN_ROLES: readonly OpenRole[] = [
   }),
   engineeringRole({
     id: "software-engineer-applied-ai",
-    title: "Software Engineer - Applied AI",
+    title: "Software Engineer – Applied AI",
     summary:
       "Build the applications and agents that turn proprietary knowledge into operating leverage.",
     roleFocus:

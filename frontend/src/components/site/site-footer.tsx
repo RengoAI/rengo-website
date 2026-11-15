@@ -50,12 +50,17 @@ export const SiteFooter: React.FC = () => (
           display="flex"
           flexDirection={{ base: "column", md: "row" }}
           alignItems={{ base: "flex-start", md: "center" }}
-          gap={{ base: "12px", md: "20px" }}
+          // The links' 44px tap height spaces them on phones.
+          gap={{ base: 0, md: "20px" }}
         >
           {LINKS.map((link) => (
             <chakra.li key={link.label}>
               <RouterLink
                 to={link.to}
+                // 44px tall, a comfortable tap target, whatever the text.
+                display="inline-flex"
+                alignItems="center"
+                minH="44px"
                 textStyle="body.sm"
                 letterSpacing="0"
                 lineHeight="1.5"

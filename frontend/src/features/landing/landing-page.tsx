@@ -17,8 +17,6 @@ import { GridCircleDots } from "@/features/solutions/grid-circle-dots";
 import { Box, chakra, Text } from "@chakra-ui/react";
 import React from "react";
 
-const ART = "/img/rebrand/";
-
 const HOW_WE_WORK = [
   {
     title: "Scope the work",
@@ -42,20 +40,17 @@ const TESTIMONIALS = [
   {
     quote:
       "“Everyone has been asking for a single source of truth. Rengo brings it all together, and we're excited to roll it out across the firm.”",
-    avatarSrc: `${ART}avatar-3.png`,
     attribution: "Investment Associate at $3.5B mid-market PE firm",
   },
   {
     quote:
       "“It was really impressive how quickly you were able to adapt and add new features within the system. Once I gave you access to some of our high-level data, you could turn around, understand it, and funnel it in pretty quickly.”",
-    avatarSrc: `${ART}avatar-1.png`,
     attribution: "VP of Data & AI Strategy at $20B+ real estate fund",
   },
   {
     quote:
       "“Rengo has evolved tremendously in just a few months. Being able to centralize our portfolio data, recall every deal we've evaluated, and make that knowledge instantly accessible across the team is incredibly powerful and something we're genuinely excited about.”",
-    avatarSrc: `${ART}avatar-2.png`,
-    attribution: "Senior Associate at $1B Growth Equity Fund",
+    attribution: "Senior Associate at $1B growth equity fund",
   },
 ];
 
@@ -63,7 +58,7 @@ const TESTIMONIAL_WASH_ORDER: TestimonialWash[] = ["plain", "mid", "deep"];
 
 const COMPLIANCE = [
   {
-    title: "SOC2 Type II",
+    title: "SOC 2 Type II",
     description:
       "Independently audited controls for data protection and access.",
   },
@@ -97,11 +92,15 @@ const FdeSection: React.FC = () => {
       rhythm="tight"
       bg="site.bg.surface"
       borderBottomRadius="4px"
-      // Held open 2rem past the figure's bottom.
+      // Held open the bottom padding past the figure: the figure sets the exact
+      // height once it draws (it knows how the heading wrapped); this is the
+      // first paint's estimate. The clamp is the figure's height, scaling
+      // with the screen as its shape does; on phones it's narrowed to fit,
+      // the min(). The px before it covers the padding, heading and gap.
       minH={{
-        base: "calc(420px + 2rem)",
-        md: "calc(640px + 2rem)",
-        lg: "calc(680px + 2rem)",
+        base: "calc(185px + min(clamp(241px, 33.45vw, 482px), (100vw - 32px) * 0.614) + var(--site-gutter-y-tight))",
+        md: "calc(170px + clamp(241px, 33.45vw, 482px) + var(--site-gutter-y-tight))",
+        lg: "calc(190px + clamp(241px, 33.45vw, 482px) + var(--site-gutter-y-tight))",
       }}
     >
       <GridCircleDots below={copyRef} scale={0.8} />
@@ -133,7 +132,7 @@ export const LandingPage: React.FC = () => (
   <Box bg="site.bg.page">
     <SiteNav overlay />
 
-    <Box as="main">
+    <Box as="main" id="main">
       {/* --- Hero ---------------------------------------------------------- */}
       {/* Scattered dots are pulled into the data layer under the CTA, where
         each line rolls in its own gentle wave. */}
@@ -154,14 +153,13 @@ export const LandingPage: React.FC = () => (
             </Box>
           </Text>
         </GridCol>
-        {/* Hidden on phones. Flush right, behind an empty spacer: 7 columns
-          wide on tablets, and 5 on desktop, where it sits beside the
-          heading. */}
+        {/* Full width under the heading on phones. Flush right, behind an
+          empty spacer: 7 columns wide on tablets, and 5 on desktop, where it
+          sits beside the heading. */}
         <GridCol
-          display={{ base: "none", md: "block" }}
-          span={{ base: 15, md: 7, lg: 5 }}
-          start={{ base: 2, md: 10, lg: 12 }}
-          pt={{ md: "16px", lg: 0 }}
+          span={{ base: 16, md: 7, lg: 5 }}
+          start={{ base: 1, md: 10, lg: 12 }}
+          pt={{ base: "24px", md: "16px", lg: 0 }}
         >
           {/* Separate paragraphs, a blank line (one 1.4 line height) apart.
             `chakra.p` rather than `Text`, so they inherit body.sm. */}
@@ -192,7 +190,7 @@ export const LandingPage: React.FC = () => (
               intelligent systems with the ongoing care and oversight needed to
               make AI useful across an organization.
             </chakra.p>
-            <chakra.p>- Erik Ronning, Co-founder &amp; CEO</chakra.p>
+            <chakra.p>— Erik Ronning, Co-founder &amp; CEO</chakra.p>
           </Box>
         </GridCol>
       </Section>
@@ -227,9 +225,8 @@ export const LandingPage: React.FC = () => (
             <Text
               textStyle="body.sm"
               color="site.fg"
-              // Hidden on phones; one line from md up.
-              display={{ base: "none", md: "block" }}
-              whiteSpace="nowrap"
+              // Wraps on phones; one line from md up.
+              whiteSpace={{ md: "nowrap" }}
             >
               We map how your team works today, then build with you.
             </Text>
@@ -275,7 +272,7 @@ export const LandingPage: React.FC = () => (
             <GridCol
               as="li"
               key={testimonial.attribution + testimonial.quote}
-              span={{ base: 16, md: 12, lg: 4 }}
+              span={{ base: 16, lg: 4 }}
               pb={{ base: "4px", md: "24px", lg: 0 }}
             >
               {/* Plain grey first, bluest last, so the row warms into the blue. */}
@@ -304,13 +301,13 @@ export const LandingPage: React.FC = () => (
             Security built for your most sensitive data
           </Text>
         </Box>
-        <ComplianceCardGroup items={COMPLIANCE} h={{ lg: "240px" }} />
+        <ComplianceCardGroup items={COMPLIANCE} h={{ lg: "176px" }} />
       </Section>
 
       {/* --- Logos ------------------------------------------------------------ */}
       <Section grid rhythm="compact" bg="site.bg.dark">
         <GridCol span={{ base: 16, lg: 3 }} display="flex" alignItems="center">
-          <Text textStyle="label" fontWeight={300} color="site.fg.onDarkFaint">
+          <Text textStyle="label" fontWeight={300} color="site.fg.onDarkSubtle">
             Bringing industry experience from
           </Text>
         </GridCol>
@@ -319,7 +316,9 @@ export const LandingPage: React.FC = () => (
         </GridCol>
       </Section>
 
-      <SiteOutro />
+      {/* Fills the screen under the nav, so the page closes on a full
+          screen as it opens. */}
+      <SiteOutro fill="below-nav" />
     </Box>
 
     <SiteFooter />

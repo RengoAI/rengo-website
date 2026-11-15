@@ -1,5 +1,5 @@
 import { colorVar, tiledRuleLeft } from "@/components/site/site-styles";
-import { Box, type BoxProps, Image, Text } from "@chakra-ui/react";
+import { Box, type BoxProps, Text } from "@chakra-ui/react";
 import React from "react";
 
 /**
@@ -154,8 +154,8 @@ export const StepCard: React.FC<
     // title.
     gap={{ base: "1.4375rem", md: "32px" }}
     // Tablets match the phones' height, growing if the copy needs it;
-    // desktop 320px.
-    h={{ base: "auto", lg: "320px" }}
+    // desktop 232px.
+    h={{ base: "auto", lg: "232px" }}
     minH={{ md: "114px", lg: "auto" }}
     rule={false}
     {...STEP_RULE}
@@ -261,20 +261,19 @@ export const TESTIMONIAL_WASHES = {
 export type TestimonialWash = keyof typeof TESTIMONIAL_WASHES;
 
 /**
- * Testimonials band: quote on top, avatar + attribution on the bottom. Unlike
+ * Testimonials band: quote on top, attribution on the bottom. Unlike
  * the metrics, each quote is its own filled card rather than hanging off a
  * rule.
  */
 export const TestimonialCard: React.FC<
   Omit<SplitCardProps, "top" | "bottom"> & {
     quote: React.ReactNode;
-    avatarSrc: string;
     attribution: React.ReactNode;
     /** Which fill the card takes — `plain` flat grey, then `light` greyest
      * through `deep` bluest. */
     wash?: TestimonialWash;
   }
-> = ({ quote, avatarSrc, attribution, wash = "light", ...rest }) => (
+> = ({ quote, attribution, wash = "light", ...rest }) => (
   <SplitCard
     as="figure"
     p="1.5rem" // 24px
@@ -283,6 +282,12 @@ export const TestimonialCard: React.FC<
     rule={false}
     // Primary.800 (#0C1D34) at 4%: barely lifts the card off the band.
     boxShadow="0 2px 3px rgba(12, 29, 52, 0.04)"
+    // As tall as the row's longest quote needs, not the steps' 472px floor:
+    // quotes run far shorter than that, which left the cards mostly empty.
+    // The row still stretches to its tallest card, and the attribution sits
+    // at least `gap` below the quote.
+    minH="auto"
+    gap="40px"
     top={
       <Text as="blockquote" textStyle="d5" color="soot.600" w="full">
         {quote}
@@ -297,7 +302,6 @@ export const TestimonialCard: React.FC<
         gap="8px"
         w="full"
       >
-        <Image src={avatarSrc} alt="" boxSize="34px" borderRadius="full" />
         <Text
           textStyle="body.sm"
           lineHeight="1.2"
@@ -306,7 +310,7 @@ export const TestimonialCard: React.FC<
           // 80px short of the card's width, so it wraps sooner.
           w="calc(100% - 80px)"
           // Two lines tall on desktop (2 × the 1.2 line height) whatever
-          // its length, so the avatars line up across the cards.
+          // its length, so the attributions line up across the cards.
           minH={{ lg: "2.4em" }}
         >
           {attribution}

@@ -22,7 +22,7 @@ const MetaItem: React.FC<{ label: string; value: string }> = ({
   value,
 }) => (
   <Flex direction="column" gap={1} minW={0}>
-    <Text as="dt" textStyle="caption" color="slate.50" m={0}>
+    <Text as="dt" textStyle="caption" color="slate.100" m={0}>
       {label}
     </Text>
     <Text as="dd" fontFamily="body" fontSize="14px" color="indigo.900" m={0}>
@@ -99,7 +99,7 @@ export const JobListingPage: React.FC = () => {
   return (
     <Box fontFamily="body" bg="site.bg.surface" minH="100vh">
       <SiteNav />
-      <Box as="main">
+      <Box as="main" id="main">
         <PageContainer>
           <Box
             maxW="760px"

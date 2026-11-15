@@ -27,7 +27,7 @@ export const CareersPage: React.FC = () => (
   <Box bg="site.bg.page">
     <SiteNav overlay />
 
-    <Box as="main" minH={`calc(100svh - ${NAV_H}px)`}>
+    <Box as="main" id="main" minH={`calc(100svh - ${NAV_H}px)`}>
       <SiteOutro
         heading={<TypedText text="Join us" />}
         headingAs="h1"
@@ -57,7 +57,7 @@ export const CareersPage: React.FC = () => (
               fontWeight={300}
               color="site.fg.onDarkMuted"
             >
-              From world class engineering teams
+              From world-class engineering teams
             </Box>
           </Text>
         </GridCol>
