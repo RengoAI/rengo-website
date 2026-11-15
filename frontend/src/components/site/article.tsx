@@ -149,7 +149,7 @@ export const ArticleHeader: React.FC<{
           {dek}
         </Text>
       )}
-      {/* A byline under a hairline: the first property (the author, the
+      {/* A byline under a soft rule: the first property (the author, the
           department) on the left, the rest on the right with a hyphen
           between them, as on the blog index. Stacks on narrow screens. */}
       {properties.length > 0 && (
@@ -162,8 +162,9 @@ export const ArticleHeader: React.FC<{
           rowGap="4px"
           mt={{ base: "24px", md: "32px" }}
           pt="14px"
-          // A hairline of the ink at low opacity, so it shows on the wash.
-          borderTop="1px solid rgba(21, 23, 24, 0.12)"
+          // A soft dotted rule, like the site's other dividers, in the ink
+          // at low opacity so it shows faintly on the wash.
+          borderTop="1px dotted rgba(21, 23, 24, 0.25)"
           {...PROSE}
           fontSize="0.9375rem"
           color={ARTICLE_MUTED}
