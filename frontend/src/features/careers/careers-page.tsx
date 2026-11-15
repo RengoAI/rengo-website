@@ -23,8 +23,8 @@ const rolePath = (roleId: string) =>
 const ROW_RULE = "1px solid rgba(21, 23, 24, 0.08)";
 
 /**
- * One open role: the title on the left, the location and terms with an
- * arrow on the right. The row fills softly on hover and the arrow nudges;
+ * One open role: the title on the left, the location with an arrow on the
+ * right. The row fills softly on hover and the arrow nudges;
  * on phones the right side drops under the title.
  */
 const RoleRow: React.FC<{ role: OpenRole }> = ({ role }) => (
@@ -67,9 +67,7 @@ const RoleRow: React.FC<{ role: OpenRole }> = ({ role }) => (
       fontSize="0.875rem"
       color="site.fg.muted"
     >
-      <span>
-        {role.location} - {role.employmentType}
-      </span>
+      <span>{role.location}</span>
       <Box as={ArrowRight} boxSize="16px" color="site.fg.strong" aria-hidden />
     </Box>
   </RouterLink>

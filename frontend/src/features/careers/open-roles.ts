@@ -117,7 +117,7 @@ const engineeringRole = ({
 export const OPEN_ROLES: readonly OpenRole[] = [
   engineeringRole({
     id: "software-engineer-data-infrastructure",
-    title: "Software Engineer – Data Infrastructure",
+    title: "Software Engineer - Data Infrastructure",
     summary:
       "Build the governed data foundation that turns fragmented knowledge into a source of truth applications and agents can run on.",
     roleFocus:
@@ -133,14 +133,14 @@ export const OPEN_ROLES: readonly OpenRole[] = [
   }),
   engineeringRole({
     id: "software-engineer-applied-ai",
-    title: "Software Engineer – Applied AI",
+    title: "Software Engineer - Applied AI",
     summary:
       "Build the applications and agents that turn proprietary knowledge into operating leverage.",
     roleFocus:
       "You'll work on a small, high-caliber team building the applications and agents that run on Rengo's data foundation. You'll set technical direction, write code, and be the person the team looks to when something is hard.",
     whatYoullDo: [
       "Design and ship production applications and agents on top of the governed data foundation.",
-      "Build AI that teams can actually use — source-backed, permissioned, and reliable enough to inform a decision.",
+      "Build AI that teams can actually use - source-backed, permissioned, and reliable enough to inform a decision.",
       "Own problems end-to-end, from an ambiguous brief to something a business runs every day.",
       "Work close to the workflows we're automating when that's what it takes to get the product right.",
     ],

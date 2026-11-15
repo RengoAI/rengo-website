@@ -187,7 +187,7 @@ export const LandingPage: React.FC = () => (
               intelligent systems with the ongoing care and oversight needed to
               make AI useful across an organization.
             </chakra.p>
-            <chakra.p>— Erik Ronning, Co-founder &amp; CEO</chakra.p>
+            <chakra.p>- Erik Ronning, Co-founder &amp; CEO</chakra.p>
           </Box>
         </GridCol>
       </Section>
