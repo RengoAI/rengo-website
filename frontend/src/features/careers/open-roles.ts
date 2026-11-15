@@ -30,16 +30,17 @@ export type OpenRole = {
   sections: JobSection[];
 };
 
+/** The Business Overview's "About Rengo" (p.9), word for word. */
 const ABOUT_RENGO: JobSection = {
-  heading: "About Rengo AI",
+  heading: "About Rengo",
   blocks: [
     {
       type: "paragraph",
-      text: "Rengo AI is an AI transformation and deployment company. We embed alongside investment, finance, and operations teams to turn fragmented knowledge into shared data infrastructure and deploy purpose-built agents and applications on top of it.",
+      text: "Rengo AI provides a managed data and AI platform, combining software with the engineering expertise to build and maintain the infrastructure behind it. Our team has experience building data and AI systems at some of the world's largest financial institutions, as well as developing enterprise software for complex business workflows.",
     },
     {
       type: "paragraph",
-      text: "Rengo gives teams access to their organization's collective intelligence, transforming institutional memory into an asset that compounds with every workflow, investment, and decision.",
+      text: "We founded Rengo to make institutional-grade infrastructure accessible to organizations of all sizes. Our platform provides the underlying technology, while our engineers work directly with each client to adapt it to their data, reporting requirements and workflows. This gives organizations access to dedicated engineering expertise without the cost and complexity of building an internal team.",
     },
   ],
 };
