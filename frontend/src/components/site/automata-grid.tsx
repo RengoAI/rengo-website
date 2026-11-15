@@ -1,11 +1,6 @@
 import { CanvasFill } from "@/components/site/canvas/canvas-fill";
 import { rand } from "@/components/site/canvas/canvas-utils";
-import {
-  dotScale,
-  heroDotColor,
-  SITE_SPACING,
-  siteDotAt,
-} from "@/components/site/canvas/hero-dots";
+import { heroDotColor } from "@/components/site/canvas/hero-dots";
 import { INK } from "@/components/site/canvas/ink";
 import { useCanvasLoop } from "@/components/site/canvas/use-canvas-loop";
 import React from "react";
@@ -15,13 +10,15 @@ import React from "react";
  * cellular automaton (Conway's Life, B3/S23). Every so often a small random
  * patch is seeded somewhere new, so activity breaks out sporadically across
  * the spread, grows or settles, and dies back. Live cells ink in as the
- * hero's marks — same size and colours, with ACCENT_SHARE in the accent red
- * — and fade out when they die, so steps read as a soft flicker rather than
+ * hero's colours, with ACCENT_SHARE in the accent red, as 4px squares (the
+ * band's own size, not the site's fine 1.8px dots, which read as dust at
+ * this scale) — and fade out when they die, so steps read as a soft flicker rather than
  * a hard switch. No cell lives past MAX_AGE generations, so Life's still
  * debris clears away and the spread never silts up.
  */
 
 const PITCH = 12.6; // px, a quarter tighter than the /solutions grid's 16.8px
+const MARK = 4; // px, its squares at full ink
 /** Share of cells in the site's accent red; the rest take the hero's mix. */
 const ACCENT_SHARE = 0.08;
 /** Seconds between generations. */
@@ -61,10 +58,7 @@ type Field = {
 };
 
 const makeField = (w: number, h: number, t: number): Field => {
-  // Spacing scales with the site's dot figures, and the marks grow with it
-  // on larger screens, as theirs do.
-  const k = dotScale(w);
-  const pitch = PITCH * SITE_SPACING * k;
+  const pitch = PITCH;
   const cols = Math.max(1, Math.floor(w / pitch));
   const rows = Math.max(1, Math.floor(h / pitch));
   const n = cols * rows;
@@ -76,7 +70,7 @@ const makeField = (w: number, h: number, t: number): Field => {
     ox: (w - (cols - 1) * pitch) / 2,
     oy: (h - (rows - 1) * pitch) / 2,
     pitch,
-    mark: siteDotAt(k),
+    mark: MARK,
     live,
     next: new Uint8Array(n),
     age: new Uint8Array(n),

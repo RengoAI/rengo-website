@@ -3,7 +3,7 @@ import { Navigate, RouteObject } from "react-router";
 
 /**
  * /careers and its role pages, on the rebrand chrome (SiteNav, SiteFooter),
- * so they sit outside AppRoot with the other standalone routes.
+ * like the site's other pages.
  */
 export const careersRoutes: RouteObject = {
   id: "careers",

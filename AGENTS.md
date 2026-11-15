@@ -24,6 +24,26 @@ Run these from `frontend/`.
 - CI installs with `pnpm install --frozen-lockfile`, so commit
   `pnpm-lock.yaml` with any `package.json` change.
 
+## Style
+
+- Medium (500) is the default emphasis. Semibold (600) and bold (700) are
+  allowed, but only as an explicit, deliberate choice for a specific piece
+  of text (e.g. matching a phrase the source document bolds), never as a
+  default in a shared style, recipe or component. Plain `b`, `strong` and
+  `th` render at 500 unless given a weight, so nothing turns bold by
+  accident.
+- Titles and headings are regular (400) or lighter: Geist at medium reads
+  as bold at title sizes. Keep medium for emphasis within text and for tiny
+  spaced-capital labels (12px and under), which need it to stay legible.
+- Blog post body text (paragraphs and lists) is EB Garamond, the Business
+  Overview's face; everything else, including figures and tables, is Geist.
+  In Garamond, medium (500) already reads as bold.
+- Secondary text uses `site.fg.muted` (a dark, neutral grey), not a lighter
+  grey. Descriptions under a title stay in the body ink at a smaller size,
+  as in the app's settings cards; keep grey for small details such as dates.
+- Copy comes word for word from Rengo's own materials (the Business Overview,
+  the sales deck), in their structure. Don't write or paraphrase new copy.
+
 ## Pull requests
 
 - PRs are squash-merged and the PR title becomes the commit title. Titles are

@@ -171,10 +171,8 @@ export const LandingPage: React.FC = () => (
           >
             <chakra.p>
               AI is changing how we work with data, but its usefulness depends
-              on the information it can access. We believe the foundation is{" "}
-              <Box as="strong" fontWeight={700}>
-                the data layer.
-              </Box>
+              on the information it can access. We believe the foundation is the
+              data layer.
             </chakra.p>
             <chakra.p>
               No two organizations operate the same way, and neither does their
@@ -189,7 +187,7 @@ export const LandingPage: React.FC = () => (
               intelligent systems with the ongoing care and oversight needed to
               make AI useful across an organization.
             </chakra.p>
-            <chakra.p>— Erik Ronning, Co-founder &amp; CEO</chakra.p>
+            <chakra.p>- Erik Ronning, Co-founder &amp; CEO</chakra.p>
           </Box>
         </GridCol>
       </Section>

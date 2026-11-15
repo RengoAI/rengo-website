@@ -1,31 +1,99 @@
 import { rootRoute } from "@/app/app-routes";
-import { Grid, GridCol } from "@/components/layout/grid";
+import { GridCol } from "@/components/layout/grid";
+import { ARTICLE_MEASURE } from "@/components/site/article";
 import { Section } from "@/components/layout/section";
-import { RULED_ROW_RULE, RuledRow } from "@/components/site/ruled-row";
 import { NAV_H } from "@/components/site/site-constants";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
 import { SiteOutro } from "@/components/site/site-outro";
 import { TypedText } from "@/components/site/typed-text";
-import { dottedTop } from "@/components/site/site-styles";
-import { OPEN_ROLES } from "@/features/careers/open-roles";
+import {
+  OPEN_ROLES,
+  STAFF_GROUPS,
+  type OpenRole,
+} from "@/features/careers/open-roles";
 import { LogoMarquee } from "@/features/landing/logo-marquee";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, chakra, Text } from "@chakra-ui/react";
+import { ArrowRight } from "lucide-react";
 import React from "react";
 import { Link } from "react-router";
+
+const RouterLink = chakra(Link);
 
 const rolePath = (roleId: string) =>
   rootRoute({}).careers({}).role({ roleId }).$;
 
+/** The rows' rules: the soft solid hairline the article bylines use. */
+const ROW_RULE = "1px solid rgba(21, 23, 24, 0.08)";
+
+/**
+ * One open role, under its group's heading: the team ("Applied AI") on
+ * the left, as the heading already says the rest of the title; the
+ * location with an arrow on the right. The row fills softly on hover and
+ * the arrow nudges; on phones the right side drops under the team.
+ */
+const RoleRow: React.FC<{ role: OpenRole }> = ({ role }) => (
+  <RouterLink
+    to={rolePath(role.id)}
+    display="flex"
+    flexWrap="wrap"
+    alignItems="center"
+    justifyContent="space-between"
+    columnGap="24px"
+    rowGap="4px"
+    px="12px"
+    mx="-12px"
+    py={{ base: "16px", md: "18px" }}
+    borderRadius="6px"
+    textDecoration="none"
+    transition="background 150ms ease"
+    _hover={{ bg: "site.bg.inset" }}
+    css={{
+      "& svg": { transition: "transform 150ms ease" },
+      "&:hover svg": { transform: "translateX(3px)" },
+    }}
+  >
+    <Text
+      as="h3"
+      fontFamily="body"
+      fontSize={{ base: "1.0625rem", md: "1.125rem" }}
+      fontWeight={400}
+      lineHeight="1.35"
+      color="site.fg.strong"
+      minW={0}
+    >
+      {role.team}
+    </Text>
+    <Box
+      display="flex"
+      alignItems="center"
+      gap="12px"
+      fontFamily="body"
+      fontSize="0.875rem"
+      color="site.fg.muted"
+    >
+      <span>{role.location}</span>
+      <Box as={ArrowRight} boxSize="16px" color="site.fg.strong" aria-hidden />
+    </Box>
+  </RouterLink>
+);
+
+/** The open roles by staff group, Technical Staff first; a group with no
+ * open roles isn't shown. */
+const GROUPS = STAFF_GROUPS.map((group) => ({
+  group,
+  roles: OPEN_ROLES.filter((role) => role.group === group),
+})).filter(({ roles }) => roles.length > 0);
+
 /**
  * Careers, on the rebrand chrome: the landing's closing band as the hero,
- * then the team line with the scrolling logo strip, then the open roles as
- * ruled rows — department on the left, title and terms beside it — each
- * linking to the role's own page.
+ * then the team line with the scrolling logo strip, then the open roles
+ * by staff group (Technical Staff, Operating Staff), each row linking to
+ * the role's own page.
  */
 export const CareersPage: React.FC = () => (
   <Box bg="site.bg.page">
-    <SiteNav overlay />
+    <SiteNav overlay edge />
 
     <Box as="main" id="main" minH={`calc(100svh - ${NAV_H}px)`}>
       <SiteOutro
@@ -34,6 +102,7 @@ export const CareersPage: React.FC = () => (
         cta="See open roles"
         ctaHref="#open-roles"
         fill
+        backdrop="wash"
       />
 
       {/* The landing's logo strip, on the same dark band, with the team line
@@ -75,49 +144,50 @@ export const CareersPage: React.FC = () => (
         pb="60px"
         scrollMarginTop={`${NAV_H}px`}
       >
-        <Grid rowGap="40px">
-          <GridCol span={16} textAlign="center">
-            <Text as="h2" textStyle="h2" color="site.fg.strong">
-              Open roles
-            </Text>
-          </GridCol>
-          <GridCol span={16}>
-            <Box as="ul">
-              {OPEN_ROLES.map((role) => (
-                <li key={role.id}>
-                  <Link
-                    to={rolePath(role.id)}
-                    style={{ display: "block", textDecoration: "none" }}
-                  >
-                    {/* Ruled like the use-case accordion's rows. */}
-                    <RuledRow>
-                      <GridCol span={{ base: 16, lg: 5 }}>
-                        <Text textStyle="label" color="slate.100">
-                          {role.department}
-                        </Text>
-                      </GridCol>
-                      <GridCol
-                        span={{ base: 16, lg: 8 }}
-                        display="flex"
-                        flexDirection="column"
-                        gap="12px"
-                      >
-                        <Text as="h3" textStyle="h6" color="site.fg">
-                          {role.title}
-                        </Text>
-                        <Text textStyle="body.sm" color="site.fg.muted">
-                          {role.location} • {role.employmentType}
-                        </Text>
-                      </GridCol>
-                    </RuledRow>
-                  </Link>
-                </li>
-              ))}
-            </Box>
-            {/* Closes the list with the same dotted rule as the rows'. */}
-            <Box {...dottedTop(RULED_ROW_RULE)} />
-          </GridCol>
-        </Grid>
+        {/* The article column, as on the blog index: a left-aligned
+            heading, then one row per role. */}
+        <Box maxW={`${ARTICLE_MEASURE}px`} mx="auto">
+          <Text
+            as="h2"
+            fontFamily="body"
+            fontSize={{ base: "2rem", md: "2.75rem" }}
+            fontWeight={300}
+            lineHeight="1.15"
+            letterSpacing="-0.025em"
+            color="site.fg.strong"
+            mb={{ base: "28px", md: "40px" }}
+          >
+            Open roles
+          </Text>
+          {/* Each staff group once, as a small grey heading over its roles. */}
+          <Box
+            display="flex"
+            flexDirection="column"
+            gap={{ base: "36px", md: "48px" }}
+          >
+            {GROUPS.map(({ group, roles }) => (
+              <Box as="section" key={group} aria-label={group}>
+                <Text
+                  as="h3"
+                  fontFamily="body"
+                  fontSize="0.875rem"
+                  color="site.fg.muted"
+                  pb="10px"
+                  borderBottom={ROW_RULE}
+                >
+                  {group}
+                </Text>
+                <Box as="ul">
+                  {roles.map((role) => (
+                    <Box as="li" key={role.id} borderBottom={ROW_RULE}>
+                      <RoleRow role={role} />
+                    </Box>
+                  ))}
+                </Box>
+              </Box>
+            ))}
+          </Box>
+        </Box>
       </Section>
     </Box>
 

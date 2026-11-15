@@ -6,26 +6,41 @@ export type JobSection = {
   blocks: JobContentBlock[];
 };
 
+/**
+ * The two groups every role belongs to, like "Member of Technical Staff":
+ * broad on purpose. Technical Staff build (engineering, research, design,
+ * product, implementation); Operating Staff run the business and its
+ * relationships (sales, partnerships, operations, finance, people).
+ */
+export const STAFF_GROUPS = ["Technical Staff", "Operating Staff"] as const;
+export type StaffGroup = (typeof STAFF_GROUPS)[number];
+
 export type OpenRole = {
   id: string;
+  /** The role's full title, "Member of Technical Staff, Applied AI": for the
+   * tab title, page meta and the application email. */
   title: string;
+  /** The team within the group, "Applied AI": what the careers list and the
+   * role page's byline show, under the group's own name. */
+  team: string;
   location: string;
-  department: string;
+  group: StaffGroup;
   employmentType: string;
   summary: string;
   sections: JobSection[];
 };
 
+/** The Business Overview's "About Rengo" (p.9), word for word. */
 const ABOUT_RENGO: JobSection = {
-  heading: "About Rengo AI",
+  heading: "About Rengo",
   blocks: [
     {
       type: "paragraph",
-      text: "Rengo AI is an AI transformation and deployment company. We embed alongside investment, finance, and operations teams to turn fragmented knowledge into shared data infrastructure and deploy purpose-built agents and applications on top of it.",
+      text: "Rengo AI provides a managed data and AI platform, combining software with the engineering expertise to build and maintain the infrastructure behind it. Our team has experience building data and AI systems at some of the world's largest financial institutions, as well as developing enterprise software for complex business workflows.",
     },
     {
       type: "paragraph",
-      text: "Rengo gives teams access to their organization's collective intelligence, transforming institutional memory into an asset that compounds with every workflow, investment, and decision.",
+      text: "We founded Rengo to make institutional-grade infrastructure accessible to organizations of all sizes. Our platform provides the underlying technology, while our engineers work directly with each client to adapt it to their data, reporting requirements and workflows. This gives organizations access to dedicated engineering expertise without the cost and complexity of building an internal team.",
     },
   ],
 };
@@ -67,23 +82,24 @@ const HOW_RENGO_IS_DIFFERENT: JobSection = {
 
 const engineeringRole = ({
   id,
-  title,
+  team,
   summary,
   roleFocus,
   whatYoullDo,
   specialty,
 }: {
   id: string;
-  title: string;
+  team: string;
   summary: string;
   roleFocus: string;
   whatYoullDo: string[];
   specialty: string;
 }): OpenRole => ({
   id,
-  title,
+  title: `Member of Technical Staff, ${team}`,
+  team,
   location: "New York",
-  department: "Engineering",
+  group: "Technical Staff",
   employmentType: "Full-time",
   summary,
   sections: [
@@ -116,8 +132,8 @@ const engineeringRole = ({
 
 export const OPEN_ROLES: readonly OpenRole[] = [
   engineeringRole({
-    id: "software-engineer-data-infrastructure",
-    title: "Software Engineer – Data Infrastructure",
+    id: "member-of-technical-staff-data-infrastructure",
+    team: "Data Infrastructure",
     summary:
       "Build the governed data foundation that turns fragmented knowledge into a source of truth applications and agents can run on.",
     roleFocus:
@@ -132,15 +148,15 @@ export const OPEN_ROLES: readonly OpenRole[] = [
       "Specific interest in applying software engineering fundamentals to data systems. You care about structure, lineage, and design that holds up under real use.",
   }),
   engineeringRole({
-    id: "software-engineer-applied-ai",
-    title: "Software Engineer – Applied AI",
+    id: "member-of-technical-staff-applied-ai",
+    team: "Applied AI",
     summary:
       "Build the applications and agents that turn proprietary knowledge into operating leverage.",
     roleFocus:
       "You'll work on a small, high-caliber team building the applications and agents that run on Rengo's data foundation. You'll set technical direction, write code, and be the person the team looks to when something is hard.",
     whatYoullDo: [
       "Design and ship production applications and agents on top of the governed data foundation.",
-      "Build AI that teams can actually use — source-backed, permissioned, and reliable enough to inform a decision.",
+      "Build AI that teams can actually use - source-backed, permissioned, and reliable enough to inform a decision.",
       "Own problems end-to-end, from an ambiguous brief to something a business runs every day.",
       "Work close to the workflows we're automating when that's what it takes to get the product right.",
     ],
@@ -151,6 +167,17 @@ export const OPEN_ROLES: readonly OpenRole[] = [
 
 export const getOpenRoleById = (id: string): OpenRole | undefined =>
   OPEN_ROLES.find((role) => role.id === id);
+
+/**
+ * Roles' earlier addresses, so old links still land on the role: the
+ * "Software Engineer - …" titles before they became Member of Technical
+ * Staff.
+ */
+export const PREVIOUS_ROLE_IDS: Readonly<Record<string, string>> = {
+  "software-engineer-data-infrastructure":
+    "member-of-technical-staff-data-infrastructure",
+  "software-engineer-applied-ai": "member-of-technical-staff-applied-ai",
+};
 
 export const roleMailto = (title: string) =>
   `mailto:careers@rengoai.com?subject=${encodeURIComponent(`Application: ${title}`)}`;

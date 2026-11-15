@@ -50,7 +50,7 @@ export const textRecipe = defineRecipe({
       },
       overline: {
         fontSize: "xs",
-        fontWeight: "semibold",
+        fontWeight: "medium",
         textTransform: "uppercase",
         letterSpacing: "0.025em",
         lineHeight: "0.9375rem",
@@ -68,12 +68,12 @@ export const textRecipe = defineRecipe({
       },
       bodySemibold: {
         fontSize: "sm",
-        fontWeight: "semibold",
+        fontWeight: "medium",
         lineHeight: "1.25rem",
       },
       bodyBold: {
         fontSize: "sm",
-        fontWeight: "bold",
+        fontWeight: "medium",
         lineHeight: "1.25rem",
       },
       labelLarge: {
@@ -112,12 +112,12 @@ export const textRecipe = defineRecipe({
       },
       smallSemibold: {
         fontSize: "xs",
-        fontWeight: "semibold",
+        fontWeight: "medium",
         lineHeight: "1rem",
       },
       smallBold: {
         fontSize: "xs",
-        fontWeight: "bold",
+        fontWeight: "medium",
         lineHeight: "1rem",
       },
       caption: {

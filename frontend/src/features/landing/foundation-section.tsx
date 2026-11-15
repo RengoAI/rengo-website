@@ -11,26 +11,28 @@ import React from "react";
 const ART = "/img/rebrand/";
 
 /** The four layers of the foundation, top to bottom. */
+/**
+ * Word for word from the sales deck: its layers slide for Applications,
+ * Agents and Ontology, and its "Data isolation" card for Infrastructure,
+ * which the layers slide doesn't cover.
+ */
 const FOUNDATION_LAYERS: { title: string; description: string }[] = [
   {
     title: "Applications",
-    description:
-      "Purpose-built tools that turn governed data into workflows, analysis, and decisions for your team.",
+    description: "Ready-to-deploy applications for your workflows",
   },
   {
     title: "Agents",
-    description:
-      "Secure frontier-intelligence agents that retrieve context, reason over your data, and work through MCP and connected tools.",
+    description: "Execute and coordinate work across systems",
   },
   {
     title: "Ontology",
-    description:
-      "A shared operational model that connects the information, metrics, and context your teams need to make better decisions.",
+    description: "Structured knowledge with access control",
   },
   {
     title: "Infrastructure",
     description:
-      "Dedicated, secure runtimes with isolation, governance, and permissions built into how people and agents access data.",
+      "Strong data isolation with enforced boundaries at the storage layer",
   },
 ];
 

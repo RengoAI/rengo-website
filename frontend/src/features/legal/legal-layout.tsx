@@ -6,7 +6,7 @@ import { Outlet } from "react-router";
 
 export const LegalLayout: React.FC = () => (
   <Box fontFamily="body" bg="site.bg.page" minH="100vh">
-    <SiteNav />
+    <SiteNav edge />
     {/* Long URLs in the policies break rather than widening the page on
         phones. */}
     <Box as="main" id="main" css={{ "& a": { overflowWrap: "anywhere" } }}>

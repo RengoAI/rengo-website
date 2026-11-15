@@ -36,6 +36,11 @@ const config = defineConfig({
     body: {
       WebkitFontSmoothing: "auto",
     } as any,
+    // Elements the browser sets bold by default, at medium (500) instead:
+    // anything heavier is an explicit choice. See AGENTS.md.
+    "b, strong, th": {
+      fontWeight: "500",
+    },
     // Remove scrollbar track styling but keep thumb visible
     "*::-webkit-scrollbar": {
       width: "10px",

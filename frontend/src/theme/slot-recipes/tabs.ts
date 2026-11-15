@@ -156,7 +156,7 @@ export const tabsRecipe = defineSlotRecipe({
           },
           _selected: {
             color: "primary.700",
-            fontWeight: "semibold",
+            fontWeight: "medium",
             _horizontal: {
               layerStyle: "indicator.bottom",
               "--indicator-offset-y": "-1px",
