@@ -2,8 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://rengoai.com/</loc></url>
   <url><loc>https://rengoai.com/careers</loc></url>
-  <url><loc>https://rengoai.com/careers/software-engineer-data-infrastructure</loc></url>
-  <url><loc>https://rengoai.com/careers/software-engineer-applied-ai</loc></url>
+  <url><loc>https://rengoai.com/careers/member-of-technical-staff-data-infrastructure</loc></url>
+  <url><loc>https://rengoai.com/careers/member-of-technical-staff-applied-ai</loc></url>
+  <url><loc>https://rengoai.com/blog</loc></url>
+  <url><loc>https://rengoai.com/blog/shared-file-drive-vs-structured-database</loc></url>
+  <url><loc>https://rengoai.com/blog/the-opportunity</loc></url>
   <url><loc>https://rengoai.com/legal/terms-of-service</loc></url>
   <url><loc>https://rengoai.com/legal/privacy-policy</loc></url>
 </urlset>

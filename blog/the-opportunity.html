@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- page-meta -->
+    <title>The Opportunity</title>
+    <meta name="description" content="Rethinking what’s possible" />
+    <link rel="canonical" href="https://rengoai.com/blog/the-opportunity" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Rengo AI" />
+    <meta property="og:title" content="The Opportunity" />
+    <meta property="og:description" content="Rethinking what’s possible" />
+    <meta property="og:url" content="https://rengoai.com/blog/the-opportunity" />
+    <meta property="og:image" content="https://rengoai.com/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <!-- /page-meta -->
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <!--
+      Noto Serif is declared directly so it loads regardless of any Google Fonts
+      cache state. The same font is also requested via Google Fonts below as a
+      secondary source; whichever resolves first wins.
+    -->
+    <link rel="preload" href="/fonts/noto-serif-latin-variable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/Serrif-Light.woff2" as="font" type="font/woff2" crossorigin />
+    <style>
+      @font-face {
+        font-family: 'Noto Serif';
+        font-style: normal;
+        font-weight: 300 500;
+        font-display: swap;
+        src: url('/fonts/noto-serif-latin-variable.woff2') format('woff2');
+      }
+      /*
+        Serrif — the rebrand display face. Only Light and Regular ship today;
+        the design also calls for Thin (stat figures) and Medium (nav CTA),
+        which live in the variable package. Add them here when available.
+      */
+      @font-face {
+        font-family: 'Serrif';
+        font-style: normal;
+        font-weight: 300;
+        font-display: swap;
+        src: url('/fonts/Serrif-Light.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'Serrif';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url('/fonts/Serrif-Regular.woff2') format('woff2');
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@200..600&family=Geist+Mono:wght@400;500&family=Noto+Serif:wght@300..500&family=EB+Garamond:ital,wght@0,400..700;1,400..500&display=swap"
+    />
+    <!-- Reb2b Tracking -->
+    <script>
+      !(function (key) {
+        if (window.reb2b) return;
+        window.reb2b = { loaded: true };
+        var s = document.createElement("script");
+        s.async = true;
+        s.src =
+          "https://ddwl4m2hdecbv.cloudfront.net/b/" + key + "/" + key + ".js.gz";
+        document
+          .getElementsByTagName("script")[0]
+          .parentNode.insertBefore(s, document.getElementsByTagName("script")[0]);
+      })("DNXY8HDJ3DO0");
+    </script>
+    <script type="module" crossorigin src="/assets/index-CeyNp-C3.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/vendor-lB0ktfIe.js">
+    <link rel="modulepreload" crossorigin href="/assets/react-vendor-Jh6pU6Pz.js">
+  </head>
+  <body>
+    <div id="root"></div>
+    <!--
+      Registers the self-destroying service worker in public/sw.js, which clears
+      the caches left behind by the removed vite-plugin-pwa worker. Delete this
+      tag and public/sw.js together once returning visitors have cycled through.
+    -->
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("/sw.js");
+        });
+      }
+    </script>
+  </body>
+</html>
