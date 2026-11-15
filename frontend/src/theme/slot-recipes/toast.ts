@@ -39,7 +39,7 @@ export const toastRecipe = defineSlotRecipe({
     },
     title: {
       fontSize: "sm",
-      fontWeight: "semibold",
+      fontWeight: "medium",
       lineHeight: "shorter",
       color: "inherit",
     },

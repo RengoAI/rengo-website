@@ -36,8 +36,8 @@ const config = defineConfig({
     body: {
       WebkitFontSmoothing: "auto",
     } as any,
-    // Elements the browser sets bold by default, at the site's heaviest
-    // weight, medium (500). See AGENTS.md.
+    // Elements the browser sets bold by default, at medium (500) instead:
+    // anything heavier is an explicit choice. See AGENTS.md.
     "b, strong, th": {
       fontWeight: "500",
     },
@@ -148,14 +148,6 @@ const config = defineConfig({
       colors,
       shadows,
       fonts,
-      // The site's heaviest weight is medium (500); see AGENTS.md. Anything
-      // asking for semibold or heavier gets medium.
-      fontWeights: {
-        semibold: { value: "500" },
-        bold: { value: "500" },
-        extrabold: { value: "500" },
-        black: { value: "500" },
-      },
       spacing: layoutSpacing,
       sizes: layoutSizes,
     },

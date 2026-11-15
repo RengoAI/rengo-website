@@ -13,7 +13,7 @@ export const alertRecipe = defineSlotRecipe({
       py: "11px",
       alignItems: "flex-start",
       "& a": {
-        fontWeight: "bold",
+        fontWeight: "medium",
         textDecoration: "underline",
         whiteSpace: "nowrap",
         pl: "8px",
@@ -28,7 +28,7 @@ export const alertRecipe = defineSlotRecipe({
     },
     title: {
       fontSize: "16px",
-      fontWeight: "semibold",
+      fontWeight: "medium",
       flexGrow: 1,
     },
     description: {

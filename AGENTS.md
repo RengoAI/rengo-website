@@ -26,18 +26,18 @@ Run these from `frontend/`.
 
 ## Style
 
-- Font weights go no heavier than medium (500). Never use semibold (600) or
-  bold (700+), in props (`fontWeight`), SVG text, or CSS. The theme maps the
-  `semibold`, `bold`, `extrabold` and `black` tokens to 500, and sets `b`,
-  `strong` and `th` to 500, but a raw number like `fontWeight={600}` is not
-  caught, so don't write one. Emphasis comes from size, colour or medium
-  weight.
+- Medium (500) is the default emphasis. Semibold (600) and bold (700) are
+  allowed, but only as an explicit, deliberate choice for a specific piece
+  of text (e.g. matching a phrase the source document bolds), never as a
+  default in a shared style, recipe or component. Plain `b`, `strong` and
+  `th` render at 500 unless given a weight, so nothing turns bold by
+  accident.
 - Titles and headings are regular (400) or lighter: Geist at medium reads
   as bold at title sizes. Keep medium for emphasis within text and for tiny
   spaced-capital labels (12px and under), which need it to stay legible.
 - Blog post body text (paragraphs and lists) is EB Garamond, the Business
   Overview's face; everything else, including figures and tables, is Geist.
-  In Garamond, medium (500) reads as bold, so emphasis stays at 500.
+  In Garamond, medium (500) already reads as bold.
 - Secondary text uses `site.fg.muted` (a dark, neutral grey), not a lighter
   grey. Descriptions under a title stay in the body ink at a smaller size,
   as in the app's settings cards; keep grey for small details such as dates.
