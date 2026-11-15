@@ -139,10 +139,9 @@ export const LandingPage: React.FC = () => (
       <LandingHero />
 
       {/* --- The problem & vision ------------------------------------------ */}
-      {/* Held open to 741px, 80px past the design's 661px band; the copy
-        only fills the top. */}
+      {/* As tall as its copy, with the same padding above and below. */}
       {/* The second testimonial card's wash, stretched over the band. */}
-      <Section grid {...TESTIMONIAL_WASHES.mid} minH={{ lg: "741px" }}>
+      <Section grid {...TESTIMONIAL_WASHES.mid}>
         <GridCol span={{ base: 16, lg: 10 }}>
           <Text as="h2" textStyle="h4" color="site.fg.heading">
             Companies have spent decades making the numbers in their databases
