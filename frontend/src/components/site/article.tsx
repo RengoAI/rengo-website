@@ -69,7 +69,7 @@ const goToSection = (event: React.MouseEvent, id: string) => {
   history.pushState(null, "", `#${id}`);
 };
 
-/** A plain link back to the section's index, over the title. */
+/** A plain link back to the section's index, over the title, at the byline's size. */
 const BackLink: React.FC<{ to: string; label: string }> = ({ to, label }) => (
   <chakra.nav aria-label="Breadcrumb">
     <RouterLink
@@ -78,7 +78,7 @@ const BackLink: React.FC<{ to: string; label: string }> = ({ to, label }) => (
       alignItems="center"
       gap="6px"
       fontFamily="body"
-      fontSize="0.8125rem"
+      fontSize="0.9375rem"
       color={ARTICLE_INK}
       textDecoration="none"
       {...hoverFade}
@@ -87,7 +87,7 @@ const BackLink: React.FC<{ to: string; label: string }> = ({ to, label }) => (
         "&:hover svg": { transform: "translateX(-2px)" },
       }}
     >
-      <ArrowLeft size={13} strokeWidth={1.75} aria-hidden />
+      <ArrowLeft size={15} strokeWidth={1.75} aria-hidden />
       {label}
     </RouterLink>
   </chakra.nav>
