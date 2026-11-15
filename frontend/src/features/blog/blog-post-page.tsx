@@ -186,10 +186,29 @@ const Comparison: React.FC<{
   );
 };
 
+/** Text with the given phrases set in medium, as the source bolds them. */
+const emphasise = (text: string, phrases: string[] = []): React.ReactNode => {
+  if (!phrases.length) return text;
+  const escaped = phrases.map((p) => p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  return text.split(new RegExp(`(${escaped.join("|")})`)).map((part, i) =>
+    phrases.includes(part) ? (
+      <chakra.strong key={i} fontWeight={500}>
+        {part}
+      </chakra.strong>
+    ) : (
+      part
+    ),
+  );
+};
+
 const Block: React.FC<{ block: PostBlock }> = ({ block }) => {
   switch (block.type) {
     case "paragraph":
-      return <ArticleParagraph>{block.text}</ArticleParagraph>;
+      return (
+        <ArticleParagraph>
+          {emphasise(block.text, block.emphasis)}
+        </ArticleParagraph>
+      );
     case "heading":
       return <ArticleHeading text={block.text} />;
     case "list":

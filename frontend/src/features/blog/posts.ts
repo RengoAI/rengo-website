@@ -3,7 +3,12 @@ import type { FigureName } from "@/features/blog/blog-figures";
 
 /** One block of a post's body, in reading order. */
 export type PostBlock =
-  | { type: "paragraph"; text: string }
+  | {
+      type: "paragraph";
+      text: string;
+      /** Phrases the source sets in bold, emphasised (in medium). */
+      emphasis?: string[];
+    }
   | { type: "heading"; text: string }
   | { type: "list"; ordered?: boolean; items: string[] }
   | { type: "quote"; text: string }
@@ -167,6 +172,7 @@ const THE_OPPORTUNITY: Post = {
     },
     {
       type: "paragraph",
+      emphasis: ["Your data is your alpha."],
       text: "Your data is your alpha. Over time, organizations have built relationships, made decisions, developed financial models, and tracked performance, accumulating institutional knowledge unique to each firm. Much of this knowledge remains connected through people, with decisions relying on past experience and reporting requiring information to be manually assembled from files and systems. Making this knowledge accessible to AI creates an opportunity to make far greater use of it.",
     },
     {
@@ -175,6 +181,9 @@ const THE_OPPORTUNITY: Post = {
     },
     {
       type: "paragraph",
+      emphasis: [
+        "capture the opportunity to fundamentally change the economics of how they operate",
+      ],
       text: "Rather than continuing to rely on information scattered across files, systems, and individual teams, organizations can invest in infrastructure that makes existing knowledge accessible throughout the business. With that foundation in place, organizations can capture the opportunity to fundamentally change the economics of how they operate.",
     },
   ],
