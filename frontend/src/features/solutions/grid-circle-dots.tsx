@@ -5,7 +5,7 @@ import {
   heroDotColor,
   pulseGrowth,
   dotScale,
-  SITE_DOT,
+  siteDotAt,
 } from "@/components/site/canvas/hero-dots";
 import { INK } from "@/components/site/canvas/ink";
 import { useCanvasLoop } from "@/components/site/canvas/use-canvas-loop";
@@ -29,17 +29,6 @@ const ROWS = 18;
 const PITCH = 14; // px, grid spacing at full size
 /** The figure's spacing at this scale. */
 const SCALE = 1.2;
-/**
- * A mark's size, px: the site's shared dot up to the scale (dotScale) where
- * the figure reads best, about 860px wide; above it, marks grow with the
- * spacing, so the figure keeps that weight on larger screens, up to
- * MARK_MAX, the hero's cap, so the two figures match on large screens.
- */
-const MARK = SITE_DOT;
-const MARK_GROWS_FROM = 0.6;
-const MARK_MAX = 2.4;
-const markAt = (k: number) =>
-  Math.min(MARK * Math.max(1, k / MARK_GROWS_FROM), MARK_MAX);
 /** Share of marks in the site's accent red; the rest take the hero's mix. */
 const ACCENT_SHARE = 0.1;
 /** Seconds held as a grid, and as a circle; seconds for each change. */
@@ -122,12 +111,13 @@ export const GridCircleDots: React.FC<{
   const canvasRef = useCanvasLoop(({ ctx, w, h, t, reduced }) => {
     // Scaled with the screen like the hero (full size from 1440px, down to
     // half), fit to the narrowest screens, then scaled. The marks grow with
-    // it on larger screens (markAt).
+    // it on larger screens (siteDotAt).
     const fit = (w - 32) / COLS;
     const k = dotScale(w);
     const pitch = Math.min(PITCH * k, fit) * SCALE * scale;
     const gridPitch = Math.min(PITCH * GRID_SPREAD * k, fit) * SCALE * scale;
-    const mark = markAt(k);
+    // Growing on larger screens, as all the site's dot figures do.
+    const mark = siteDotAt(k);
     const half = mark / 2;
     // Half the figure at its widest and tallest, grid or circle, in px.
     const halfW = Math.max(((COLS - 1) / 2) * gridPitch, CIRCLE_R * pitch);

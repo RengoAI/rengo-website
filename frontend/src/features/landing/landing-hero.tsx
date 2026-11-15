@@ -14,6 +14,7 @@ import {
   HERO_HIGHLIGHT,
   HERO_PALE,
   pulseGrowth,
+  siteDotAt,
 } from "@/components/site/canvas/hero-dots";
 import { INK } from "@/components/site/canvas/ink";
 import { useCanvasLoop } from "@/components/site/canvas/use-canvas-loop";
@@ -112,18 +113,6 @@ const WAVE_JOIN = 8;
  * size (see `dotScale`).
  */
 const figureScale = dotScale;
-
-/**
- * The dot's diameter, px, at figure scale `k`: HERO_DOT up to the scale where
- * the band reads best (about 860px wide), then growing with the figure, so
- * it doesn't thin out on large screens. Capped at DOT_MAX, well short of the
- * partner figure's 3px: the lines here sit only 1.8px apart at full size,
- * and bigger dots would merge them into a solid band.
- */
-const DOT_GROWS_FROM = 0.6;
-const DOT_MAX = 2.4;
-const heroDot = (k: number) =>
-  Math.min(HERO_DOT * Math.max(1, k / DOT_GROWS_FROM), DOT_MAX);
 
 // ---- The loop ------------------------------------------------------------
 /** Seconds the formed bed holds its wave before the dots drift back. */
@@ -498,7 +487,8 @@ export const LandingHero: React.FC = () => {
     }
 
     ctx.clearRect(0, 0, w, h);
-    const dot = heroDot(g);
+    // HERO_DOT, growing on larger screens (siteDotAt).
+    const dot = siteDotAt(g);
     const r = dot / 2;
     // A swell takes it HERO_DOT_GROW's share (40%) wider, at any size.
     const grow = dot * (HERO_DOT_GROW / HERO_DOT);

@@ -3,8 +3,8 @@ import { rand } from "@/components/site/canvas/canvas-utils";
 import {
   dotScale,
   heroDotColor,
-  SITE_DOT,
   SITE_SPACING,
+  siteDotAt,
 } from "@/components/site/canvas/hero-dots";
 import { INK } from "@/components/site/canvas/ink";
 import { useCanvasLoop } from "@/components/site/canvas/use-canvas-loop";
@@ -22,7 +22,6 @@ import React from "react";
  */
 
 const PITCH = 12.6; // px, a quarter tighter than the /solutions grid's 16.8px
-const MARK = SITE_DOT; // px, its squares at full ink: the site's shared dot
 /** Share of cells in the site's accent red; the rest take the hero's mix. */
 const ACCENT_SHARE = 0.08;
 /** Seconds between generations. */
@@ -62,8 +61,10 @@ type Field = {
 };
 
 const makeField = (w: number, h: number, t: number): Field => {
-  // Spacing scales with the site's dot figures; marks stay SITE_DOT.
-  const pitch = PITCH * SITE_SPACING * dotScale(w);
+  // Spacing scales with the site's dot figures, and the marks grow with it
+  // on larger screens, as theirs do.
+  const k = dotScale(w);
+  const pitch = PITCH * SITE_SPACING * k;
   const cols = Math.max(1, Math.floor(w / pitch));
   const rows = Math.max(1, Math.floor(h / pitch));
   const n = cols * rows;
@@ -75,7 +76,7 @@ const makeField = (w: number, h: number, t: number): Field => {
     ox: (w - (cols - 1) * pitch) / 2,
     oy: (h - (rows - 1) * pitch) / 2,
     pitch,
-    mark: MARK,
+    mark: siteDotAt(k),
     live,
     next: new Uint8Array(n),
     age: new Uint8Array(n),

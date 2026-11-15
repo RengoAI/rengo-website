@@ -44,6 +44,18 @@ const DOT_MIN_SCALE = 0.5;
 export const dotScale = (w: number) =>
   Math.min(Math.max(w / DOT_DESIGN_W, DOT_MIN_SCALE), 1);
 
+/**
+ * A dot figure's dot diameter, px, at figure scale `k` (dotScale): SITE_DOT
+ * up to the scale where the figures read best, about 860px wide, then
+ * growing with the spacing so they don't thin out on large screens, to at
+ * most SITE_DOT_MAX. The cap is set by the hero, whose lines sit only 1.8px
+ * apart at full size: bigger dots would merge them into a solid band.
+ */
+const DOT_GROWS_FROM = 0.6;
+export const SITE_DOT_MAX = 2.4;
+export const siteDotAt = (k: number) =>
+  Math.min(SITE_DOT * Math.max(1, k / DOT_GROWS_FROM), SITE_DOT_MAX);
+
 const pick = <T>(xs: readonly T[]) => xs[Math.floor(Math.random() * xs.length)];
 
 /**
