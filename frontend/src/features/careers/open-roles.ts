@@ -125,8 +125,8 @@ const engineeringRole = ({
 
 export const OPEN_ROLES: readonly OpenRole[] = [
   engineeringRole({
-    id: "software-engineer-data-infrastructure",
-    title: "Software Engineer - Data Infrastructure",
+    id: "member-of-technical-staff-data-infrastructure",
+    title: "Member of Technical Staff, Data Infrastructure",
     summary:
       "Build the governed data foundation that turns fragmented knowledge into a source of truth applications and agents can run on.",
     roleFocus:
@@ -141,8 +141,8 @@ export const OPEN_ROLES: readonly OpenRole[] = [
       "Specific interest in applying software engineering fundamentals to data systems. You care about structure, lineage, and design that holds up under real use.",
   }),
   engineeringRole({
-    id: "software-engineer-applied-ai",
-    title: "Software Engineer - Applied AI",
+    id: "member-of-technical-staff-applied-ai",
+    title: "Member of Technical Staff, Applied AI",
     summary:
       "Build the applications and agents that turn proprietary knowledge into operating leverage.",
     roleFocus:
@@ -160,6 +160,17 @@ export const OPEN_ROLES: readonly OpenRole[] = [
 
 export const getOpenRoleById = (id: string): OpenRole | undefined =>
   OPEN_ROLES.find((role) => role.id === id);
+
+/**
+ * Roles' earlier addresses, so old links still land on the role: the
+ * "Software Engineer - …" titles before they became Member of Technical
+ * Staff.
+ */
+export const PREVIOUS_ROLE_IDS: Readonly<Record<string, string>> = {
+  "software-engineer-data-infrastructure":
+    "member-of-technical-staff-data-infrastructure",
+  "software-engineer-applied-ai": "member-of-technical-staff-applied-ai",
+};
 
 export const roleMailto = (title: string) =>
   `mailto:careers@rengoai.com?subject=${encodeURIComponent(`Application: ${title}`)}`;

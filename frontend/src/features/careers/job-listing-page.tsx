@@ -12,6 +12,7 @@ import { SiteNav } from "@/components/site/site-nav";
 import { SolidCta } from "@/components/site/solid-cta";
 import {
   getOpenRoleById,
+  PREVIOUS_ROLE_IDS,
   roleMailto,
   type JobContentBlock,
 } from "@/features/careers/open-roles";
@@ -38,7 +39,18 @@ export const JobListingPage: React.FC = () => {
   const role = getOpenRoleById(roleId);
 
   if (!role) {
-    return <Navigate to={rootRoute({}).careers({}).$} replace />;
+    // An old address goes to the role's new one; anything else to careers.
+    const renamed = PREVIOUS_ROLE_IDS[roleId];
+    return (
+      <Navigate
+        to={
+          renamed
+            ? rootRoute({}).careers({}).role({ roleId: renamed }).$
+            : rootRoute({}).careers({}).$
+        }
+        replace
+      />
+    );
   }
 
   return (
