@@ -50,7 +50,7 @@ export const JobListingPage: React.FC = () => {
           <ArticleHeader
             back={{ to: rootRoute({}).careers({}).$, label: "Careers" }}
             title={role.title}
-            properties={[role.department, role.location, role.employmentType]}
+            properties={[role.department, role.location]}
           />
 
           <ArticleBody
