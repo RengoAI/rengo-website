@@ -1,7 +1,6 @@
 import { GRAIN_TILE } from "@/components/site/site-styles";
 import type { Post } from "@/features/blog/posts";
-import { Box, type BoxProps, Text } from "@chakra-ui/react";
-import { Sun } from "lucide-react";
+import { Box, type BoxProps } from "@chakra-ui/react";
 import React from "react";
 
 const SKY = "176, 199, 235";
@@ -29,8 +28,7 @@ const lightFor = (slug: string) =>
 
 /**
  * A post's art for the index, after Ode's press tiles: a square of mist
- * with a soft sphere of blue rising in it, under the site's grain, the
- * wordmark in the top left.
+ * with a soft sphere of blue rising in it, under the site's grain.
  */
 export const PostTile: React.FC<{ post: Post } & BoxProps> = ({
   post,
@@ -53,27 +51,6 @@ export const PostTile: React.FC<{ post: Post } & BoxProps> = ({
       bgRepeat="repeat, no-repeat, no-repeat, no-repeat"
       aria-hidden
       {...props}
-    >
-      <Box
-        position="absolute"
-        top={{ base: "7px", md: "10px" }}
-        left={{ base: "7px", md: "10px" }}
-        display="flex"
-        alignItems="center"
-        gap="4px"
-        color="site.fg.strong"
-        aria-hidden
-      >
-        <Box as={Sun} boxSize={{ base: "8px", md: "10px" }} />
-        <Text
-          fontFamily="heading"
-          fontSize={{ base: "9px", md: "11px" }}
-          letterSpacing="-0.04em"
-          lineHeight="1"
-        >
-          rengo ai
-        </Text>
-      </Box>
-    </Box>
+    />
   );
 };

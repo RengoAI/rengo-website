@@ -18,8 +18,8 @@ import { Link } from "react-router";
 const RouterLink = chakra(Link);
 
 /*
- * As in the app's settings cards: the title in ink, the description and
- * the date line a step down in a dark, neutral grey.
+ * The title in ink, the description in Garamond italic, and the date line
+ * a step down in a dark, neutral grey, as the app sets small details.
  */
 const INK = "site.fg.strong";
 const MUTED = "soot.600";
@@ -82,14 +82,16 @@ const PostItem: React.FC<{ post: Post }> = ({ post }) => (
         >
           {post.title}
         </Text>
-        {/* As the app's card descriptions: regular, a step under the
-            title, tight leading, in the dark grey. */}
+        {/* The post's italic line, in the Business Overview's face (EB
+            Garamond italic, as its section subtitles and the post body), so
+            it reads apart from the grey Geist date line below. */}
         <Text
-          fontFamily="body"
-          fontSize="0.875rem"
+          fontFamily="garamond"
+          fontStyle="italic"
+          fontSize="1.0625rem"
           lineHeight="1.35"
-          color={MUTED}
-          mt="6px"
+          color="site.fg"
+          mt="4px"
           display={{ base: "none", md: "-webkit-box" }}
           css={{ WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}
           overflow="hidden"
