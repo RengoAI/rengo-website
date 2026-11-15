@@ -164,7 +164,7 @@ export const ArticleHeader: React.FC<{
           pt="14px"
           // A soft dotted rule, like the site's other dividers, in the ink
           // at low opacity so it shows faintly on the wash.
-          borderTop="1px dotted rgba(21, 23, 24, 0.25)"
+          borderTop="1px dotted rgba(21, 23, 24, 0.14)"
           {...PROSE}
           fontSize="0.9375rem"
           color={ARTICLE_MUTED}
