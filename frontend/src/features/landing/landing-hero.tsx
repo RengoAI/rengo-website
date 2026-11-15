@@ -109,9 +109,21 @@ const WAVE_JOIN = 8;
  * The figure's px sizes are set for a full-width canvas. A narrower canvas
  * shrinks the figure evenly — wavelength, wave height, line gap and column
  * spacing alike — so it keeps the desktop's proportions, stopping at half
- * size (see `dotScale`). The dots stay HERO_DOT at every width.
+ * size (see `dotScale`).
  */
 const figureScale = dotScale;
+
+/**
+ * The dot's diameter, px, at figure scale `k`: HERO_DOT up to the scale where
+ * the band reads best (about 860px wide), then growing with the figure, so
+ * it doesn't thin out on large screens. Capped at DOT_MAX, well short of the
+ * partner figure's 3px: the lines here sit only 1.8px apart at full size,
+ * and bigger dots would merge them into a solid band.
+ */
+const DOT_GROWS_FROM = 0.6;
+const DOT_MAX = 2.4;
+const heroDot = (k: number) =>
+  Math.min(HERO_DOT * Math.max(1, k / DOT_GROWS_FROM), DOT_MAX);
 
 // ---- The loop ------------------------------------------------------------
 /** Seconds the formed bed holds its wave before the dots drift back. */
@@ -486,7 +498,10 @@ export const LandingHero: React.FC = () => {
     }
 
     ctx.clearRect(0, 0, w, h);
-    const r = HERO_DOT / 2;
+    const dot = heroDot(g);
+    const r = dot / 2;
+    // A swell takes it HERO_DOT_GROW's share (40%) wider, at any size.
+    const grow = dot * (HERO_DOT_GROW / HERO_DOT);
 
     // Reduced motion: skip the journey, show the formed layer.
     if (reduced) {
@@ -555,7 +570,7 @@ export const LandingHero: React.FC = () => {
         ctx.fillRect(d.trail[i * 2] - r, d.trail[i * 2 + 1] - r, r * 2, r * 2);
       }
       ctx.globalAlpha = 1;
-      mark(ctx, x, y, r + pulseGrowth(d, elapsed, HERO_DOT_GROW));
+      mark(ctx, x, y, r + pulseGrowth(d, elapsed, grow));
       d.lx = x;
       d.ly = y;
       d.trail[d.head * 2] = x;
