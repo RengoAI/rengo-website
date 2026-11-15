@@ -126,7 +126,7 @@ export const BlogIndexPage: React.FC = () => (
 
       <Section
         rhythm="none"
-        pt={{ base: "40px", md: "56px" }}
+        pt={{ base: "56px", md: "80px" }}
         pb={{ base: "76px", md: "100px" }}
         bg="site.bg.surface"
       >
