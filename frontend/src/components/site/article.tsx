@@ -133,13 +133,16 @@ export const ArticleHeader: React.FC<{
       >
         {typed ? <TypedText text={title} /> : title}
       </Text>
+      {/* The italic line in EB Garamond, as the Business Overview sets its
+          subtitles and the blog index its descriptions; a size up for
+          Garamond's smaller letters. */}
       {dek && (
         <Text
-          fontFamily="body"
-          fontSize={{ base: "1.125rem", md: "1.25rem" }}
+          fontFamily="garamond"
+          fontSize={{ base: "1.25rem", md: "1.4375rem" }}
           fontStyle="italic"
-          fontWeight={300}
-          lineHeight="1.4"
+          fontWeight={400}
+          lineHeight="1.35"
           color={ARTICLE_INK}
           mt="14px"
         >
