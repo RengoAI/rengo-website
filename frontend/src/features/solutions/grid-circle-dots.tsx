@@ -32,12 +32,14 @@ const SCALE = 1.2;
 /**
  * A mark's size, px: the site's shared dot up to the scale (dotScale) where
  * the figure reads best, about 860px wide; above it, marks grow with the
- * spacing, so the figure keeps that weight on larger screens (3px at 1440px
- * and up) instead of thinning out.
+ * spacing, so the figure keeps that weight on larger screens, up to
+ * MARK_MAX, the hero's cap, so the two figures match on large screens.
  */
 const MARK = SITE_DOT;
 const MARK_GROWS_FROM = 0.6;
-const markAt = (k: number) => MARK * Math.max(1, k / MARK_GROWS_FROM);
+const MARK_MAX = 2.4;
+const markAt = (k: number) =>
+  Math.min(MARK * Math.max(1, k / MARK_GROWS_FROM), MARK_MAX);
 /** Share of marks in the site's accent red; the rest take the hero's mix. */
 const ACCENT_SHARE = 0.1;
 /** Seconds held as a grid, and as a circle; seconds for each change. */
