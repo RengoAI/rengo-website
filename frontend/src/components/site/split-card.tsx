@@ -282,6 +282,12 @@ export const TestimonialCard: React.FC<
     rule={false}
     // Primary.800 (#0C1D34) at 4%: barely lifts the card off the band.
     boxShadow="0 2px 3px rgba(12, 29, 52, 0.04)"
+    // As tall as the row's longest quote needs, not the steps' 472px floor:
+    // quotes run far shorter than that, which left the cards mostly empty.
+    // The row still stretches to its tallest card, and the attribution sits
+    // at least `gap` below the quote.
+    minH="auto"
+    gap="40px"
     top={
       <Text as="blockquote" textStyle="d5" color="soot.600" w="full">
         {quote}
