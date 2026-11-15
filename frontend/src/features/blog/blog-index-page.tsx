@@ -18,13 +18,11 @@ import { Link } from "react-router";
 const RouterLink = chakra(Link);
 
 /*
- * As in the app's settings cards: descriptions in ink, a size down; only
- * the smallest details (the date line) go grey, a darker, neutral one.
+ * As in the app's settings cards: the title in ink, the description and
+ * the date line a step down in a dark, neutral grey.
  */
 const INK = "site.fg.strong";
-const TEXT = "site.fg";
 const MUTED = "soot.600";
-const BODY = { fontFamily: "body", fontSize: "1rem", lineHeight: "1.6" };
 
 /** The list's column: the header's reading measure, so the two align. */
 const COLUMN = `${ARTICLE_MEASURE}px`;
@@ -84,11 +82,14 @@ const PostItem: React.FC<{ post: Post }> = ({ post }) => (
         >
           {post.title}
         </Text>
+        {/* As the app's card descriptions: regular, a step under the
+            title, tight leading, in the dark grey. */}
         <Text
-          {...BODY}
-          fontSize="0.9375rem"
-          color={TEXT}
-          mt="4px"
+          fontFamily="body"
+          fontSize="0.875rem"
+          lineHeight="1.35"
+          color={MUTED}
+          mt="6px"
           display={{ base: "none", md: "-webkit-box" }}
           css={{ WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}
           overflow="hidden"
