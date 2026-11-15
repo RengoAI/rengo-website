@@ -231,20 +231,14 @@ const useActiveHeading = (ids: string[]) => {
 };
 
 /**
- * The sections as links on a thin rail; the one being read in ink, with a
- * short blue bar on the rail beside it.
+ * The sections as links: the one being read in ink and medium weight, the
+ * rest in grey at regular weight.
  */
 const ContentsLinks: React.FC<{
   headings: string[];
   active?: string;
 }> = ({ headings, active }) => (
-  <Box
-    as="ol"
-    display="flex"
-    flexDirection="column"
-    gap="2px"
-    borderLeft="1px solid rgba(21, 23, 24, 0.12)"
-  >
+  <Box as="ol" display="flex" flexDirection="column" gap="6px">
     {headings.map((text) => {
       const id = headingId(text);
       const current = id === active;
@@ -256,15 +250,10 @@ const ContentsLinks: React.FC<{
             aria-current={current ? "location" : undefined}
             {...SMALL}
             display="block"
-            py="3px"
-            pl="12px"
-            // The bar sits over the rail, so it reads as the rail lit up.
-            ml="-1px"
-            borderLeft="2px solid"
-            borderColor={current ? "site.highlight" : "transparent"}
             color={current ? ARTICLE_INK : ARTICLE_MUTED}
+            fontWeight={current ? 500 : 400}
             textDecoration="none"
-            transition="color 150ms ease, border-color 150ms ease"
+            transition="color 150ms ease"
             _hover={{ color: ARTICLE_INK }}
           >
             {text}
