@@ -19,7 +19,7 @@ import {
 import { INK } from "@/components/site/canvas/ink";
 import { useCanvasLoop } from "@/components/site/canvas/use-canvas-loop";
 import { CONTACT_HREF } from "@/components/site/site-constants";
-import { CTA_SHADOW, GRAIN_TILE } from "@/components/site/site-styles";
+import { GRAIN_TILE } from "@/components/site/site-styles";
 import { SolidCta } from "@/components/site/solid-cta";
 import { Box, Text } from "@chakra-ui/react";
 import { parseToRgba } from "color2k";
@@ -738,7 +738,6 @@ export const LandingHero: React.FC = () => {
             >
               <SolidCta
                 h="27px"
-                boxShadow={CTA_SHADOW}
                 href={CONTACT_HREF}
                 labelProps={{ gap: "8px" }}
               >

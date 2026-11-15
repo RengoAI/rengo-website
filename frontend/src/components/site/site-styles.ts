@@ -35,10 +35,6 @@ export const GRAIN_TILE = `url("data:image/svg+xml,${encodeURIComponent(
     `<rect width="100%" height="100%" filter="url(#b)" opacity="0.6"/></svg>`,
 )}")`;
 
-/** The primary CTAs' soft lift, in the nav shadow's navy. */
-export const CTA_SHADOW =
-  "0 1px 2px rgba(12, 29, 52, 0.10), 0 6px 16px rgba(12, 29, 52, 0.10)";
-
 /** A 1px dotted rule along the top edge, in the site's dashed-rule colour. */
 export const dottedTop = (color = "site.border.dashed") =>
   ({

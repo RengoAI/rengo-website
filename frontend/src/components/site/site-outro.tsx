@@ -2,20 +2,11 @@ import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import { AutomataGrid } from "@/components/site/automata-grid";
 import { CONTACT_HREF, NAV_H } from "@/components/site/site-constants";
-import { CTA_SHADOW } from "@/components/site/site-styles";
 import { SolidCta } from "@/components/site/solid-cta";
+import { SCREEN_WASH } from "@/components/site/site-wash";
 import { prefersReducedMotion } from "@/shared/utils/motion";
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
-
-/** The CTA's label: 14px at every width, the other buttons' size. */
-const OUTRO_LABEL = {
-  fontSize: "0.875rem",
-  lineHeight: "21px",
-  letterSpacing: "0",
-  color: "canvas.50",
-  _hover: { opacity: 0.65 },
-} as const;
 
 /** The heading box's padding past the line, px. */
 const OUTRO_HEADING_PAD_X = 24;
@@ -32,9 +23,10 @@ const DEFAULT_HEADING = (
 
 /**
  * The closing band: a centred line and the Book a call button, over the
- * /solutions grid of squares running as a cellular automaton. The landing
- * ends on "Ready to make your data your alpha?". Careers uses the same band
- * as its hero.
+ * /solutions grid of squares running as a cellular automaton, or, on the
+ * company pages, the site's colour wash. The landing ends on "Ready to make
+ * your data your alpha?" over the automaton. Careers uses the same band as
+ * its hero, over the wash.
  */
 export const SiteOutro: React.FC<{
   /** Replaces the closing line. */
@@ -51,13 +43,20 @@ export const SiteOutro: React.FC<{
    * close), so it fills the screen left under the bar.
    */
   fill?: boolean | "below-nav";
+  /**
+   * What's behind the line: the automaton (the product's voice, the
+   * default) or the colour wash the blog uses (the company pages').
+   */
+  backdrop?: "automata" | "wash";
 }> = ({
   heading = DEFAULT_HEADING,
   headingAs = "h2",
   cta = "Book a call",
   ctaHref = CONTACT_HREF,
   fill = false,
+  backdrop = "automata",
 }) => {
+  const wash = backdrop === "wash";
   // An in-page target scrolls into view instead of jumping. The landing
   // button is a mailto, so it is left alone.
   const scrollToTarget = (event: React.MouseEvent) => {
@@ -76,8 +75,8 @@ export const SiteOutro: React.FC<{
     <Box
       as="section"
       position="relative"
-      // The footer's grey, so the outro runs into it.
-      bg="site.bg.footer"
+      // The footer's grey, so the outro runs into it; or the wash.
+      {...(wash ? SCREEN_WASH : { bg: "site.bg.footer" })}
       overflow="hidden"
       // A minimum, so content still fits on a very short screen.
       minH={
@@ -91,7 +90,7 @@ export const SiteOutro: React.FC<{
       alignItems={fill ? "center" : undefined}
       aria-labelledby="outro-heading"
     >
-      <AutomataGrid />
+      {!wash && <AutomataGrid />}
       <Section
         as="div"
         rhythm="none"
@@ -106,7 +105,9 @@ export const SiteOutro: React.FC<{
             display="flex"
             flexDirection="column"
             alignItems="center"
-            gap={{ base: "40px", md: "60px" }}
+            // The heading box overlaps 16px of this; with the line's own
+            // leading, the button sits about 20px under the letters.
+            gap="24px"
           >
             {/* On a box of the band's own grey, so no squares run behind
               the line. The negative margins take the padding back out, so
@@ -120,7 +121,8 @@ export const SiteOutro: React.FC<{
               color="site.fg.strong"
               maxW={`calc(496px + ${2 * OUTRO_HEADING_PAD_X}px)`}
               textAlign="center"
-              bg="site.bg.footer"
+              // Masks the squares behind the line; the wash needs no mask.
+              bg={wash ? "transparent" : "site.bg.footer"}
               borderRadius="4px"
               px={`${OUTRO_HEADING_PAD_X}px`}
               py={`${OUTRO_HEADING_PAD_Y}px`}
@@ -129,19 +131,13 @@ export const SiteOutro: React.FC<{
             >
               {heading}
             </Text>
-            {/* The hero and nav button, larger and on soot: lightens to Sky
-              on hover, its label turning dark. Hugs its
-              label, a set 20px to the arrow. */}
+            {/* The hero's button, exactly: the site has one button, flat and
+              compact like the app's. */}
             <SolidCta
               href={ctaHref}
               onClick={ctaHref.startsWith("#") ? scrollToTarget : undefined}
-              display="flex"
-              h="49px"
-              px="16px"
-              py="6px"
-              bg="site.bg.darkRaised"
-              boxShadow={CTA_SHADOW}
-              labelProps={OUTRO_LABEL}
+              h="27px"
+              labelProps={{ gap: "8px" }}
             >
               {cta}
             </SolidCta>

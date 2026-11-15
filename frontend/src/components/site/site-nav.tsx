@@ -12,17 +12,15 @@ import { Link } from "react-router";
 
 const RouterLink = chakra(Link);
 
-/** The nav's in-app pages. */
-const LINKS: { label: string; to: string }[] = [];
-
-/**
- * The mobile sheet's in-app pages: the bar's, plus Careers, which on larger
- * screens is in the footer.
- */
-const SHEET_LINKS: { label: string; to: string }[] = [
-  ...LINKS,
+/** The nav's in-app pages, beside the wordmark from tablets up and in the
+ * mobile sheet below. */
+const LINKS: { label: string; to: string }[] = [
+  { label: "Blog", to: rootRoute({}).blog({}).$ },
   { label: "Careers", to: rootRoute({}).careers({}).$ },
 ];
+
+/** The mobile sheet's in-app pages: the same as the bar's. */
+const SHEET_LINKS = LINKS;
 
 const MENU_ID = "site-nav-menu";
 
@@ -80,7 +78,13 @@ const useScrolled = () => {
 
 export const SiteNav: React.FC<{
   overlay?: boolean;
-}> = ({ overlay = false }) => {
+  /**
+   * Show the hairline under the bar from the start, not only once the page
+   * scrolls: for pages whose first section is coloured (the colour wash),
+   * where the bar would otherwise sit on it without an edge.
+   */
+  edge?: boolean;
+}> = ({ overlay = false, edge = false }) => {
   const scrolled = useScrolled();
   const [isOpen, setIsOpen] = React.useState(false);
   const close = React.useCallback(() => setIsOpen(false), []);
@@ -116,9 +120,10 @@ export const SiteNav: React.FC<{
       // Opaque, including while content scrolls underneath.
       bg="site.bg.surface"
       borderBottom="1px solid"
-      // The hairline only once the page scrolls; at the very top it's
-      // transparent, keeping the bar's height.
-      borderColor={scrolled ? "site.border" : "transparent"}
+      // The hairline once the page scrolls, or from the start over a
+      // coloured first section; otherwise transparent, keeping the bar's
+      // height.
+      borderColor={scrolled || edge ? "site.border" : "transparent"}
       mb={overlay ? `-${NAV_H}px` : undefined}
       py="8px"
       minH={`${NAV_H}px`}
@@ -177,7 +182,9 @@ export const SiteNav: React.FC<{
           start={{ md: 4, lg: 3 }}
           display={{ base: "none", md: "flex" }}
           alignItems="center"
-          gap="20px"
+          // Clear of the wordmark, and spaced so each link reads alone.
+          pl={{ md: "16px", lg: "32px" }}
+          gap={{ md: "24px", lg: "32px" }}
         >
           {LINKS.map((link) => (
             <chakra.li key={link.label}>

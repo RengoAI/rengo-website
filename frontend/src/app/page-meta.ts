@@ -1,3 +1,4 @@
+import { POSTS } from "@/features/blog/posts";
 import { OPEN_ROLES } from "@/features/careers/open-roles";
 
 /**
@@ -27,28 +28,38 @@ export const PAGE_META: Readonly<Record<string, PageMeta>> = {
     description: HOME_DESCRIPTION,
   },
   "/careers": {
-    title: `Careers | ${SITE_NAME}`,
+    title: "Careers",
     description: "Open roles at Rengo AI across engineering and product.",
   },
   ...Object.fromEntries(
     OPEN_ROLES.map((role) => [
       `/careers/${role.id}`,
-      { title: `${role.title} | ${SITE_NAME}`, description: role.summary },
+      { title: role.title, description: role.summary },
+    ]),
+  ),
+  "/blog": {
+    title: "Blog",
+    description: HOME_DESCRIPTION,
+  },
+  ...Object.fromEntries(
+    POSTS.map((post) => [
+      `/blog/${post.slug}`,
+      { title: post.title, description: post.summary },
     ]),
   ),
   "/legal/terms-of-service": {
-    title: `Terms of Service | ${SITE_NAME}`,
+    title: "Terms of Service",
     description: "The terms that govern your use of the Rengo AI website.",
   },
   "/legal/privacy-policy": {
-    title: `Privacy Policy | ${SITE_NAME}`,
+    title: "Privacy Policy",
     description:
       "How Rengo AI collects, uses and protects information about you.",
   },
 };
 
 export const NOT_FOUND_META: PageMeta = {
-  title: `Page not found | ${SITE_NAME}`,
+  title: "Page not found",
   description: HOME_DESCRIPTION,
 };
 

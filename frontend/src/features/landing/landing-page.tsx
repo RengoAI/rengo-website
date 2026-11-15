@@ -173,7 +173,7 @@ export const LandingPage: React.FC = () => (
             <chakra.p>
               AI is changing how we work with data, but its usefulness depends
               on the information it can access. We believe the foundation is{" "}
-              <Box as="strong" fontWeight={700}>
+              <Box as="strong" fontWeight={500}>
                 the data layer.
               </Box>
             </chakra.p>

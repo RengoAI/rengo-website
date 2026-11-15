@@ -457,7 +457,7 @@ export const semanticColors = defineSemanticTokens.colors({
        * bands' navy. */
       heading: { value: "{colors.silver.700}" },
       /** Secondary copy. */
-      muted: { value: "{colors.soot.500}" },
+      muted: { value: "{colors.soot.600}" },
       /** Captions, metadata. */
       subtle: { value: "{colors.soot.400}" },
       /** Type on a dark band. */

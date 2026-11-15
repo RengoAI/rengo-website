@@ -27,6 +27,20 @@ export const rootRoute = route(
         ),
       },
     ),
+    blog: route(
+      "/blog",
+      {},
+      {
+        index: route("/", {}, {}),
+        post: route(
+          "/:slug",
+          {
+            slug: stringParser,
+          },
+          {},
+        ),
+      },
+    ),
     legal: route(
       "/legal",
       {},
@@ -35,8 +49,8 @@ export const rootRoute = route(
         privacyPolicy: route("/privacy-policy", {}, {}),
       },
     ),
-    companyRedirect: route("/company", {}, {}),
     styleguide: route("/styleguide", {}, {}),
+    companyRedirect: route("/company", {}, {}),
     notFound: route("/*", {}, {}),
   },
 );

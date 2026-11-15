@@ -24,6 +24,23 @@ Run these from `frontend/`.
 - CI installs with `pnpm install --frozen-lockfile`, so commit
   `pnpm-lock.yaml` with any `package.json` change.
 
+## Style
+
+- Font weights go no heavier than medium (500). Never use semibold (600) or
+  bold (700+), in props (`fontWeight`), SVG text, or CSS. The theme maps the
+  `semibold`, `bold`, `extrabold` and `black` tokens to 500, and sets `b`,
+  `strong` and `th` to 500, but a raw number like `fontWeight={600}` is not
+  caught, so don't write one. Emphasis comes from size, colour or medium
+  weight.
+- Titles and headings are regular (400) or lighter: Geist at medium reads
+  as bold at title sizes. Keep medium for emphasis within text and for tiny
+  spaced-capital labels (12px and under), which need it to stay legible.
+- Secondary text uses `site.fg.muted` (a dark, neutral grey), not a lighter
+  grey. Descriptions under a title stay in the body ink at a smaller size,
+  as in the app's settings cards; keep grey for small details such as dates.
+- Copy comes word for word from Rengo's own materials (the Business Overview,
+  the sales deck), in their structure. Don't write or paraphrase new copy.
+
 ## Pull requests
 
 - PRs are squash-merged and the PR title becomes the commit title. Titles are

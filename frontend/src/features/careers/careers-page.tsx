@@ -25,7 +25,7 @@ const rolePath = (roleId: string) =>
  */
 export const CareersPage: React.FC = () => (
   <Box bg="site.bg.page">
-    <SiteNav overlay />
+    <SiteNav overlay edge />
 
     <Box as="main" id="main" minH={`calc(100svh - ${NAV_H}px)`}>
       <SiteOutro
@@ -34,6 +34,7 @@ export const CareersPage: React.FC = () => (
         cta="See open roles"
         ctaHref="#open-roles"
         fill
+        backdrop="wash"
       />
 
       {/* The landing's logo strip, on the same dark band, with the team line
@@ -105,9 +106,19 @@ export const CareersPage: React.FC = () => (
                         <Text as="h3" textStyle="h6" color="site.fg">
                           {role.title}
                         </Text>
-                        <Text textStyle="body.sm" color="site.fg.muted">
-                          {role.location} • {role.employmentType}
-                        </Text>
+                        {/* Set apart by space rather than a separator, like
+                            the blog's property lines. */}
+                        <Box
+                          display="flex"
+                          flexWrap="wrap"
+                          columnGap="20px"
+                          rowGap="2px"
+                          textStyle="body.sm"
+                          color="site.fg.muted"
+                        >
+                          <span>{role.location}</span>
+                          <span>{role.employmentType}</span>
+                        </Box>
                       </GridCol>
                     </RuledRow>
                   </Link>
