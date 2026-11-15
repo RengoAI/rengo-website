@@ -55,8 +55,6 @@ const CIRCLE_R = Math.sqrt((COLS * ROWS) / Math.PI);
 const GRID_SPREAD = 1.5;
 /** Gap between the copy's bottom and the figure's tallest shape, in px. */
 const TOP_GAP = 24;
-/** Space held under the figure's tallest shape, px (2rem). */
-const BOTTOM_GAP = 32;
 /** From the `lg` breakpoint (px), the figure sits RIGHT_PAD in from the
  * content's right edge (the band's padding: the gutter, which grows past the
  * 1440px content cap) instead of centred. */
@@ -139,7 +137,11 @@ export const GridCircleDots: React.FC<{
     // below the copy.
     const canvas = canvasRef.current;
     const band = canvas?.parentElement;
-    const gutter = band ? parseFloat(getComputedStyle(band).paddingRight) : 0;
+    const style = band ? getComputedStyle(band) : null;
+    const gutter = style ? parseFloat(style.paddingRight) : 0;
+    // Under the figure, the band's own bottom padding, so it has as much
+    // room below as the heading has above.
+    const bottomPad = style ? parseFloat(style.paddingBottom) : 0;
     const ox =
       w >= DESKTOP_MIN_W ? w - gutter - RIGHT_PAD - halfW - half : w / 2;
     const el = below?.current;
@@ -148,10 +150,10 @@ export const GridCircleDots: React.FC<{
         ? el.getBoundingClientRect().bottom - canvas.getBoundingClientRect().top
         : 0;
     const oy = top + TOP_GAP + halfH;
-    // Hold the band open BOTTOM_GAP past the figure, whatever the copy's
+    // Hold the band open its bottom padding past the figure, whatever the copy's
     // wrapping, so it's never clipped or left with empty space. The band's
     // own min-height is only the first paint's estimate.
-    const need = `${Math.ceil(oy + halfH + half + BOTTOM_GAP)}px`;
+    const need = `${Math.ceil(oy + halfH + half + bottomPad)}px`;
     if (el && band && band.style.minHeight !== need) {
       band.style.minHeight = need;
     }

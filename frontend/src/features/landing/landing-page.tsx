@@ -92,15 +92,15 @@ const FdeSection: React.FC = () => {
       rhythm="tight"
       bg="site.bg.surface"
       borderBottomRadius="4px"
-      // Held open 2rem past the figure's bottom: the figure sets the exact
+      // Held open the bottom padding past the figure: the figure sets the exact
       // height once it draws (it knows how the heading wrapped); this is the
       // first paint's estimate. The clamp is the figure's height, scaling
       // with the screen as its shape does; on phones it's narrowed to fit,
       // the min(). The px before it covers the padding, heading and gap.
       minH={{
-        base: "calc(185px + min(clamp(241px, 33.45vw, 482px), (100vw - 32px) * 0.614) + 2rem)",
-        md: "calc(170px + clamp(241px, 33.45vw, 482px) + 2rem)",
-        lg: "calc(190px + clamp(241px, 33.45vw, 482px) + 2rem)",
+        base: "calc(185px + min(clamp(241px, 33.45vw, 482px), (100vw - 32px) * 0.614) + var(--site-gutter-y-tight))",
+        md: "calc(170px + clamp(241px, 33.45vw, 482px) + var(--site-gutter-y-tight))",
+        lg: "calc(190px + clamp(241px, 33.45vw, 482px) + var(--site-gutter-y-tight))",
       }}
     >
       <GridCircleDots below={copyRef} scale={0.8} />
