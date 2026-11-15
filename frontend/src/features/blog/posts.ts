@@ -147,8 +147,41 @@ const FILES_VS_DATABASE: Post = {
   ],
 };
 
+/**
+ * From the Business Overview, page 3, "The Opportunity", word for word: its
+ * first, second, fourth and fifth paragraphs, in order. The dek is the
+ * section's line in the Overview's contents. Don't add to it here; change
+ * the source first.
+ */
+const THE_OPPORTUNITY: Post = {
+  slug: "the-opportunity",
+  title: "The Opportunity",
+  dek: "Rethinking what\u2019s possible",
+  summary: "Rethinking what\u2019s possible",
+  date: "2026-11-12",
+  author: { name: "Erik Ronning", role: "Co-founder & CEO" },
+  body: [
+    {
+      type: "paragraph",
+      text: "AI is fundamentally changing how people work and how software is built. For the first time, organizations can build systems that adapt to the way their teams operate, rather than forcing people to work around the limitations of software. The opportunity is not simply to make existing processes faster, but to rethink how work gets done.",
+    },
+    {
+      type: "paragraph",
+      text: "Your data is your alpha. Over time, organizations have built relationships, made decisions, developed financial models, and tracked performance, accumulating institutional knowledge unique to each firm. Much of this knowledge remains connected through people, with decisions relying on past experience and reporting requiring information to be manually assembled from files and systems. Making this knowledge accessible to AI creates an opportunity to make far greater use of it.",
+    },
+    {
+      type: "paragraph",
+      text: "Advances in AI have changed the economics of building this infrastructure. Work that once required large engineering teams can now be done with far fewer resources. Rengo uses AI throughout its engineering work to build and maintain these systems, combining its own software platform with the engineering needed to adapt them to each organization\u2019s data and operations.",
+    },
+    {
+      type: "paragraph",
+      text: "Rather than continuing to rely on information scattered across files, systems, and individual teams, organizations can invest in infrastructure that makes existing knowledge accessible throughout the business. With that foundation in place, organizations can capture the opportunity to fundamentally change the economics of how they operate.",
+    },
+  ],
+};
+
 /** Newest first. */
-export const POSTS: Post[] = [FILES_VS_DATABASE].sort((a, b) =>
+export const POSTS: Post[] = [FILES_VS_DATABASE, THE_OPPORTUNITY].sort((a, b) =>
   b.date.localeCompare(a.date),
 );
 
