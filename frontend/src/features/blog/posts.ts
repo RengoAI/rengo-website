@@ -6,7 +6,7 @@ export type PostBlock =
   | {
       type: "paragraph";
       text: string;
-      /** Phrases the source sets in bold, set in semibold here too. */
+      /** Phrases the source sets in bold, set in bold here too. */
       emphasis?: string[];
     }
   | { type: "heading"; text: string }

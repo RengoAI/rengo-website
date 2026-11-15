@@ -187,16 +187,15 @@ const Comparison: React.FC<{
 };
 
 /**
- * Text with the given phrases in semibold, as the source bolds them: an
- * explicit choice per post (see AGENTS.md), matching the Business
- * Overview's semibold Garamond.
+ * Text with the given phrases in bold, as the source bolds them: an
+ * explicit choice per post (see AGENTS.md).
  */
 const emphasise = (text: string, phrases: string[] = []): React.ReactNode => {
   if (!phrases.length) return text;
   const escaped = phrases.map((p) => p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
   return text.split(new RegExp(`(${escaped.join("|")})`)).map((part, i) =>
     phrases.includes(part) ? (
-      <chakra.strong key={i} fontWeight={600}>
+      <chakra.strong key={i} fontWeight={700}>
         {part}
       </chakra.strong>
     ) : (
