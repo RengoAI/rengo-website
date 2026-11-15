@@ -1,5 +1,6 @@
 import { Section } from "@/components/layout/section";
 import { ARTICLE_MEASURE, ArticleHeader } from "@/components/site/article";
+import { NAV_H } from "@/components/site/site-constants";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
 import { PostTile } from "@/features/blog/blog-tile";
@@ -108,14 +109,19 @@ const PostItem: React.FC<{ post: Post }> = ({ post }) => (
  * page.
  */
 export const BlogIndexPage: React.FC = () => (
-  // At least a screen tall, so the footer sits at the bottom while the
-  // list is short.
-  <Box bg="site.bg.page" minH="100svh" display="flex" flexDirection="column">
+  <Box bg="site.bg.page">
     <SiteNav edge />
 
-    <Box as="main" id="main" flex="1" bg="site.bg.surface">
+    {/* A full screen under the nav before the footer, however short the
+        list, as the careers hero fills the first screen. */}
+    <Box
+      as="main"
+      id="main"
+      minH={`calc(100svh - ${NAV_H}px)`}
+      bg="site.bg.surface"
+    >
       {/* The same header as the posts it lists. */}
-      <ArticleHeader title="Blog" />
+      <ArticleHeader title="Blog" typed />
 
       <Section
         rhythm="none"

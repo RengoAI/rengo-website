@@ -2,6 +2,7 @@ import { Section } from "@/components/layout/section";
 import { NAV_H } from "@/components/site/site-constants";
 import { colorVar, hoverFade } from "@/components/site/site-styles";
 import { BAND_WASH } from "@/components/site/site-wash";
+import { TypedText } from "@/components/site/typed-text";
 import { prefersReducedMotion } from "@/shared/utils/motion";
 import { Box, chakra, Text } from "@chakra-ui/react";
 import { ArrowLeft, ChevronDown } from "lucide-react";
@@ -104,7 +105,9 @@ export const ArticleHeader: React.FC<{
   dek?: string;
   /** Who, when, how long; an index page has none. */
   properties?: React.ReactNode[];
-}> = ({ back, title, dek, properties = [] }) => (
+  /** Type the title in, as the careers hero does: for index pages. */
+  typed?: boolean;
+}> = ({ back, title, dek, properties = [], typed = false }) => (
   <Section
     as="header"
     rhythm="none"
@@ -128,7 +131,7 @@ export const ArticleHeader: React.FC<{
         color={ARTICLE_INK}
         textWrap="balance"
       >
-        {title}
+        {typed ? <TypedText text={title} /> : title}
       </Text>
       {dek && (
         <Text
