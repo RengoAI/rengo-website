@@ -32,7 +32,7 @@ const FOUNDATION_LAYERS: { title: string; description: string }[] = [
   {
     title: "Infrastructure",
     description:
-      "Strong data isolation with enforced boundaries at the storage layer.",
+      "Strong data isolation with enforced boundaries at the storage layer",
   },
 ];
 
