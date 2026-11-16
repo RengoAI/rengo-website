@@ -50,13 +50,15 @@ const THE_ROLE_OPENING: JobContentBlock = {
   text: "AI is fundamentally changing how engineering is performed. Engineers used to live on the factory line building the product. The job is now to be the one building the factory. This role is for people who own end-to-end technical outcomes and stay effective when the problem is still ambiguous.",
 };
 
-const BENEFITS: JobSection = {
+/** Benefits, with the role's salary range on the compensation line: New
+ * York City requires a pay range on every posting for a role based there. */
+const benefits = (salaryRange: string): JobSection => ({
   heading: "Benefits",
   blocks: [
     {
       type: "list",
       items: [
-        "Competitive Compensation Package: Attractive salary aligned with your experience and skills.",
+        `Competitive Compensation Package: Attractive salary aligned with your experience and skills. The salary range for this role is ${salaryRange}.`,
         "Unlimited PTO: Take the time you need to relax and rejuvenate.",
         "Exceptional Medical, Dental, and Vision Coverage: Comprehensive health benefits to keep you and your family healthy.",
         "Commuter Benefits: Make your travel to work easier and more affordable.",
@@ -64,7 +66,7 @@ const BENEFITS: JobSection = {
       ],
     },
   ],
-};
+});
 
 const HOW_RENGO_IS_DIFFERENT: JobSection = {
   heading: "How Rengo AI is different",
@@ -79,6 +81,9 @@ const HOW_RENGO_IS_DIFFERENT: JobSection = {
     },
   ],
 };
+
+/** Both Member of Technical Staff roles' salary range. */
+const ENGINEERING_SALARY_RANGE = "$165,000 - $290,000";
 
 const engineeringRole = ({
   id,
@@ -125,7 +130,7 @@ const engineeringRole = ({
         },
       ],
     },
-    BENEFITS,
+    benefits(ENGINEERING_SALARY_RANGE),
     HOW_RENGO_IS_DIFFERENT,
   ],
 });
