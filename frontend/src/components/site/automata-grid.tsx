@@ -23,8 +23,14 @@ const MARK = 4; // px, its squares at full ink
 const ACCENT_SHARE = 0.08;
 /** Seconds between generations. */
 const STEP = 0.32;
-/** Seconds between new seeds, min–max, and a seed's radius in cells. */
+/**
+ * Seconds between new seeds, min–max, on a desktop-sized band of
+ * SEED_CELLS cells, and a seed's radius in cells. A smaller band seeds less
+ * often in proportion (a larger one more often), so a phone shows the same
+ * sparse activity per screen as a desktop rather than four times as much.
+ */
 const SEED_EVERY = [0.4, 1.4] as const;
+const SEED_CELLS = 8000; // about a 1440 × 900 band at PITCH
 const SEED_R = [2, 4] as const;
 /** Share of a seed's cells set alive. */
 const SEED_DENSITY = 0.45;
@@ -55,7 +61,13 @@ type Field = {
   color: string[];
   acc: number;
   nextSeed: number;
+  /** SEED_CELLS over this field's cell count: stretches the seed interval. */
+  seedStretch: number;
 };
+
+/** Seconds until the next seed on a field with this stretch. */
+const seedDelay = (stretch: number) =>
+  rand(SEED_EVERY[0], SEED_EVERY[1]) * stretch;
 
 const makeField = (w: number, h: number, t: number): Field => {
   const pitch = PITCH;
@@ -79,7 +91,8 @@ const makeField = (w: number, h: number, t: number): Field => {
       Math.random() < ACCENT_SHARE ? INK.crimson : heroDotColor(),
     ),
     acc: 0,
-    nextSeed: t + rand(SEED_EVERY[0], SEED_EVERY[1]),
+    nextSeed: t + seedDelay(SEED_CELLS / n),
+    seedStretch: SEED_CELLS / n,
   };
 };
 
@@ -151,7 +164,7 @@ export const AutomataGrid: React.FC = () => {
       }
       if (t >= f.nextSeed) {
         seed(f);
-        f.nextSeed = t + rand(SEED_EVERY[0], SEED_EVERY[1]);
+        f.nextSeed = t + seedDelay(f.seedStretch);
       }
     }
 
