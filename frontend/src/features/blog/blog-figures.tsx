@@ -10,8 +10,12 @@ import React from "react";
 
 const C = {
   line: colorVar("site.fg.subtle"),
+  /** Rengo's own path through a chart, drawn darker, as in the Business
+   * Overview. */
+  lineStrong: colorVar("site.fg.heading"),
   node: colorVar("site.bg.raised"),
-  nodeStroke: colorVar("site.border"),
+  /** The steps' outline: light, but visible on white. */
+  nodeStroke: colorVar("site.border.dashed"),
   text: colorVar("site.fg.strong"),
   muted: colorVar("site.fg.muted"),
   branch: colorVar("site.fg.heading"),
@@ -126,75 +130,96 @@ const Node: React.FC<{
   );
 };
 
-/** A yes-or-no question, as a diamond centred on (cx, cy). */
+/**
+ * A yes-or-no question, as a diamond centred on (cx, cy), outlined in the
+ * connectors' colour as in the Business Overview.
+ */
 const Decision: React.FC<{
   cx: number;
   cy: number;
   w: number;
   h: number;
   label: string | string[];
-}> = ({ cx, cy, w, h, label }) => (
+  strong?: boolean;
+}> = ({ cx, cy, w, h, label, strong }) => (
   <g>
     <polygon
       points={`${cx},${cy - h / 2} ${cx + w / 2},${cy} ${cx},${cy + h / 2} ${cx - w / 2},${cy}`}
       fill={C.node}
-      stroke={C.nodeStroke}
+      stroke={strong ? C.lineStrong : C.line}
     />
     <Lines x={cx} y={cy} label={label} />
   </g>
 );
 
-/** A connector through the given points, with an arrowhead at the end. */
+/**
+ * A connector through the given points, with an arrowhead at the end.
+ * `strong` draws it in the darker ink of Rengo's own path.
+ */
 const Path: React.FC<{
   points: [number, number][];
   marker: string;
   dashed?: boolean;
-}> = ({ points, marker, dashed }) => (
+  strong?: boolean;
+}> = ({ points, marker, dashed, strong }) => (
   <polyline
     points={points.map((p) => p.join(",")).join(" ")}
     fill="none"
-    stroke={C.line}
+    stroke={strong ? C.lineStrong : C.line}
     strokeWidth={1}
     strokeDasharray={dashed ? "4 4" : undefined}
-    markerEnd={`url(#${marker})`}
+    markerEnd={`url(#${strong ? `${marker}-strong` : marker})`}
   />
 );
 
+/** The arrowheads: `id` in the connectors' grey, `id-strong` in the dark. */
 const ArrowDefs: React.FC<{ id: string }> = ({ id }) => (
   <defs>
-    <marker
-      id={id}
-      viewBox="0 0 8 8"
-      refX="7"
-      refY="4"
-      markerWidth="7"
-      markerHeight="7"
-      orient="auto-start-reverse"
-    >
-      <path d="M0,0 L8,4 L0,8 z" fill={C.line} />
-    </marker>
+    {[
+      [id, C.line],
+      [`${id}-strong`, C.lineStrong],
+    ].map(([markerId, fill]) => (
+      <marker
+        key={markerId}
+        id={markerId}
+        viewBox="0 0 8 8"
+        refX="7"
+        refY="4"
+        markerWidth="7"
+        markerHeight="7"
+        orient="auto-start-reverse"
+      >
+        <path d="M0,0 L8,4 L0,8 z" fill={fill} />
+      </marker>
+    ))}
   </defs>
 );
 
+/** The database stack's slab width, height and the step between slabs. */
+const DB = { w: 112, h: 46, step: 18 };
+
 /** Three stacked slabs: the structured database. */
 const DatabaseStack: React.FC<{ cx: number; cy: number }> = ({ cx, cy }) => {
-  const w = 88;
-  const h = 36;
+  const { w, h, step } = DB;
   const slab = (y: number) =>
     `${cx},${y - h / 2} ${cx + w / 2},${y} ${cx},${y + h / 2} ${cx - w / 2},${y}`;
   return (
     <g>
       {/* Mist, then sky, then a deeper sky on top, each edged in white. */}
-      <polygon points={slab(cy + 14)} fill={FIGURE_TINTS.mist} stroke="white" />
+      <polygon
+        points={slab(cy + step)}
+        fill={FIGURE_TINTS.mist}
+        stroke="white"
+      />
       <polygon
         points={slab(cy)}
         fill={FIGURE_TINTS.sky}
         opacity={0.7}
         stroke="white"
       />
-      <polygon points={slab(cy - 14)} fill={C.highlight} opacity={0.55} />
+      <polygon points={slab(cy - step)} fill={C.highlight} opacity={0.55} />
       <polygon
-        points={`${cx},${cy - 14 - h / 4} ${cx + w / 4},${cy - 14} ${cx},${cy - 14 + h / 4} ${cx - w / 4},${cy - 14}`}
+        points={`${cx},${cy - step - h / 4} ${cx + w / 4},${cy - step} ${cx},${cy - step + h / 4} ${cx - w / 4},${cy - step}`}
         fill="none"
         stroke="white"
         opacity={0.8}
@@ -203,6 +228,13 @@ const DatabaseStack: React.FC<{ cx: number; cy: number }> = ({ cx, cy }) => {
   );
 };
 
+/**
+ * Pixels per chart unit at full size, the same for every chart so their
+ * labels match: about 14.6px type from 13-unit labels.
+ */
+const SCALE = 500 / 444;
+
+/** The chart, at SCALE up to its full size, shrinking with the column. */
 const Svg: React.FC<{
   viewBox: string;
   title: string;
@@ -216,7 +248,7 @@ const Svg: React.FC<{
     aria-label={title}
     display="block"
     w="full"
-    maxW="500px"
+    maxW={`${Math.round(Number(viewBox.split(" ")[2]) * SCALE)}px`}
     // On phones the chart shrinks with the column, so its text is set a
     // touch larger to stay readable.
     css={{ "--chart-text": { base: 1.15, md: 1 } }}
@@ -247,6 +279,9 @@ export const FilesFlow: React.FC = () => {
     [436, 460],
   ];
   const colleague = { cx: 364, w: 140 };
+  // The three questions share one diamond, as in the Business Overview.
+  const diamond = { w: 180, h: 56 };
+  const tip = diamond.w / 2;
   return (
     <Svg viewBox="0 0 444 510" title="Answering From Files">
       <ArrowDefs id={id} />
@@ -277,9 +312,9 @@ export const FilesFlow: React.FC = () => {
       <Path
         marker={id}
         points={[
-          [cx + 80, 176],
-          [cx + 108, 176],
-          [cx + 108, 104],
+          [cx + tip, 176],
+          [cx + 116, 176],
+          [cx + 116, 104],
           [cx + half + into, 104],
         ]}
       />
@@ -287,7 +322,7 @@ export const FilesFlow: React.FC = () => {
       <Path
         marker={id}
         points={[
-          [cx - 90, 262],
+          [cx - tip, 262],
           [44, 262],
           [44, 96],
           [cx - half - into, 96],
@@ -297,7 +332,7 @@ export const FilesFlow: React.FC = () => {
       <Path
         marker={id}
         points={[
-          [cx + 112, 348],
+          [cx + tip, 348],
           [colleague.cx - colleague.w / 2 - into, 348],
         ]}
       />
@@ -318,9 +353,9 @@ export const FilesFlow: React.FC = () => {
         label="Search files"
         variant="dashed"
       />
-      <Decision cx={cx} cy={176} w={160} h={56} label="Correct file?" />
-      <Decision cx={cx} cy={262} w={180} h={56} label="Latest version?" />
-      <Decision cx={cx} cy={348} w={224} h={56} label="Correct definition?" />
+      <Decision cx={cx} cy={176} {...diamond} label="Correct file?" />
+      <Decision cx={cx} cy={262} {...diamond} label="Latest version?" />
+      <Decision cx={cx} cy={348} {...diamond} label="Correct definition?" />
       <Node
         cx={colleague.cx}
         cy={348}
@@ -330,13 +365,13 @@ export const FilesFlow: React.FC = () => {
       <Node cx={cx} cy={420} w={196} label="Reconcile the numbers" />
       <Node cx={cx} cy={478} w={half * 2} label="An answer" />
 
-      <Branch x={cx + 94} y={166}>
+      <Branch x={cx + 103} y={166}>
         NO
       </Branch>
       <Branch x={59} y={252}>
         NO
       </Branch>
-      <Branch x={cx + 120} y={338}>
+      <Branch x={cx + 110} y={338}>
         NO
       </Branch>
       <Branch x={cx + 20} y={390}>
@@ -349,71 +384,89 @@ export const FilesFlow: React.FC = () => {
 /** Answering from a structured database: search only what isn't there yet. */
 export const DatabaseFlow: React.FC = () => {
   const id = `arrow-${React.useId().replace(/:/g, "")}`;
-  // The main column, the right-hand column (search, then verify) and the
-  // database on the left.
-  const cx = 215;
-  const right = 372;
-  const db = 62;
-  const search = ["Search the", "original files"];
-  const verify = ["Verify and save", "the information"];
+  // As in the Business Overview: the question down the middle, the search
+  // on the right and the database on the left, at the same distance. Every
+  // label on one line.
+  const cx = 266;
+  const right = 419;
+  const db = 2 * cx - right;
+  const pill = 214;
+  const diamond = { w: 240, h: 62 };
+  const tip = diamond.w / 2;
+  const answer = 230;
+  // The search, the verify step and the database share their rows.
+  const searchY = 180;
+  const saveY = 240;
+  const dbTop = saveY - DB.step - DB.h / 2;
+  const dbBottom = saveY + DB.step + DB.h / 2;
+  const answerY = 350;
+  const into = 2;
   return (
-    <Svg viewBox="0 0 460 380" title="Answering With Rengo">
+    <Svg viewBox="0 0 532 372" title="Answering With Rengo">
       <ArrowDefs id={id} />
 
+      {/* Rengo's path, in the dark ink. */}
       <Path
+        strong
         marker={id}
         points={[
           [cx, 44],
-          [cx, 76],
+          [cx, 116 - diamond.h / 2 - into],
         ]}
       />
       {/* Yes: straight from the database. */}
       <Path
+        strong
         marker={id}
         points={[
-          [cx - 110, 116],
+          [cx - tip, 116],
           [db, 116],
-          [db, 222],
+          [db, dbTop - into],
         ]}
       />
       {/* No: search the files, then verify and save. */}
       <Path
+        strong
         marker={id}
         points={[
-          [cx + 110, 116],
+          [cx + tip, 116],
           [right, 116],
-          [right, 158],
+          [right, searchY - NODE_H / 2 - into],
         ]}
       />
       <Path
+        strong
         marker={id}
         points={[
-          [right, 204],
-          [right, 234],
+          [right, searchY + NODE_H / 2],
+          [right, saveY - NODE_H / 2 - into],
         ]}
       />
+      <Path
+        strong
+        marker={id}
+        points={[
+          [db, dbBottom + 31],
+          [db, answerY],
+          [cx - answer / 2 - into, answerY],
+        ]}
+      />
+      <Path
+        strong
+        marker={id}
+        points={[
+          [right, saveY + NODE_H / 2],
+          [right, answerY],
+          [cx + answer / 2 + into, answerY],
+        ]}
+      />
+      {/* What's verified goes into the database, for next time. */}
       <Path
         dashed
         marker={id}
         points={[
-          [right - 75, 258],
-          [db + 46, 258],
-        ]}
-      />
-      <Path
-        marker={id}
-        points={[
-          [db, 328],
-          [db, 352],
-          [cx - 117, 352],
-        ]}
-      />
-      <Path
-        marker={id}
-        points={[
-          [right, 280],
-          [right, 352],
-          [cx + 117, 352],
+          [right - pill / 2, saveY],
+          [db + DB.w / 2 + into, saveY],
         ]}
       />
 
@@ -421,26 +474,39 @@ export const DatabaseFlow: React.FC = () => {
       <Decision
         cx={cx}
         cy={116}
-        w={220}
-        h={76}
-        label={["Is it already", "in the database?"]}
+        {...diamond}
+        strong
+        label="Is it already in the database?"
       />
-      <Node cx={right} cy={182} w={150} label={search} variant="dashed" />
-      <Node cx={right} cy={258} w={150} label={verify} />
-      <DatabaseStack cx={db} cy={258} />
-      <Lines x={db} y={308} label={["Structured", "database"]} />
+      <Node
+        cx={right}
+        cy={searchY}
+        w={pill}
+        label="Search the original files"
+        variant="dashed"
+      />
+      <Node
+        cx={right}
+        cy={saveY}
+        w={pill}
+        label="Verify and save the information"
+      />
+      <DatabaseStack cx={db} cy={saveY} />
+      <Label x={db} y={dbBottom + 18} weight={500} fill={C.branch}>
+        Structured database
+      </Label>
       <Node
         cx={cx}
-        cy={352}
-        w={230}
+        cy={answerY}
+        w={answer}
         label="An answer with citations"
         variant="dark"
       />
 
-      <Branch x={(cx - 110 + db) / 2} y={104}>
+      <Branch x={(cx - tip + db) / 2} y={104}>
         YES
       </Branch>
-      <Branch x={(cx + 110 + right) / 2} y={104}>
+      <Branch x={(cx + tip + right) / 2} y={104}>
         NO
       </Branch>
     </Svg>
