@@ -24,20 +24,23 @@ export const SiteFooter: React.FC = () => (
   <Section
     as="footer"
     rhythm="none"
-    py={{ base: "64px", md: "80px", lg: "110px" }}
+    // One slim row, like ode.com's 86px band: 20px above and below the
+    // links' 44px tap height.
+    py={{ base: "32px", md: "20px" }}
     bg="site.bg.footer"
     // The hero's grain.
     bgImage={GRAIN_TILE}
     bgSize="200px 200px"
     borderTop="1px solid"
-    borderTopColor="border.muted"
+    // The nav's hairline.
+    borderTopColor="site.border"
   >
     <Box
       display="flex"
       flexDirection={{ base: "column", md: "row" }}
       alignItems={{ base: "flex-start", md: "center" }}
       justifyContent={{ md: "space-between" }}
-      gap={{ base: "32px", md: "gridGutter" }}
+      gap={{ base: "16px", md: "gridGutter" }}
     >
       <Link
         to={rootRoute({}).$}
