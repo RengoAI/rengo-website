@@ -1,7 +1,7 @@
 import { Section } from "@/components/layout/section";
 import { FEATURE_BAND_MIN_H } from "@/components/site/site-constants";
 import { Box, chakra, Text } from "@chakra-ui/react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import React from "react";
 
 /**
@@ -33,47 +33,91 @@ const QUOTES = [
   },
 ];
 
-/** The carousel's previous / next button. */
-const Arrow: React.FC<{
-  dir: "prev" | "next";
-  disabled: boolean;
-  onClick: () => void;
-}> = ({ dir, disabled, onClick }) => (
-  <chakra.button
-    type="button"
-    aria-label={dir === "prev" ? "Previous quote" : "Next quote"}
-    onClick={onClick}
-    disabled={disabled}
-    // Barely there: the arrow alone, in slate, darkening to navy on hover,
-    // so the quote stays the focus.
-    w="32px"
-    h="32px"
-    display="grid"
-    placeItems="center"
-    borderRadius="full"
-    color="overview.slate"
-    opacity={0.7}
-    bg="transparent"
-    cursor="pointer"
-    transition="color 200ms ease, opacity 200ms ease"
-    _hover={{ color: "overview.navy", opacity: 1 }}
-    _disabled={{
-      opacity: 0.25,
-      cursor: "default",
-      _hover: { color: "overview.slate", opacity: 0.25 },
-    }}
-    _focusVisible={{
-      outline: "2px solid",
-      outlineColor: "site.highlight",
-      outlineOffset: "2px",
-    }}
-  >
-    {dir === "prev" ? (
-      <ArrowLeft size={16} strokeWidth={1.5} />
-    ) : (
-      <ArrowRight size={16} strokeWidth={1.5} />
-    )}
-  </chakra.button>
+/**
+ * The quote controls, after Amperos, Rox and Jack & Jill: thin progress
+ * lines (the current one longer, in navy; click one to jump to it), then
+ * the previous / next chevrons together in one slim pill.
+ */
+const QuoteControls: React.FC<{
+  i: number;
+  n: number;
+  go: (k: number) => void;
+}> = ({ i, n, go }) => (
+  <Box display="flex" alignItems="center" gap="20px">
+    <Box as="ol" display="flex" alignItems="center" gap="6px">
+      {Array.from({ length: n }, (_, k) => (
+        <li key={k}>
+          <chakra.button
+            type="button"
+            aria-label={`Quote ${k + 1} of ${n}`}
+            aria-current={k === i || undefined}
+            onClick={() => go(k)}
+            display="block"
+            py="10px"
+            cursor="pointer"
+          >
+            <Box
+              h="2px"
+              w={k === i ? "28px" : "14px"}
+              borderRadius="full"
+              bg={k === i ? "overview.navy" : "overview.rule"}
+              transition="width 300ms ease, background-color 300ms ease"
+              _motionReduce={{ transition: "none" }}
+            />
+          </chakra.button>
+        </li>
+      ))}
+    </Box>
+    <Box
+      display="flex"
+      alignItems="center"
+      h="36px"
+      borderRadius="full"
+      border="1px solid"
+      borderColor="overview.rule"
+      overflow="hidden"
+    >
+      {(["prev", "next"] as const).map((dir) => {
+        const disabled = dir === "prev" ? i === 0 : i === n - 1;
+        return (
+          <chakra.button
+            key={dir}
+            type="button"
+            aria-label={dir === "prev" ? "Previous quote" : "Next quote"}
+            onClick={() => go(dir === "prev" ? i - 1 : i + 1)}
+            disabled={disabled}
+            w="44px"
+            h="full"
+            display="grid"
+            placeItems="center"
+            color="overview.slate"
+            // A hairline between the two.
+            borderLeft={dir === "next" ? "1px solid" : undefined}
+            borderColor="overview.rule"
+            cursor="pointer"
+            transition="color 200ms ease, background-color 200ms ease"
+            _hover={{ color: "overview.navy", bg: "overview.tint2" }}
+            _disabled={{
+              opacity: 0.3,
+              cursor: "default",
+              _hover: { color: "overview.slate", bg: "transparent" },
+            }}
+            _focusVisible={{
+              outline: "2px solid",
+              outlineColor: "site.highlight",
+              outlineOffset: "-2px",
+            }}
+          >
+            {dir === "prev" ? (
+              <ChevronLeft size={16} strokeWidth={1.5} />
+            ) : (
+              <ChevronRight size={16} strokeWidth={1.5} />
+            )}
+          </chakra.button>
+        );
+      })}
+    </Box>
+  </Box>
 );
 
 /** Who said it: the role, then the fund, quietly. */
@@ -104,8 +148,8 @@ const Heading: React.FC = () => (
 /**
  * Customer stories, one quote at a time (after Amperos and the Business Overview's pull
  * quotes): a single quote large in the serif across most of the width, who
- * said it under it, and a quiet counter ("1 / 3") with arrows to step
- * through.
+ * said it under it, and quiet controls (progress lines and chevrons) to
+ * step through.
  */
 const QuoteFeature: React.FC = () => {
   const [i, setI] = React.useState(0);
@@ -150,26 +194,7 @@ const QuoteFeature: React.FC = () => {
         pt={{ base: "40px", lg: "64px" }}
       >
         <Attribution q={q} />
-        <Box display="flex" alignItems="center" gap="4px">
-          <Arrow
-            dir="prev"
-            disabled={i === 0}
-            onClick={() => setI((k) => k - 1)}
-          />
-          <Text
-            textStyle="label"
-            color="overview.slate"
-            fontVariantNumeric="tabular-nums"
-            px="6px"
-          >
-            {i + 1} / {n}
-          </Text>
-          <Arrow
-            dir="next"
-            disabled={i === n - 1}
-            onClick={() => setI((k) => k + 1)}
-          />
-        </Box>
+        <QuoteControls i={i} n={n} go={setI} />
       </Box>
     </Section>
   );
