@@ -225,14 +225,10 @@ export const FoundationSection: React.FC = () => {
             letterSpacing="-0.5px"
             color="site.fg.heading"
           >
-            Bring visibility across{" "}
+            We build a trusted data layer to give you{" "}
             <Box as="span" color="site.highlight">
-              your organization
+              visibility across your organization
             </Box>
-          </Text>
-          <Text textStyle="body.sm" color="site.fg" mt="16px">
-            Your people know how the business fits together. We build that
-            understanding into your systems.
           </Text>
         </GridCol>
       </Grid>
