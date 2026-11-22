@@ -54,21 +54,19 @@ const SecuritySection: React.FC = () => (
     position="relative"
     overflow="hidden"
     // The statement bands' height, so it matches the page's other big
-    // moments, its content centred in it.
+    // moments. The heading top left, like the other sections' headings;
+    // the controls at the foot.
     minH={FEATURE_BAND_MIN_H}
     display="flex"
-    alignItems="center"
   >
     <LightField variant="beamSteelDark" position="absolute" inset={0} />
-    <Grid position="relative" w="full" rowGap="48px" alignItems="center">
-      {/* The promise: the heading and, word for word, the Business
-        Overview's opening line on security. */}
-      <GridCol
-        span={{ base: 16, lg: 6 }}
-        display="flex"
-        flexDirection="column"
-        gap="16px"
-      >
+    <Grid
+      position="relative"
+      w="full"
+      rowGap="48px"
+      gridTemplateRows={{ lg: "auto 1fr" }}
+    >
+      <GridCol span={{ base: 16, lg: 6 }} alignSelf="start">
         <Text
           as="h2"
           textStyle="h3"
@@ -78,10 +76,6 @@ const SecuritySection: React.FC = () => (
         >
           Security built for your most sensitive data
         </Text>
-        <Text textStyle="body.sm" color="overview.onDark2" maxW="400px">
-          Rengo protects sensitive business information while giving customers
-          control over who can access their data and how it&rsquo;s used.
-        </Text>
       </GridCol>
       {/* The four controls, two by two, each with a small icon in the
         Overview's accent on dark. */}
@@ -89,6 +83,8 @@ const SecuritySection: React.FC = () => (
         as="ul"
         span={{ base: 16, lg: 9 }}
         start={{ lg: 8 }}
+        gridRow={{ lg: 2 }}
+        alignSelf="end"
         display="grid"
         gridTemplateColumns={{ base: "1fr", md: "1fr 1fr" }}
         columnGap="48px"
