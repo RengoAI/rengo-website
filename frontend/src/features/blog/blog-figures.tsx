@@ -1,28 +1,29 @@
 import { colorVar } from "@/components/site/site-styles";
-import { FIGURE_TINTS } from "@/features/blog/blog-styles";
 import { Box } from "@chakra-ui/react";
 import React from "react";
 
 /**
- * The blog's flowcharts, drawn as SVG in the site's colours so they stay sharp and
- * scale with the column.
+ * The blog's flowcharts, drawn as SVG so they stay sharp and scale with the
+ * column, in the Business Overview's colours (`site.figure.*`) so they
+ * match the document they come from.
  */
 
 const C = {
-  line: colorVar("site.fg.subtle"),
-  /** Rengo's own path through a chart, drawn darker, as in the Business
-   * Overview. */
-  lineStrong: colorVar("site.fg.heading"),
+  line: colorVar("site.figure.line"),
+  /** Rengo's own path through a chart, drawn darker. */
+  lineStrong: colorVar("site.figure.lineStrong"),
   node: colorVar("site.bg.raised"),
   /** The steps' and questions' outline: the faintest rule, so the shapes
    * sit quietly and the connectors carry the flow. */
   nodeStroke: colorVar("border.subtle"),
   text: colorVar("site.fg.strong"),
-  muted: colorVar("site.fg.muted"),
-  branch: colorVar("site.fg.heading"),
-  /** The step the chart arrives at: sky, rather than a dark block. */
-  arrive: FIGURE_TINTS.sky,
-  highlight: colorVar("site.highlight"),
+  /** YES and NO. */
+  branch: colorVar("site.figure.lineStrong"),
+  /** Named marks, such as "Structured database". */
+  label: colorVar("site.figure.label"),
+  /** The step the chart arrives at: a navy pill with white type. */
+  arrive: colorVar("site.figure.arrive"),
+  arriveFg: colorVar("site.figure.arriveFg"),
 };
 
 const FONT = "var(--rengo-fonts-body)";
@@ -84,16 +85,22 @@ const Branch: React.FC<{ x: number; y: number; children: string }> = (
 const LINE = 16;
 
 /** One or more centred lines, stacked about (x, y). */
-const Lines: React.FC<{ x: number; y: number; label: string | string[] }> = ({
-  x,
-  y,
-  label,
-}) => {
+const Lines: React.FC<{
+  x: number;
+  y: number;
+  label: string | string[];
+  fill?: string;
+}> = ({ x, y, label, fill }) => {
   const lines = typeof label === "string" ? [label] : label;
   return (
     <>
       {lines.map((line, i) => (
-        <Label key={line} x={x} y={y + (i - (lines.length - 1) / 2) * LINE}>
+        <Label
+          key={line}
+          x={x}
+          y={y + (i - (lines.length - 1) / 2) * LINE}
+          fill={fill}
+        >
           {line}
         </Label>
       ))}
@@ -126,7 +133,12 @@ const Node: React.FC<{
         stroke={variant === "dark" ? C.arrive : C.nodeStroke}
         strokeDasharray={variant === "dashed" ? "3 3" : undefined}
       />
-      <Lines x={cx} y={cy} label={label} />
+      <Lines
+        x={cx}
+        y={cy}
+        label={label}
+        fill={variant === "dark" ? C.arriveFg : undefined}
+      />
     </g>
   );
 };
@@ -192,34 +204,47 @@ const ArrowDefs: React.FC<{ id: string }> = ({ id }) => (
   </defs>
 );
 
-/** The database stack's slab width, height and the step between slabs. */
-const DB = { w: 112, h: 46, step: 18 };
+/**
+ * The database stack's slab width and height, and the step between slabs:
+ * the Business Overview's proportions (a 2:1 slab, a quarter-slab step).
+ */
+const DB = { w: 112, h: 56, step: 14 };
+/** From the stack's centre to the top of its top slab, or the bottom of its
+ * bottom one. */
+const DB_REACH = DB.step * 1.5 + DB.h / 2;
 
-/** Three stacked slabs: the structured database. */
+/**
+ * Four stacked slabs, the structured database, as the Business Overview
+ * draws it: pale to steel, under a navy top with a fine inner outline.
+ * Centred on (cx, cy), between the second and third slabs.
+ */
 const DatabaseStack: React.FC<{ cx: number; cy: number }> = ({ cx, cy }) => {
   const { w, h, step } = DB;
-  const slab = (y: number) =>
-    `${cx},${y - h / 2} ${cx + w / 2},${y} ${cx},${y + h / 2} ${cx - w / 2},${y}`;
+  const slab = (y: number, scale = 1) =>
+    `${cx},${y - (h / 2) * scale} ${cx + (w / 2) * scale},${y} ${cx},${y + (h / 2) * scale} ${cx - (w / 2) * scale},${y}`;
+  const top = cy - step * 1.5;
   return (
     <g>
-      {/* Mist, then sky, then a deeper sky on top, each edged in white. */}
+      {(["stack4", "stack3", "stack2"] as const).map((token, i) => (
+        <polygon
+          key={token}
+          points={slab(cy + step * (1.5 - i))}
+          fill={colorVar(`site.figure.${token}`)}
+          stroke={colorVar("site.figure.stackEdge")}
+          strokeWidth={0.7}
+        />
+      ))}
       <polygon
-        points={slab(cy + step)}
-        fill={FIGURE_TINTS.mist}
-        stroke="white"
+        points={slab(top)}
+        fill={colorVar("site.figure.stackTop")}
+        stroke={colorVar("site.figure.stackTop")}
       />
       <polygon
-        points={slab(cy)}
-        fill={FIGURE_TINTS.sky}
-        opacity={0.7}
-        stroke="white"
-      />
-      <polygon points={slab(cy - step)} fill={C.highlight} opacity={0.55} />
-      <polygon
-        points={`${cx},${cy - step - h / 4} ${cx + w / 4},${cy - step} ${cx},${cy - step + h / 4} ${cx - w / 4},${cy - step}`}
+        points={slab(top, 0.6)}
         fill="none"
-        stroke="white"
-        opacity={0.8}
+        stroke={colorVar("site.figure.stackTopInner")}
+        strokeWidth={0.6}
+        opacity={0.7}
       />
     </g>
   );
@@ -394,8 +419,8 @@ export const DatabaseFlow: React.FC = () => {
   // The search, the verify step and the database share their rows.
   const searchY = 180;
   const saveY = 240;
-  const dbTop = saveY - DB.step - DB.h / 2;
-  const dbBottom = saveY + DB.step + DB.h / 2;
+  const dbTop = saveY - DB_REACH;
+  const dbBottom = saveY + DB_REACH;
   const answerY = 350;
   const into = 2;
   return (
@@ -488,7 +513,7 @@ export const DatabaseFlow: React.FC = () => {
         label="Verify and save the information"
       />
       <DatabaseStack cx={db} cy={saveY} />
-      <Label x={db} y={dbBottom + 18} weight={500} fill={C.branch}>
+      <Label x={db} y={dbBottom + 18} weight={500} fill={C.label}>
         Structured database
       </Label>
       <Node

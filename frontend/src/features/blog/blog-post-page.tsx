@@ -15,7 +15,6 @@ import { SiteFooter } from "@/components/site/site-footer";
 import { colorVar } from "@/components/site/site-styles";
 import { SiteNav } from "@/components/site/site-nav";
 import { FIGURES } from "@/features/blog/blog-figures";
-import { WASH_SKY } from "@/components/site/site-wash";
 import { FIGURE_WELL } from "@/features/blog/blog-styles";
 import {
   formatPostDate,
@@ -82,7 +81,7 @@ const TABLE_BORDER = colorVar("border.subtle");
 const TABLE_SURFACE = "#FCFCFC"; // app bg.surface (gray.25)
 const TABLE_HEADER = "canvas.300";
 /** The database column's shading, as in the Business Overview. */
-const DATABASE_TINT = `rgba(${WASH_SKY}, 0.16)`;
+const DATABASE_TINT = "site.figure.highlight";
 
 /**
  * Two ways of doing something, side by side, in the app's table card. From
