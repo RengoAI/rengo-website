@@ -113,7 +113,10 @@ export const CustomerQuotes: React.FC = () => {
       >
         <Text
           as="h2"
-          textStyle="h3"
+          // The section headings' size, as the sections above.
+          textStyle="h4"
+          fontWeight={400}
+          lineHeight="1.1"
           color="site.fg.heading"
           maxW={{ base: "75vw", md: "296px" }}
         >

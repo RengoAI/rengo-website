@@ -64,10 +64,12 @@ const SecuritySection: React.FC = () => (
       <GridCol span={{ base: 16, lg: 6 }} alignSelf="start">
         <Text
           as="h2"
-          textStyle="h3"
-          fontWeight={300}
+          // The section headings' size, as the sections above.
+          textStyle="h4"
+          fontWeight={400}
+          lineHeight="1.1"
           color="site.fg.onDark"
-          maxW={{ base: "75vw", md: "360px" }}
+          maxW={{ base: "75vw", md: "320px" }}
         >
           Security built for your most sensitive data
         </Text>
