@@ -37,7 +37,7 @@ const QUOTES = [
  * The quote controls, after Amperos, Rox and Jack & Jill: thin progress
  * lines (the current one longer, in navy; click one to jump to it), then
  * the previous / next chevrons together in one slim pill, edged in
- * border.subtle.
+ * border.muted.
  */
 const QuoteControls: React.FC<{
   i: number;
@@ -75,7 +75,7 @@ const QuoteControls: React.FC<{
       h="36px"
       borderRadius="full"
       border="1px solid"
-      borderColor="border.subtle"
+      borderColor="border.muted"
       overflow="hidden"
     >
       {(["prev", "next"] as const).map((dir) => {
@@ -94,7 +94,7 @@ const QuoteControls: React.FC<{
             color="overview.slate"
             // A hairline between the two.
             borderLeft={dir === "next" ? "1px solid" : undefined}
-            borderColor="border.subtle"
+            borderColor="border.muted"
             cursor="pointer"
             transition="color 200ms ease, background-color 200ms ease"
             _hover={{ color: "overview.navy", bg: "overview.tint2" }}
