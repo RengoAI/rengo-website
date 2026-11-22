@@ -54,18 +54,13 @@ const SecuritySection: React.FC = () => (
     position="relative"
     overflow="hidden"
     // The statement bands' height, so it matches the page's other big
-    // moments. The heading top left, like the other sections' headings;
-    // the controls at the foot.
+    // moments. The heading top left, like the other sections' headings,
+    // the controls beside it; the steel beam fills the room below.
     minH={FEATURE_BAND_MIN_H}
     display="flex"
   >
     <LightField variant="beamSteelDark" position="absolute" inset={0} />
-    <Grid
-      position="relative"
-      w="full"
-      rowGap="48px"
-      gridTemplateRows={{ lg: "auto 1fr" }}
-    >
+    <Grid position="relative" w="full" rowGap="48px">
       <GridCol span={{ base: 16, lg: 6 }} alignSelf="start">
         <Text
           as="h2"
@@ -83,8 +78,10 @@ const SecuritySection: React.FC = () => (
         as="ul"
         span={{ base: 16, lg: 9 }}
         start={{ lg: 8 }}
-        gridRow={{ lg: 2 }}
-        alignSelf="end"
+        gridRow={{ lg: 1 }}
+        alignSelf="start"
+        // Level with the heading's first line, side by side with it.
+        pt={{ lg: "6px" }}
         display="grid"
         gridTemplateColumns={{ base: "1fr", md: "1fr 1fr" }}
         columnGap="48px"
