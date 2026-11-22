@@ -1,27 +1,28 @@
 import { GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import { TESTIMONIAL_WASHES } from "@/components/site/split-card";
-import { StepArt } from "@/features/landing/step-art";
+import { GRAIN_TILE } from "@/components/site/site-styles";
+import { WASH_BLUSH, WASH_SKY } from "@/components/site/site-wash";
 import { usePrefersReducedMotion } from "@/shared/utils/motion";
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 
 const HOW_WE_WORK = [
   {
-    title: "Scope the work",
-    body: "We learn how your team works today, what information they need, and where the process breaks down.",
+    title: "Understand the business",
+    body: "We work with your team to understand how decisions are made, where work slows down, and what’s missing from the data.",
   },
   {
-    title: "Set the roadmap",
-    body: "Together, we choose what to build first, the data needed to support it, and what comes next.",
+    title: "Set the priorities",
+    body: "We identify where better data and tools can make the biggest difference, then build a roadmap around your business priorities and existing systems.",
   },
   {
-    title: "Build with your team",
-    body: "We connect the relevant systems, organize the data, and build the tools your team will use.",
+    title: "Build and implement",
+    body: "We connect your systems, organize your data, and build the tools your team needs to put it to work.",
   },
   {
-    title: "Support and expand",
-    body: "We maintain the system, support your team, and add new workflows as priorities change.",
+    title: "Support and grow",
+    body: "We maintain the systems we build and work with your team to bring new departments, data sources, and workflows onto the platform.",
   },
 ];
 
@@ -29,10 +30,46 @@ const HOW_WE_WORK = [
  * How the strips sit on the section's wash, after metic.: panels a step
  * darker than the ground, not lighter, with no outline (border.subtle is
  * lighter than this wash, so it drew as a white line; a darker edge looked
- * heavy), and a line drawing for each step through it (step-art), where
- * metic. has photos.
+ * heavy). Where metic. has photos, each strip has its own pool of the
+ * site's wash (site-wash: sky blue, a blush of crimson, a white glow, with
+ * grain), blurred light rather than a drawing, as ode.com's panels are.
  */
 const STRIP_BG = "rgba(12, 29, 52, 0.045)";
+
+/**
+ * Each step's light, as layered gradients over the strip: the sky pooling
+ * somewhere new each time, growing fuller from the first step to the last.
+ */
+const STEP_LIGHT: string[][] = [
+  // Scope: a small pool, top left.
+  [
+    `radial-gradient(ellipse 55% 45% at 20% 18%, rgba(${WASH_SKY}, 0.9) 0%, transparent 70%)`,
+    `radial-gradient(ellipse 40% 35% at 80% 70%, rgba(255, 255, 255, 0.5) 0%, transparent 75%)`,
+  ],
+  // Roadmap: a long beam across, low left to high right.
+  [
+    `radial-gradient(ellipse 80% 22% at 55% 40%, rgba(${WASH_SKY}, 0.95) 0%, transparent 70%)`,
+    `radial-gradient(ellipse 35% 40% at 10% 85%, rgba(${WASH_BLUSH}, 0.14) 0%, transparent 70%)`,
+  ],
+  // Build: a broad pool at the centre, a blush below.
+  [
+    `radial-gradient(ellipse 70% 60% at 55% 35%, rgba(${WASH_SKY}, 0.95) 0%, transparent 70%)`,
+    `radial-gradient(ellipse 45% 40% at 85% 95%, rgba(${WASH_BLUSH}, 0.16) 0%, transparent 70%)`,
+  ],
+  // Support: the fullest, sky across the top, blush and glow beneath.
+  [
+    `radial-gradient(ellipse 110% 75% at 60% 10%, rgba(${WASH_SKY}, 1) 0%, transparent 72%)`,
+    `radial-gradient(ellipse 55% 45% at 15% 90%, rgba(${WASH_BLUSH}, 0.18) 0%, transparent 70%)`,
+  ],
+];
+
+/** Step `i`'s light, under the site's grain. */
+const stepLight = (i: number) =>
+  [
+    GRAIN_TILE,
+    ...STEP_LIGHT[i],
+    `radial-gradient(ellipse 60% 50% at 50% 60%, rgba(255, 255, 255, 0.35) 0%, transparent 75%)`,
+  ].join(", ");
 
 /** The section's head: the partnership line. */
 const ApproachHead: React.FC = () => (
@@ -131,26 +168,19 @@ const ApproachAccordion: React.FC = () => {
                   borderRadius: "4px",
                 }}
               />
-              {/* The step's drawing, over the top of the strip, fading
-                toward its foot where the copy sits. */}
+              {/* The step's light: the blog's wash, pooled differently in
+                each strip, stronger when open. */}
               <Box
                 aria-hidden
-                display={{ base: "none", md: "block" }}
                 position="absolute"
-                top="12px"
-                left={0}
-                right={0}
-                h="68%"
+                inset={0}
+                bgImage={stepLight(i)}
+                bgSize="200px 200px, auto, auto, auto"
+                bgRepeat="repeat, no-repeat, no-repeat, no-repeat"
                 opacity={isOpen ? 1 : 0.55}
-                css={{
-                  maskImage:
-                    "linear-gradient(to bottom, black 60%, transparent 100%)",
-                }}
-                transition="opacity 300ms ease"
+                transition="opacity 500ms ease"
                 _motionReduce={{ transition: "none" }}
-              >
-                <StepArt i={i} />
-              </Box>
+              />
               {/* Closed: the title on end, reading up from the bottom. */}
               <Text
                 display={{ base: "none", md: "block" }}
