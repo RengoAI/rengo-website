@@ -11,28 +11,23 @@ import React from "react";
 const ART = "/img/rebrand/";
 
 /** The four layers of the foundation, top to bottom. */
-/**
- * Word for word from the sales deck: its layers slide for Applications,
- * Agents and Ontology, and its "Data isolation" card for Infrastructure,
- * which the layers slide doesn't cover.
- */
 const FOUNDATION_LAYERS: { title: string; description: string }[] = [
   {
     title: "Applications",
-    description: "Ready-to-deploy applications for your workflows",
+    description: "See the full picture and act on it in one place",
   },
   {
     title: "Agents",
-    description: "Execute and coordinate work across systems",
+    description: "Take care of tasks that would otherwise fall to your people",
   },
   {
     title: "Ontology",
-    description: "Structured knowledge with access control",
+    description:
+      "Define how your data fits together and what it means to your business",
   },
   {
     title: "Infrastructure",
-    description:
-      "Strong data isolation with enforced boundaries at the storage layer",
+    description: "Keep your data secure and control who can access it",
   },
 ];
 
@@ -243,14 +238,14 @@ export const FoundationSection: React.FC = () => {
             letterSpacing="-0.5px"
             color="site.fg.heading"
           >
-            Give your team a{" "}
+            Bring visibility across{" "}
             <Box as="span" color="site.highlight">
-              complete picture.
+              your organization
             </Box>
           </Text>
           <Text textStyle="body.sm" color="site.fg" mt="16px">
-            We bring together information from the systems you already use, so
-            your team can find what they need and work with it in one place.
+            Your people know how the business fits together. We build that
+            understanding into your systems.
           </Text>
         </GridCol>
       </Grid>

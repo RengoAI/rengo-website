@@ -29,20 +29,17 @@ const HOW_WE_WORK = [
 ];
 
 /**
- * How the strips sit on the section's wash, after metic.: panels a step
- * darker than the ground, not lighter, with no outline (border.subtle is
- * lighter than this wash, so it drew as a white line; a darker edge looked
- * heavy). Where metic. has photos, each strip has its own light from the
- * site's gradient component (LightField), as ode.com's panels have.
+ * Light panels separate the steps from the section's wash. Narrow beams
+ * leave most of each panel clear, including the copy at its foot.
  */
-const STRIP_BG = "rgba(12, 29, 52, 0.045)";
+const STRIP_BG = "#F7F8FA";
 
-/** Each step's light: the pools, fuller from the first step to the last. */
+/** Each step's light stays on a pale ground, open or closed. */
 const STEP_LIGHT: LightFieldVariant[] = [
-  "poolSmall",
-  "poolBeam",
-  "poolBroad",
-  "poolFull",
+  "beamSky",
+  "beamTapered",
+  "beamSky",
+  "beamTapered",
 ];
 
 /** The section's head: the partnership line. */
