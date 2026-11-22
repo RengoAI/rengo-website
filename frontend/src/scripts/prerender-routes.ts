@@ -115,6 +115,7 @@ write(
   [
     "User-agent: *",
     "Disallow: /styleguide",
+    "Disallow: /gradients",
     "",
     `Sitemap: ${SITE_URL}/sitemap.xml`,
     "",

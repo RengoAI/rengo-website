@@ -243,11 +243,14 @@ export const FoundationSection: React.FC = () => {
             letterSpacing="-0.5px"
             color="site.fg.heading"
           >
-            To solve this, we bring together data from across your existing
-            systems into a{" "}
+            Give your team a{" "}
             <Box as="span" color="site.highlight">
-              unified data layer
+              complete picture.
             </Box>
+          </Text>
+          <Text textStyle="body.sm" color="site.fg" mt="16px">
+            We bring together information from the systems you already use, so
+            your team can find what they need and work with it in one place.
           </Text>
         </GridCol>
       </Grid>
