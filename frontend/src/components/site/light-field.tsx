@@ -29,6 +29,7 @@ const OV_HAZE = "201, 214, 224"; // on-dark-2 / haze, #C9D6E0
 const OV_STEEL_LIGHT = "143, 176, 200"; // slate-light, #8FB0C8
 const OV_SLATE = "53, 86, 109"; // #35566D
 const OV_NAVY = "#253746";
+const OV_NAVY_RGB = "37, 55, 70";
 
 type Shape = {
   /** Centre, as % of the field. */
@@ -67,7 +68,8 @@ const BLOB = "50%";
 const SQUARE = "18%";
 const BEAM = "999px";
 
-/** The blog index's spheres: a sphere of blue rising in mist. */
+/** The blog index's spheres: a sphere of the Business Overview's
+ * slate-light rising in mist, with a navy core. */
 const sphere = (
   name: string,
   x: number,
@@ -77,7 +79,8 @@ const sphere = (
   name,
   base: MIST,
   layers: [
-    `radial-gradient(circle at ${x}% ${y}%, rgba(${BLUE}, 0.6) 0%, rgba(${BLUE}, 0.28) 30%, transparent 60%)`,
+    `radial-gradient(circle at ${x}% ${y}%, rgba(${OV_NAVY_RGB}, 0.28) 0%, transparent 22%)`,
+    `radial-gradient(circle at ${x}% ${y}%, rgba(${OV_STEEL_LIGHT}, 0.95) 0%, rgba(${OV_STEEL_LIGHT}, 0.45) 30%, transparent 60%)`,
     `radial-gradient(ellipse 80% 60% at ${100 - x}% 0%, rgba(${glow}, 0.18) 0%, transparent 70%)`,
     `linear-gradient(180deg, rgba(${WHITE}, 0.55) 0%, transparent 60%)`,
   ],
@@ -86,9 +89,85 @@ const sphere = (
 export const LIGHT_VARIANTS = {
   // Spheres: the blog index tiles.
   sphereLow: sphere("Sphere, low", 50, 82, BLUSH),
-  sphereRight: sphere("Sphere, right", 72, 62, SKY),
-  sphereLeft: sphere("Sphere, left", 28, 72, SKY),
+  sphereRight: sphere("Sphere, right", 72, 62, OV_HAZE),
+  sphereLeft: sphere("Sphere, left", 28, 72, OV_HAZE),
   sphereLowRight: sphere("Sphere, low right", 62, 92, BLUSH),
+
+  // Washes: the page bands' light (the blog's headers, the careers hero),
+  // in the Business Overview's slate-light with a faint crimson blush, the
+  // site's tertiary colour, and a white glow.
+  washBand: {
+    name: "Wash, band",
+    base: OV_TINT,
+    shapes: [
+      {
+        x: 88,
+        y: 0,
+        w: 70,
+        h: 150,
+        rgb: OV_STEEL_LIGHT,
+        a: 0.8,
+        blur: 60,
+        radius: BLOB,
+      },
+      {
+        x: 5,
+        y: 100,
+        w: 50,
+        h: 110,
+        rgb: BLUSH,
+        a: 0.14,
+        blur: 60,
+        radius: BLOB,
+      },
+      {
+        x: 35,
+        y: 35,
+        w: 55,
+        h: 90,
+        rgb: WHITE,
+        a: 0.55,
+        blur: 50,
+        radius: BLOB,
+      },
+    ],
+  },
+  washScreen: {
+    name: "Wash, screen",
+    base: OV_TINT,
+    shapes: [
+      {
+        x: 88,
+        y: 8,
+        w: 80,
+        h: 85,
+        rgb: OV_STEEL_LIGHT,
+        a: 0.85,
+        blur: 90,
+        radius: BLOB,
+      },
+      {
+        x: 6,
+        y: 96,
+        w: 60,
+        h: 65,
+        rgb: BLUSH,
+        a: 0.15,
+        blur: 90,
+        radius: BLOB,
+      },
+      {
+        x: 50,
+        y: 50,
+        w: 50,
+        h: 45,
+        rgb: WHITE,
+        a: 0.6,
+        blur: 70,
+        radius: BLOB,
+      },
+    ],
+  },
 
   // Pools: the wash, pooled differently.
   poolSmall: {
@@ -747,6 +826,11 @@ export const LIGHT_FAMILIES: {
     title: "Spheres",
     note: "The blog index tiles: a sphere of blue rising in mist.",
     variants: ["sphereLow", "sphereRight", "sphereLeft", "sphereLowRight"],
+  },
+  {
+    title: "Washes",
+    note: "The page bands' light: the blog's headers and the careers hero.",
+    variants: ["washBand", "washScreen"],
   },
   {
     title: "Pools",

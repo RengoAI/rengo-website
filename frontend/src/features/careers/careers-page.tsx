@@ -12,6 +12,7 @@ import {
   STAFF_GROUPS,
   type OpenRole,
 } from "@/features/careers/open-roles";
+import { LightField } from "@/components/site/light-field";
 import { LogoMarquee } from "@/features/landing/logo-marquee";
 import { Box, chakra, Text } from "@chakra-ui/react";
 import { ArrowRight } from "lucide-react";
@@ -101,36 +102,48 @@ export const CareersPage: React.FC = () => (
         headingAs="h1"
         cta="See open roles"
         ctaHref="#open-roles"
-        fill
+        // The landing's big moments' height, so the team and the roles come
+        // sooner.
+        fill="feature"
         backdrop="wash"
       />
 
-      {/* The landing's logo strip, on the same dark band, with the team line
-          in place of its label. The strip's white logos are built for that
-          band: plus-lighter over site.bg.dark. */}
+      {/* The logo strip with the team line, on the Business Overview's
+          navy-deep with the landing security band's dim steel beam. The
+          strip's white logos blend plus-lighter over any dark ground. */}
       <Section
         grid
         rhythm="compact"
-        bg="site.bg.dark"
+        bg="overview.navyDeep"
+        position="relative"
+        overflow="hidden"
         gridProps={{
           alignItems: "center",
           rowGap: { base: "32px", lg: "40px" },
         }}
       >
-        <GridCol span={{ base: 16, lg: 8 }}>
-          <Text as="h2" textStyle="h3" color="site.fg.onDark">
+        <LightField
+          variant="beamSteelDark"
+          position="absolute"
+          inset={0}
+          zIndex={0}
+        />
+        <GridCol span={{ base: 16, lg: 8 }} position="relative">
+          <Text
+            as="h2"
+            // The section headings' size, as on the landing.
+            textStyle="h4"
+            fontWeight={400}
+            lineHeight="1.1"
+            color="site.fg.onDark"
+          >
             We&rsquo;re a team of builders
-            <Box
-              as="span"
-              display="block"
-              fontWeight={300}
-              color="site.fg.onDarkMuted"
-            >
+            <Box as="span" display="block" color="overview.onDark2">
               From world-class engineering teams
             </Box>
           </Text>
         </GridCol>
-        <GridCol span={16}>
+        <GridCol span={16} position="relative">
           <LogoMarquee />
         </GridCol>
       </Section>
@@ -149,12 +162,11 @@ export const CareersPage: React.FC = () => (
         <Box maxW={`${ARTICLE_MEASURE}px`} mx="auto">
           <Text
             as="h2"
-            fontFamily="body"
-            fontSize={{ base: "2rem", md: "2.75rem" }}
-            fontWeight={300}
-            lineHeight="1.15"
-            letterSpacing="-0.025em"
-            color="site.fg.strong"
+            // The section headings' size, as on the landing.
+            textStyle="h4"
+            fontWeight={400}
+            lineHeight="1.1"
+            color="site.fg.heading"
             mb={{ base: "28px", md: "40px" }}
           >
             Open roles

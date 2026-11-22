@@ -1,7 +1,7 @@
 import { Section } from "@/components/layout/section";
 import { NAV_H } from "@/components/site/site-constants";
 import { colorVar, hoverFade } from "@/components/site/site-styles";
-import { BAND_WASH } from "@/components/site/site-wash";
+import { LightField } from "@/components/site/light-field";
 import { TypedText } from "@/components/site/typed-text";
 import { prefersReducedMotion } from "@/shared/utils/motion";
 import { Box, chakra, Text } from "@chakra-ui/react";
@@ -117,9 +117,12 @@ export const ArticleHeader: React.FC<{
     rhythm="none"
     pt={{ base: "56px", md: "88px" }}
     pb={{ base: "48px", md: "72px" }}
-    {...BAND_WASH}
+    position="relative"
+    overflow="hidden"
   >
-    <Box maxW={`${ARTICLE_MEASURE}px`} mx="auto">
+    {/* The page bands' light, in the Business Overview's colours. */}
+    <LightField variant="washBand" position="absolute" inset={0} />
+    <Box position="relative" maxW={`${ARTICLE_MEASURE}px`} mx="auto">
       {back && (
         <Box mb={{ base: "28px", md: "36px" }}>
           <BackLink {...back} />
