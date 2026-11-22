@@ -7,6 +7,7 @@ import {
 } from "@/components/site/light-field";
 import { TESTIMONIAL_WASHES } from "@/components/site/split-card";
 import { StatementBand } from "@/components/site/statement-band";
+import { ArticleHeader } from "@/components/site/article";
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 
@@ -15,7 +16,22 @@ import React from "react";
  * picks can be named. Internal: a working page, not linked from the site.
  */
 
-type Shape = "strip" | "band";
+type Shape = "strip" | "band" | "header";
+
+/** Candidates for the blog's and careers' title bands. */
+const HEADER_CANDIDATES: LightFieldVariant[] = [
+  "washBand",
+  "bandCorner",
+  "bandHorizon",
+  "bandDawn",
+  "bandBeam",
+  "bandHaze",
+  "bandNavyEdge",
+  "bandTwin",
+  "horizon",
+  "dawn",
+  "cornerGlow",
+];
 
 /** One option, numbered and named: the variant as a strip-shaped tile, or
  * as a wide statement band with the landing's line over it. */
@@ -87,7 +103,7 @@ export const GradientsPage: React.FC = () => {
             statement band with its line over them.
           </Text>
           <Box display="flex" gap="8px" mt="8px" flexWrap="wrap">
-            {(["strip", "band"] as const).map((v) => (
+            {(["strip", "band", "header"] as const).map((v) => (
               <Box
                 as="button"
                 key={v}
@@ -100,7 +116,11 @@ export const GradientsPage: React.FC = () => {
                 bg={shape === v ? "site.bg.dark" : "rgba(255, 255, 255, 0.6)"}
                 color={shape === v ? "site.fg.onDark" : "site.fg"}
               >
-                {v === "strip" ? "As strips" : "As full statement bands"}
+                {v === "strip"
+                  ? "As strips"
+                  : v === "band"
+                    ? "As full statement bands"
+                    : "As page headers"}
               </Box>
             ))}
             <Box w="16px" />
@@ -213,6 +233,38 @@ export const GradientsPage: React.FC = () => {
             </Box>
           ),
         )}
+      {/* Header candidates as the blog's and careers' title band. */}
+      {shape === "header" &&
+        HEADER_CANDIDATES.map((variant, i) => (
+          <Box key={variant} position="relative">
+            <Box
+              position="absolute"
+              top="12px"
+              left="var(--site-gutter, 40px)"
+              zIndex={2}
+              px="10px"
+              py="4px"
+              borderRadius="4px"
+              bg="rgba(255, 255, 255, 0.75)"
+            >
+              <Text textStyle="body.sm" color="site.fg">
+                <Box as="span" fontWeight={500} color="site.highlight" mr="8px">
+                  {i + 1}
+                </Box>
+                {LIGHT_VARIANTS[variant].name}
+                <Box as="span" color="site.fg.muted" ml="8px" fontFamily="mono">
+                  {variant}
+                </Box>
+              </Text>
+            </Box>
+            <ArticleHeader
+              back={{ to: "/careers", label: "Careers" }}
+              title="Member of Technical Staff"
+              properties={["Data Infrastructure", "New York"]}
+              light={variant}
+            />
+          </Box>
+        ))}
     </>
   );
 };

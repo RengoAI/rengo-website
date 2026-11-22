@@ -169,6 +169,143 @@ export const LIGHT_VARIANTS = {
     ],
   },
 
+  // Page-header bands: short, wide light for the blog's and careers'
+  // title bands, in the Business Overview's colours.
+  bandCorner: {
+    name: "Band, corner light",
+    base: OV_TINT,
+    shapes: [
+      {
+        x: 92,
+        y: -5,
+        w: 55,
+        h: 130,
+        rgb: OV_STEEL_LIGHT,
+        a: 0.9,
+        blur: 60,
+        radius: BLOB,
+      },
+    ],
+  },
+  bandHorizon: {
+    name: "Band, horizon",
+    base: OV_TINT,
+    shapes: [
+      {
+        x: 50,
+        y: 78,
+        w: 160,
+        h: 45,
+        rgb: OV_STEEL_LIGHT,
+        a: 0.7,
+        blur: 55,
+        radius: BEAM,
+      },
+    ],
+  },
+  bandDawn: {
+    name: "Band, dawn",
+    base: OV_TINT,
+    shapes: [
+      {
+        x: 55,
+        y: -10,
+        w: 160,
+        h: 70,
+        rgb: OV_STEEL_LIGHT,
+        a: 0.75,
+        blur: 60,
+        radius: BLOB,
+      },
+      {
+        x: 30,
+        y: 110,
+        w: 120,
+        h: 50,
+        rgb: BLUSH,
+        a: 0.12,
+        blur: 60,
+        radius: BLOB,
+      },
+    ],
+  },
+  bandBeam: {
+    name: "Band, rising beam",
+    base: OV_TINT,
+    shapes: [
+      {
+        x: 60,
+        y: 60,
+        w: 140,
+        h: 28,
+        rgb: OV_STEEL_LIGHT,
+        a: 0.85,
+        blur: 40,
+        rotate: -10,
+        radius: BEAM,
+      },
+    ],
+  },
+  bandHaze: {
+    name: "Band, haze fade",
+    base: OV_TINT,
+    layers: [
+      `linear-gradient(100deg, transparent 20%, rgba(${OV_HAZE}, 0.9) 70%, rgba(${OV_STEEL_LIGHT}, 0.55) 100%)`,
+    ],
+  },
+  bandNavyEdge: {
+    name: "Band, navy edge",
+    base: OV_TINT,
+    shapes: [
+      {
+        x: 105,
+        y: 50,
+        w: 45,
+        h: 160,
+        rgb: OV_SLATE,
+        a: 0.35,
+        blur: 70,
+        radius: BLOB,
+      },
+      {
+        x: 85,
+        y: 20,
+        w: 40,
+        h: 80,
+        rgb: OV_STEEL_LIGHT,
+        a: 0.6,
+        blur: 60,
+        radius: BLOB,
+      },
+    ],
+  },
+  bandTwin: {
+    name: "Band, twin pools",
+    base: OV_TINT,
+    shapes: [
+      {
+        x: 15,
+        y: 0,
+        w: 45,
+        h: 90,
+        rgb: OV_STEEL_LIGHT,
+        a: 0.6,
+        blur: 60,
+        radius: BLOB,
+      },
+      {
+        x: 88,
+        y: 100,
+        w: 55,
+        h: 110,
+        rgb: OV_STEEL_LIGHT,
+        a: 0.75,
+        blur: 60,
+        radius: BLOB,
+      },
+    ],
+  },
+
   // Pools: the wash, pooled differently.
   poolSmall: {
     name: "Small pool",
@@ -830,7 +967,17 @@ export const LIGHT_FAMILIES: {
   {
     title: "Washes",
     note: "The page bands' light: the blog's headers and the careers hero.",
-    variants: ["washBand", "washScreen"],
+    variants: [
+      "washBand",
+      "washScreen",
+      "bandCorner",
+      "bandHorizon",
+      "bandDawn",
+      "bandBeam",
+      "bandHaze",
+      "bandNavyEdge",
+      "bandTwin",
+    ],
   },
   {
     title: "Pools",
