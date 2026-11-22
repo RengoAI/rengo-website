@@ -1,7 +1,7 @@
 import { colSpanWidth, Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import { NAV_H } from "@/components/site/site-constants";
-import { colorVar, dottedTop } from "@/components/site/site-styles";
+import { colorVar } from "@/components/site/site-styles";
 import { useScrollFrame } from "@/shared/hooks/use-scroll-frame";
 import { prefersReducedMotion } from "@/shared/utils/motion";
 import { GRID_COLUMNS } from "@/theme/tokens/layout";
@@ -31,48 +31,35 @@ const FOUNDATION_LAYERS: { title: string; description: string }[] = [
   },
 ];
 
-/** Columns a callout spans from lg. The description caps at half of it. */
+/** Columns reserved for each layer's label and description. */
 const FOUNDATION_COPY_SPAN = 5;
-/** From lg, how far a callout's divider runs: past its copy into the render. */
-const FOUNDATION_DIVIDER_W = "654px";
 
-/**
- * A layer's callout: name, description, and a dotted divider beneath that
- * runs out to the layer's render.
- */
+/** Consistent text blocks align with the graphics without connector lines. */
 const FoundationLayer: React.FC<{ title: string; description: string }> = ({
   title,
   description,
 }) => (
-  <Box display="flex" flexDirection="column" gap="16px" alignItems="flex-start">
-    <Box display="flex" flexDirection="column" gap="8px" w="full">
-      <Text
-        as="h3"
-        textStyle="h6"
-        fontSize="1rem" // 16px, a step under h6
-        fontWeight={400}
-        lineHeight="1.1"
-        letterSpacing="-0.5px"
-        color="site.fg"
-      >
-        {title}
-      </Text>
-      {/* Set like the rest of the page's body copy. From md it caps at half the
-          callout's width plus 80px; on phones it fills it. */}
-      <Text
-        textStyle="body.sm"
-        color="site.fg"
-        maxW={{ md: "calc(50% + 80px)" }}
-      >
-        {description}
-      </Text>
-    </Box>
-    <Box
-      aria-hidden
-      w={{ base: "full", lg: FOUNDATION_DIVIDER_W }}
-      maxW={{ base: "full", lg: "none" }}
-      {...dottedTop()}
-    />
+  <Box
+    display="flex"
+    flexDirection="column"
+    gap="10px"
+    alignItems="flex-start"
+    maxW="280px"
+  >
+    <Text
+      as="h3"
+      textStyle="h6"
+      fontSize="1.25rem"
+      fontWeight={400}
+      lineHeight="1.2"
+      letterSpacing="-0.5px"
+      color="site.fg"
+    >
+      {title}
+    </Text>
+    <Text textStyle="body.sm" color="site.fg">
+      {description}
+    </Text>
   </Box>
 );
 
@@ -285,9 +272,7 @@ export const FoundationSection: React.FC = () => {
                 start={{ lg: 1 }}
                 gridRow={{ lg: 1 }}
                 alignSelf="center"
-                // From lg, sits 100px above the render's centre line.
-                position="relative"
-                top={{ lg: "-100px" }}
+                pr={{ lg: "32px" }}
                 // The row's parts fade on their own rather than the row as a
                 // whole, which would flatten the renders' stacking order.
                 data-row-fade
