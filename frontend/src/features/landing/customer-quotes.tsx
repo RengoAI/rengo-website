@@ -96,7 +96,6 @@ const Heading: React.FC = () => (
     fontWeight={400}
     lineHeight="1.1"
     color="site.fg.heading"
-    maxW={{ base: "75vw", md: "296px" }}
   >
     Our customers in their own words
   </Text>
@@ -115,8 +114,8 @@ const QuoteFeature: React.FC = () => {
   return (
     <Section
       // The Business Overview's panel tint, at the big moments' height:
-      // the heading at the top like the other sections', the controls at
-      // the foot, the quote centred between them.
+      // the heading at the top like the other sections', who said it and
+      // the controls at the foot, the quote centred between them.
       bg="overview.tint"
       minH={FEATURE_BAND_MIN_H}
       display="flex"
@@ -125,17 +124,9 @@ const QuoteFeature: React.FC = () => {
       <Box pb={{ base: "40px", lg: "64px" }}>
         <Heading />
       </Box>
-      {/* The quote and who said it, the focus, centred in the room
-        between the heading and the controls. */}
-      <Box
-        as="figure"
-        my="auto"
-        maxW="1000px"
-        display="flex"
-        flexDirection="column"
-        gap="32px"
-        aria-live="polite"
-      >
+      {/* The quote, the focus, centred in the room between the heading and
+        the foot. */}
+      <Box as="figure" my="auto" maxW="1000px" aria-live="polite">
         <Text
           as="blockquote"
           key={i}
@@ -148,36 +139,37 @@ const QuoteFeature: React.FC = () => {
         >
           {q.quote}
         </Text>
-        <Box as="figcaption">
-          <Attribution q={q} />
-        </Box>
       </Box>
-      {/* The controls, quietly, at the foot: as far from the bottom as the
-        heading is from the top. */}
+      {/* The foot, as far from the bottom as the heading is from the top:
+        who said it on the left, the count and arrows on the right. */}
       <Box
         display="flex"
-        alignItems="center"
-        gap="4px"
+        alignItems="flex-end"
+        justifyContent="space-between"
+        gap="24px"
         pt={{ base: "40px", lg: "64px" }}
       >
-        <Arrow
-          dir="prev"
-          disabled={i === 0}
-          onClick={() => setI((k) => k - 1)}
-        />
-        <Text
-          textStyle="label"
-          color="overview.slate"
-          fontVariantNumeric="tabular-nums"
-          px="6px"
-        >
-          {i + 1} / {n}
-        </Text>
-        <Arrow
-          dir="next"
-          disabled={i === n - 1}
-          onClick={() => setI((k) => k + 1)}
-        />
+        <Attribution q={q} />
+        <Box display="flex" alignItems="center" gap="4px">
+          <Arrow
+            dir="prev"
+            disabled={i === 0}
+            onClick={() => setI((k) => k - 1)}
+          />
+          <Text
+            textStyle="label"
+            color="overview.slate"
+            fontVariantNumeric="tabular-nums"
+            px="6px"
+          >
+            {i + 1} / {n}
+          </Text>
+          <Arrow
+            dir="next"
+            disabled={i === n - 1}
+            onClick={() => setI((k) => k + 1)}
+          />
+        </Box>
       </Box>
     </Section>
   );

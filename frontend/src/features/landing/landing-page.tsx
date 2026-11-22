@@ -76,7 +76,6 @@ const SecuritySection: React.FC = () => (
         fontWeight={400}
         lineHeight="1.1"
         color="site.fg.onDark"
-        maxW={{ base: "75vw", md: "320px" }}
       >
         Security built for your most sensitive data
       </Text>
