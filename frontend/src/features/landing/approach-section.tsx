@@ -24,10 +24,7 @@ const HOW_WE_WORK = [
   },
 ];
 
-/** A step's number, two digits: "01". */
-const stepNumber = (i: number) => String(i + 1).padStart(2, "0");
-
-/** The section's head: the partnership line and its subline. */
+/** The section's head: the partnership line. */
 const ApproachHead: React.FC = () => (
   <Box display="flex" flexDirection="column" alignItems="flex-start" gap="14px">
     <Text
@@ -43,9 +40,6 @@ const ApproachHead: React.FC = () => (
       <Box as="span" color="site.highlight">
         measurable business outcomes
       </Box>
-    </Text>
-    <Text textStyle="body.sm" color="site.fg">
-      We map how your team works today, then build with you.
     </Text>
   </Box>
 );
@@ -129,18 +123,6 @@ const ApproachAccordion: React.FC = () => {
                   borderRadius: "4px",
                 }}
               />
-              <Text
-                position={{ md: "absolute" }}
-                top="16px"
-                left="16px"
-                p={{ base: "16px 16px 0", md: 0 }}
-                textStyle="label"
-                fontWeight={500}
-                color="site.highlight"
-                aria-hidden
-              >
-                {stepNumber(i)}
-              </Text>
               {/* Closed: the title on end, reading up from the bottom. */}
               <Text
                 display={{ base: "none", md: "block" }}
@@ -169,7 +151,7 @@ const ApproachAccordion: React.FC = () => {
                 left={{ md: "24px" }}
                 right={{ md: "24px" }}
                 bottom={{ md: "24px" }}
-                p={{ base: "8px 16px 18px", md: 0 }}
+                p={{ base: "18px 16px", md: 0 }}
                 maxW={{ md: "420px" }}
                 display="flex"
                 flexDirection="column"
