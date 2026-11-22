@@ -5,6 +5,10 @@ import {
   siteDotAt,
 } from "@/components/site/canvas/hero-dots";
 import { INK } from "@/components/site/canvas/ink";
+import {
+  LightField,
+  type LightFieldVariant,
+} from "@/components/site/light-field";
 import { FEATURE_BAND_MIN_H } from "@/components/site/site-constants";
 import { TESTIMONIAL_WASHES } from "@/components/site/split-card";
 import { useScrollFrame } from "@/shared/hooks/use-scroll-frame";
@@ -16,21 +20,20 @@ import React from "react";
 const UNLIT = 0.16;
 
 /**
- * How far the band has scrolled through the reveal, 0 to 1: it starts as
- * the band's top passes 80% down the viewport and finishes once the band's
- * middle reaches the viewport's middle, or, for a band near the page's end
- * that can't scroll that far, once the page is scrolled to the bottom.
+ * How far the reveal has run, 0 to 1, from where the line itself sits: it
+ * starts once the line is well on screen (its middle 75% of the way down)
+ * and finishes as the line reaches the viewport's middle, or, for a band
+ * near the page's end that can't scroll that far, once the page is
+ * scrolled to the bottom. So it all plays while the line is in view.
  */
-const revealProgress = (box: DOMRect) => {
+const revealProgress = (line: DOMRect) => {
   const vh = window.innerHeight;
-  const start = vh * 0.8;
+  const mid = line.top + line.height / 2;
+  const start = vh * 0.75;
   const maxScroll = document.documentElement.scrollHeight - vh;
-  const topAtBottom = box.top - (maxScroll - window.scrollY);
-  const end = Math.min(
-    Math.max(vh / 2 - box.height / 2, topAtBottom),
-    start - 1,
-  );
-  return Math.min(Math.max((start - box.top) / (start - end), 0), 1);
+  const midAtBottom = mid - (maxScroll - window.scrollY);
+  const end = Math.min(Math.max(vh / 2, midAtBottom), start - 1);
+  return Math.min(Math.max((start - mid) / (start - end), 0), 1);
 };
 
 const smoothstep = (t: number) => t * t * (3 - 2 * t);
@@ -62,7 +65,11 @@ type Dot = {
 const OrderingDots: React.FC<{
   progress: React.MutableRefObject<number>;
   tick: number;
-}> = ({ progress, tick }) => {
+  /** Furthest the dots settle, 0 to 1: under 1, they stop part-way. */
+  rest: number;
+  /** Share of the grid's dots drawn, 0 to 1. */
+  share: number;
+}> = ({ progress, tick, rest, share }) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const dots = React.useRef<Dot[]>([]);
   const size = React.useRef({ w: 0, h: 0 });
@@ -77,7 +84,7 @@ const OrderingDots: React.FC<{
     ctx.clearRect(0, 0, w, h);
     // The site's square marks, at the size every dot figure uses.
     const half = siteDotAt(dotScale(w)) / 2;
-    const p = progress.current;
+    const p = Math.min(progress.current, rest);
     for (const d of dots.current) {
       const t = smoothstep(
         Math.min(Math.max((p - d.delay) / (1 - d.delay), 0), 1),
@@ -90,7 +97,7 @@ const OrderingDots: React.FC<{
         half * 2,
       );
     }
-  }, [progress]);
+  }, [progress, rest]);
 
   // Lay the grid out to the canvas's size, each dot with a random start.
   React.useEffect(() => {
@@ -110,6 +117,7 @@ const OrderingDots: React.FC<{
       const next: Dot[] = [];
       for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
+          if (Math.random() > share) continue;
           next.push({
             x: ox + (c + (Math.random() - 0.5) * 2 * DOT_JITTER) * DOT_GAP,
             y: oy + (r + (Math.random() - 0.5) * 2 * DOT_JITTER) * DOT_GAP,
@@ -128,7 +136,7 @@ const OrderingDots: React.FC<{
     const observer = new ResizeObserver(layout);
     observer.observe(canvas);
     return () => observer.disconnect();
-  }, [draw]);
+  }, [draw, share]);
 
   // Redraw whenever the band's progress moves.
   React.useEffect(draw, [draw, tick]);
@@ -184,10 +192,21 @@ export const StatementBand: React.FC<{
    * in full. The close sits part-way, loosely gathered round the line.
    */
   still?: number;
+  /**
+   * How far the dots settle as the band scrolls in, 0 to 1, and the share
+   * of them drawn. Below 1, the field stops part-way, loose rather than a
+   * grid, and thinner.
+   */
+  dots?: { rest?: number; share?: number };
+  /**
+   * Light instead of dots: a LightField variant filling the band, fading
+   * in as the words fill.
+   */
+  light?: LightFieldVariant;
   children?: React.ReactNode;
-}> = ({ lead, point, id, tone = "wash", still, children }) => {
-  // A box over the whole band, to measure it (Section takes no ref).
-  const ref = React.useRef<HTMLDivElement>(null);
+}> = ({ lead, point, id, tone = "wash", still, dots, light, children }) => {
+  // The line, whose place on screen drives the reveal.
+  const ref = React.useRef<HTMLHeadingElement>(null);
   const reduced = usePrefersReducedMotion();
   const held = still !== undefined;
   // Where the dots sit when nothing moves them: held, or reduced motion's
@@ -245,9 +264,24 @@ export const StatementBand: React.FC<{
       gap="28px"
       aria-labelledby={id}
     >
-      <Box ref={ref} aria-hidden position="absolute" inset={0} />
-      <OrderingDots progress={progress} tick={tick} />
+      {light ? (
+        <LightField
+          variant={light}
+          position="absolute"
+          inset={0}
+          // From a faint glow to full as the words fill.
+          style={{ opacity: 0.3 + 0.7 * progress.current }}
+        />
+      ) : (
+        <OrderingDots
+          progress={progress}
+          tick={tick}
+          rest={dots?.rest ?? 1}
+          share={dots?.share ?? 1}
+        />
+      )}
       <Text
+        ref={ref}
         as="h2"
         id={id}
         position="relative"
