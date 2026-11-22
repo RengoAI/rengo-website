@@ -27,12 +27,9 @@ const HOW_WE_WORK = [
 /** A step's number, two digits: "01". */
 const stepNumber = (i: number) => String(i + 1).padStart(2, "0");
 
-/** The section's head: label, the partnership line and its subline. */
+/** The section's head: the partnership line and its subline. */
 const ApproachHead: React.FC = () => (
   <Box display="flex" flexDirection="column" alignItems="flex-start" gap="14px">
-    <Text textStyle="label" fontWeight={500} color="site.highlight">
-      Our approach
-    </Text>
     <Text
       as="h2"
       textStyle="h4"
@@ -140,24 +137,6 @@ const ApproachAccordion: React.FC = () => {
                 textStyle="label"
                 fontWeight={500}
                 color="site.highlight"
-                aria-hidden
-              >
-                {stepNumber(i)}
-              </Text>
-              {/* Open: the number again, large and faint in the serif,
-                filling the strip's top where metic. has a picture. */}
-              <Text
-                display={{ base: "none", md: "block" }}
-                position="absolute"
-                top="8px"
-                right="24px"
-                textStyle="d1"
-                fontSize="9rem"
-                lineHeight="1"
-                color="site.highlight"
-                opacity={isOpen ? 0.14 : 0}
-                transition="opacity 300ms ease"
-                _motionReduce={{ transition: "none" }}
                 aria-hidden
               >
                 {stepNumber(i)}
