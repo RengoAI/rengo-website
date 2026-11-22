@@ -86,35 +86,23 @@ const SecuritySection: React.FC = () => (
         gridTemplateColumns={{ base: "1fr", md: "1fr 1fr" }}
         gridAutoRows="1fr"
         columnGap={{ base: "40px", lg: "64px" }}
-        rowGap={{ base: "36px", lg: "0" }}
+        rowGap={{ base: "36px", lg: "56px" }}
       >
-        {COMPLIANCE.map(({ icon: Icon, title, description }, i) => (
+        {COMPLIANCE.map(({ icon: Icon, title, description }) => (
           <Box
             as="li"
             key={title}
             display="flex"
             flexDirection="column"
-            gap="12px"
-            // A hairline in the Overview's line on dark between the rows,
-            // from tablets up.
-            borderTop={{ md: i < 2 ? "none" : "1px solid" }}
-            borderColor="overview.lineDark"
-            pt={{ md: i < 2 ? 0 : "40px" }}
-            pb={{ md: i < 2 ? "40px" : 0 }}
+            gap="10px"
           >
-            <Box color="overview.steelLight" mb="4px">
-              <Icon size={28} strokeWidth={1.4} aria-hidden />
+            <Box color="overview.steelLight" mb="6px">
+              <Icon size={22} strokeWidth={1.5} aria-hidden />
             </Box>
-            <Text
-              as="h3"
-              textStyle="d4"
-              fontSize={{ base: "1.5rem", lg: "1.875rem" }}
-              lineHeight="1.15"
-              color="site.fg.onDark"
-            >
+            <Text as="h3" textStyle="d5" color="site.fg.onDark">
               {title}
             </Text>
-            <Text textStyle="body.md" color="overview.onDark2" maxW="420px">
+            <Text textStyle="body.sm" color="overview.onDark2" maxW="360px">
               {description}
             </Text>
           </Box>
