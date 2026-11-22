@@ -57,7 +57,7 @@ const SecuritySection: React.FC = () => (
     minH={FEATURE_BAND_MIN_H}
     display="flex"
   >
-    <LightField variant="beamSteelDark" position="absolute" inset={0} />
+    <LightField variant="beamSteelDarkBlush" position="absolute" inset={0} />
     {/* The heading top left, like the other sections' headings, then the
       four controls two by two right under it, across the full width,
       filling the band. */}
