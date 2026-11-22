@@ -1,8 +1,10 @@
 import { GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
+import {
+  LightField,
+  type LightFieldVariant,
+} from "@/components/site/light-field";
 import { TESTIMONIAL_WASHES } from "@/components/site/split-card";
-import { GRAIN_TILE } from "@/components/site/site-styles";
-import { WASH_BLUSH, WASH_SKY } from "@/components/site/site-wash";
 import { usePrefersReducedMotion } from "@/shared/utils/motion";
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
@@ -30,46 +32,18 @@ const HOW_WE_WORK = [
  * How the strips sit on the section's wash, after metic.: panels a step
  * darker than the ground, not lighter, with no outline (border.subtle is
  * lighter than this wash, so it drew as a white line; a darker edge looked
- * heavy). Where metic. has photos, each strip has its own pool of the
- * site's wash (site-wash: sky blue, a blush of crimson, a white glow, with
- * grain), blurred light rather than a drawing, as ode.com's panels are.
+ * heavy). Where metic. has photos, each strip has its own light from the
+ * site's gradient component (LightField), as ode.com's panels have.
  */
 const STRIP_BG = "rgba(12, 29, 52, 0.045)";
 
-/**
- * Each step's light, as layered gradients over the strip: the sky pooling
- * somewhere new each time, growing fuller from the first step to the last.
- */
-const STEP_LIGHT: string[][] = [
-  // Scope: a small pool, top left.
-  [
-    `radial-gradient(ellipse 55% 45% at 20% 18%, rgba(${WASH_SKY}, 0.9) 0%, transparent 70%)`,
-    `radial-gradient(ellipse 40% 35% at 80% 70%, rgba(255, 255, 255, 0.5) 0%, transparent 75%)`,
-  ],
-  // Roadmap: a long beam across, low left to high right.
-  [
-    `radial-gradient(ellipse 80% 22% at 55% 40%, rgba(${WASH_SKY}, 0.95) 0%, transparent 70%)`,
-    `radial-gradient(ellipse 35% 40% at 10% 85%, rgba(${WASH_BLUSH}, 0.14) 0%, transparent 70%)`,
-  ],
-  // Build: a broad pool at the centre, a blush below.
-  [
-    `radial-gradient(ellipse 70% 60% at 55% 35%, rgba(${WASH_SKY}, 0.95) 0%, transparent 70%)`,
-    `radial-gradient(ellipse 45% 40% at 85% 95%, rgba(${WASH_BLUSH}, 0.16) 0%, transparent 70%)`,
-  ],
-  // Support: the fullest, sky across the top, blush and glow beneath.
-  [
-    `radial-gradient(ellipse 110% 75% at 60% 10%, rgba(${WASH_SKY}, 1) 0%, transparent 72%)`,
-    `radial-gradient(ellipse 55% 45% at 15% 90%, rgba(${WASH_BLUSH}, 0.18) 0%, transparent 70%)`,
-  ],
+/** Each step's light: the pools, fuller from the first step to the last. */
+const STEP_LIGHT: LightFieldVariant[] = [
+  "poolSmall",
+  "poolBeam",
+  "poolBroad",
+  "poolFull",
 ];
-
-/** Step `i`'s light, under the site's grain. */
-const stepLight = (i: number) =>
-  [
-    GRAIN_TILE,
-    ...STEP_LIGHT[i],
-    `radial-gradient(ellipse 60% 50% at 50% 60%, rgba(255, 255, 255, 0.35) 0%, transparent 75%)`,
-  ].join(", ");
 
 /** The section's head: the partnership line. */
 const ApproachHead: React.FC = () => (
@@ -168,15 +142,11 @@ const ApproachAccordion: React.FC = () => {
                   borderRadius: "4px",
                 }}
               />
-              {/* The step's light: the blog's wash, pooled differently in
-                each strip, stronger when open. */}
-              <Box
-                aria-hidden
+              {/* The step's light, stronger when open. */}
+              <LightField
+                variant={STEP_LIGHT[i]}
                 position="absolute"
                 inset={0}
-                bgImage={stepLight(i)}
-                bgSize="200px 200px, auto, auto, auto"
-                bgRepeat="repeat, no-repeat, no-repeat, no-repeat"
                 opacity={isOpen ? 1 : 0.55}
                 transition="opacity 500ms ease"
                 _motionReduce={{ transition: "none" }}
