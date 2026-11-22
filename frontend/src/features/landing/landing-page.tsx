@@ -66,7 +66,8 @@ const SecuritySection: React.FC = () => (
       w="full"
       display="flex"
       flexDirection="column"
-      gap={{ base: "40px", lg: "64px" }}
+      // More room under the heading, so the grid sits lower in the band.
+      gap={{ base: "48px", lg: "120px" }}
     >
       <Text
         as="h2"
@@ -81,12 +82,10 @@ const SecuritySection: React.FC = () => (
       </Text>
       <Box
         as="ul"
-        flex="1"
         display="grid"
         gridTemplateColumns={{ base: "1fr", md: "1fr 1fr" }}
-        gridAutoRows="1fr"
         columnGap={{ base: "40px", lg: "64px" }}
-        rowGap={{ base: "36px", lg: "56px" }}
+        rowGap={{ base: "36px", lg: "48px" }}
       >
         {COMPLIANCE.map(({ icon: Icon, title, description }) => (
           <Box
