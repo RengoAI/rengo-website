@@ -24,9 +24,8 @@ const DEFAULT_HEADING = (
 /**
  * The closing band: a centred line and the Book a call button, over the
  * /solutions grid of squares running as a cellular automaton, or, on the
- * company pages, the site's colour wash. The landing ends on "Ready to make
- * your data your alpha?" over the automaton. Careers uses the same band as
- * its hero, over the wash.
+ * company pages, the site's colour wash. Careers uses it as its hero, over
+ * the wash. (The landing now closes on a StatementBand instead.)
  */
 export const SiteOutro: React.FC<{
   /** Replaces the closing line. */
