@@ -5,6 +5,7 @@ import {
   siteDotAt,
 } from "@/components/site/canvas/hero-dots";
 import { INK } from "@/components/site/canvas/ink";
+import { colorVar } from "@/components/site/site-styles";
 import { FEATURE_BAND_MIN_H } from "@/components/site/site-constants";
 import { TESTIMONIAL_WASHES } from "@/components/site/split-card";
 import { useScrollFrame } from "@/shared/hooks/use-scroll-frame";
@@ -184,8 +185,13 @@ export const StatementBand: React.FC<{
    * in full. The close sits part-way, loosely gathered round the line.
    */
   still?: number;
+  /**
+   * A colour token the band's foot fades into, dots and all, so it runs
+   * into the section below without an edge.
+   */
+  fadeInto?: string;
   children?: React.ReactNode;
-}> = ({ lead, point, id, tone = "wash", still, children }) => {
+}> = ({ lead, point, id, tone = "wash", still, fadeInto, children }) => {
   // A box over the whole band, to measure it (Section takes no ref).
   const ref = React.useRef<HTMLDivElement>(null);
   const reduced = usePrefersReducedMotion();
@@ -247,6 +253,18 @@ export const StatementBand: React.FC<{
     >
       <Box ref={ref} aria-hidden position="absolute" inset={0} />
       <OrderingDots progress={progress} tick={tick} />
+      {fadeInto && (
+        <Box
+          aria-hidden
+          position="absolute"
+          left={0}
+          right={0}
+          bottom={0}
+          h="45%"
+          pointerEvents="none"
+          bgImage={`linear-gradient(to bottom, transparent, ${colorVar(fadeInto)})`}
+        />
+      )}
       <Text
         as="h2"
         id={id}

@@ -74,6 +74,8 @@ export const LandingPage: React.FC = () => (
       <StatementBand
         lead="AI is only as reliable as"
         point="the information it works from."
+        // Runs into the data layer below, so the two read as one.
+        fadeInto="site.bg.surface"
       />
 
       {/* --- Solution ------------------------------------------------------- */}
@@ -81,11 +83,7 @@ export const LandingPage: React.FC = () => (
       <FoundationSection />
 
       {/* --- How we work ---------------------------------------------- */}
-      {/* Three takes, one above the other, to choose between: the steps as
-        a table, as a large-type index, and as an accordion. Keep one. */}
-      <ApproachSection variant="table" />
-      <ApproachSection variant="index" />
-      <ApproachSection variant="accordion" />
+      <ApproachSection />
 
       {/* --- Testimonials ----------------------------------------------------- */}
       {/* On the page surface, under the solutions band. */}

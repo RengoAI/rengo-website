@@ -1,8 +1,5 @@
-import { Grid, GridCol } from "@/components/layout/grid";
+import { GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
-import { CONTACT_HREF } from "@/components/site/site-constants";
-import { dottedTop } from "@/components/site/site-styles";
-import { SolidCta } from "@/components/site/solid-cta";
 import { TESTIMONIAL_WASHES } from "@/components/site/split-card";
 import { usePrefersReducedMotion } from "@/shared/utils/motion";
 import { Box, Text } from "@chakra-ui/react";
@@ -30,16 +27,9 @@ const HOW_WE_WORK = [
 /** A step's number, two digits: "01". */
 const stepNumber = (i: number) => String(i + 1).padStart(2, "0");
 
-/** The section's head: label, the partnership line, its subline and the
- * call, left-aligned or centred. */
-const ApproachHead: React.FC<{ align: "start" | "center" }> = ({ align }) => (
-  <Box
-    display="flex"
-    flexDirection="column"
-    alignItems={align === "center" ? "center" : "flex-start"}
-    textAlign={align === "center" ? "center" : "left"}
-    gap="14px"
-  >
+/** The section's head: label, the partnership line and its subline. */
+const ApproachHead: React.FC = () => (
+  <Box display="flex" flexDirection="column" alignItems="flex-start" gap="14px">
     <Text textStyle="label" fontWeight={500} color="site.highlight">
       Our approach
     </Text>
@@ -60,133 +50,14 @@ const ApproachHead: React.FC<{ align: "start" | "center" }> = ({ align }) => (
     <Text textStyle="body.sm" color="site.fg">
       We map how your team works today, then build with you.
     </Text>
-    <SolidCta h="27px" mt="6px" href={CONTACT_HREF} labelProps={{ gap: "8px" }}>
-      Book a call
-    </SolidCta>
   </Box>
-);
-
-/**
- * Option 1, the table: the head on the left, then the steps as full-width
- * rows under dotted rules, each a small number, its title in the serif and
- * its description, in three columns. Quiet and precise, all type.
- */
-const ApproachTable: React.FC = () => (
-  <Section grid {...TESTIMONIAL_WASHES.midReversed}>
-    <GridCol span={{ base: 16, lg: 9 }} pb={{ base: "40px", lg: "64px" }}>
-      <ApproachHead align="start" />
-    </GridCol>
-    <GridCol as="ol" span={16}>
-      {HOW_WE_WORK.map((step, i) => (
-        <Grid
-          as="li"
-          key={step.title}
-          {...dottedTop("site.border.dashedOnTint")}
-          {...(i === HOW_WE_WORK.length - 1
-            ? {
-                borderBottomWidth: "1px",
-                borderBottomStyle: "dotted",
-                borderBottomColor: "site.border.dashedOnTint",
-              }
-            : {})}
-          py={{ base: "20px", md: "28px" }}
-          rowGap="6px"
-          alignItems="baseline"
-        >
-          <GridCol span={{ base: 16, md: 2 }}>
-            <Text
-              textStyle="label"
-              fontWeight={500}
-              color="site.highlight"
-              aria-hidden
-            >
-              {stepNumber(i)}
-            </Text>
-          </GridCol>
-          <GridCol span={{ base: 16, md: 6, lg: 5 }}>
-            <Text as="h3" textStyle="d5" color="site.fg.strong">
-              {step.title}
-            </Text>
-          </GridCol>
-          <GridCol span={{ base: 16, md: 8, lg: 6 }} start={{ lg: 10 }}>
-            <Text textStyle="body.sm" color="soot.600">
-              {step.body}
-            </Text>
-          </GridCol>
-        </Grid>
-      ))}
-    </GridCol>
-  </Section>
-);
-
-/**
- * Option 2, the index: the head centred, then the steps as a large-type
- * index, each title set big in the serif with its number raised beside it
- * and its description to the right, under solid hairlines. The last step's
- * title in blue, where the sequence lands.
- */
-const ApproachIndex: React.FC = () => (
-  <Section grid {...TESTIMONIAL_WASHES.midReversed}>
-    <GridCol span={16} pb={{ base: "40px", lg: "72px" }}>
-      <ApproachHead align="center" />
-    </GridCol>
-    <GridCol as="ol" span={16}>
-      {HOW_WE_WORK.map((step, i) => {
-        const last = i === HOW_WE_WORK.length - 1;
-        return (
-          <Grid
-            as="li"
-            key={step.title}
-            borderTop="1px solid"
-            borderBottom={last ? "1px solid" : undefined}
-            borderColor="site.border.dashedOnTint"
-            py={{ base: "22px", md: "32px" }}
-            rowGap="10px"
-            alignItems="center"
-          >
-            <GridCol span={{ base: 16, lg: 9 }}>
-              <Text
-                as="h3"
-                textStyle="d1"
-                fontSize={{ base: "2rem", md: "2.75rem", lg: "3.25rem" }}
-                lineHeight="1"
-                color={last ? "site.highlight" : "site.fg.strong"}
-              >
-                <Box
-                  as="sup"
-                  aria-hidden
-                  fontFamily="body"
-                  fontSize="0.75rem"
-                  letterSpacing="0.02em"
-                  fontWeight={500}
-                  color="site.highlight"
-                  verticalAlign="top"
-                  position="relative"
-                  top="0.3em"
-                  mr="12px"
-                >
-                  {stepNumber(i)}
-                </Box>
-                {step.title}
-              </Text>
-            </GridCol>
-            <GridCol span={{ base: 16, md: 10, lg: 5 }} start={{ lg: 12 }}>
-              <Text textStyle="body.sm" color="soot.600">
-                {step.body}
-              </Text>
-            </GridCol>
-          </Grid>
-        );
-      })}
-    </GridCol>
-  </Section>
 );
 
 /** ms each step stays open before the next opens, until someone picks one. */
 const ACCORDION_ADVANCE = 5000;
 
 /**
- * Option 3, the accordion (after metic.'s services row): the head on top,
+ * How we work, as an accordion (after metic.'s services row): the head on top,
  * then the four steps as tall strips side by side. One is open, wide, with
  * its number, title in the serif and description; the others are narrow,
  * their titles turned on end. Hovering, focusing or clicking a strip opens
@@ -214,7 +85,7 @@ const ApproachAccordion: React.FC = () => {
   return (
     <Section grid {...TESTIMONIAL_WASHES.midReversed}>
       <GridCol span={{ base: 16, lg: 9 }} pb={{ base: "40px", lg: "56px" }}>
-        <ApproachHead align="start" />
+        <ApproachHead />
       </GridCol>
       <GridCol
         as="ol"
@@ -236,7 +107,7 @@ const ApproachAccordion: React.FC = () => {
               minW={{ md: "72px" }}
               bg={isOpen ? "site.bg.raised" : "rgba(255, 255, 255, 0.45)"}
               border="1px solid"
-              borderColor="site.border.dashedOnTint"
+              borderColor="border.subtle"
               borderRadius="4px"
               overflow="hidden"
               cursor={{ md: "pointer" }}
@@ -353,17 +224,4 @@ const ApproachAccordion: React.FC = () => {
   );
 };
 
-/**
- * How we work: the partnership line and the four steps in one section.
- * Three takes to choose between; keep one.
- */
-export const ApproachSection: React.FC<{
-  variant: "table" | "index" | "accordion";
-}> = ({ variant }) =>
-  variant === "table" ? (
-    <ApproachTable />
-  ) : variant === "index" ? (
-    <ApproachIndex />
-  ) : (
-    <ApproachAccordion />
-  );
+export const ApproachSection = ApproachAccordion;
