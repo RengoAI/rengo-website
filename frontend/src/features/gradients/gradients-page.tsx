@@ -45,7 +45,7 @@ const Tile: React.FC<{
         >
           AI is only as reliable as
           <Box as="span" color="site.highlight">
-            the information it works from.
+            the information it works from
           </Box>
         </Text>
       </Box>
@@ -207,7 +207,7 @@ export const GradientsPage: React.FC = () => {
               </Box>
               <StatementBand
                 lead="AI is only as reliable as"
-                point="the information it works from."
+                point="the information it works from"
                 light={variant}
               />
             </Box>

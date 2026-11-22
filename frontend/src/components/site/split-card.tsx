@@ -122,13 +122,6 @@ const WASH_BLUE = "#BCCFEC";
  * step leans further toward the blue.
  */
 export const TESTIMONIAL_WASHES = {
-  /** No wash: the lifted white card, edged in border.subtle. */
-  paper: {
-    bg: "site.bg.raised",
-    bgImage: "none",
-    border: "1px solid",
-    borderColor: "border.subtle",
-  },
   /** Flat, no blobs — a pale blue, a touch stronger than silver 100 but
    * still lighter than the other two cards' blues. */
   plain: {
@@ -169,66 +162,3 @@ export const TESTIMONIAL_WASHES = {
     ].join(", "),
   },
 } as const;
-
-export type TestimonialWash = keyof typeof TESTIMONIAL_WASHES;
-
-/**
- * Testimonials band: quote on top, attribution on the bottom. Unlike
- * the metrics, each quote is its own filled card rather than hanging off a
- * rule.
- */
-export const TestimonialCard: React.FC<
-  Omit<SplitCardProps, "top" | "bottom"> & {
-    quote: React.ReactNode;
-    attribution: React.ReactNode;
-    /** Which fill the card takes — `plain` flat grey, then `light` greyest
-     * through `deep` bluest. */
-    wash?: TestimonialWash;
-  }
-> = ({ quote, attribution, wash = "light", ...rest }) => (
-  <SplitCard
-    as="figure"
-    p="1.5rem" // 24px
-    {...TESTIMONIAL_WASHES[wash]}
-    borderRadius="4px"
-    rule={false}
-    // Primary.800 (#0C1D34) at 4%: barely lifts the card off the band.
-    boxShadow="0 2px 3px rgba(12, 29, 52, 0.04)"
-    // As tall as the row's longest quote needs, not the steps' 472px floor:
-    // quotes run far shorter than that, which left the cards mostly empty.
-    // The row still stretches to its tallest card, and the attribution sits
-    // at least `gap` below the quote.
-    minH="auto"
-    gap="40px"
-    top={
-      <Text as="blockquote" textStyle="d5" color="soot.600" w="full">
-        {quote}
-      </Text>
-    }
-    bottom={
-      <Box
-        as="figcaption"
-        display="flex"
-        flexDirection="column"
-        alignItems="flex-start"
-        gap="8px"
-        w="full"
-      >
-        <Text
-          textStyle="body.sm"
-          lineHeight="1.2"
-          letterSpacing="0"
-          color="soot.600"
-          // 80px short of the card's width, so it wraps sooner.
-          w="calc(100% - 80px)"
-          // Two lines tall on desktop (2 × the 1.2 line height) whatever
-          // its length, so the attributions line up across the cards.
-          minH={{ lg: "2.4em" }}
-        >
-          {attribution}
-        </Text>
-      </Box>
-    }
-    {...rest}
-  />
-);

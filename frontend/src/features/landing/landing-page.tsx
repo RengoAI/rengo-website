@@ -6,31 +6,13 @@ import { SiteNav } from "@/components/site/site-nav";
 import { CONTACT_HREF } from "@/components/site/site-constants";
 import { SolidCta } from "@/components/site/solid-cta";
 import { StatementBand } from "@/components/site/statement-band";
-import { TestimonialCard } from "@/components/site/split-card";
 import { ApproachSection } from "@/features/landing/approach-section";
+import { CustomerQuotes } from "@/features/landing/customer-quotes";
 import { FoundationSection } from "@/features/landing/foundation-section";
 import { LandingHero } from "@/features/landing/landing-hero";
 import { LogoMarquee } from "@/features/landing/logo-marquee";
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
-
-const TESTIMONIALS = [
-  {
-    quote:
-      "“Everyone has been asking for a single source of truth. Rengo brings it all together, and we're excited to roll it out across the firm.”",
-    attribution: "Investment Associate at $3.5B mid-market PE firm",
-  },
-  {
-    quote:
-      "“It was really impressive how quickly you were able to adapt and add new features within the system. Once I gave you access to some of our high-level data, you could turn around, understand it, and funnel it in pretty quickly.”",
-    attribution: "VP of Data & AI Strategy at $20B+ real estate fund",
-  },
-  {
-    quote:
-      "“Rengo has evolved tremendously in just a few months. Being able to centralize our portfolio data, recall every deal we've evaluated, and make that knowledge instantly accessible across the team is incredibly powerful and something we're genuinely excited about.”",
-    attribution: "Senior Associate at $1B growth equity fund",
-  },
-];
 
 const COMPLIANCE = [
   {
@@ -72,7 +54,7 @@ export const LandingPage: React.FC = () => (
         steel. */}
       <StatementBand
         lead="AI is only as reliable as"
-        point="the information it works from."
+        point="the information it works from"
         light="beamSteel"
       />
 
@@ -83,52 +65,8 @@ export const LandingPage: React.FC = () => (
       {/* --- How we work ---------------------------------------------- */}
       <ApproachSection />
 
-      {/* --- Testimonials ----------------------------------------------------- */}
-      {/* On the page surface, under the solutions band. */}
-      <Section grid bg="site.bg.surface" py="72px">
-        <GridCol span={16} pb="40px">
-          <Box display="flex" flexDirection="column" gap="8px">
-            <Text
-              as="h2"
-              textStyle="h3"
-              color="site.fg.heading"
-              maxW={{ base: "75vw", md: "296px" }}
-            >
-              Our customers in their own words
-            </Text>
-          </Box>
-        </GridCol>
-        {/* The row of quotes starts a third of the way in, on the section's
-          grid (subgrid). Stacked below `lg`; three across doesn't fit until
-          then. */}
-        <GridCol
-          as="ul"
-          span={{ base: 16, lg: 12 }}
-          start={{ lg: 5 }}
-          display="grid"
-          gridTemplateColumns="subgrid"
-          rowGap="gridGutter"
-          // Stacked cards sit 40px apart on tablets, half that on phones.
-        >
-          {TESTIMONIALS.map((testimonial) => (
-            <GridCol
-              as="li"
-              key={testimonial.attribution + testimonial.quote}
-              span={{ base: 16, lg: 4 }}
-              pb={{ base: "4px", md: "24px", lg: 0 }}
-            >
-              {/* Full height, so when one quote grows its card, the row
-                  grows together. */}
-              <TestimonialCard
-                h="full"
-                {...testimonial}
-                // Plain: the approach strips above carry the light.
-                wash="paper"
-              />
-            </GridCol>
-          ))}
-        </GridCol>
-      </Section>
+      {/* --- Customer stories ------------------------------------------- */}
+      <CustomerQuotes />
 
       {/* --- Security --------------------------------------------------------- */}
       <Section bg="site.bg.dark">
