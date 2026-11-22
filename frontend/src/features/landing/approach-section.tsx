@@ -165,7 +165,8 @@ const ApproachAccordion: React.FC = () => {
                 position="absolute"
                 inset={0}
                 // Dark strips stay near full when closed, or they turn muddy.
-                opacity={isOpen ? 1 : dark ? 0.9 : 0.55}
+                // Phones show every strip open, so every light at full.
+                opacity={{ base: 1, md: isOpen ? 1 : dark ? 0.9 : 0.55 }}
                 transition="opacity 500ms ease"
                 _motionReduce={{ transition: "none" }}
               />
@@ -191,9 +192,10 @@ const ApproachAccordion: React.FC = () => {
                 {step.title}
               </Text>
               {/* Open: the title in the serif and the description, at the
-                strip's foot. Always shown on phones. */}
+                strip's foot. Always shown on phones, where it sits in the
+                flow: positioned (relative) so it paints above the light. */}
               <Box
-                position={{ md: "absolute" }}
+                position={{ base: "relative", md: "absolute" }}
                 left={{ md: "24px" }}
                 right={{ md: "24px" }}
                 bottom={{ md: "24px" }}
