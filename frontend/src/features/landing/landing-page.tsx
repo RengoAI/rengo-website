@@ -74,8 +74,6 @@ export const LandingPage: React.FC = () => (
       <StatementBand
         lead="AI is only as reliable as"
         point="the information it works from."
-        // Runs into the data layer below, so the two read as one.
-        fadeInto="site.bg.surface"
       />
 
       {/* --- Solution ------------------------------------------------------- */}

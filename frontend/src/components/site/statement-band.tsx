@@ -5,7 +5,6 @@ import {
   siteDotAt,
 } from "@/components/site/canvas/hero-dots";
 import { INK } from "@/components/site/canvas/ink";
-import { colorVar } from "@/components/site/site-styles";
 import { FEATURE_BAND_MIN_H } from "@/components/site/site-constants";
 import { TESTIMONIAL_WASHES } from "@/components/site/split-card";
 import { useScrollFrame } from "@/shared/hooks/use-scroll-frame";
@@ -17,21 +16,20 @@ import React from "react";
 const UNLIT = 0.16;
 
 /**
- * How far the band has scrolled through the reveal, 0 to 1: it starts as
- * the band's top passes 80% down the viewport and finishes once the band's
- * middle reaches the viewport's middle, or, for a band near the page's end
- * that can't scroll that far, once the page is scrolled to the bottom.
+ * How far the reveal has run, 0 to 1, from where the line itself sits: it
+ * starts once the line is well on screen (its middle 75% of the way down)
+ * and finishes as the line reaches the viewport's middle, or, for a band
+ * near the page's end that can't scroll that far, once the page is
+ * scrolled to the bottom. So it all plays while the line is in view.
  */
-const revealProgress = (box: DOMRect) => {
+const revealProgress = (line: DOMRect) => {
   const vh = window.innerHeight;
-  const start = vh * 0.8;
+  const mid = line.top + line.height / 2;
+  const start = vh * 0.75;
   const maxScroll = document.documentElement.scrollHeight - vh;
-  const topAtBottom = box.top - (maxScroll - window.scrollY);
-  const end = Math.min(
-    Math.max(vh / 2 - box.height / 2, topAtBottom),
-    start - 1,
-  );
-  return Math.min(Math.max((start - box.top) / (start - end), 0), 1);
+  const midAtBottom = mid - (maxScroll - window.scrollY);
+  const end = Math.min(Math.max(vh / 2, midAtBottom), start - 1);
+  return Math.min(Math.max((start - mid) / (start - end), 0), 1);
 };
 
 const smoothstep = (t: number) => t * t * (3 - 2 * t);
@@ -185,15 +183,10 @@ export const StatementBand: React.FC<{
    * in full. The close sits part-way, loosely gathered round the line.
    */
   still?: number;
-  /**
-   * A colour token the band's foot fades into, dots and all, so it runs
-   * into the section below without an edge.
-   */
-  fadeInto?: string;
   children?: React.ReactNode;
-}> = ({ lead, point, id, tone = "wash", still, fadeInto, children }) => {
-  // A box over the whole band, to measure it (Section takes no ref).
-  const ref = React.useRef<HTMLDivElement>(null);
+}> = ({ lead, point, id, tone = "wash", still, children }) => {
+  // The line, whose place on screen drives the reveal.
+  const ref = React.useRef<HTMLHeadingElement>(null);
   const reduced = usePrefersReducedMotion();
   const held = still !== undefined;
   // Where the dots sit when nothing moves them: held, or reduced motion's
@@ -251,21 +244,9 @@ export const StatementBand: React.FC<{
       gap="28px"
       aria-labelledby={id}
     >
-      <Box ref={ref} aria-hidden position="absolute" inset={0} />
       <OrderingDots progress={progress} tick={tick} />
-      {fadeInto && (
-        <Box
-          aria-hidden
-          position="absolute"
-          left={0}
-          right={0}
-          bottom={0}
-          h="45%"
-          pointerEvents="none"
-          bgImage={`linear-gradient(to bottom, transparent, ${colorVar(fadeInto)})`}
-        />
-      )}
       <Text
+        ref={ref}
         as="h2"
         id={id}
         position="relative"
