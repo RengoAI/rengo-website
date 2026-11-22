@@ -3,7 +3,9 @@ import { Section } from "@/components/layout/section";
 import { ComplianceCardGroup } from "@/components/site/compliance-card";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
-import { SiteOutro } from "@/components/site/site-outro";
+import { CONTACT_HREF } from "@/components/site/site-constants";
+import { SolidCta } from "@/components/site/solid-cta";
+import { StatementBand } from "@/components/site/statement-band";
 import {
   StepCard,
   TESTIMONIAL_WASHES,
@@ -13,7 +15,6 @@ import {
 import { FoundationSection } from "@/features/landing/foundation-section";
 import { LandingHero } from "@/features/landing/landing-hero";
 import { LogoMarquee } from "@/features/landing/logo-marquee";
-import { StatementSection } from "@/features/landing/statement-section";
 import { GridCircleDots } from "@/features/solutions/grid-circle-dots";
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
@@ -140,9 +141,12 @@ export const LandingPage: React.FC = () => (
       <LandingHero />
 
       {/* --- The problem ------------------------------------------------- */}
-      {/* The statement, its words filling in on scroll as dots settle into
-        a grid behind it. */}
-      <StatementSection />
+      {/* Word for word from the Business Overview ("Shared File Drive vs.
+        Structured Database"). */}
+      <StatementBand
+        lead="AI is only as reliable as"
+        point="the information it works from."
+      />
 
       {/* --- Solution ------------------------------------------------------- */}
       {/* Light band, static: the foundation's layers. */}
@@ -265,9 +269,18 @@ export const LandingPage: React.FC = () => (
         </GridCol>
       </Section>
 
-      {/* The statement band's height, so the page's two one-line moments
-          match. */}
-      <SiteOutro fill="feature" />
+      {/* The close, set as the opening statement's twin, with the call, on
+        the footer's lighter grey so the line pops. */}
+      <StatementBand
+        id="outro-heading"
+        lead="Ready to make your data"
+        point="your alpha?"
+        tone="plain"
+      >
+        <SolidCta h="27px" href={CONTACT_HREF} labelProps={{ gap: "8px" }}>
+          Book a call
+        </SolidCta>
+      </StatementBand>
     </Box>
 
     <SiteFooter />

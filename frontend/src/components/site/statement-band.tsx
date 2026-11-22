@@ -12,23 +12,24 @@ import { usePrefersReducedMotion } from "@/shared/utils/motion";
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 
-/** Word for word from the Business Overview ("Shared File Drive vs.
- * Structured Database"): the plain half, then the half set in blue. */
-const LEAD = "AI is only as reliable as";
-const POINT = "the information it works from.";
-
 /** A word's opacity before the scroll reaches it. */
 const UNLIT = 0.16;
 
 /**
  * How far the band has scrolled through the reveal, 0 to 1: it starts as
  * the band's top passes 80% down the viewport and finishes once the band's
- * middle reaches the viewport's middle.
+ * middle reaches the viewport's middle, or, for a band near the page's end
+ * that can't scroll that far, once the page is scrolled to the bottom.
  */
 const revealProgress = (box: DOMRect) => {
   const vh = window.innerHeight;
   const start = vh * 0.8;
-  const end = vh / 2 - box.height / 2;
+  const maxScroll = document.documentElement.scrollHeight - vh;
+  const topAtBottom = box.top - (maxScroll - window.scrollY);
+  const end = Math.min(
+    Math.max(vh / 2 - box.height / 2, topAtBottom),
+    start - 1,
+  );
   return Math.min(Math.max((start - box.top) / (start - end), 0), 1);
 };
 
@@ -153,13 +154,32 @@ const OrderingDots: React.FC<{
 };
 
 /**
- * The problem, in one line: the display serif, centred in a band most of
- * a screen tall. As the band scrolls in, its words fill in from faint
- * to full, the blue half last, while a field of scattered dots
- * behind it settles into a grid as the words fill: the information being
- * put in order. Reduced motion shows the line, and the grid, at rest.
+ * A one-line moment: the display serif, centred in a band most of a screen
+ * tall, the line in two halves, the second in blue on its own line from
+ * tablets up. As the band scrolls in, its words fill in from faint to
+ * full, the blue half last, while a field of scattered dots behind it
+ * settles into a loose grid: information being put in order. Anything
+ * passed as children (a button) sits under the line. Reduced motion shows
+ * the line, and the grid, at rest.
+ *
+ * The landing opens on one (the problem) and closes on one (the call), so
+ * the two read as a pair.
  */
-export const StatementSection: React.FC = () => {
+export const StatementBand: React.FC<{
+  /** The plain first half. */
+  lead: string;
+  /** The second half, in blue. */
+  point: string;
+  /** The heading's id, for a band labelled by it. */
+  id?: string;
+  /**
+   * The band's ground: the blue wash (the opening statement), or "plain",
+   * the footer's light grey with the line in the strongest ink, so it pops
+   * (the close, running into the footer).
+   */
+  tone?: "wash" | "plain";
+  children?: React.ReactNode;
+}> = ({ lead, point, id, tone = "wash", children }) => {
   // A box over the whole band, to measure it (Section takes no ref).
   const ref = React.useRef<HTMLDivElement>(null);
   const reduced = usePrefersReducedMotion();
@@ -185,40 +205,48 @@ export const StatementSection: React.FC = () => {
   }, [reduced]);
 
   const words = [
-    ...LEAD.split(" ").map((w) => ({ w, blue: false })),
-    ...POINT.split(" ").map((w) => ({ w, blue: true })),
+    ...lead.split(" ").map((w) => ({ w, blue: false })),
+    ...point.split(" ").map((w) => ({ w, blue: true })),
   ];
   // Each word fills over its own slice of the scroll, overlapping the next.
   const lit = (i: number) => {
-    const t = progress.current * (words.length + 2) - i;
+    // Done by 90% of the scroll, so the last word lands at full strength.
+    const p = Math.min(progress.current / 0.9, 1);
+    const t = p * (words.length + 2) - i;
     return UNLIT + (1 - UNLIT) * Math.min(Math.max(t / 3, 0), 1);
   };
-  const leadCount = LEAD.split(" ").length;
+  const leadCount = lead.split(" ").length;
 
   return (
     <Section
       position="relative"
       overflow="hidden"
-      {...TESTIMONIAL_WASHES.mid}
-      // Most of a screen, not all of it, as the closing call.
+      {...(tone === "plain"
+        ? { bg: "site.bg.footer", bgImage: "none" }
+        : TESTIMONIAL_WASHES.mid)}
+      // Most of a screen, not all of it.
       minH={FEATURE_BAND_MIN_H}
       display="flex"
+      flexDirection="column"
       alignItems="center"
       justifyContent="center"
+      gap="28px"
+      aria-labelledby={id}
     >
       <Box ref={ref} aria-hidden position="absolute" inset={0} />
       <OrderingDots progress={progress} tick={tick} />
       <Text
         as="h2"
+        id={id}
         position="relative"
         textStyle="d1"
-        // Between the section headings (32px) and the outro's line (60px).
+        // A step over the section headings (32px).
         fontSize={{ base: "1.75rem", md: "2.25rem", lg: "2.75rem" }}
         lineHeight="1.1"
-        color="site.fg.heading"
+        color={tone === "plain" ? "site.fg.strong" : "site.fg.heading"}
         textAlign="center"
         textWrap="balance"
-        aria-label={`${LEAD} ${POINT}`}
+        aria-label={`${lead} ${point}`}
       >
         {words.slice(0, leadCount).map(({ w }, i) => (
           <Box as="span" key={i} aria-hidden style={{ opacity: lit(i) }}>
@@ -240,6 +268,11 @@ export const StatementSection: React.FC = () => {
           ))}
         </Box>
       </Text>
+      {children && (
+        <Box position="relative" zIndex={1}>
+          {children}
+        </Box>
+      )}
     </Section>
   );
 };
