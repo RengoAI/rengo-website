@@ -1,5 +1,5 @@
+import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
-import { ComplianceCardGroup } from "@/components/site/compliance-card";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
 import {
@@ -14,23 +14,28 @@ import { FoundationSection } from "@/features/landing/foundation-section";
 import { LandingHero } from "@/features/landing/landing-hero";
 import { LightField } from "@/components/site/light-field";
 import { Box, Text } from "@chakra-ui/react";
+import { EyeOff, Lock, ScanSearch, ShieldCheck } from "lucide-react";
 import React from "react";
 
 const COMPLIANCE = [
   {
+    icon: ShieldCheck,
     title: "SOC 2 Type II",
     description:
       "Independently audited controls for data protection and access.",
   },
   {
+    icon: ScanSearch,
     title: "Pen-tested",
     description: "Built to industry-leading security standards.",
   },
   {
+    icon: EyeOff,
     title: "No training on your data",
     description: "Your data is never used to train or improve models.",
   },
   {
+    icon: Lock,
     title: "Encrypted everywhere",
     description:
       "Data is encrypted in transit and at rest across the platform.",
@@ -40,47 +45,76 @@ const COMPLIANCE = [
 /**
  * Security on the Business Overview's navy-deep (its dark ground), with the
  * statement's steel beam glowing dim and low across it, so the page's two
- * light moments rhyme. The dark band's colour tokens (as CSS variables) are
- * re-pointed to the Overview's text and lines on dark.
+ * light moments rhyme. Text in the Overview's colours on dark.
  */
-const SECURITY_VARS = {
-  "--rengo-colors-site-fg-on-dark-subtle":
-    "var(--rengo-colors-overview-on-dark2)",
-  "--rengo-colors-site-border-on-dark":
-    "var(--rengo-colors-overview-line-dark)",
-};
 
 const SecuritySection: React.FC = () => (
   <Section
     bg="overview.navyDeep"
-    css={SECURITY_VARS}
     position="relative"
     overflow="hidden"
     // The statement bands' height, so it matches the page's other big
-    // moments: the heading at the top, the items at the foot, the beam
-    // running through the room between.
+    // moments, its content centred in it.
     minH={FEATURE_BAND_MIN_H}
     display="flex"
-    flexDirection="column"
-    justifyContent="space-between"
+    alignItems="center"
   >
     <LightField variant="beamSteelDark" position="absolute" inset={0} />
-    <Box position="relative" pb={{ base: "40px", lg: "60px" }}>
-      <Text
-        as="h2"
-        textStyle="h3"
-        fontWeight={300}
-        color="site.fg.onDark"
-        maxW={{ base: "60vw", md: "336px" }}
+    <Grid position="relative" w="full" rowGap="48px" alignItems="center">
+      {/* The promise: the heading and, word for word, the Business
+        Overview's opening line on security. */}
+      <GridCol
+        span={{ base: 16, lg: 6 }}
+        display="flex"
+        flexDirection="column"
+        gap="16px"
       >
-        Security built for your most sensitive data
-      </Text>
-    </Box>
-    <ComplianceCardGroup
-      items={COMPLIANCE}
-      h={{ lg: "176px" }}
-      position="relative"
-    />
+        <Text
+          as="h2"
+          textStyle="h3"
+          fontWeight={300}
+          color="site.fg.onDark"
+          maxW={{ base: "75vw", md: "360px" }}
+        >
+          Security built for your most sensitive data
+        </Text>
+        <Text textStyle="body.sm" color="overview.onDark2" maxW="400px">
+          Rengo protects sensitive business information while giving customers
+          control over who can access their data and how it&rsquo;s used.
+        </Text>
+      </GridCol>
+      {/* The four controls, two by two, each with a small icon in the
+        Overview's accent on dark. */}
+      <GridCol
+        as="ul"
+        span={{ base: 16, lg: 9 }}
+        start={{ lg: 8 }}
+        display="grid"
+        gridTemplateColumns={{ base: "1fr", md: "1fr 1fr" }}
+        columnGap="48px"
+        rowGap={{ base: "32px", md: "56px" }}
+      >
+        {COMPLIANCE.map(({ icon: Icon, title, description }) => (
+          <Box
+            as="li"
+            key={title}
+            display="flex"
+            flexDirection="column"
+            gap="10px"
+          >
+            <Box color="overview.steelLight" mb="6px">
+              <Icon size={22} strokeWidth={1.5} aria-hidden />
+            </Box>
+            <Text as="h3" textStyle="d5" color="site.fg.onDark">
+              {title}
+            </Text>
+            <Text textStyle="body.sm" color="overview.onDark2" maxW="300px">
+              {description}
+            </Text>
+          </Box>
+        ))}
+      </GridCol>
+    </Grid>
   </Section>
 );
 
