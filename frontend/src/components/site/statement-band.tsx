@@ -5,6 +5,10 @@ import {
   siteDotAt,
 } from "@/components/site/canvas/hero-dots";
 import { INK } from "@/components/site/canvas/ink";
+import {
+  LightField,
+  type LightFieldVariant,
+} from "@/components/site/light-field";
 import { FEATURE_BAND_MIN_H } from "@/components/site/site-constants";
 import { TESTIMONIAL_WASHES } from "@/components/site/split-card";
 import { useScrollFrame } from "@/shared/hooks/use-scroll-frame";
@@ -194,8 +198,13 @@ export const StatementBand: React.FC<{
    * grid, and thinner.
    */
   dots?: { rest?: number; share?: number };
+  /**
+   * Light instead of dots: a LightField variant filling the band, fading
+   * in as the words fill.
+   */
+  light?: LightFieldVariant;
   children?: React.ReactNode;
-}> = ({ lead, point, id, tone = "wash", still, dots, children }) => {
+}> = ({ lead, point, id, tone = "wash", still, dots, light, children }) => {
   // The line, whose place on screen drives the reveal.
   const ref = React.useRef<HTMLHeadingElement>(null);
   const reduced = usePrefersReducedMotion();
@@ -255,12 +264,22 @@ export const StatementBand: React.FC<{
       gap="28px"
       aria-labelledby={id}
     >
-      <OrderingDots
-        progress={progress}
-        tick={tick}
-        rest={dots?.rest ?? 1}
-        share={dots?.share ?? 1}
-      />
+      {light ? (
+        <LightField
+          variant={light}
+          position="absolute"
+          inset={0}
+          // From a faint glow to full as the words fill.
+          style={{ opacity: 0.3 + 0.7 * progress.current }}
+        />
+      ) : (
+        <OrderingDots
+          progress={progress}
+          tick={tick}
+          rest={dots?.rest ?? 1}
+          share={dots?.share ?? 1}
+        />
+      )}
       <Text
         ref={ref}
         as="h2"

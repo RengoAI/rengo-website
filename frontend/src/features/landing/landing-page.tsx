@@ -71,12 +71,28 @@ export const LandingPage: React.FC = () => (
       {/* --- The problem ------------------------------------------------- */}
       {/* Word for word from the Business Overview ("Shared File Drive vs.
         Structured Database"). */}
+      {/* Four takes on the statement in light rather than dots, one above
+        the other, to choose between: a rising beam, a horizon band, a blue
+        core and a dawn. Keep one. */}
       <StatementBand
         lead="AI is only as reliable as"
         point="the information it works from."
-        // The dots stop part-way, loose, and a third are left out: the
-        // in-flight look, without a dense field at rest.
-        dots={{ rest: 0.6, share: 0.65 }}
+        light="beamSky"
+      />
+      <StatementBand
+        lead="AI is only as reliable as"
+        point="the information it works from."
+        light="horizon"
+      />
+      <StatementBand
+        lead="AI is only as reliable as"
+        point="the information it works from."
+        light="blueCore"
+      />
+      <StatementBand
+        lead="AI is only as reliable as"
+        point="the information it works from."
+        light="dawn"
       />
 
       {/* --- Solution ------------------------------------------------------- */}
