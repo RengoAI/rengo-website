@@ -26,13 +26,13 @@ const HOW_WE_WORK = [
 
 /**
  * How the strips sit on the section's wash, after metic.: panels a step
- * darker than the ground, not lighter, with a faint dark edge (border.subtle
- * is lighter than this wash, so it drew as a white line), and the
+ * darker than the ground, not lighter, with no outline (border.subtle is
+ * lighter than this wash, so it drew as a white line; a darker edge looked
+ * heavy), and the
  * foundation's grey renders fading through each, as metic.'s photos do:
  * one layer per step, top to bottom.
  */
 const STRIP_BG = "rgba(12, 29, 52, 0.045)";
-const STRIP_EDGE = "rgba(12, 29, 52, 0.08)";
 
 /** The section's head: the partnership line. */
 const ApproachHead: React.FC = () => (
@@ -107,8 +107,6 @@ const ApproachAccordion: React.FC = () => {
               flexBasis={{ md: 0 }}
               minW={{ md: "72px" }}
               bg={STRIP_BG}
-              border="1px solid"
-              borderColor={STRIP_EDGE}
               borderRadius="4px"
               overflow="hidden"
               cursor={{ md: "pointer" }}
