@@ -6,23 +6,35 @@ import React from "react";
  * together. */
 const HOVER_EASE = "300ms ease-in-out";
 
+/*
+ * The tones are the Business Overview's ink: navy for the primary, its
+ * tints for the secondary, white on dark bands. Each hover steps within its
+ * own family (navy to slate, tint-2 to haze, white to tint), and the label
+ * keeps its colour, so nothing flips. Accents (the highlight blue, the
+ * crimson) stay off buttons.
+ */
 const TONE_BG = {
-  dark: "site.bg.dark",
+  dark: "overview.navy",
   light: "site.bg.raised",
-  secondary: "site.bg.tint",
+  secondary: "overview.tint2",
 } as const;
 
 const TONE_HOVER = {
-  dark: { bg: "site.bg.tintSky" },
-  light: { opacity: 0.88 },
-  // Two steps down the silver ramp from the resting fill.
-  secondary: { bg: "silver.300" },
+  dark: { bg: "overview.slate" },
+  light: { bg: "overview.tint" },
+  secondary: { bg: "overview.haze" },
+} as const;
+
+/** The label: white on navy, navy on the light tones. */
+const TONE_INK = {
+  dark: "site.fg.onDark",
+  light: "overview.navy",
+  secondary: "overview.navy",
 } as const;
 
 /**
- * Filled CTA in the v3 shape, in a dark, a light or a secondary tone. The
- * dark tone lightens to Sky on hover, its label turning dark. The
- * secondary tone starts on silver 200 and darkens on hover.
+ * Filled CTA in the v3 shape, in a dark (primary), a light or a secondary
+ * tone, in the Business Overview's colours (above).
  *
  * With `href` it renders as a link, since it navigates; without, a button.
  * `labelProps` restyles the label, e.g. for the outro's larger CTA.
@@ -50,14 +62,12 @@ export const SolidCta: React.FC<
     display="inline-flex"
     alignItems="center"
     cursor="pointer"
-    transition={`opacity ${HOVER_EASE}, background-color ${HOVER_EASE}`}
+    transition={`background-color ${HOVER_EASE}`}
     _hover={TONE_HOVER[tone]}
     {...rest}
   >
     <ArrowLink
-      color={tone === "dark" ? "site.fg.onDark" : "site.fg.strong"}
-      transition={`color ${HOVER_EASE}`}
-      _groupHover={tone === "dark" ? { color: "site.fg.strong" } : undefined}
+      color={TONE_INK[tone]}
       fontWeight={300}
       gap="20px"
       _hover={{}}
