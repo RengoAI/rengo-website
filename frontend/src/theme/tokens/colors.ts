@@ -312,6 +312,21 @@ export const colors = defineTokens.colors({
   // original #7F364D.
   crimson: { value: "#AA4867" },
 
+  /**
+   * The Business Overview's palette (its proposal.css), for the graphics
+   * ported from it: steel blues and navy, quieter than the site's own.
+   */
+  overview: {
+    navy: { value: "#253746" }, // --navy: headings, dark marks
+    slate: { value: "#35566D" }, // --slate: accent, Rengo's path
+    line: { value: "#9AABBA" }, // --line: diagram connectors
+    steel: { value: "#8FA9BC" }, // the database's third slab
+    steelLight: { value: "#8FB0C8" }, // the top slab's inner outline
+    haze: { value: "#C9D6E0" }, // the database's second slab
+    tint2: { value: "#E6EDF2" }, // --tint-2: highlight fill, bottom slab
+    tint: { value: "#F4F6F8" }, // --tint: panels
+  },
+
   // Marketing site palette (Figma: Rengo Marketing Site)
   indigo: {
     // Indigo1 — primary headline / ink

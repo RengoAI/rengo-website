@@ -489,5 +489,31 @@ export const semanticColors = defineSemanticTokens.colors({
     highlight: { value: "#296DDB" },
     /** Rengo blue. Links, primary actions. */
     brand: { value: "{colors.rengo.500}" },
+    /**
+     * The blog's graphics, in the Business Overview's colours so they match
+     * the document they come from. Only the figures use these.
+     */
+    figure: {
+      /** The panel behind a graphic. */
+      panel: { value: "{colors.overview.tint}" },
+      /** Connectors and the dashed return paths. */
+      line: { value: "{colors.overview.line}" },
+      /** Rengo's own path, and the YES / NO labels. */
+      lineStrong: { value: "{colors.overview.slate}" },
+      /** Named marks, such as "Structured database". */
+      label: { value: "{colors.overview.navy}" },
+      /** The step a chart arrives at: a navy pill with white type. */
+      arrive: { value: "{colors.overview.navy}" },
+      arriveFg: { value: "{colors.white}" },
+      /** The database stack, top to bottom, and its outlines. */
+      stackTop: { value: "{colors.overview.navy}" },
+      stackTopInner: { value: "{colors.overview.steelLight}" },
+      stack2: { value: "{colors.overview.steel}" },
+      stack3: { value: "{colors.overview.haze}" },
+      stack4: { value: "{colors.overview.tint2}" },
+      stackEdge: { value: "{colors.overview.line}" },
+      /** A highlighted table column: the structured database's. */
+      highlight: { value: "{colors.overview.tint2}" },
+    },
   },
 });

@@ -12,10 +12,10 @@ import {
   SMALL,
 } from "@/components/site/article";
 import { SiteFooter } from "@/components/site/site-footer";
+import { colorVar } from "@/components/site/site-styles";
 import { SiteNav } from "@/components/site/site-nav";
 import { FIGURES } from "@/features/blog/blog-figures";
-import { WASH_SKY } from "@/components/site/site-wash";
-import { FIGURE_WASH } from "@/features/blog/blog-styles";
+import { FIGURE_WELL } from "@/features/blog/blog-styles";
 import {
   formatPostDate,
   getPostBySlug,
@@ -53,7 +53,10 @@ const Figure: React.FC<{
     <Box as="figure" my="12px">
       <FigureTitle>{block.title}</FigureTitle>
       <Box
-        {...FIGURE_WASH}
+        {...FIGURE_WELL}
+        // The same faint rule as the shapes inside it.
+        border="1px solid"
+        borderColor="border.subtle"
         borderRadius="4px"
         px={{ base: "16px", md: "40px" }}
         py="40px"
@@ -71,14 +74,14 @@ const Figure: React.FC<{
 
 /*
  * The app's table chrome (@rengo/ui widget card and data table): a 1px
- * border.muted outline, 8px corners and its near-white surface, with solid
- * hairline dividers.
+ * outline, 8px corners and its near-white surface, with solid hairline
+ * dividers. The rules are border.subtle, the figures' faint rule.
  */
-const TABLE_BORDER = "#E8EAEB"; // app border.muted (gray.100)
+const TABLE_BORDER = colorVar("border.subtle");
 const TABLE_SURFACE = "#FCFCFC"; // app bg.surface (gray.25)
 const TABLE_HEADER = "canvas.300";
 /** The database column's shading, as in the Business Overview. */
-const DATABASE_TINT = `rgba(${WASH_SKY}, 0.16)`;
+const DATABASE_TINT = "site.figure.highlight";
 
 /**
  * Two ways of doing something, side by side, in the app's table card. From
