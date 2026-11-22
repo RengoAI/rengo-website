@@ -1,4 +1,3 @@
-import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
@@ -54,69 +53,74 @@ const SecuritySection: React.FC = () => (
     position="relative"
     overflow="hidden"
     // The statement bands' height, so it matches the page's other big
-    // moments. The heading top left, like the other sections' headings;
-    // the four controls in a row across the foot, the full width, with the
-    // steel beam glowing through the room between.
+    // moments.
     minH={FEATURE_BAND_MIN_H}
     display="flex"
   >
     <LightField variant="beamSteelDark" position="absolute" inset={0} />
-    <Grid
+    {/* The heading top left, like the other sections' headings, then the
+      four controls two by two right under it, across the full width,
+      filling the band. */}
+    <Box
       position="relative"
       w="full"
-      rowGap="64px"
-      gridTemplateRows={{ lg: "auto 1fr" }}
+      display="flex"
+      flexDirection="column"
+      gap={{ base: "40px", lg: "64px" }}
     >
-      <GridCol span={{ base: 16, lg: 6 }} alignSelf="start">
-        <Text
-          as="h2"
-          // The section headings' size, as the sections above.
-          textStyle="h4"
-          fontWeight={400}
-          lineHeight="1.1"
-          color="site.fg.onDark"
-          maxW={{ base: "75vw", md: "320px" }}
-        >
-          Security built for your most sensitive data
-        </Text>
-      </GridCol>
-      {/* The four controls across the band, each with a small icon in the
-        Overview's accent on dark: two by two on tablets, stacked on
-        phones. */}
-      <GridCol
-        as="ul"
-        span={16}
-        alignSelf="end"
-        display="grid"
-        gridTemplateColumns={{
-          base: "1fr",
-          md: "1fr 1fr",
-          lg: "repeat(4, 1fr)",
-        }}
-        columnGap="40px"
-        rowGap={{ base: "32px", md: "48px" }}
+      <Text
+        as="h2"
+        // The section headings' size, as the sections above.
+        textStyle="h4"
+        fontWeight={400}
+        lineHeight="1.1"
+        color="site.fg.onDark"
+        maxW={{ base: "75vw", md: "320px" }}
       >
-        {COMPLIANCE.map(({ icon: Icon, title, description }) => (
+        Security built for your most sensitive data
+      </Text>
+      <Box
+        as="ul"
+        flex="1"
+        display="grid"
+        gridTemplateColumns={{ base: "1fr", md: "1fr 1fr" }}
+        gridAutoRows="1fr"
+        columnGap={{ base: "40px", lg: "64px" }}
+        rowGap={{ base: "36px", lg: "0" }}
+      >
+        {COMPLIANCE.map(({ icon: Icon, title, description }, i) => (
           <Box
             as="li"
             key={title}
             display="flex"
             flexDirection="column"
-            gap="10px"
+            gap="12px"
+            // A hairline in the Overview's line on dark between the rows,
+            // from tablets up.
+            borderTop={{ md: i < 2 ? "none" : "1px solid" }}
+            borderColor="overview.lineDark"
+            pt={{ md: i < 2 ? 0 : "40px" }}
+            pb={{ md: i < 2 ? "40px" : 0 }}
           >
-            <Box color="overview.steelLight" mb="6px">
-              <Icon size={22} strokeWidth={1.5} aria-hidden />
+            <Box color="overview.steelLight" mb="4px">
+              <Icon size={28} strokeWidth={1.4} aria-hidden />
             </Box>
-            <Text as="h3" textStyle="d5" color="site.fg.onDark">
+            <Text
+              as="h3"
+              textStyle="d4"
+              fontSize={{ base: "1.5rem", lg: "1.875rem" }}
+              lineHeight="1.15"
+              color="site.fg.onDark"
+            >
               {title}
             </Text>
-            <Text textStyle="body.sm" color="overview.onDark2" maxW="260px">
+            <Text textStyle="body.md" color="overview.onDark2" maxW="420px">
               {description}
             </Text>
           </Box>
         ))}
-      </GridCol>
-    </Grid>
+      </Box>
+    </Box>
   </Section>
 );
 
