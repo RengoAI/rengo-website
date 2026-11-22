@@ -7,10 +7,7 @@ import { CONTACT_HREF } from "@/components/site/site-constants";
 import { SolidCta } from "@/components/site/solid-cta";
 import { StatementBand } from "@/components/site/statement-band";
 import { TestimonialCard } from "@/components/site/split-card";
-import {
-  APPROACH_LIGHT_SETS,
-  ApproachSection,
-} from "@/features/landing/approach-section";
+import { ApproachSection } from "@/features/landing/approach-section";
 import { FoundationSection } from "@/features/landing/foundation-section";
 import { LandingHero } from "@/features/landing/landing-hero";
 import { LogoMarquee } from "@/features/landing/logo-marquee";
@@ -84,13 +81,7 @@ export const LandingPage: React.FC = () => (
       <FoundationSection />
 
       {/* --- How we work ---------------------------------------------- */}
-      {/* The current beams, then four fuller sets of light for the strips,
-        one above the other, to choose between. Keep one. */}
       <ApproachSection />
-      <ApproachSection lights={APPROACH_LIGHT_SETS.fog} />
-      <ApproachSection lights={APPROACH_LIGHT_SETS.pools} />
-      <ApproachSection lights={APPROACH_LIGHT_SETS.blobs} />
-      <ApproachSection lights={APPROACH_LIGHT_SETS.wide} />
 
       {/* --- Testimonials ----------------------------------------------------- */}
       {/* On the page surface, under the solutions band. */}
