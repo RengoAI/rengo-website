@@ -54,13 +54,19 @@ const SecuritySection: React.FC = () => (
     position="relative"
     overflow="hidden"
     // The statement bands' height, so it matches the page's other big
-    // moments. The heading top left, like the other sections' headings,
-    // the controls beside it; the steel beam fills the room below.
+    // moments. The heading top left, like the other sections' headings;
+    // the four controls in a row across the foot, the full width, with the
+    // steel beam glowing through the room between.
     minH={FEATURE_BAND_MIN_H}
     display="flex"
   >
     <LightField variant="beamSteelDark" position="absolute" inset={0} />
-    <Grid position="relative" w="full" rowGap="48px">
+    <Grid
+      position="relative"
+      w="full"
+      rowGap="64px"
+      gridTemplateRows={{ lg: "auto 1fr" }}
+    >
       <GridCol span={{ base: 16, lg: 6 }} alignSelf="start">
         <Text
           as="h2"
@@ -74,20 +80,21 @@ const SecuritySection: React.FC = () => (
           Security built for your most sensitive data
         </Text>
       </GridCol>
-      {/* The four controls, two by two, each with a small icon in the
-        Overview's accent on dark. */}
+      {/* The four controls across the band, each with a small icon in the
+        Overview's accent on dark: two by two on tablets, stacked on
+        phones. */}
       <GridCol
         as="ul"
-        span={{ base: 16, lg: 9 }}
-        start={{ lg: 8 }}
-        gridRow={{ lg: 1 }}
-        alignSelf="start"
-        // Level with the heading's first line, side by side with it.
-        pt={{ lg: "6px" }}
+        span={16}
+        alignSelf="end"
         display="grid"
-        gridTemplateColumns={{ base: "1fr", md: "1fr 1fr" }}
-        columnGap="48px"
-        rowGap={{ base: "32px", md: "56px" }}
+        gridTemplateColumns={{
+          base: "1fr",
+          md: "1fr 1fr",
+          lg: "repeat(4, 1fr)",
+        }}
+        columnGap="40px"
+        rowGap={{ base: "32px", md: "48px" }}
       >
         {COMPLIANCE.map(({ icon: Icon, title, description }) => (
           <Box
@@ -103,7 +110,7 @@ const SecuritySection: React.FC = () => (
             <Text as="h3" textStyle="d5" color="site.fg.onDark">
               {title}
             </Text>
-            <Text textStyle="body.sm" color="overview.onDark2" maxW="300px">
+            <Text textStyle="body.sm" color="overview.onDark2" maxW="260px">
               {description}
             </Text>
           </Box>
