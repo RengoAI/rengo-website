@@ -11,8 +11,8 @@ import { mix } from "color2k";
  * The palette is the Business Overview's ramp (proposal.css), so the dots
  * sit with the page's steel and navy rather than the brighter periwinkle
  * they had: its haze, rule and line for the greys, its steel and
- * slate-light for the blues, tint-2 for the pale, navy for the highlight,
- * and slate in place of the crimson flecks.
+ * slate-light for the blues, tint-2 for the pale, navy for the highlight.
+ * The crimson flecks stay: the site's tertiary colour, mixed in.
  */
 
 /** The light greys: the Overview's haze, rule and line. */
@@ -27,10 +27,9 @@ export const HERO_ACCENT = { color: "#A9C0D0", share: 0.25 };
 export const HERO_HIGHLIGHT = { color: INK.ovNavy, share: 0.1 };
 /**
  * The few flecks that set the field off (8% of the dots where a figure
- * uses them): the Overview's slate, where they were the site's crimson,
- * which the Overview never uses.
+ * uses them): the site's crimson, its tertiary colour.
  */
-export const DOT_FLECK = INK.ovSlate;
+export const DOT_FLECK = INK.crimson;
 
 /**
  * Every dot figure's dot size, px, at every screen width: the size the app's
