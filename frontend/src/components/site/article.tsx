@@ -316,8 +316,10 @@ const BoxContents: React.FC<{ headings: string[] }> = ({ headings }) => (
     display={{ base: "block", xl: "none" }}
     open
     // The Business Overview's panel tint, as the landing's customer quote
-    // section: a quiet cool grey that sits with the page.
+    // section: a quiet cool grey that sits with the page, with a fine edge.
     bg="overview.tint"
+    border="1px solid"
+    borderColor="border.subtle"
     borderRadius="4px"
     px="16px"
     py="14px"
