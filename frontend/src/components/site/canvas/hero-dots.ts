@@ -10,8 +10,8 @@ import { mix } from "color2k";
 /*
  * The palette is the Business Overview's ramp (proposal.css), so the dots
  * sit with the page's steel and navy rather than the brighter periwinkle
- * they had: its haze, rule and line for the greys, its steel and
- * slate-light for the blues, tint-2 for the pale, navy for the highlight.
+ * they had: its haze, rule and line for the greys, its slate-light for the
+ * blues, tint-2 for the pale, navy for the highlight.
  * The crimson flecks stay: the site's tertiary colour, mixed in.
  */
 
@@ -19,8 +19,11 @@ import { mix } from "color2k";
 export const HERO_GREYS = [INK.ovHaze, INK.ovRule, INK.ovLine];
 /** 40% of all dots in a solid pale: the Overview's tint-2. */
 export const HERO_PALE = { color: INK.ovTint2, share: 0.4 };
-/** The blues: the Overview's steel and slate-light. */
-export const HERO_BLUES = [INK.ovSteel, INK.ovSteelLight];
+/**
+ * The blues: the Overview's slate-light, its bluer steel. (Its steel,
+ * #8FA9BC, leans teal, and read as green beside the crimson flecks.)
+ */
+export const HERO_BLUES = [INK.ovSteelLight];
 /** The accent, on a quarter of the dots: between haze and slate-light. */
 export const HERO_ACCENT = { color: "#A9C0D0", share: 0.25 };
 /** 10% of dots in the Overview's navy. */
