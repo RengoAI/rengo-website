@@ -315,10 +315,9 @@ const BoxContents: React.FC<{ headings: string[] }> = ({ headings }) => (
   <chakra.details
     display={{ base: "block", xl: "none" }}
     open
-    // A soft blue-grey panel (silver.100, the secondary button's family),
-    // so the box reads against the page in the site's palette rather than
-    // a neutral grey.
-    bg="silver.100"
+    // The Business Overview's panel tint, as the landing's customer quote
+    // section: a quiet cool grey that sits with the page.
+    bg="overview.tint"
     borderRadius="4px"
     px="16px"
     py="14px"
