@@ -1,5 +1,6 @@
 import { SiteShell } from "@/app/site-shell";
 import NotFoundPage from "@/components/empty/app-not-found-page";
+import { RouteErrorPage } from "@/components/error/route-error-page";
 import { blogRoutes } from "@/features/blog/blog-routes";
 import { careersRoutes } from "@/features/careers/careers-routes";
 import { gradientsRoutes } from "@/features/gradients/gradients-routes";
@@ -32,11 +33,15 @@ const STANDALONE_ROUTES: RouteObject[] = [
 export const appRouter = createBrowserRouter([
   {
     element: <SiteShell />,
+    // A failed page shows the site's error page, not the router's
+    // developer screen; a stale build reloads itself (see stale-chunks).
+    errorElement: <RouteErrorPage />,
     children: STANDALONE_ROUTES,
   },
   {
     id: "notFound",
     path: "*",
     element: <NotFoundPage />,
+    errorElement: <RouteErrorPage />,
   },
 ]);
