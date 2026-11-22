@@ -13,8 +13,9 @@ import {
 import { FoundationSection } from "@/features/landing/foundation-section";
 import { LandingHero } from "@/features/landing/landing-hero";
 import { LogoMarquee } from "@/features/landing/logo-marquee";
+import { StatementSection } from "@/features/landing/statement-section";
 import { GridCircleDots } from "@/features/solutions/grid-circle-dots";
-import { Box, chakra, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 
 const HOW_WE_WORK = [
@@ -138,59 +139,10 @@ export const LandingPage: React.FC = () => (
         each line rolls in its own gentle wave. */}
       <LandingHero />
 
-      {/* --- The problem & vision ------------------------------------------ */}
-      {/* As tall as its copy, with the same padding above and below. */}
-      {/* The second testimonial card's wash, stretched over the band. */}
-      <Section grid {...TESTIMONIAL_WASHES.mid}>
-        <GridCol span={{ base: 16, lg: 10 }}>
-          <Text as="h2" textStyle="h4" color="site.fg.heading">
-            Companies have spent decades making the numbers in their databases
-            reliable, connecting their tools, and standardizing workflows. But
-            much of what an organization actually knows{" "}
-            <Box as="span" color="site.highlight">
-              never reaches a database.
-            </Box>
-          </Text>
-        </GridCol>
-        {/* Full width under the heading on phones. Flush right, behind an
-          empty spacer: 7 columns wide on tablets, and 5 on desktop, where it
-          sits beside the heading. */}
-        <GridCol
-          span={{ base: 16, md: 7, lg: 5 }}
-          start={{ base: 1, md: 10, lg: 12 }}
-          pt={{ base: "24px", md: "16px", lg: 0 }}
-        >
-          {/* Separate paragraphs, a blank line (one 1.4 line height) apart.
-            `chakra.p` rather than `Text`, so they inherit body.sm. */}
-          <Box
-            textStyle="body.sm"
-            color="site.fg"
-            display="flex"
-            flexDirection="column"
-            gap="1.4em"
-          >
-            <chakra.p>
-              AI is changing how we work with data, but its usefulness depends
-              on the information it can access. We believe the foundation is the
-              data layer.
-            </chakra.p>
-            <chakra.p>
-              No two organizations operate the same way, and neither does their
-              data. The systems that capture and organize this information need
-              to adapt as the business evolves. That requires more than
-              traditional data pipelines. It requires agents that can understand
-              and structure information, alongside the engineering judgment to
-              ensure it remains accurate, reliable, and useful.
-            </chakra.p>
-            <chakra.p>
-              Our vision is to build and maintain that foundation, combining
-              intelligent systems with the ongoing care and oversight needed to
-              make AI useful across an organization.
-            </chakra.p>
-            <chakra.p>- Erik Ronning, Co-founder &amp; CEO</chakra.p>
-          </Box>
-        </GridCol>
-      </Section>
+      {/* --- The problem ------------------------------------------------- */}
+      {/* The statement, its words filling in on scroll as dots settle into
+        a grid behind it. */}
+      <StatementSection />
 
       {/* --- Solution ------------------------------------------------------- */}
       {/* Light band, static: the foundation's layers. */}
@@ -313,9 +265,9 @@ export const LandingPage: React.FC = () => (
         </GridCol>
       </Section>
 
-      {/* Fills the screen under the nav, so the page closes on a full
-          screen as it opens. */}
-      <SiteOutro fill="below-nav" />
+      {/* The statement band's height, so the page's two one-line moments
+          match. */}
+      <SiteOutro fill="feature" />
     </Box>
 
     <SiteFooter />

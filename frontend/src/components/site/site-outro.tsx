@@ -1,7 +1,10 @@
 import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import { AutomataGrid } from "@/components/site/automata-grid";
-import { CONTACT_HREF, NAV_H } from "@/components/site/site-constants";
+import {
+  CONTACT_HREF,
+  FEATURE_BAND_MIN_H,
+} from "@/components/site/site-constants";
 import { SolidCta } from "@/components/site/solid-cta";
 import { SCREEN_WASH } from "@/components/site/site-wash";
 import { prefersReducedMotion } from "@/shared/utils/motion";
@@ -37,12 +40,12 @@ export const SiteOutro: React.FC<{
   cta?: string;
   ctaHref?: string;
   /**
-   * Fill the viewport, the way the landing hero does: `true` when the band
-   * sits under the overlaid nav at the top of the page (careers), or
-   * "below-nav" when it's scrolled to under the sticky nav (the landing's
-   * close), so it fills the screen left under the bar.
+   * Fill the viewport, the way the landing hero does, when the band sits
+   * under the overlaid nav at the top of the page (careers): `true`. Or
+   * "feature" for a close scrolled to under the sticky nav (the landing's):
+   * the statement bands' height, most of the screen left under the bar.
    */
-  fill?: boolean | "below-nav";
+  fill?: boolean | "feature";
   /**
    * What's behind the line: the automaton (the product's voice, the
    * default) or the colour wash the blog uses (the company pages').
@@ -80,11 +83,7 @@ export const SiteOutro: React.FC<{
       overflow="hidden"
       // A minimum, so content still fits on a very short screen.
       minH={
-        fill === "below-nav"
-          ? `calc(100svh - ${NAV_H}px)`
-          : fill
-            ? "100svh"
-            : undefined
+        fill === "feature" ? FEATURE_BAND_MIN_H : fill ? "100svh" : undefined
       }
       display={fill ? "flex" : undefined}
       alignItems={fill ? "center" : undefined}
