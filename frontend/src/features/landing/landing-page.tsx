@@ -2,7 +2,10 @@ import { Section } from "@/components/layout/section";
 import { ComplianceCardGroup } from "@/components/site/compliance-card";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
-import { CONTACT_HREF } from "@/components/site/site-constants";
+import {
+  CONTACT_HREF,
+  FEATURE_BAND_MIN_H,
+} from "@/components/site/site-constants";
 import { SolidCta } from "@/components/site/solid-cta";
 import { StatementBand } from "@/components/site/statement-band";
 import { ApproachSection } from "@/features/landing/approach-section";
@@ -53,6 +56,13 @@ const SecuritySection: React.FC = () => (
     css={SECURITY_VARS}
     position="relative"
     overflow="hidden"
+    // The statement bands' height, so it matches the page's other big
+    // moments: the heading at the top, the items at the foot, the beam
+    // running through the room between.
+    minH={FEATURE_BAND_MIN_H}
+    display="flex"
+    flexDirection="column"
+    justifyContent="space-between"
   >
     <LightField variant="beamSteelDark" position="absolute" inset={0} />
     <Box position="relative" pb={{ base: "40px", lg: "60px" }}>
