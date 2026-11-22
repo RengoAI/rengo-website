@@ -533,48 +533,6 @@ export const LIGHT_VARIANTS = {
       },
     ],
   },
-  beamSteelDarkBlush: {
-    name: "Steel beam on navy, with blush",
-    base: "#1B2A36", // overview.navyDeep
-    dark: true,
-    grain: 0.08,
-    shapes: [
-      // A dim warmth of the site's crimson, low on the left, as the careers
-      // hero's blush; under the beam.
-      {
-        x: 8,
-        y: 92,
-        w: 60,
-        h: 70,
-        rgb: BLUSH,
-        a: 0.22,
-        blur: 70,
-        radius: BLOB,
-      },
-      {
-        x: 45,
-        y: 74,
-        w: 140,
-        h: 18,
-        rgb: STEEL,
-        a: 0.32,
-        blur: 34,
-        rotate: -8,
-        radius: BEAM,
-      },
-      {
-        x: 60,
-        y: 70,
-        w: 90,
-        h: 8,
-        rgb: SKY,
-        a: 0.18,
-        blur: 22,
-        rotate: -8,
-        radius: BEAM,
-      },
-    ],
-  },
   beamTapered: {
     name: "Tapered beam",
     base: PAPER,
@@ -889,7 +847,6 @@ export const LIGHT_FAMILIES: {
       "beamSteel",
       "beamTapered",
       "beamSteelDark",
-      "beamSteelDarkBlush",
     ],
   },
   {

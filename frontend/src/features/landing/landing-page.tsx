@@ -57,7 +57,7 @@ const SecuritySection: React.FC = () => (
     minH={FEATURE_BAND_MIN_H}
     display="flex"
   >
-    <LightField variant="beamSteelDarkBlush" position="absolute" inset={0} />
+    <LightField variant="beamSteelDark" position="absolute" inset={0} />
     {/* The heading top left, like the other sections' headings, then the
       four controls two by two right under it, across the full width,
       filling the band. */}
@@ -77,7 +77,12 @@ const SecuritySection: React.FC = () => (
         lineHeight="1.1"
         color="site.fg.onDark"
       >
-        Security built for your most sensitive data
+        Security built for your{" "}
+        {/* The emphasis in the Business Overview's text on dark, as the
+          careers band's second line. */}
+        <Box as="span" color="overview.onDark2">
+          most sensitive data
+        </Box>
       </Text>
       <Box
         as="ul"

@@ -40,11 +40,11 @@ export const RouteErrorPage: React.FC = () => {
                 Something went wrong
               </Text>
               <Text textStyle="body.md" color="site.fg">
-                This page didn&rsquo;t load properly. Reloading usually fixes
-                it.
+                This page didn&rsquo;t load properly, and reloading usually
+                fixes it.
               </Text>
               {/* The site's buttons: reload first, the way out second. */}
-              <Box display="flex" flexWrap="wrap" gap="12px">
+              <Box display="flex" flexWrap="wrap" gap="12px" mt="16px">
                 <SolidCta
                   h="32px"
                   onClick={() => window.location.reload()}
