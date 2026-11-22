@@ -10,6 +10,7 @@ import { ApproachSection } from "@/features/landing/approach-section";
 import { CustomerQuotes } from "@/features/landing/customer-quotes";
 import { FoundationSection } from "@/features/landing/foundation-section";
 import { LandingHero } from "@/features/landing/landing-hero";
+import { LightField } from "@/components/site/light-field";
 import { LogoMarquee } from "@/features/landing/logo-marquee";
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
@@ -61,6 +62,16 @@ const SECURITY_TONES = {
         "var(--rengo-colors-overview-line-dark)",
     },
   },
+  /** Navy-deep with the statement's steel beam, dim, low across it. */
+  navyDeepBeam: {
+    bg: "overview.navyDeep",
+    vars: {
+      "--rengo-colors-site-fg-on-dark-subtle":
+        "var(--rengo-colors-overview-on-dark2)",
+      "--rengo-colors-site-border-on-dark":
+        "var(--rengo-colors-overview-line-dark)",
+    },
+  },
   light: {
     bg: "overview.tint",
     vars: {
@@ -75,11 +86,15 @@ type SecurityTone = keyof typeof SECURITY_TONES;
 
 const SecurityBands: React.FC<{ tone: SecurityTone }> = ({ tone }) => {
   const t = SECURITY_TONES[tone];
-  const logosOn = tone === "light" ? SECURITY_TONES.navyDeep : t;
+  const logosOn =
+    tone === "light" || tone === "navyDeepBeam" ? SECURITY_TONES.navyDeep : t;
   return (
     <>
-      <Section bg={t.bg} css={t.vars}>
-        <Box pb={{ base: "40px", lg: "60px" }}>
+      <Section bg={t.bg} css={t.vars} position="relative" overflow="hidden">
+        {tone === "navyDeepBeam" && (
+          <LightField variant="beamSteelDark" position="absolute" inset={0} />
+        )}
+        <Box position="relative" pb={{ base: "40px", lg: "60px" }}>
           <Text
             as="h2"
             textStyle="h3"
@@ -90,7 +105,11 @@ const SecurityBands: React.FC<{ tone: SecurityTone }> = ({ tone }) => {
             Security built for your most sensitive data
           </Text>
         </Box>
-        <ComplianceCardGroup items={COMPLIANCE} h={{ lg: "176px" }} />
+        <ComplianceCardGroup
+          items={COMPLIANCE}
+          h={{ lg: "176px" }}
+          position="relative"
+        />
       </Section>
       <Section grid rhythm="compact" bg={logosOn.bg} css={logosOn.vars}>
         <GridCol span={{ base: 16, lg: 3 }} display="flex" alignItems="center">
@@ -140,10 +159,11 @@ export const LandingPage: React.FC = () => (
       <CustomerQuotes />
 
       {/* --- Security and logos --------------------------------------------- */}
-      {/* Three grounds from the Business Overview's palette, one above the
-        other, to choose between: navy-deep, navy, and the light panel tint.
-        Keep one. */}
+      {/* Four grounds from the Business Overview's palette, one above the
+        other, to choose between: navy-deep, navy-deep with the statement's
+        steel beam, navy, and the light panel tint. Keep one. */}
       <SecurityBands tone="navyDeep" />
+      <SecurityBands tone="navyDeepBeam" />
       <SecurityBands tone="navy" />
       <SecurityBands tone="light" />
 

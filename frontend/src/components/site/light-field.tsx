@@ -49,6 +49,9 @@ type LightVariant = {
   shapes?: Shape[];
   /** CSS gradient layers, top first, drawn under the shapes. */
   layers?: string[];
+  /** The grain's strength, 0 to 1 (default 1). The grain is drawn for
+   * light grounds; on a dark one it reads as static, so turn it down. */
+  grain?: number;
 };
 
 const BLOB = "50%";
@@ -222,6 +225,35 @@ export const LIGHT_VARIANTS = {
         rgb: STEEL,
         a: 0.75,
         blur: 26,
+        rotate: -8,
+        radius: BEAM,
+      },
+    ],
+  },
+  beamSteelDark: {
+    name: "Steel beam on navy",
+    base: "#1B2A36", // overview.navyDeep
+    grain: 0.08,
+    shapes: [
+      {
+        x: 45,
+        y: 74,
+        w: 140,
+        h: 18,
+        rgb: STEEL,
+        a: 0.32,
+        blur: 34,
+        rotate: -8,
+        radius: BEAM,
+      },
+      {
+        x: 60,
+        y: 70,
+        w: 90,
+        h: 8,
+        rgb: SKY,
+        a: 0.18,
+        blur: 22,
         rotate: -8,
         radius: BEAM,
       },
@@ -589,6 +621,7 @@ export const LightField: React.FC<
         inset={0}
         bgImage={GRAIN_TILE}
         bgSize="200px 200px"
+        opacity={v.grain ?? 1}
       />
     </Box>
   );
