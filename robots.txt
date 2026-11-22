@@ -1,4 +1,5 @@
 User-agent: *
 Disallow: /styleguide
+Disallow: /gradients
 
 Sitemap: https://rengoai.com/sitemap.xml
