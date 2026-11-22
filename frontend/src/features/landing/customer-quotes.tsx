@@ -50,9 +50,9 @@ const Arrow: React.FC<{
     placeItems="center"
     borderRadius="4px"
     border="1px solid"
-    borderColor="border.emphasized"
+    borderColor="border.muted"
     color="site.fg.strong"
-    bg="site.bg.raised"
+    bg="transparent"
     transition="opacity 200ms ease"
     _disabled={{ opacity: 0.35, cursor: "default" }}
     _focusVisible={{
@@ -65,13 +65,38 @@ const Arrow: React.FC<{
   </chakra.button>
 );
 
+/** Who said it: the role, then the fund, quietly. */
+const Attribution: React.FC<{ q: (typeof QUOTES)[number] }> = ({ q }) => (
+  <Box>
+    <Text textStyle="body.sm" color="site.fg.strong">
+      {q.role}
+    </Text>
+    <Text textStyle="body.sm" color="site.fg.muted">
+      {q.size} {q.firm}
+    </Text>
+  </Box>
+);
+
+/** The section's heading, as the other sections' headings. */
+const Heading: React.FC = () => (
+  <Text
+    as="h2"
+    textStyle="h4"
+    fontWeight={400}
+    lineHeight="1.1"
+    color="site.fg.heading"
+    maxW={{ base: "75vw", md: "296px" }}
+  >
+    Our customers in their own words
+  </Text>
+);
+
 /**
- * Customer stories as a carousel, after Jack & Jill's: large quote cards in
- * a row that slides sideways, a little over two showing on desktop, with
- * arrows. Each card leads with the fund's size, the strongest thing the
- * quotes carry. Built to take more quotes: add them to QUOTES.
+ * A, editorial cards (after Jack & Jill): the carousel, each card a
+ * borderless panel in the Business Overview's tint with the quote large in
+ * the serif and who said it quietly at the foot.
  */
-export const CustomerQuotes: React.FC = () => {
+const QuoteCards: React.FC = () => {
   const trackRef = React.useRef<HTMLUListElement>(null);
   const reduced = usePrefersReducedMotion();
   const [edges, setEdges] = React.useState({ start: true, end: false });
@@ -97,13 +122,13 @@ export const CustomerQuotes: React.FC = () => {
     const card = el?.querySelector("li");
     if (!el || !card) return;
     el.scrollBy({
-      left: dir * (card.getBoundingClientRect().width + 20),
+      left: dir * (card.getBoundingClientRect().width + 16),
       behavior: reduced ? "auto" : "smooth",
     });
   };
 
   return (
-    <Section bg="site.bg.surface" py="72px" overflow="hidden">
+    <Section bg="site.bg.surface" py="96px" overflow="hidden">
       <Box
         display="flex"
         alignItems="flex-end"
@@ -111,17 +136,7 @@ export const CustomerQuotes: React.FC = () => {
         gap="24px"
         pb="40px"
       >
-        <Text
-          as="h2"
-          // The section headings' size, as the sections above.
-          textStyle="h4"
-          fontWeight={400}
-          lineHeight="1.1"
-          color="site.fg.heading"
-          maxW={{ base: "75vw", md: "296px" }}
-        >
-          Our customers in their own words
-        </Text>
+        <Heading />
         <Box display="flex" gap="8px" flexShrink={0}>
           <Arrow dir="prev" disabled={edges.start} onClick={() => step(-1)} />
           <Arrow dir="next" disabled={edges.end} onClick={() => step(1)} />
@@ -134,7 +149,7 @@ export const CustomerQuotes: React.FC = () => {
         aria-label="Customer quotes"
         tabIndex={0}
         display="flex"
-        gap="20px"
+        gap="16px"
         overflowX="auto"
         // Runs out past the gutter on the right, so the next card shows it
         // continues.
@@ -158,48 +173,108 @@ export const CustomerQuotes: React.FC = () => {
             flex={{
               base: "0 0 85%",
               md: "0 0 60%",
-              lg: "0 0 calc((100% - 40px) / 2.4)",
+              lg: "0 0 calc((100% - 32px) / 2.4)",
             }}
             css={{ scrollSnapAlign: "start" }}
-            bg="site.bg.raised"
-            border="1px solid"
-            borderColor="border.subtle"
+            bg="overview.tint"
             borderRadius="4px"
-            p={{ base: "24px", md: "32px" }}
-            minH={{ md: "380px" }}
+            p={{ base: "28px", md: "40px" }}
+            minH={{ md: "400px" }}
             display="flex"
             flexDirection="column"
-            gap="28px"
+            justifyContent="space-between"
+            gap="40px"
           >
-            {/* The fund, large: who's speaking, in the terms a buyer scans
-              for. */}
-            <Box>
-              <Text
-                textStyle="d1"
-                fontSize={{ base: "2.25rem", md: "2.75rem" }}
-                lineHeight="1"
-                color="site.highlight"
-              >
-                {q.size}
-              </Text>
-              <Text textStyle="body.sm" color="site.fg.muted" mt="6px">
-                {q.firm}
-              </Text>
-            </Box>
             <Text
               as="blockquote"
-              textStyle="d5"
+              textStyle="d4"
+              fontSize={{ base: "1.25rem", md: "1.5rem" }}
+              lineHeight="1.3"
               color="site.fg.strong"
-              flex="1"
             >
               {q.quote}
             </Text>
-            <Text textStyle="body.sm" color="site.fg">
-              {q.role}
-            </Text>
+            <Attribution q={q} />
           </Box>
         ))}
       </Box>
     </Section>
   );
 };
+
+/**
+ * B, one quote at a time (after Amperos and the Business Overview's pull
+ * quotes): a single quote large in the serif across most of the width, who
+ * said it under it, and a quiet counter with arrows to step through.
+ */
+const QuoteFeature: React.FC = () => {
+  const [i, setI] = React.useState(0);
+  const q = QUOTES[i];
+  const n = QUOTES.length;
+  const pad = (k: number) => String(k).padStart(2, "0");
+  return (
+    <Section bg="site.bg.surface" py="96px">
+      <Box pb={{ base: "40px", lg: "56px" }}>
+        <Heading />
+      </Box>
+      <Box
+        as="figure"
+        maxW="1000px"
+        display="flex"
+        flexDirection="column"
+        gap="40px"
+        aria-live="polite"
+      >
+        <Text
+          as="blockquote"
+          key={i}
+          textStyle="d3"
+          fontSize={{ base: "1.625rem", md: "2.125rem", lg: "2.5rem" }}
+          lineHeight="1.2"
+          color="site.fg.strong"
+          minH={{ lg: "6em" }}
+          animation="fade-in 400ms ease"
+          _motionReduce={{ animation: "none" }}
+        >
+          {q.quote}
+        </Text>
+        <Box
+          as="figcaption"
+          display="flex"
+          alignItems="flex-end"
+          justifyContent="space-between"
+          gap="24px"
+        >
+          <Attribution q={q} />
+          <Box display="flex" alignItems="center" gap="16px">
+            <Text
+              textStyle="label"
+              color="site.fg.muted"
+              fontVariantNumeric="tabular-nums"
+            >
+              {pad(i + 1)} / {pad(n)}
+            </Text>
+            <Arrow
+              dir="prev"
+              disabled={i === 0}
+              onClick={() => setI((k) => k - 1)}
+            />
+            <Arrow
+              dir="next"
+              disabled={i === n - 1}
+              onClick={() => setI((k) => k + 1)}
+            />
+          </Box>
+        </Box>
+      </Box>
+    </Section>
+  );
+};
+
+/**
+ * Customer stories, built to take more quotes: add them to QUOTES. Two
+ * takes to choose between; keep one.
+ */
+export const CustomerQuotes: React.FC<{ variant: "cards" | "feature" }> = ({
+  variant,
+}) => (variant === "cards" ? <QuoteCards /> : <QuoteFeature />);

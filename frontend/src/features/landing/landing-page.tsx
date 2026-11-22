@@ -142,7 +142,10 @@ export const LandingPage: React.FC = () => (
       <ApproachSection />
 
       {/* --- Customer stories ------------------------------------------- */}
-      <CustomerQuotes />
+      {/* Two takes, one above the other, to choose between: editorial
+        cards and one quote at a time. Keep one. */}
+      <CustomerQuotes variant="cards" />
+      <CustomerQuotes variant="feature" />
 
       {/* --- Security --------------------------------------------- */}
       <SecuritySection />
