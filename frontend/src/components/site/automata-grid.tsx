@@ -1,7 +1,6 @@
 import { CanvasFill } from "@/components/site/canvas/canvas-fill";
 import { rand } from "@/components/site/canvas/canvas-utils";
-import { heroDotColor } from "@/components/site/canvas/hero-dots";
-import { INK } from "@/components/site/canvas/ink";
+import { DOT_FLECK, heroDotColor } from "@/components/site/canvas/hero-dots";
 import { useCanvasLoop } from "@/components/site/canvas/use-canvas-loop";
 import React from "react";
 
@@ -88,7 +87,7 @@ const makeField = (w: number, h: number, t: number): Field => {
     age: new Uint8Array(n),
     ink: new Float32Array(n),
     color: Array.from({ length: n }, () =>
-      Math.random() < ACCENT_SHARE ? INK.crimson : heroDotColor(),
+      Math.random() < ACCENT_SHARE ? DOT_FLECK : heroDotColor(),
     ),
     acc: 0,
     nextSeed: t + seedDelay(SEED_CELLS / n),

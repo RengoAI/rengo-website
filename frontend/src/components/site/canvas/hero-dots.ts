@@ -7,16 +7,32 @@ import { mix } from "color2k";
  * surfaces that echo them: the outro's automaton and the /solutions figure.
  */
 
-/** The light greys: a cool, silvery ramp. */
-export const HERO_GREYS = ["#D3D9E3", "#C3CCD7", "#ACB6C5"];
-/** 40% of all dots in a solid pale grey-blue, lighter than #D3D9E3. */
-export const HERO_PALE = { color: "#E7EDF5", share: 0.4 };
-/** The light blues: just the brighter two, #94AED6 in place of Sky. */
-export const HERO_BLUES = ["#94AED6", INK.rengo300];
-/** The accent: #ABC8F7 greyed down a touch, on a quarter of the dots. */
-export const HERO_ACCENT = { color: "#B9CCE9", share: 0.25 };
-/** 10% of dots in the hero description's dark navy (slate.100). */
-export const HERO_HIGHLIGHT = { color: "#425366", share: 0.1 };
+/*
+ * The palette is the Business Overview's ramp (proposal.css), so the dots
+ * sit with the page's steel and navy rather than the brighter periwinkle
+ * they had: its haze, rule and line for the greys, its slate-light for the
+ * blues, tint-2 for the pale, navy for the highlight.
+ * The crimson flecks stay: the site's tertiary colour, mixed in.
+ */
+
+/** The light greys: the Overview's haze, rule and line. */
+export const HERO_GREYS = [INK.ovHaze, INK.ovRule, INK.ovLine];
+/** 40% of all dots in a solid pale: the Overview's tint-2. */
+export const HERO_PALE = { color: INK.ovTint2, share: 0.4 };
+/**
+ * The blues: the Overview's slate-light, its bluer steel. (Its steel,
+ * #8FA9BC, leans teal, and read as green beside the crimson flecks.)
+ */
+export const HERO_BLUES = [INK.ovSteelLight];
+/** The accent, on a quarter of the dots: between haze and slate-light. */
+export const HERO_ACCENT = { color: "#A9C0D0", share: 0.25 };
+/** 10% of dots in the Overview's navy. */
+export const HERO_HIGHLIGHT = { color: INK.ovNavy, share: 0.1 };
+/**
+ * The few flecks that set the field off (8% of the dots where a figure
+ * uses them): the site's crimson, its tertiary colour.
+ */
+export const DOT_FLECK = INK.crimson;
 
 /**
  * Every dot figure's dot size, px, at every screen width: the size the app's

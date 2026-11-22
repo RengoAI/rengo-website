@@ -1,9 +1,13 @@
 import { Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import { AutomataGrid } from "@/components/site/automata-grid";
-import { CONTACT_HREF, NAV_H } from "@/components/site/site-constants";
+import {
+  CONTACT_HREF,
+  FEATURE_BAND_MIN_H,
+  NAV_H,
+} from "@/components/site/site-constants";
 import { SolidCta } from "@/components/site/solid-cta";
-import { SCREEN_WASH } from "@/components/site/site-wash";
+import { LightField } from "@/components/site/light-field";
 import { prefersReducedMotion } from "@/shared/utils/motion";
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
@@ -41,7 +45,7 @@ export const SiteOutro: React.FC<{
    * "below-nav" when it's scrolled to under the sticky nav (the landing's
    * close), so it fills the screen left under the bar.
    */
-  fill?: boolean | "below-nav";
+  fill?: boolean | "below-nav" | "feature";
   /**
    * What's behind the line: the automaton (the product's voice, the
    * default) or the colour wash the blog uses (the company pages').
@@ -74,22 +78,30 @@ export const SiteOutro: React.FC<{
     <Box
       as="section"
       position="relative"
-      // The footer's grey, so the outro runs into it; or the wash.
-      {...(wash ? SCREEN_WASH : { bg: "site.bg.footer" })}
+      // The footer's grey, so the outro runs into it; or the wash, drawn by
+      // LightField below.
+      bg="site.bg.footer"
       overflow="hidden"
       // A minimum, so content still fits on a very short screen.
       minH={
         fill === "below-nav"
           ? `calc(100svh - ${NAV_H}px)`
-          : fill
-            ? "100svh"
-            : undefined
+          : fill === "feature"
+            ? // The landing's big moments' height, plus the overlaid nav.
+              `calc(${FEATURE_BAND_MIN_H} + ${NAV_H}px)`
+            : fill
+              ? "100svh"
+              : undefined
       }
       display={fill ? "flex" : undefined}
       alignItems={fill ? "center" : undefined}
       aria-labelledby="outro-heading"
     >
-      {!wash && <AutomataGrid />}
+      {wash ? (
+        <LightField variant="washScreen" position="absolute" inset={0} />
+      ) : (
+        <AutomataGrid />
+      )}
       <Section
         as="div"
         rhythm="none"

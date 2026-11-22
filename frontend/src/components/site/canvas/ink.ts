@@ -32,4 +32,13 @@ export const INK = {
   soot700: colors.soot[700].value,
   soot800: colors.soot[800].value,
   crimson: colors.crimson.value,
+  // The Business Overview's ramp (its proposal.css).
+  ovTint2: colors.overview.tint2.value,
+  ovHaze: colors.overview.haze.value,
+  ovRule: colors.overview.rule.value,
+  ovLine: colors.overview.line.value,
+  ovSteel: colors.overview.steel.value,
+  ovSteelLight: colors.overview.steelLight.value,
+  ovSlate: colors.overview.slate.value,
+  ovNavy: colors.overview.navy.value,
 };
