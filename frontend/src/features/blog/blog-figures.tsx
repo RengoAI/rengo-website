@@ -14,8 +14,9 @@ const C = {
    * Overview. */
   lineStrong: colorVar("site.fg.heading"),
   node: colorVar("site.bg.raised"),
-  /** The steps' outline: light, but visible on white. */
-  nodeStroke: colorVar("site.border.dashed"),
+  /** The steps' and questions' outline: the faintest rule, so the shapes
+   * sit quietly and the connectors carry the flow. */
+  nodeStroke: colorVar("border.subtle"),
   text: colorVar("site.fg.strong"),
   muted: colorVar("site.fg.muted"),
   branch: colorVar("site.fg.heading"),
@@ -130,23 +131,19 @@ const Node: React.FC<{
   );
 };
 
-/**
- * A yes-or-no question, as a diamond centred on (cx, cy), outlined in the
- * connectors' colour as in the Business Overview.
- */
+/** A yes-or-no question, as a diamond centred on (cx, cy). */
 const Decision: React.FC<{
   cx: number;
   cy: number;
   w: number;
   h: number;
   label: string | string[];
-  strong?: boolean;
-}> = ({ cx, cy, w, h, label, strong }) => (
+}> = ({ cx, cy, w, h, label }) => (
   <g>
     <polygon
       points={`${cx},${cy - h / 2} ${cx + w / 2},${cy} ${cx},${cy + h / 2} ${cx - w / 2},${cy}`}
       fill={C.node}
-      stroke={strong ? C.lineStrong : C.line}
+      stroke={C.nodeStroke}
     />
     <Lines x={cx} y={cy} label={label} />
   </g>
@@ -475,7 +472,6 @@ export const DatabaseFlow: React.FC = () => {
         cx={cx}
         cy={116}
         {...diamond}
-        strong
         label="Is it already in the database?"
       />
       <Node
