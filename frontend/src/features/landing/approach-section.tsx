@@ -1,6 +1,7 @@
 import { GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import { TESTIMONIAL_WASHES } from "@/components/site/split-card";
+import { StepArt } from "@/features/landing/step-art";
 import { usePrefersReducedMotion } from "@/shared/utils/motion";
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
@@ -28,9 +29,8 @@ const HOW_WE_WORK = [
  * How the strips sit on the section's wash, after metic.: panels a step
  * darker than the ground, not lighter, with no outline (border.subtle is
  * lighter than this wash, so it drew as a white line; a darker edge looked
- * heavy), and the
- * foundation's grey renders fading through each, as metic.'s photos do:
- * one layer per step, top to bottom.
+ * heavy), and a line drawing for each step through it (step-art), where
+ * metic. has photos.
  */
 const STRIP_BG = "rgba(12, 29, 52, 0.045)";
 
@@ -131,25 +131,26 @@ const ApproachAccordion: React.FC = () => {
                   borderRadius: "4px",
                 }}
               />
-              {/* The step's render, fading toward the strip's foot. */}
+              {/* The step's drawing, over the top of the strip, fading
+                toward its foot where the copy sits. */}
               <Box
                 aria-hidden
                 display={{ base: "none", md: "block" }}
                 position="absolute"
-                inset={0}
-                bgImage={`url(/img/rebrand/foundation-layer-${i + 1}.webp)`}
-                bgSize="auto 135%"
-                backgroundPosition={isOpen ? "70% 20%" : "40% 20%"}
-                bgRepeat="no-repeat"
-                opacity={isOpen ? 0.9 : 0.55}
-                // Fades out toward the foot, where the copy sits.
+                top="12px"
+                left={0}
+                right={0}
+                h="68%"
+                opacity={isOpen ? 1 : 0.55}
                 css={{
                   maskImage:
-                    "linear-gradient(to bottom, black 35%, transparent 80%)",
+                    "linear-gradient(to bottom, black 60%, transparent 100%)",
                 }}
-                transition="opacity 300ms ease, background-position 500ms ease"
+                transition="opacity 300ms ease"
                 _motionReduce={{ transition: "none" }}
-              />
+              >
+                <StepArt i={i} />
+              </Box>
               {/* Closed: the title on end, reading up from the bottom. */}
               <Text
                 display={{ base: "none", md: "block" }}
