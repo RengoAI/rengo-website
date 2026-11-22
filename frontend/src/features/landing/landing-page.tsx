@@ -84,7 +84,12 @@ export const LandingPage: React.FC = () => (
       <FoundationSection />
 
       {/* --- How we work ---------------------------------------------- */}
-      <ApproachSection />
+      {/* Three grounds for it, one above the other, to choose between:
+        navy, the deep wash with grain, and plain with a blue open strip.
+        Keep one. */}
+      <ApproachSection tone="navy" />
+      <ApproachSection tone="deep" />
+      <ApproachSection tone="blue" />
 
       {/* --- Testimonials ----------------------------------------------------- */}
       {/* On the page surface, under the solutions band. */}
