@@ -2,35 +2,20 @@ import { rootRoute } from "@/app/app-routes";
 import { NotFound } from "@/components/empty/not-found";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
-import { hoverFade } from "@/components/site/site-styles";
+import { SolidCta } from "@/components/site/solid-cta";
 import {
   isChunkLoadError,
   reloadOnceForStaleChunk,
 } from "@/shared/utils/stale-chunks";
-import { Box, Center, chakra, Text, VStack } from "@chakra-ui/react";
+import { Box, Center, Text, VStack } from "@chakra-ui/react";
 import React from "react";
-import { isRouteErrorResponse, Link, useRouteError } from "react-router";
-
-const RouterLink = chakra(Link);
-
-const LINK = {
-  display: "inline-flex",
-  alignItems: "center",
-  minH: "44px",
-  textStyle: "body.sm",
-  color: "site.fg.strong",
-  textDecoration: "underline",
-  textUnderlineOffset: "3px",
-  cursor: "pointer",
-  ...hoverFade,
-} as const;
+import { isRouteErrorResponse, useRouteError } from "react-router";
 
 /**
  * What shows when a page fails, in place of the router's developer screen:
  * the site's nav and footer around a short note and a way on. A 404 gets
  * the not-found page. A stale build (a tab open across a deploy) reloads
  * itself once onto the new one, so most visitors never see this at all.
- * In development the error's message shows under the note.
  */
 export const RouteErrorPage: React.FC = () => {
   const error = useRouteError();
@@ -58,32 +43,24 @@ export const RouteErrorPage: React.FC = () => {
                 This page didn&rsquo;t load properly. Reloading usually fixes
                 it.
               </Text>
-              <Box as="ul" display="flex" gap="24px">
-                <li>
-                  <chakra.button
-                    type="button"
-                    onClick={() => window.location.reload()}
-                    {...LINK}
-                  >
-                    Reload the page
-                  </chakra.button>
-                </li>
-                <li>
-                  <RouterLink to={rootRoute({}).$} {...LINK}>
-                    Go to the homepage
-                  </RouterLink>
-                </li>
-              </Box>
-              {import.meta.env.DEV && (
-                <Text
-                  as="pre"
-                  textStyle="label"
-                  color="site.fg.muted"
-                  whiteSpace="pre-wrap"
+              {/* The site's buttons: reload first, the way out second. */}
+              <Box display="flex" flexWrap="wrap" gap="12px">
+                <SolidCta
+                  h="32px"
+                  onClick={() => window.location.reload()}
+                  labelProps={{ gap: "8px" }}
                 >
-                  {error instanceof Error ? error.message : String(error)}
-                </Text>
-              )}
+                  Reload the page
+                </SolidCta>
+                <SolidCta
+                  tone="secondary"
+                  h="32px"
+                  href={rootRoute({}).$}
+                  labelProps={{ gap: "8px" }}
+                >
+                  Go to the homepage
+                </SolidCta>
+              </Box>
             </VStack>
           </Center>
         )}
