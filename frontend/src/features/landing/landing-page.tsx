@@ -8,10 +8,7 @@ import {
 } from "@/components/site/site-constants";
 import { SolidCta } from "@/components/site/solid-cta";
 import { StatementBand } from "@/components/site/statement-band";
-import {
-  APPROACH_OVERVIEW_LIGHTS,
-  ApproachSection,
-} from "@/features/landing/approach-section";
+import { ApproachSection } from "@/features/landing/approach-section";
 import { CustomerQuotes } from "@/features/landing/customer-quotes";
 import { FoundationSection } from "@/features/landing/foundation-section";
 import { LandingHero } from "@/features/landing/landing-hero";
@@ -142,11 +139,7 @@ export const LandingPage: React.FC = () => (
       <FoundationSection />
 
       {/* --- How we work ---------------------------------------------- */}
-      {/* The current pools, then two takes in the Business Overview's
-        colours, one above the other, to choose between. Keep one. */}
       <ApproachSection />
-      <ApproachSection lights={APPROACH_OVERVIEW_LIGHTS.light} />
-      <ApproachSection lights={APPROACH_OVERVIEW_LIGHTS.progression} />
 
       {/* --- Customer stories ------------------------------------------- */}
       <CustomerQuotes />

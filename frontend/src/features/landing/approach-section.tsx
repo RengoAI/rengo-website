@@ -34,13 +34,13 @@ const HOW_WE_WORK = [
  */
 const STRIP_BG = "#F7F8FA";
 
-/** Each step's light: pools of sky that nearly fill the strip, with a
- * deeper blue core at the third step. */
+/** Each step's light: the Business Overview's steel, pooled through the
+ * strip, in its colours rather than the site's brighter sky. */
 const STEP_LIGHT: LightFieldVariant[] = [
-  "poolBroad",
-  "poolFull",
-  "blueCore",
-  "poolFull",
+  "ovSteel",
+  "ovSteel",
+  "ovSteel",
+  "ovSteel",
 ];
 
 /** The section's head: the partnership line. */
@@ -73,10 +73,7 @@ const ACCORDION_ADVANCE = 5000;
  * their titles turned on end. Hovering, focusing or clicking a strip opens
  * it; until then they open in turn. Phones list the steps open, stacked.
  */
-const ApproachAccordion: React.FC<{
-  /** The four strips' lights, first step to last. */
-  lights?: LightFieldVariant[];
-}> = ({ lights = STEP_LIGHT }) => {
+const ApproachAccordion: React.FC = () => {
   const [open, setOpen] = React.useState(0);
   const [picked, setPicked] = React.useState(false);
   const reduced = usePrefersReducedMotion();
@@ -112,7 +109,7 @@ const ApproachAccordion: React.FC<{
         {HOW_WE_WORK.map((step, i) => {
           const isOpen = open === i;
           // Light type on a dark strip (the Overview's slate and navy).
-          const dark = isDarkLight(lights[i]);
+          const dark = isDarkLight(STEP_LIGHT[i]);
           const ink = dark ? "site.fg.onDark" : "site.fg.strong";
           const inkSoft = dark ? "overview.onDark2" : "soot.600";
           return (
@@ -153,7 +150,7 @@ const ApproachAccordion: React.FC<{
               />
               {/* The step's light, stronger when open. */}
               <LightField
-                variant={lights[i]}
+                variant={STEP_LIGHT[i]}
                 position="absolute"
                 inset={0}
                 // Dark strips stay near full when closed, or they turn muddy.
@@ -224,11 +221,3 @@ const ApproachAccordion: React.FC<{
 };
 
 export const ApproachSection = ApproachAccordion;
-
-/** Lights in the Business Overview's colours, to choose between. */
-export const APPROACH_OVERVIEW_LIGHTS: Record<string, LightFieldVariant[]> = {
-  /** All light: the Overview's tint, haze and steel. */
-  light: ["ovHaze", "ovSteel", "ovHaze", "ovSteel"],
-  /** Its cycle cards' progression: tint, tint-2, slate, navy. */
-  progression: ["ovTint", "ovHaze", "ovSlate", "ovNavy"],
-};
