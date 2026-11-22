@@ -48,7 +48,8 @@ export const RouteErrorPage: React.FC = () => {
                 <SolidCta
                   h="32px"
                   onClick={() => window.location.reload()}
-                  labelProps={{ gap: "8px" }}
+                  // No arrow: reloading doesn't go anywhere.
+                  labelProps={{ arrow: false }}
                 >
                   Reload the page
                 </SolidCta>

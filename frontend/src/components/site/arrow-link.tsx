@@ -13,6 +13,9 @@ export type ArrowLinkProps = Omit<BoxProps, "as"> & {
   underline?: boolean;
   /** Space between label and arrow. */
   gap?: BoxProps["gap"];
+  /** Draw the arrow (default). False for an action that doesn't go
+   * anywhere, like a reload. */
+  arrow?: boolean;
 };
 
 export const ArrowLink: React.FC<ArrowLinkProps> = ({
@@ -20,6 +23,7 @@ export const ArrowLink: React.FC<ArrowLinkProps> = ({
   href,
   underline = false,
   gap = "24px",
+  arrow = true,
   ...rest
 }) => (
   <Box
@@ -38,8 +42,10 @@ export const ArrowLink: React.FC<ArrowLinkProps> = ({
     {...rest}
   >
     <Box as="span">{children}</Box>
-    <Box as="span" aria-hidden>
-      →
-    </Box>
+    {arrow && (
+      <Box as="span" aria-hidden>
+        →
+      </Box>
+    )}
   </Box>
 );
