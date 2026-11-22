@@ -153,11 +153,8 @@ export const CareersPage: React.FC = () => (
 
       <Section
         id="open-roles"
-        rhythm="none"
+        // As tall as its roles, with the site's section padding.
         bg="site.bg.surface"
-        minH="100svh"
-        pt="96px"
-        pb="60px"
         scrollMarginTop={`${NAV_H}px`}
       >
         {/* The article column, as on the blog index: a left-aligned
