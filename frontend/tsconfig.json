@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
-    "paths": { "@/*": ["./*"] },
+    "paths": { "@/*": ["./src/*"] },
     "target": "ES2022",
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "ES2022",
