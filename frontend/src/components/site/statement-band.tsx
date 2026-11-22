@@ -178,12 +178,22 @@ export const StatementBand: React.FC<{
    * (the close, running into the footer).
    */
   tone?: "wash" | "plain";
+  /**
+   * Hold the band still instead of animating on scroll: the dots stay this
+   * far through their settle (0 scattered, 1 the grid) and the line shows
+   * in full. The close sits part-way, loosely gathered round the line.
+   */
+  still?: number;
   children?: React.ReactNode;
-}> = ({ lead, point, id, tone = "wash", children }) => {
+}> = ({ lead, point, id, tone = "wash", still, children }) => {
   // A box over the whole band, to measure it (Section takes no ref).
   const ref = React.useRef<HTMLDivElement>(null);
   const reduced = usePrefersReducedMotion();
-  const progress = React.useRef(reduced ? 1 : 0);
+  const held = still !== undefined;
+  // Where the dots sit when nothing moves them: held, or reduced motion's
+  // settled grid.
+  const rest = held ? still : 1;
+  const progress = React.useRef(held || reduced ? rest : 0);
   // Re-renders only when the progress moves, to restyle the words.
   const [tick, setTick] = React.useState(0);
 
@@ -196,13 +206,14 @@ export const StatementBand: React.FC<{
       setTick((t) => t + 1);
     }
   }, []);
-  useScrollFrame(reduced ? null : update);
+  const animated = !held && !reduced;
+  useScrollFrame(animated ? update : null);
   React.useEffect(() => {
-    if (reduced) {
-      progress.current = 1;
+    if (!animated) {
+      progress.current = rest;
       setTick((t) => t + 1);
     }
-  }, [reduced]);
+  }, [animated, rest]);
 
   const words = [
     ...lead.split(" ").map((w) => ({ w, blue: false })),
@@ -210,6 +221,7 @@ export const StatementBand: React.FC<{
   ];
   // Each word fills over its own slice of the scroll, overlapping the next.
   const lit = (i: number) => {
+    if (!animated) return 1;
     // Done by 90% of the scroll, so the last word lands at full strength.
     const p = Math.min(progress.current / 0.9, 1);
     const t = p * (words.length + 2) - i;

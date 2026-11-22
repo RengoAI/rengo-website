@@ -276,6 +276,8 @@ export const LandingPage: React.FC = () => (
         lead="Ready to make your data"
         point="your alpha?"
         tone="plain"
+        // Held part-way: the dots scattered loosely round the line.
+        still={0.55}
       >
         <SolidCta h="27px" href={CONTACT_HREF} labelProps={{ gap: "8px" }}>
           Book a call
