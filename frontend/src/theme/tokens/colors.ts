@@ -317,6 +317,7 @@ export const colors = defineTokens.colors({
    * ported from it: steel blues and navy, quieter than the site's own.
    */
   overview: {
+    navyDeep: { value: "#1B2A36" }, // --navy-deep: dark grounds
     navy: { value: "#253746" }, // --navy: headings, dark marks
     slate: { value: "#35566D" }, // --slate: accent, Rengo's path
     line: { value: "#9AABBA" }, // --line: diagram connectors
@@ -325,6 +326,9 @@ export const colors = defineTokens.colors({
     haze: { value: "#C9D6E0" }, // the database's second slab
     tint2: { value: "#E6EDF2" }, // --tint-2: highlight fill, bottom slab
     tint: { value: "#F4F6F8" }, // --tint: panels
+    lineDark: { value: "#5C6E7D" }, // --line-dark: connectors on dark
+    onDark2: { value: "#C9D6E0" }, // --on-dark-2: text on dark
+    rule: { value: "#C9D0D6" }, // --rule: strong rules, pill borders
   },
 
   // Marketing site palette (Figma: Rengo Marketing Site)

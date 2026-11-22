@@ -35,6 +35,77 @@ const COMPLIANCE = [
   },
 ];
 
+/**
+ * The Business Overview's grounds for the security and logo bands, in place
+ * of the near-black silver.800. Each re-points the dark bands' colour
+ * tokens (as CSS variables) to the Overview's: its text on dark, its lines
+ * on dark. "light" sets security on the Overview's panel tint, in its navy
+ * ink and rules; the logos, white, stay on navy-deep.
+ */
+const SECURITY_TONES = {
+  navyDeep: {
+    bg: "overview.navyDeep",
+    vars: {
+      "--rengo-colors-site-fg-on-dark-subtle":
+        "var(--rengo-colors-overview-on-dark2)",
+      "--rengo-colors-site-border-on-dark":
+        "var(--rengo-colors-overview-line-dark)",
+    },
+  },
+  navy: {
+    bg: "overview.navy",
+    vars: {
+      "--rengo-colors-site-fg-on-dark-subtle":
+        "var(--rengo-colors-overview-on-dark2)",
+      "--rengo-colors-site-border-on-dark":
+        "var(--rengo-colors-overview-line-dark)",
+    },
+  },
+  light: {
+    bg: "overview.tint",
+    vars: {
+      "--rengo-colors-site-fg-on-dark": "var(--rengo-colors-overview-navy)",
+      "--rengo-colors-site-fg-on-dark-subtle": "var(--rengo-colors-silver-700)",
+      "--rengo-colors-site-border-on-dark": "var(--rengo-colors-overview-rule)",
+    },
+  },
+} as const;
+
+type SecurityTone = keyof typeof SECURITY_TONES;
+
+const SecurityBands: React.FC<{ tone: SecurityTone }> = ({ tone }) => {
+  const t = SECURITY_TONES[tone];
+  const logosOn = tone === "light" ? SECURITY_TONES.navyDeep : t;
+  return (
+    <>
+      <Section bg={t.bg} css={t.vars}>
+        <Box pb={{ base: "40px", lg: "60px" }}>
+          <Text
+            as="h2"
+            textStyle="h3"
+            fontWeight={300}
+            color="site.fg.onDark"
+            maxW={{ base: "60vw", md: "336px" }}
+          >
+            Security built for your most sensitive data
+          </Text>
+        </Box>
+        <ComplianceCardGroup items={COMPLIANCE} h={{ lg: "176px" }} />
+      </Section>
+      <Section grid rhythm="compact" bg={logosOn.bg} css={logosOn.vars}>
+        <GridCol span={{ base: 16, lg: 3 }} display="flex" alignItems="center">
+          <Text textStyle="label" fontWeight={300} color="site.fg.onDarkSubtle">
+            Bringing industry experience from
+          </Text>
+        </GridCol>
+        <GridCol span={{ base: 16, lg: 13 }} display="flex" alignItems="center">
+          <LogoMarquee />
+        </GridCol>
+      </Section>
+    </>
+  );
+};
+
 export const LandingPage: React.FC = () => (
   <Box bg="site.bg.page">
     <SiteNav overlay />
@@ -68,33 +139,13 @@ export const LandingPage: React.FC = () => (
       {/* --- Customer stories ------------------------------------------- */}
       <CustomerQuotes />
 
-      {/* --- Security --------------------------------------------------------- */}
-      <Section bg="site.bg.dark">
-        <Box pb={{ base: "40px", lg: "60px" }}>
-          <Text
-            as="h2"
-            textStyle="h3"
-            fontWeight={300}
-            color="site.fg.onDark"
-            maxW={{ base: "60vw", md: "336px" }}
-          >
-            Security built for your most sensitive data
-          </Text>
-        </Box>
-        <ComplianceCardGroup items={COMPLIANCE} h={{ lg: "176px" }} />
-      </Section>
-
-      {/* --- Logos ------------------------------------------------------------ */}
-      <Section grid rhythm="compact" bg="site.bg.dark">
-        <GridCol span={{ base: 16, lg: 3 }} display="flex" alignItems="center">
-          <Text textStyle="label" fontWeight={300} color="site.fg.onDarkSubtle">
-            Bringing industry experience from
-          </Text>
-        </GridCol>
-        <GridCol span={{ base: 16, lg: 13 }} display="flex" alignItems="center">
-          <LogoMarquee />
-        </GridCol>
-      </Section>
+      {/* --- Security and logos --------------------------------------------- */}
+      {/* Three grounds from the Business Overview's palette, one above the
+        other, to choose between: navy-deep, navy, and the light panel tint.
+        Keep one. */}
+      <SecurityBands tone="navyDeep" />
+      <SecurityBands tone="navy" />
+      <SecurityBands tone="light" />
 
       {/* The close, set as the opening statement's twin, with the call, on
         the footer's lighter grey so the line pops. */}
