@@ -67,12 +67,28 @@ jobs:
             git checkout --orphan production
           fi
 
+          # Keep the previous build's hashed files (listed in .assets-current)
+          # for one more release, so a tab opened before this deploy can
+          # still load its pages. Older builds' files are dropped.
+          mkdir -p /tmp/prev-assets
+          if [ -f .assets-current ]; then
+            while read -r f; do
+              [ -f "assets/$f" ] && cp "assets/$f" /tmp/prev-assets/
+            done < .assets-current
+          fi
+
           # Clear everything except .git
           find . -maxdepth 1 -not -name '.git' -not -name '.' -not -name '..' -exec rm -rf {} + 2>/dev/null || true
 
           # Copy build files from temp location
           echo "Copying build artifacts..."
           cp -r /tmp/deployment/* .
+
+          # Restore the previous build's files alongside the new ones (never
+          # over them), and record this build's for the next deploy.
+          mkdir -p assets
+          cp -n /tmp/prev-assets/* assets/ 2>/dev/null || true
+          ls /tmp/deployment/assets > .assets-current
 
           # Create .nojekyll file for GitHub Pages
           touch .nojekyll
