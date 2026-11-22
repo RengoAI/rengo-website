@@ -50,7 +50,6 @@ export const rootRoute = route(
       },
     ),
     styleguide: route("/styleguide", {}, {}),
-    gradients: route("/gradients", {}, {}),
     companyRedirect: route("/company", {}, {}),
     notFound: route("/*", {}, {}),
   },
