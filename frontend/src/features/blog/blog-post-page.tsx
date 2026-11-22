@@ -15,7 +15,7 @@ import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
 import { FIGURES } from "@/features/blog/blog-figures";
 import { WASH_SKY } from "@/components/site/site-wash";
-import { FIGURE_WASH } from "@/features/blog/blog-styles";
+import { FIGURE_WELL } from "@/features/blog/blog-styles";
 import {
   formatPostDate,
   getPostBySlug,
@@ -53,7 +53,7 @@ const Figure: React.FC<{
     <Box as="figure" my="12px">
       <FigureTitle>{block.title}</FigureTitle>
       <Box
-        {...FIGURE_WASH}
+        {...FIGURE_WELL}
         borderRadius="4px"
         px={{ base: "16px", md: "40px" }}
         py="40px"
