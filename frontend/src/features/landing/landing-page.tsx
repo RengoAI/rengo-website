@@ -1,4 +1,4 @@
-import { Grid, GridCol } from "@/components/layout/grid";
+import { GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import { ComplianceCardGroup } from "@/components/site/compliance-card";
 import { SiteFooter } from "@/components/site/site-footer";
@@ -7,36 +7,15 @@ import { CONTACT_HREF } from "@/components/site/site-constants";
 import { SolidCta } from "@/components/site/solid-cta";
 import { StatementBand } from "@/components/site/statement-band";
 import {
-  StepCard,
-  TESTIMONIAL_WASHES,
   TestimonialCard,
   type TestimonialWash,
 } from "@/components/site/split-card";
+import { ApproachSection } from "@/features/landing/approach-section";
 import { FoundationSection } from "@/features/landing/foundation-section";
 import { LandingHero } from "@/features/landing/landing-hero";
 import { LogoMarquee } from "@/features/landing/logo-marquee";
-import { GridCircleDots } from "@/features/solutions/grid-circle-dots";
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
-
-const HOW_WE_WORK = [
-  {
-    title: "Scope the work",
-    body: "We learn how your team works today, what information they need, and where the process breaks down.",
-  },
-  {
-    title: "Set the roadmap",
-    body: "Together, we choose what to build first, the data needed to support it, and what comes next.",
-  },
-  {
-    title: "Build with your team",
-    body: "We connect the relevant systems, organize the data, and build the tools your team will use.",
-  },
-  {
-    title: "Support and expand",
-    body: "We maintain the system, support your team, and add new workflows as priorities change.",
-  },
-];
 
 const TESTIMONIALS = [
   {
@@ -79,57 +58,6 @@ const COMPLIANCE = [
   },
 ];
 
-/**
- * The partner promise. Under that heading, right-aligned on desktop, the
- * solutions figure moves between a grid and a circle. The band is tall
- * enough to hold the circle below the heading.
- */
-const FdeSection: React.FC = () => {
-  // The tallest shape (the circle) starts at the bottom of this heading.
-  const copyRef = React.useRef<HTMLHeadingElement>(null);
-  return (
-    <Section
-      position="relative"
-      overflow="hidden"
-      rhythm="tight"
-      bg="site.bg.surface"
-      borderBottomRadius="4px"
-      // Held open the bottom padding past the figure: the figure sets the exact
-      // height once it draws (it knows how the heading wrapped); this is the
-      // first paint's estimate. The clamp is the figure's height, scaling
-      // with the screen as its shape does; on phones it's narrowed to fit,
-      // the min(). The px before it covers the padding, heading and gap.
-      minH={{
-        base: "calc(185px + min(clamp(241px, 33.45vw, 482px), (100vw - 32px) * 0.614) + var(--site-gutter-y-tight))",
-        md: "calc(170px + clamp(241px, 33.45vw, 482px) + var(--site-gutter-y-tight))",
-        lg: "calc(190px + clamp(241px, 33.45vw, 482px) + var(--site-gutter-y-tight))",
-      }}
-    >
-      <GridCircleDots below={copyRef} scale={0.8} />
-      <Grid position="relative" zIndex={1}>
-        <GridCol span={16}>
-          <Text
-            ref={copyRef}
-            as="h2"
-            textStyle="h4"
-            fontWeight={400}
-            lineHeight="1.1"
-            color="site.fg.heading"
-            // Caps at the column's edge instead of running off the screen.
-            w="673px"
-            maxW="full"
-          >
-            We partner with your team to turn your data into{" "}
-            <Box as="span" color="site.highlight">
-              measurable business outcomes
-            </Box>
-          </Text>
-        </GridCol>
-      </Grid>
-    </Section>
-  );
-};
-
 export const LandingPage: React.FC = () => (
   <Box bg="site.bg.page">
     <SiteNav overlay />
@@ -152,47 +80,11 @@ export const LandingPage: React.FC = () => (
       {/* Light band, static: the foundation's layers. */}
       <FoundationSection />
 
-      {/* --- About the FDE service ------------------------------------------- */}
-      <FdeSection />
-
-      {/* The problem band's pale blue, so it reads apart from the off-white
-        sections around it. */}
-      {/* The problem band's wash, turned the other way round. */}
-      <Section
-        grid
-        {...TESTIMONIAL_WASHES.midReversed}
-        py="calc(72px + 2rem)"
-        // 20px between the step cards, across and when stacked.
-        gridProps={{ gap: "1.25rem" }}
-      >
-        <GridCol span={16} pb="36px">
-          <Box display="flex" flexDirection="column" gap="12px">
-            <Text
-              as="h2"
-              textStyle="h3"
-              color="site.fg.heading"
-              maxW={{ base: "75vw", md: "280px" }}
-            >
-              Our approach
-            </Text>
-            <Text
-              textStyle="body.sm"
-              color="site.fg"
-              // Wraps on phones; one line from md up.
-              whiteSpace={{ md: "nowrap" }}
-            >
-              We map how your team works today, then build with you.
-            </Text>
-          </Box>
-        </GridCol>
-        {/* The metrics layout, filling the grid: four 4-column steps. Two
-          across on tablets, stacked on phones. */}
-        {HOW_WE_WORK.map((step, i) => (
-          <GridCol key={step.title} span={{ base: 16, md: 8, lg: 4 }}>
-            <StepCard step={i + 1} title={step.title} body={step.body} />
-          </GridCol>
-        ))}
-      </Section>
+      {/* --- How we work ---------------------------------------------- */}
+      {/* Two takes, one above the other, to choose between: the steps as
+        a table, and as a large-type index. Keep one. */}
+      <ApproachSection variant="table" />
+      <ApproachSection variant="index" />
 
       {/* --- Testimonials ----------------------------------------------------- */}
       {/* On the page surface, under the solutions band. */}

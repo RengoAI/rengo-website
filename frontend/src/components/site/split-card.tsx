@@ -1,4 +1,4 @@
-import { colorVar, tiledRuleLeft } from "@/components/site/site-styles";
+import { tiledRuleLeft } from "@/components/site/site-styles";
 import { Box, type BoxProps, Text } from "@chakra-ui/react";
 import React from "react";
 
@@ -102,101 +102,6 @@ export const MetricCard: React.FC<
           minH="2.5em"
         >
           {caption}
-        </Text>
-      </Box>
-    }
-    {...rest}
-  />
-);
-
-/** The step cards' tiled rule: along the bottom on phones, the left edge
- * from md. */
-const STEP_RULE_COLOR = colorVar("site.border.dashedOnTint");
-const STEP_RULE = {
-  position: "relative",
-  _before: {
-    content: '""',
-    position: "absolute",
-    left: 0,
-    bottom: 0,
-    top: { base: "auto", md: 0 },
-    w: { base: "full", md: "1px" },
-    h: { base: "1px", md: "auto" },
-    bgImage: {
-      base: `linear-gradient(to right, ${STEP_RULE_COLOR} 1px, transparent 1px)`,
-      md: `linear-gradient(to bottom, ${STEP_RULE_COLOR} 1px, transparent 1px)`,
-    },
-    bgSize: { base: "2px 1px", md: "1px 2px" },
-    bgRepeat: { base: "repeat-x", md: "repeat-y" },
-    pointerEvents: "none",
-  },
-} as const;
-
-/**
- * A process step in the metrics layout: its number on top, title
- * and description on the bottom, hung off the same dotted rule. Set for a
- * light band.
- */
-export const StepCard: React.FC<
-  Omit<SplitCardProps, "top" | "bottom"> & {
-    step: number;
-    title: React.ReactNode;
-    body: React.ReactNode;
-  }
-> = ({ step, title, body, ...rest }) => (
-  <SplitCard
-    // Phones stack the steps, so the rule runs along the bottom instead,
-    // and the copy sits flush left above it.
-    pl={{ base: 0, md: "12px" }}
-    pr={{ base: 0, md: "1.5rem" }} // 24px, as the metric cards
-    pb={{ base: "1.25rem", md: 0 }}
-    // ~114px tall on phones: the space sits between the number and the
-    // title.
-    gap={{ base: "1.4375rem", md: "32px" }}
-    // Tablets match the phones' height, growing if the copy needs it;
-    // desktop 232px.
-    h={{ base: "auto", lg: "232px" }}
-    minH={{ md: "114px", lg: "auto" }}
-    rule={false}
-    {...STEP_RULE}
-    top={
-      // The smallest caption size. Ordinal only, so hidden from screen
-      // readers.
-      <Text
-        textStyle="caption"
-        fontWeight={500}
-        color="site.highlight"
-        aria-hidden
-      >
-        {step}
-      </Text>
-    }
-    bottom={
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="flex-start"
-        gap={{ base: "0.25rem", md: "0.5rem" }}
-        w="full"
-      >
-        {/* h6 set in Serrif, stepping up to h5's 24px on desktop. */}
-        <Text
-          as="h3"
-          textStyle="h6"
-          fontFamily="display"
-          // Serrif Light, its lighter cut.
-          fontWeight={300}
-          fontSize={{ lg: "1.5rem" }}
-          color="site.fg"
-        >
-          {title}
-        </Text>
-        {/* A step lighter than body copy, so it sits back from the title.
-            On desktop it's held open to three lines (3 × body.sm's 1.4 line
-            height), so the titles line up across the cards; a longer one,
-            at narrow desktop widths, grows rather than overflowing. */}
-        <Text textStyle="body.sm" color="soot.600" minH={{ lg: "4.2em" }}>
-          {body}
         </Text>
       </Box>
     }
