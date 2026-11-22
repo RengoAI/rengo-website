@@ -26,22 +26,11 @@ const HOW_WE_WORK = [
 
 /**
  * How the strips sit on the section's wash, after metic.: panels a step
- * darker than the ground, not lighter, each with a fine darker edge, so
- * they read as objects on it. Two takes to choose between; keep one.
+ * darker than the ground, not lighter, edged in border.subtle, with the
+ * foundation's grey renders fading through each, as metic.'s photos do:
+ * one layer per step, top to bottom.
  */
-const STRIP = {
-  bg: "rgba(12, 29, 52, 0.045)",
-  border: "1px solid rgba(12, 29, 52, 0.12)",
-} as const;
-const TONES = {
-  /** The panels alone. */
-  plain: { art: false },
-  /** With the foundation's grey renders fading through each strip, as
-   * metic.'s photos do: one layer per step, top to bottom. */
-  art: { art: true },
-} as const;
-
-type Tone = keyof typeof TONES;
+const STRIP_BG = "rgba(12, 29, 52, 0.045)";
 
 /** The section's head: the partnership line. */
 const ApproachHead: React.FC = () => (
@@ -73,8 +62,7 @@ const ACCORDION_ADVANCE = 5000;
  * their titles turned on end. Hovering, focusing or clicking a strip opens
  * it; until then they open in turn. Phones list the steps open, stacked.
  */
-const ApproachAccordion: React.FC<{ tone: Tone }> = ({ tone }) => {
-  const t = TONES[tone];
+const ApproachAccordion: React.FC = () => {
   const [open, setOpen] = React.useState(0);
   const [picked, setPicked] = React.useState(false);
   const reduced = usePrefersReducedMotion();
@@ -116,8 +104,9 @@ const ApproachAccordion: React.FC<{ tone: Tone }> = ({ tone }) => {
               flexGrow={{ md: isOpen ? 5 : 1 }}
               flexBasis={{ md: 0 }}
               minW={{ md: "72px" }}
-              bg={STRIP.bg}
-              border={STRIP.border}
+              bg={STRIP_BG}
+              border="1px solid"
+              borderColor="border.subtle"
               borderRadius="4px"
               overflow="hidden"
               cursor={{ md: "pointer" }}
@@ -142,26 +131,25 @@ const ApproachAccordion: React.FC<{ tone: Tone }> = ({ tone }) => {
                   borderRadius: "4px",
                 }}
               />
-              {t.art && (
-                <Box
-                  aria-hidden
-                  display={{ base: "none", md: "block" }}
-                  position="absolute"
-                  inset={0}
-                  bgImage={`url(/img/rebrand/foundation-layer-${i + 1}.webp)`}
-                  bgSize="auto 135%"
-                  backgroundPosition={isOpen ? "70% 20%" : "40% 20%"}
-                  bgRepeat="no-repeat"
-                  opacity={isOpen ? 0.9 : 0.55}
-                  // Fades out toward the foot, where the copy sits.
-                  css={{
-                    maskImage:
-                      "linear-gradient(to bottom, black 35%, transparent 80%)",
-                  }}
-                  transition="opacity 300ms ease, background-position 500ms ease"
-                  _motionReduce={{ transition: "none" }}
-                />
-              )}
+              {/* The step's render, fading toward the strip's foot. */}
+              <Box
+                aria-hidden
+                display={{ base: "none", md: "block" }}
+                position="absolute"
+                inset={0}
+                bgImage={`url(/img/rebrand/foundation-layer-${i + 1}.webp)`}
+                bgSize="auto 135%"
+                backgroundPosition={isOpen ? "70% 20%" : "40% 20%"}
+                bgRepeat="no-repeat"
+                opacity={isOpen ? 0.9 : 0.55}
+                // Fades out toward the foot, where the copy sits.
+                css={{
+                  maskImage:
+                    "linear-gradient(to bottom, black 35%, transparent 80%)",
+                }}
+                transition="opacity 300ms ease, background-position 500ms ease"
+                _motionReduce={{ transition: "none" }}
+              />
               {/* Closed: the title on end, reading up from the bottom. */}
               <Text
                 display={{ base: "none", md: "block" }}
@@ -225,4 +213,3 @@ const ApproachAccordion: React.FC<{ tone: Tone }> = ({ tone }) => {
 };
 
 export const ApproachSection = ApproachAccordion;
-export type { Tone as ApproachTone };
