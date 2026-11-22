@@ -22,6 +22,13 @@ const BLUSH = "170, 72, 103"; // colors.crimson
 const WHITE = "255, 255, 255";
 const MIST = "rgb(225, 233, 239)";
 const PAPER = "#F8F8F8";
+// The Business Overview's ramp (its proposal.css), light to dark.
+const OV_TINT = "#F4F6F8";
+const OV_TINT2 = "#E6EDF2";
+const OV_HAZE = "201, 214, 224"; // on-dark-2 / haze, #C9D6E0
+const OV_STEEL_LIGHT = "143, 176, 200"; // slate-light, #8FB0C8
+const OV_SLATE = "53, 86, 109"; // #35566D
+const OV_NAVY = "#253746";
 
 type Shape = {
   /** Centre, as % of the field. */
@@ -52,6 +59,8 @@ type LightVariant = {
   /** The grain's strength, 0 to 1 (default 1). The grain is drawn for
    * light grounds; on a dark one it reads as static, so turn it down. */
   grain?: number;
+  /** A dark ground, so type over it should be light. */
+  dark?: boolean;
 };
 
 const BLOB = "50%";
@@ -230,9 +239,126 @@ export const LIGHT_VARIANTS = {
       },
     ],
   },
+  // The Business Overview's ramp: tint → tint-2 → slate → navy, its cycle
+  // cards' progression, with steel and haze between.
+  ovTint: {
+    name: "Overview tint",
+    base: OV_TINT,
+    shapes: [
+      {
+        x: 55,
+        y: 40,
+        w: 100,
+        h: 70,
+        rgb: OV_HAZE,
+        a: 0.75,
+        blur: 45,
+        radius: BLOB,
+      },
+    ],
+  },
+  ovHaze: {
+    name: "Overview haze",
+    base: OV_TINT2,
+    shapes: [
+      {
+        x: 55,
+        y: 38,
+        w: 100,
+        h: 70,
+        rgb: OV_HAZE,
+        a: 1,
+        blur: 45,
+        radius: BLOB,
+      },
+      {
+        x: 60,
+        y: 40,
+        w: 50,
+        h: 35,
+        rgb: STEEL,
+        a: 0.35,
+        blur: 40,
+        radius: BLOB,
+      },
+    ],
+  },
+  ovSteel: {
+    name: "Overview steel",
+    base: OV_TINT2,
+    shapes: [
+      {
+        x: 55,
+        y: 38,
+        w: 110,
+        h: 75,
+        rgb: STEEL,
+        a: 0.75,
+        blur: 45,
+        radius: BLOB,
+      },
+      {
+        x: 60,
+        y: 35,
+        w: 50,
+        h: 35,
+        rgb: OV_SLATE,
+        a: 0.18,
+        blur: 40,
+        radius: BLOB,
+      },
+    ],
+  },
+  ovSlate: {
+    name: "Overview slate",
+    base: "rgb(53, 86, 109)",
+    grain: 0.1,
+    dark: true,
+    shapes: [
+      {
+        x: 60,
+        y: 30,
+        w: 100,
+        h: 70,
+        rgb: OV_STEEL_LIGHT,
+        a: 0.35,
+        blur: 50,
+        radius: BLOB,
+      },
+    ],
+  },
+  ovNavy: {
+    name: "Overview navy",
+    base: OV_NAVY,
+    grain: 0.08,
+    dark: true,
+    shapes: [
+      {
+        x: 60,
+        y: 30,
+        w: 100,
+        h: 70,
+        rgb: OV_SLATE,
+        a: 0.9,
+        blur: 50,
+        radius: BLOB,
+      },
+      {
+        x: 65,
+        y: 25,
+        w: 45,
+        h: 35,
+        rgb: OV_STEEL_LIGHT,
+        a: 0.18,
+        blur: 40,
+        radius: BLOB,
+      },
+    ],
+  },
   beamSteelDark: {
     name: "Steel beam on navy",
     base: "#1B2A36", // overview.navyDeep
+    dark: true,
     grain: 0.08,
     shapes: [
       {
@@ -538,6 +664,10 @@ export const LIGHT_VARIANTS = {
 
 export type LightFieldVariant = keyof typeof LIGHT_VARIANTS;
 
+/** Whether a variant's ground is dark, so type over it should be light. */
+export const isDarkLight = (variant: LightFieldVariant) =>
+  Boolean((LIGHT_VARIANTS[variant] as LightVariant).dark);
+
 /** The variants in families, in /gradients order. */
 export const LIGHT_FAMILIES: {
   title: string;
@@ -574,6 +704,11 @@ export const LIGHT_FAMILIES: {
     title: "Blobs",
     note: "ode.com's haze behind copy: an off-centre organic shape.",
     variants: ["blobBlush", "blobSky", "blobPair", "blobTall", "blobHigh"],
+  },
+  {
+    title: "Business Overview",
+    note: "Its ramp, light to dark: tint, haze, steel, slate, navy.",
+    variants: ["ovTint", "ovHaze", "ovSteel", "ovSlate", "ovNavy"],
   },
   {
     title: "Horizons and meshes",

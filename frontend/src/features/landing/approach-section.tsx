@@ -1,6 +1,7 @@
 import { GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import {
+  isDarkLight,
   LightField,
   type LightFieldVariant,
 } from "@/components/site/light-field";
@@ -72,7 +73,10 @@ const ACCORDION_ADVANCE = 5000;
  * their titles turned on end. Hovering, focusing or clicking a strip opens
  * it; until then they open in turn. Phones list the steps open, stacked.
  */
-const ApproachAccordion: React.FC = () => {
+const ApproachAccordion: React.FC<{
+  /** The four strips' lights, first step to last. */
+  lights?: LightFieldVariant[];
+}> = ({ lights = STEP_LIGHT }) => {
   const [open, setOpen] = React.useState(0);
   const [picked, setPicked] = React.useState(false);
   const reduced = usePrefersReducedMotion();
@@ -107,6 +111,10 @@ const ApproachAccordion: React.FC = () => {
       >
         {HOW_WE_WORK.map((step, i) => {
           const isOpen = open === i;
+          // Light type on a dark strip (the Overview's slate and navy).
+          const dark = isDarkLight(lights[i]);
+          const ink = dark ? "site.fg.onDark" : "site.fg.strong";
+          const inkSoft = dark ? "overview.onDark2" : "soot.600";
           return (
             <Box
               as="li"
@@ -145,10 +153,11 @@ const ApproachAccordion: React.FC = () => {
               />
               {/* The step's light, stronger when open. */}
               <LightField
-                variant={STEP_LIGHT[i]}
+                variant={lights[i]}
                 position="absolute"
                 inset={0}
-                opacity={isOpen ? 1 : 0.55}
+                // Dark strips stay near full when closed, or they turn muddy.
+                opacity={isOpen ? 1 : dark ? 0.9 : 0.55}
                 transition="opacity 500ms ease"
                 _motionReduce={{ transition: "none" }}
               />
@@ -161,7 +170,7 @@ const ApproachAccordion: React.FC = () => {
                 textStyle="h6"
                 fontSize="1.125rem"
                 fontWeight={400}
-                color="site.fg.strong"
+                color={ink}
                 whiteSpace="nowrap"
                 css={{
                   writingMode: "vertical-rl",
@@ -197,12 +206,12 @@ const ApproachAccordion: React.FC = () => {
                   textStyle="d4"
                   fontSize={{ base: "1.375rem", md: "1.75rem" }}
                   lineHeight="1.1"
-                  color="site.fg.strong"
+                  color={ink}
                   whiteSpace={{ md: "nowrap" }}
                 >
                   {step.title}
                 </Text>
-                <Text textStyle="body.sm" color="soot.600">
+                <Text textStyle="body.sm" color={inkSoft}>
                   {step.body}
                 </Text>
               </Box>
@@ -215,3 +224,11 @@ const ApproachAccordion: React.FC = () => {
 };
 
 export const ApproachSection = ApproachAccordion;
+
+/** Lights in the Business Overview's colours, to choose between. */
+export const APPROACH_OVERVIEW_LIGHTS: Record<string, LightFieldVariant[]> = {
+  /** All light: the Overview's tint, haze and steel. */
+  light: ["ovHaze", "ovSteel", "ovHaze", "ovSteel"],
+  /** Its cycle cards' progression: tint, tint-2, slate, navy. */
+  progression: ["ovTint", "ovHaze", "ovSlate", "ovNavy"],
+};
