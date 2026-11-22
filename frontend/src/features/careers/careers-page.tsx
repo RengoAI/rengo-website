@@ -2,7 +2,7 @@ import { rootRoute } from "@/app/app-routes";
 import { GridCol } from "@/components/layout/grid";
 import { ARTICLE_MEASURE } from "@/components/site/article";
 import { Section } from "@/components/layout/section";
-import { NAV_H } from "@/components/site/site-constants";
+import { FEATURE_BAND_MIN_H, NAV_H } from "@/components/site/site-constants";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
 import { SiteOutro } from "@/components/site/site-outro";
@@ -113,13 +113,16 @@ export const CareersPage: React.FC = () => (
           strip's white logos blend plus-lighter over any dark ground. */}
       <Section
         grid
-        rhythm="compact"
         bg="overview.navyDeep"
         position="relative"
         overflow="hidden"
+        // The landing's big moments' height, laid out like its security
+        // band: the heading top left, the logos below, the beam beneath.
+        minH={FEATURE_BAND_MIN_H}
         gridProps={{
+          alignContent: "start",
           alignItems: "center",
-          rowGap: { base: "32px", lg: "40px" },
+          rowGap: { base: "48px", lg: "120px" },
         }}
       >
         <LightField
