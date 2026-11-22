@@ -34,13 +34,16 @@ const HOW_WE_WORK = [
  */
 const STRIP_BG = "#F7F8FA";
 
-/** Each step's light: the Business Overview's steel, pooled through the
- * strip, in its colours rather than the site's brighter sky. */
+/**
+ * Each step's light, in the Business Overview's mid-ramp and deepening a
+ * little from first to last: haze with steel, steel, its bluer
+ * slate-light, then steel over a slate core.
+ */
 const STEP_LIGHT: LightFieldVariant[] = [
+  "ovHazeDeep",
   "ovSteel",
-  "ovSteel",
-  "ovSteel",
-  "ovSteel",
+  "ovSteelBlue",
+  "ovSteelDeep",
 ];
 
 /** The section's head: the partnership line. */
