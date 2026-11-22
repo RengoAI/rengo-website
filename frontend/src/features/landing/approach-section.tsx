@@ -25,24 +25,20 @@ const HOW_WE_WORK = [
 ];
 
 /**
- * How the strips sit on the section's wash. Two takes to choose between;
- * keep one.
+ * How the strips sit on the section's wash, after metic.: panels a step
+ * darker than the ground, not lighter, each with a fine darker edge, so
+ * they read as objects on it. Two takes to choose between; keep one.
  */
+const STRIP = {
+  bg: "rgba(12, 29, 52, 0.045)",
+  border: "1px solid rgba(12, 29, 52, 0.12)",
+} as const;
 const TONES = {
-  /** Frosted: the open strip translucent white with the testimonial
-   * cards' faint shadow, the closed ones fainter still, no borders. */
-  frosted: {
-    closed: { bg: "rgba(255, 255, 255, 0.28)", bgImage: "none" },
-    open: { bg: "rgba(255, 255, 255, 0.72)", bgImage: "none" },
-    shadow: "0 2px 3px rgba(12, 29, 52, 0.04)",
-  },
-  /** The testimonial cards' own fills: the closed strips their flat pale
-   * blue, the open one the bluer wash. */
-  cards: {
-    closed: TESTIMONIAL_WASHES.plain,
-    open: TESTIMONIAL_WASHES.mid,
-    shadow: "0 2px 3px rgba(12, 29, 52, 0.04)",
-  },
+  /** The panels alone. */
+  plain: { art: false },
+  /** With the foundation's grey renders fading through each strip, as
+   * metic.'s photos do: one layer per step, top to bottom. */
+  art: { art: true },
 } as const;
 
 type Tone = keyof typeof TONES;
@@ -120,8 +116,8 @@ const ApproachAccordion: React.FC<{ tone: Tone }> = ({ tone }) => {
               flexGrow={{ md: isOpen ? 5 : 1 }}
               flexBasis={{ md: 0 }}
               minW={{ md: "72px" }}
-              {...(isOpen ? t.open : t.closed)}
-              boxShadow={t.shadow}
+              bg={STRIP.bg}
+              border={STRIP.border}
               borderRadius="4px"
               overflow="hidden"
               cursor={{ md: "pointer" }}
@@ -146,6 +142,26 @@ const ApproachAccordion: React.FC<{ tone: Tone }> = ({ tone }) => {
                   borderRadius: "4px",
                 }}
               />
+              {t.art && (
+                <Box
+                  aria-hidden
+                  display={{ base: "none", md: "block" }}
+                  position="absolute"
+                  inset={0}
+                  bgImage={`url(/img/rebrand/foundation-layer-${i + 1}.webp)`}
+                  bgSize="auto 135%"
+                  backgroundPosition={isOpen ? "70% 20%" : "40% 20%"}
+                  bgRepeat="no-repeat"
+                  opacity={isOpen ? 0.9 : 0.55}
+                  // Fades out toward the foot, where the copy sits.
+                  css={{
+                    maskImage:
+                      "linear-gradient(to bottom, black 35%, transparent 80%)",
+                  }}
+                  transition="opacity 300ms ease, background-position 500ms ease"
+                  _motionReduce={{ transition: "none" }}
+                />
+              )}
               {/* Closed: the title on end, reading up from the bottom. */}
               <Text
                 display={{ base: "none", md: "block" }}
@@ -153,7 +169,7 @@ const ApproachAccordion: React.FC<{ tone: Tone }> = ({ tone }) => {
                 left="16px"
                 bottom="16px"
                 textStyle="h6"
-                fontSize="1rem"
+                fontSize="1.125rem"
                 fontWeight={400}
                 color="site.fg.strong"
                 whiteSpace="nowrap"

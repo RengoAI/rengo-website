@@ -85,9 +85,10 @@ export const LandingPage: React.FC = () => (
 
       {/* --- How we work ---------------------------------------------- */}
       {/* Two takes on its strips, one above the other, to choose between:
-        frosted, and in the testimonial cards' fills. Keep one. */}
-      <ApproachSection tone="frosted" />
-      <ApproachSection tone="cards" />
+        darker panels alone, and with the foundation renders through them.
+        Keep one. */}
+      <ApproachSection tone="plain" />
+      <ApproachSection tone="art" />
 
       {/* --- Testimonials ----------------------------------------------------- */}
       {/* On the page surface, under the solutions band. */}
