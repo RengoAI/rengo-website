@@ -10,11 +10,11 @@ import React from "react";
 
 const HOW_WE_WORK = [
   {
-    title: "Understand the business",
+    title: "Understand your business",
     body: "We work with your team to understand how decisions are made, where work slows down, and what’s missing from the data.",
   },
   {
-    title: "Set the priorities",
+    title: "Set priorities",
     body: "We identify where better data and tools can make the biggest difference, then build a roadmap around your business priorities and existing systems.",
   },
   {
