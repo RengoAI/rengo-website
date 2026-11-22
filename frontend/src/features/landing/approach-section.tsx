@@ -4,7 +4,6 @@ import {
   LightField,
   type LightFieldVariant,
 } from "@/components/site/light-field";
-import { TESTIMONIAL_WASHES } from "@/components/site/split-card";
 import { usePrefersReducedMotion } from "@/shared/utils/motion";
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
@@ -92,7 +91,8 @@ const ApproachAccordion: React.FC = () => {
   };
 
   return (
-    <Section grid {...TESTIMONIAL_WASHES.midReversed}>
+    // Plain, so the strips carry the light: one gradient at a time.
+    <Section grid bg="site.bg.surface">
       <GridCol span={{ base: 16, lg: 9 }} pb={{ base: "40px", lg: "56px" }}>
         <ApproachHead />
       </GridCol>
@@ -115,6 +115,9 @@ const ApproachAccordion: React.FC = () => {
               flexBasis={{ md: 0 }}
               minW={{ md: "72px" }}
               bg={STRIP_BG}
+              // On the plain page, border.subtle reads as a soft grey edge.
+              border="1px solid"
+              borderColor="border.subtle"
               borderRadius="4px"
               overflow="hidden"
               cursor={{ md: "pointer" }}

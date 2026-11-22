@@ -6,10 +6,7 @@ import { SiteNav } from "@/components/site/site-nav";
 import { CONTACT_HREF } from "@/components/site/site-constants";
 import { SolidCta } from "@/components/site/solid-cta";
 import { StatementBand } from "@/components/site/statement-band";
-import {
-  TestimonialCard,
-  type TestimonialWash,
-} from "@/components/site/split-card";
+import { TestimonialCard } from "@/components/site/split-card";
 import { ApproachSection } from "@/features/landing/approach-section";
 import { FoundationSection } from "@/features/landing/foundation-section";
 import { LandingHero } from "@/features/landing/landing-hero";
@@ -34,8 +31,6 @@ const TESTIMONIALS = [
     attribution: "Senior Associate at $1B growth equity fund",
   },
 ];
-
-const TESTIMONIAL_WASH_ORDER: TestimonialWash[] = ["plain", "mid", "deep"];
 
 const COMPLIANCE = [
   {
@@ -71,28 +66,14 @@ export const LandingPage: React.FC = () => (
       {/* --- The problem ------------------------------------------------- */}
       {/* Word for word from the Business Overview ("Shared File Drive vs.
         Structured Database"). */}
-      {/* Four takes on the statement in light rather than dots, one above
-        the other, to choose between: a rising beam, a horizon band, a blue
-        core and a dawn. Keep one. */}
+      {/* Word for word from the Business Overview ("Shared File Drive vs.
+        Structured Database"), over a low steel beam of light: the calmest
+        kind of gradient for a full-width band, in the Business Overview's
+        steel. */}
       <StatementBand
         lead="AI is only as reliable as"
         point="the information it works from."
-        light="beamSky"
-      />
-      <StatementBand
-        lead="AI is only as reliable as"
-        point="the information it works from."
-        light="horizon"
-      />
-      <StatementBand
-        lead="AI is only as reliable as"
-        point="the information it works from."
-        light="blueCore"
-      />
-      <StatementBand
-        lead="AI is only as reliable as"
-        point="the information it works from."
-        light="dawn"
+        light="beamSteel"
       />
 
       {/* --- Solution ------------------------------------------------------- */}
@@ -129,20 +110,20 @@ export const LandingPage: React.FC = () => (
           rowGap="gridGutter"
           // Stacked cards sit 40px apart on tablets, half that on phones.
         >
-          {TESTIMONIALS.map((testimonial, i) => (
+          {TESTIMONIALS.map((testimonial) => (
             <GridCol
               as="li"
               key={testimonial.attribution + testimonial.quote}
               span={{ base: 16, lg: 4 }}
               pb={{ base: "4px", md: "24px", lg: 0 }}
             >
-              {/* Plain grey first, bluest last, so the row warms into the blue. */}
               {/* Full height, so when one quote grows its card, the row
                   grows together. */}
               <TestimonialCard
                 h="full"
                 {...testimonial}
-                wash={TESTIMONIAL_WASH_ORDER[i]}
+                // Plain: the approach strips above carry the light.
+                wash="paper"
               />
             </GridCol>
           ))}

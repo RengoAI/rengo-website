@@ -122,6 +122,13 @@ const WASH_BLUE = "#BCCFEC";
  * step leans further toward the blue.
  */
 export const TESTIMONIAL_WASHES = {
+  /** No wash: the lifted white card, edged in border.subtle. */
+  paper: {
+    bg: "site.bg.raised",
+    bgImage: "none",
+    border: "1px solid",
+    borderColor: "border.subtle",
+  },
   /** Flat, no blobs — a pale blue, a touch stronger than silver 100 but
    * still lighter than the other two cards' blues. */
   plain: {
