@@ -1,5 +1,6 @@
 import { GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
+import { FEATURE_BAND_MIN_H } from "@/components/site/site-constants";
 import {
   isDarkLight,
   LightField,
@@ -96,8 +97,15 @@ const ApproachAccordion: React.FC = () => {
   };
 
   return (
-    // Plain, so the strips carry the light: one gradient at a time.
-    <Section grid bg="site.bg.surface">
+    // Plain, so the strips carry the light: one gradient at a time. The
+    // big moments' height, the strips growing to fill it under the heading.
+    <Section
+      grid
+      bg="site.bg.surface"
+      minH={FEATURE_BAND_MIN_H}
+      display="flex"
+      gridProps={{ w: "full", gridTemplateRows: { md: "auto 1fr" } }}
+    >
       <GridCol span={{ base: 16, lg: 9 }} pb={{ base: "40px", lg: "56px" }}>
         <ApproachHead />
       </GridCol>
@@ -107,7 +115,7 @@ const ApproachAccordion: React.FC = () => {
         display="flex"
         flexDirection={{ base: "column", md: "row" }}
         gap="8px"
-        h={{ md: "380px" }}
+        minH={{ md: "380px" }}
       >
         {HOW_WE_WORK.map((step, i) => {
           const isOpen = open === i;
