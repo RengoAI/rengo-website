@@ -71,7 +71,10 @@ const ACCORDION_ADVANCE = 5000;
  * their titles turned on end. Hovering, focusing or clicking a strip opens
  * it; until then they open in turn. Phones list the steps open, stacked.
  */
-const ApproachAccordion: React.FC = () => {
+const ApproachAccordion: React.FC<{
+  /** The four strips' lights, first step to last. */
+  lights?: LightFieldVariant[];
+}> = ({ lights = STEP_LIGHT }) => {
   const [open, setOpen] = React.useState(0);
   const [picked, setPicked] = React.useState(false);
   const reduced = usePrefersReducedMotion();
@@ -144,7 +147,7 @@ const ApproachAccordion: React.FC = () => {
               />
               {/* The step's light, stronger when open. */}
               <LightField
-                variant={STEP_LIGHT[i]}
+                variant={lights[i]}
                 position="absolute"
                 inset={0}
                 opacity={isOpen ? 1 : 0.55}
@@ -214,3 +217,15 @@ const ApproachAccordion: React.FC = () => {
 };
 
 export const ApproachSection = ApproachAccordion;
+
+/** Fuller sets of light for the strips, to choose between. */
+export const APPROACH_LIGHT_SETS: Record<string, LightFieldVariant[]> = {
+  /** ode.com's tab panel: soft squares of colour fogging out. */
+  fog: ["fogSky", "fogSteel", "fogDeep", "fogSky"],
+  /** Pools of sky that fill the strip, a deeper core at the end. */
+  pools: ["poolBroad", "poolFull", "blueCore", "poolFull"],
+  /** Organic blobs, one with a blush. */
+  blobs: ["blobSky", "blobTall", "blobPair", "blobSky"],
+  /** The widest light: dawn, mesh and corner glows. */
+  wide: ["dawn", "cornerGlow", "mesh", "dawn"],
+};
