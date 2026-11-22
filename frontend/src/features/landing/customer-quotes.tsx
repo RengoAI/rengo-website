@@ -1,7 +1,7 @@
 import { Section } from "@/components/layout/section";
 import { FEATURE_BAND_MIN_H } from "@/components/site/site-constants";
+import { usePrefersReducedMotion } from "@/shared/utils/motion";
 import { Box, chakra, Text } from "@chakra-ui/react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import React from "react";
 
 /**
@@ -34,10 +34,8 @@ const QUOTES = [
 ];
 
 /**
- * The quote controls, after Amperos, Rox and Jack & Jill: thin progress
- * lines (the current one longer, in navy; click one to jump to it), then
- * the previous / next chevrons together in one slim pill, edged in
- * border.muted.
+ * The quote controls, after Amperos: thin progress lines, the current one
+ * longer and in navy; click one (or tab to it) to jump to that quote.
  */
 const QuoteControls: React.FC<{
   i: number;
@@ -45,7 +43,7 @@ const QuoteControls: React.FC<{
   go: (k: number) => void;
 }> = ({ i, n, go }) => (
   <Box display="flex" alignItems="center" gap="20px">
-    <Box as="ol" display="flex" alignItems="center" gap="6px">
+    <Box as="ol" display="flex" alignItems="center" gap="2px">
       {Array.from({ length: n }, (_, k) => (
         <li key={k}>
           <chakra.button
@@ -53,70 +51,31 @@ const QuoteControls: React.FC<{
             aria-label={`Quote ${k + 1} of ${n}`}
             aria-current={k === i || undefined}
             onClick={() => go(k)}
+            className="group"
             display="block"
-            py="10px"
+            // A generous target round a thin line.
+            px="4px"
+            py="14px"
             cursor="pointer"
+            _focusVisible={{
+              outline: "2px solid",
+              outlineColor: "site.highlight",
+              outlineOffset: "2px",
+              borderRadius: "2px",
+            }}
           >
             <Box
               h="2px"
-              w={k === i ? "28px" : "14px"}
+              w={k === i ? "32px" : "16px"}
               borderRadius="full"
               bg={k === i ? "overview.navy" : "overview.rule"}
               transition="width 300ms ease, background-color 300ms ease"
+              _groupHover={{ bg: "overview.navy" }}
               _motionReduce={{ transition: "none" }}
             />
           </chakra.button>
         </li>
       ))}
-    </Box>
-    <Box
-      display="flex"
-      alignItems="center"
-      h="36px"
-      borderRadius="full"
-      border="1px solid"
-      borderColor="border.muted"
-      overflow="hidden"
-    >
-      {(["prev", "next"] as const).map((dir) => {
-        const disabled = dir === "prev" ? i === 0 : i === n - 1;
-        return (
-          <chakra.button
-            key={dir}
-            type="button"
-            aria-label={dir === "prev" ? "Previous quote" : "Next quote"}
-            onClick={() => go(dir === "prev" ? i - 1 : i + 1)}
-            disabled={disabled}
-            w="44px"
-            h="full"
-            display="grid"
-            placeItems="center"
-            color="overview.slate"
-            // A hairline between the two.
-            borderLeft={dir === "next" ? "1px solid" : undefined}
-            borderColor="border.muted"
-            cursor="pointer"
-            transition="color 200ms ease, background-color 200ms ease"
-            _hover={{ color: "overview.navy", bg: "overview.tint2" }}
-            _disabled={{
-              opacity: 0.3,
-              cursor: "default",
-              _hover: { color: "overview.slate", bg: "transparent" },
-            }}
-            _focusVisible={{
-              outline: "2px solid",
-              outlineColor: "site.highlight",
-              outlineOffset: "-2px",
-            }}
-          >
-            {dir === "prev" ? (
-              <ChevronLeft size={16} strokeWidth={1.5} />
-            ) : (
-              <ChevronRight size={16} strokeWidth={1.5} />
-            )}
-          </chakra.button>
-        );
-      })}
     </Box>
   </Box>
 );
@@ -152,12 +111,34 @@ const Heading: React.FC = () => (
  * said it under it, and quiet controls (progress lines and chevrons) to
  * step through.
  */
+/** ms each quote shows before the next, while it advances on its own. */
+const QUOTE_ADVANCE = 8000;
+
 const QuoteFeature: React.FC = () => {
   const [i, setI] = React.useState(0);
   const q = QUOTES[i];
   const n = QUOTES.length;
+  // Advances on its own, looping, until someone picks a quote; paused
+  // while the pointer is over the section or focus is in it, and never
+  // with reduced motion.
+  const reduced = usePrefersReducedMotion();
+  const [picked, setPicked] = React.useState(false);
+  const [paused, setPaused] = React.useState(false);
+  React.useEffect(() => {
+    if (picked || paused || reduced || n < 2) return;
+    const id = window.setTimeout(() => setI((k) => (k + 1) % n), QUOTE_ADVANCE);
+    return () => window.clearTimeout(id);
+  }, [i, picked, paused, reduced, n]);
+  const go = (k: number) => {
+    setPicked(true);
+    setI(k);
+  };
   return (
     <Section
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
       // The Business Overview's panel tint, at the big moments' height:
       // the heading at the top like the other sections', who said it and
       // the controls at the foot, the quote centred between them.
@@ -195,7 +176,7 @@ const QuoteFeature: React.FC = () => {
         pt={{ base: "40px", lg: "64px" }}
       >
         <Attribution q={q} />
-        <QuoteControls i={i} n={n} go={setI} />
+        <QuoteControls i={i} n={n} go={go} />
       </Box>
     </Section>
   );
