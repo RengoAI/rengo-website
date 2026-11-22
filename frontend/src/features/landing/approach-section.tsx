@@ -1,6 +1,5 @@
 import { GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
-import { GRAIN_TILE } from "@/components/site/site-styles";
 import { TESTIMONIAL_WASHES } from "@/components/site/split-card";
 import { usePrefersReducedMotion } from "@/shared/utils/motion";
 import { Box, Text } from "@chakra-ui/react";
@@ -26,67 +25,42 @@ const HOW_WE_WORK = [
 ];
 
 /**
- * The section's ground and how the strips sit on it. Three takes to choose
- * between; keep one.
+ * How the strips sit on the section's wash. Two takes to choose between;
+ * keep one.
  */
 const TONES = {
-  /** The Business Overview's navy, the strips lit on it. */
-  navy: {
-    section: { bg: "overview.navy", bgImage: "none" },
-    heading: "site.fg.onDark",
-    point: "sky",
-    closedBg: "rgba(255, 255, 255, 0.06)",
-    closedBorder: "rgba(255, 255, 255, 0.14)",
-    closedInk: "site.fg.onDark",
-    openBg: "site.bg.raised",
-    openTitle: "site.fg.strong",
-    openBody: "soot.600",
+  /** Frosted: the open strip translucent white with the testimonial
+   * cards' faint shadow, the closed ones fainter still, no borders. */
+  frosted: {
+    closed: { bg: "rgba(255, 255, 255, 0.28)", bgImage: "none" },
+    open: { bg: "rgba(255, 255, 255, 0.72)", bgImage: "none" },
+    shadow: "0 2px 3px rgba(12, 29, 52, 0.04)",
   },
-  /** The bluest testimonial wash, with the site's grain over it. */
-  deep: {
-    section: {
-      ...TESTIMONIAL_WASHES.deep,
-      bgImage: `${GRAIN_TILE}, ${TESTIMONIAL_WASHES.deep.bgImage}`,
-    },
-    heading: "site.fg.heading",
-    point: "site.highlight",
-    closedBg: "rgba(255, 255, 255, 0.35)",
-    closedBorder: "border.subtle",
-    closedInk: "site.fg.strong",
-    openBg: "site.bg.raised",
-    openTitle: "site.fg.strong",
-    openBody: "soot.600",
-  },
-  /** The plain page, with the open strip in solid blue. */
-  blue: {
-    section: { bg: "site.bg.surface", bgImage: "none" },
-    heading: "site.fg.heading",
-    point: "site.highlight",
-    closedBg: "site.bg.inset",
-    closedBorder: "border.subtle",
-    closedInk: "site.fg.strong",
-    openBg: "site.highlight",
-    openTitle: "site.fg.onDark",
-    openBody: "site.fg.onDark",
+  /** The testimonial cards' own fills: the closed strips their flat pale
+   * blue, the open one the bluer wash. */
+  cards: {
+    closed: TESTIMONIAL_WASHES.plain,
+    open: TESTIMONIAL_WASHES.mid,
+    shadow: "0 2px 3px rgba(12, 29, 52, 0.04)",
   },
 } as const;
 
 type Tone = keyof typeof TONES;
 
 /** The section's head: the partnership line. */
-const ApproachHead: React.FC<{ tone: Tone }> = ({ tone }) => (
+const ApproachHead: React.FC = () => (
   <Box display="flex" flexDirection="column" alignItems="flex-start" gap="14px">
     <Text
       as="h2"
       textStyle="h4"
       fontWeight={400}
       lineHeight="1.1"
-      color={TONES[tone].heading}
+      color="site.fg.heading"
       maxW="640px"
       textWrap="balance"
     >
       We partner with your team to turn your data into{" "}
-      <Box as="span" color={TONES[tone].point}>
+      <Box as="span" color="site.highlight">
         measurable business outcomes
       </Box>
     </Text>
@@ -124,9 +98,9 @@ const ApproachAccordion: React.FC<{ tone: Tone }> = ({ tone }) => {
   };
 
   return (
-    <Section grid {...t.section}>
+    <Section grid {...TESTIMONIAL_WASHES.midReversed}>
       <GridCol span={{ base: 16, lg: 9 }} pb={{ base: "40px", lg: "56px" }}>
-        <ApproachHead tone={tone} />
+        <ApproachHead />
       </GridCol>
       <GridCol
         as="ol"
@@ -146,9 +120,8 @@ const ApproachAccordion: React.FC<{ tone: Tone }> = ({ tone }) => {
               flexGrow={{ md: isOpen ? 5 : 1 }}
               flexBasis={{ md: 0 }}
               minW={{ md: "72px" }}
-              bg={isOpen ? t.openBg : t.closedBg}
-              border="1px solid"
-              borderColor={isOpen ? "transparent" : t.closedBorder}
+              {...(isOpen ? t.open : t.closed)}
+              boxShadow={t.shadow}
               borderRadius="4px"
               overflow="hidden"
               cursor={{ md: "pointer" }}
@@ -182,7 +155,7 @@ const ApproachAccordion: React.FC<{ tone: Tone }> = ({ tone }) => {
                 textStyle="h6"
                 fontSize="1rem"
                 fontWeight={400}
-                color={t.closedInk}
+                color="site.fg.strong"
                 whiteSpace="nowrap"
                 css={{
                   writingMode: "vertical-rl",
@@ -218,15 +191,12 @@ const ApproachAccordion: React.FC<{ tone: Tone }> = ({ tone }) => {
                   textStyle="d4"
                   fontSize={{ base: "1.375rem", md: "1.75rem" }}
                   lineHeight="1.1"
-                  color={{ base: t.closedInk, md: t.openTitle }}
+                  color="site.fg.strong"
                   whiteSpace={{ md: "nowrap" }}
                 >
                   {step.title}
                 </Text>
-                <Text
-                  textStyle="body.sm"
-                  color={{ base: t.closedInk, md: t.openBody }}
-                >
+                <Text textStyle="body.sm" color="soot.600">
                   {step.body}
                 </Text>
               </Box>
