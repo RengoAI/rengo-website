@@ -1,4 +1,5 @@
 import { Section } from "@/components/layout/section";
+import { FEATURE_BAND_MIN_H } from "@/components/site/site-constants";
 import { usePrefersReducedMotion } from "@/shared/utils/motion";
 import { Box, chakra, Text } from "@chakra-ui/react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -44,34 +45,54 @@ const Arrow: React.FC<{
     aria-label={dir === "prev" ? "Previous quote" : "Next quote"}
     onClick={onClick}
     disabled={disabled}
-    w="36px"
-    h="36px"
+    // Round, in the Business Overview's navy: an outline at rest, filled on
+    // hover.
+    w="48px"
+    h="48px"
     display="grid"
     placeItems="center"
-    borderRadius="4px"
+    borderRadius="full"
     border="1px solid"
-    borderColor="border.muted"
-    color="site.fg.strong"
-    bg="transparent"
-    transition="opacity 200ms ease"
-    _disabled={{ opacity: 0.35, cursor: "default" }}
+    borderColor="overview.rule"
+    color="overview.navy"
+    bg="site.bg.raised"
+    cursor="pointer"
+    transition="background-color 200ms ease, color 200ms ease, border-color 200ms ease, opacity 200ms ease"
+    _hover={{
+      bg: "overview.navy",
+      color: "white",
+      borderColor: "overview.navy",
+    }}
+    _disabled={{
+      opacity: 0.35,
+      cursor: "default",
+      _hover: {
+        bg: "site.bg.raised",
+        color: "overview.navy",
+        borderColor: "overview.rule",
+      },
+    }}
     _focusVisible={{
       outline: "2px solid",
       outlineColor: "site.highlight",
       outlineOffset: "2px",
     }}
   >
-    {dir === "prev" ? <ArrowLeft size={16} /> : <ArrowRight size={16} />}
+    {dir === "prev" ? (
+      <ArrowLeft size={18} strokeWidth={1.5} />
+    ) : (
+      <ArrowRight size={18} strokeWidth={1.5} />
+    )}
   </chakra.button>
 );
 
 /** Who said it: the role, then the fund, quietly. */
 const Attribution: React.FC<{ q: (typeof QUOTES)[number] }> = ({ q }) => (
   <Box>
-    <Text textStyle="body.sm" color="site.fg.strong">
+    <Text textStyle="body.sm" color="overview.navy" fontWeight={500}>
       {q.role}
     </Text>
-    <Text textStyle="body.sm" color="site.fg.muted">
+    <Text textStyle="body.sm" color="overview.slate">
       {q.size} {q.firm}
     </Text>
   </Box>
@@ -213,8 +234,16 @@ const QuoteFeature: React.FC = () => {
   const n = QUOTES.length;
   const pad = (k: number) => String(k).padStart(2, "0");
   return (
-    <Section bg="site.bg.surface" py="96px">
-      <Box pb={{ base: "40px", lg: "56px" }}>
+    <Section
+      // The Business Overview's panel tint, at the big moments' height,
+      // the quote centred in it.
+      bg="overview.tint"
+      minH={FEATURE_BAND_MIN_H}
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+    >
+      <Box pb={{ base: "40px", lg: "64px" }}>
         <Heading />
       </Box>
       <Box
@@ -231,8 +260,8 @@ const QuoteFeature: React.FC = () => {
           textStyle="d3"
           fontSize={{ base: "1.625rem", md: "2.125rem", lg: "2.5rem" }}
           lineHeight="1.2"
-          color="site.fg.strong"
-          minH={{ lg: "6em" }}
+          color="overview.navy"
+          minH={{ lg: "4.8em" }}
           animation="fade-in 400ms ease"
           _motionReduce={{ animation: "none" }}
         >
@@ -249,8 +278,9 @@ const QuoteFeature: React.FC = () => {
           <Box display="flex" alignItems="center" gap="16px">
             <Text
               textStyle="label"
-              color="site.fg.muted"
+              color="overview.slate"
               fontVariantNumeric="tabular-nums"
+              mr="4px"
             >
               {pad(i + 1)} / {pad(n)}
             </Text>
