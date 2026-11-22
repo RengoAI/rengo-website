@@ -81,10 +81,11 @@ export const LandingPage: React.FC = () => (
       <FoundationSection />
 
       {/* --- How we work ---------------------------------------------- */}
-      {/* Two takes, one above the other, to choose between: the steps as
-        a table, and as a large-type index. Keep one. */}
+      {/* Three takes, one above the other, to choose between: the steps as
+        a table, as a large-type index, and as an accordion. Keep one. */}
       <ApproachSection variant="table" />
       <ApproachSection variant="index" />
+      <ApproachSection variant="accordion" />
 
       {/* --- Testimonials ----------------------------------------------------- */}
       {/* On the page surface, under the solutions band. */}
