@@ -44,24 +44,23 @@ const Arrow: React.FC<{
     aria-label={dir === "prev" ? "Previous quote" : "Next quote"}
     onClick={onClick}
     disabled={disabled}
-    // Quiet: a faint round outline with a slate arrow, darkening to navy on
-    // hover.
-    w="40px"
-    h="40px"
+    // Barely there: the arrow alone, in slate, darkening to navy on hover,
+    // so the quote stays the focus.
+    w="32px"
+    h="32px"
     display="grid"
     placeItems="center"
     borderRadius="full"
-    border="1px solid"
-    borderColor="overview.rule"
     color="overview.slate"
+    opacity={0.7}
     bg="transparent"
     cursor="pointer"
-    transition="color 200ms ease, border-color 200ms ease, opacity 200ms ease"
-    _hover={{ color: "overview.navy", borderColor: "overview.navy" }}
+    transition="color 200ms ease, opacity 200ms ease"
+    _hover={{ color: "overview.navy", opacity: 1 }}
     _disabled={{
-      opacity: 0.3,
+      opacity: 0.25,
       cursor: "default",
-      _hover: { color: "overview.slate", borderColor: "overview.rule" },
+      _hover: { color: "overview.slate", opacity: 0.25 },
     }}
     _focusVisible={{
       outline: "2px solid",
@@ -116,8 +115,8 @@ const QuoteFeature: React.FC = () => {
   return (
     <Section
       // The Business Overview's panel tint, at the big moments' height:
-      // the heading at the top like the other sections', the quote in the
-      // room below it.
+      // the heading at the top like the other sections', the controls at
+      // the foot, the quote centred between them.
       bg="overview.tint"
       minH={FEATURE_BAND_MIN_H}
       display="flex"
@@ -126,14 +125,15 @@ const QuoteFeature: React.FC = () => {
       <Box pb={{ base: "40px", lg: "64px" }}>
         <Heading />
       </Box>
+      {/* The quote and who said it, the focus, centred in the room
+        between the heading and the controls. */}
       <Box
         as="figure"
-        // Centred in the room under the heading.
         my="auto"
         maxW="1000px"
         display="flex"
         flexDirection="column"
-        gap="40px"
+        gap="32px"
         aria-live="polite"
       >
         <Text
@@ -143,41 +143,41 @@ const QuoteFeature: React.FC = () => {
           fontSize={{ base: "1.625rem", md: "2.125rem", lg: "2.5rem" }}
           lineHeight="1.2"
           color="overview.navy"
-          minH={{ lg: "4.8em" }}
           animation="fade-in 400ms ease"
           _motionReduce={{ animation: "none" }}
         >
           {q.quote}
         </Text>
-        <Box
-          as="figcaption"
-          display="flex"
-          alignItems="flex-end"
-          justifyContent="space-between"
-          gap="24px"
-        >
+        <Box as="figcaption">
           <Attribution q={q} />
-          <Box display="flex" alignItems="center" gap="16px">
-            <Text
-              textStyle="label"
-              color="overview.slate"
-              fontVariantNumeric="tabular-nums"
-              mr="4px"
-            >
-              {i + 1} / {n}
-            </Text>
-            <Arrow
-              dir="prev"
-              disabled={i === 0}
-              onClick={() => setI((k) => k - 1)}
-            />
-            <Arrow
-              dir="next"
-              disabled={i === n - 1}
-              onClick={() => setI((k) => k + 1)}
-            />
-          </Box>
         </Box>
+      </Box>
+      {/* The controls, quietly, at the foot: as far from the bottom as the
+        heading is from the top. */}
+      <Box
+        display="flex"
+        alignItems="center"
+        gap="4px"
+        pt={{ base: "40px", lg: "64px" }}
+      >
+        <Arrow
+          dir="prev"
+          disabled={i === 0}
+          onClick={() => setI((k) => k - 1)}
+        />
+        <Text
+          textStyle="label"
+          color="overview.slate"
+          fontVariantNumeric="tabular-nums"
+          px="6px"
+        >
+          {i + 1} / {n}
+        </Text>
+        <Arrow
+          dir="next"
+          disabled={i === n - 1}
+          onClick={() => setI((k) => k + 1)}
+        />
       </Box>
     </Section>
   );
