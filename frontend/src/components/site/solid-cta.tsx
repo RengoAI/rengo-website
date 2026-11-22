@@ -9,20 +9,22 @@ const HOVER_EASE = "300ms ease-in-out";
 /*
  * The tones are the Business Overview's ink: navy for the primary, its
  * tints for the secondary, white on dark bands. Each hover steps within its
- * own family (navy to slate, haze to line, white to tint), and the label
+ * own family (navy to slate, silver 200 to 300, white to tint), and the
+ * label
  * keeps its colour, so nothing flips. Accents (the highlight blue, the
  * crimson) stay off buttons.
  */
 const TONE_BG = {
   dark: "overview.navy",
   light: "site.bg.raised",
-  secondary: "overview.haze",
+  // Blue-grey, a step deeper than the tints; the Overview's haze leans teal.
+  secondary: "silver.200",
 } as const;
 
 const TONE_HOVER = {
   dark: { bg: "overview.slate" },
   light: { bg: "overview.tint" },
-  secondary: { bg: "overview.line" },
+  secondary: { bg: "silver.300" },
 } as const;
 
 /** The label: white on navy, navy on the light tones. */
