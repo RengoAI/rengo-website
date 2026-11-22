@@ -60,6 +60,8 @@ export const JobListingPage: React.FC = () => {
       <Box as="main" id="main">
         <Box as="article">
           <ArticleHeader
+            // Twin pools of slate-light framing the title.
+            light="bandTwin"
             back={{ to: rootRoute({}).careers({}).$, label: "Careers" }}
             title={`Member of ${role.group}`}
             properties={[role.team, role.location]}

@@ -77,7 +77,12 @@ const SecuritySection: React.FC = () => (
         lineHeight="1.1"
         color="site.fg.onDark"
       >
-        Security built for your most sensitive data
+        Security built for your{" "}
+        {/* The emphasis in the Business Overview's text on dark, as the
+          careers band's second line. */}
+        <Box as="span" color="overview.onDark2">
+          most sensitive data
+        </Box>
       </Text>
       <Box
         as="ul"

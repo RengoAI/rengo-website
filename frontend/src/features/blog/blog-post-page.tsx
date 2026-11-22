@@ -264,6 +264,8 @@ export const BlogPostPage: React.FC = () => {
       <Box as="main" id="main">
         <Box as="article">
           <ArticleHeader
+            // The calmest band for reading: an even haze fading in from the left.
+            light="bandHaze"
             back={{ to: rootRoute({}).blog({}).$, label: "Blog" }}
             title={post.title}
             dek={post.dek}

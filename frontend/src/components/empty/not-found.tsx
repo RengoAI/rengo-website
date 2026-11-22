@@ -12,7 +12,12 @@ export const NotFound = () => (
         The page you&rsquo;re looking for doesn&rsquo;t exist or has moved.
       </Text>
       {/* The site's button: one way out. */}
-      <SolidCta h="32px" href={rootRoute({}).$} labelProps={{ gap: "8px" }}>
+      <SolidCta
+        h="32px"
+        mt="16px"
+        href={rootRoute({}).$}
+        labelProps={{ gap: "8px" }}
+      >
         Go to the homepage
       </SolidCta>
     </VStack>

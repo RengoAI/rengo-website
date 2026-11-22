@@ -3,7 +3,6 @@ import NotFoundPage from "@/components/empty/app-not-found-page";
 import { RouteErrorPage } from "@/components/error/route-error-page";
 import { blogRoutes } from "@/features/blog/blog-routes";
 import { careersRoutes } from "@/features/careers/careers-routes";
-import { gradientsRoutes } from "@/features/gradients/gradients-routes";
 import {
   landingRoutes,
   legacyLandingRedirect,
@@ -22,7 +21,6 @@ const STANDALONE_ROUTES: RouteObject[] = [
   blogRoutes,
   legalRoutes,
   styleguideRoutes,
-  gradientsRoutes,
   {
     id: "companyRedirect",
     path: "company",

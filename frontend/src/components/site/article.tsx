@@ -1,7 +1,10 @@
 import { Section } from "@/components/layout/section";
 import { NAV_H } from "@/components/site/site-constants";
 import { colorVar, hoverFade } from "@/components/site/site-styles";
-import { LightField } from "@/components/site/light-field";
+import {
+  LightField,
+  type LightFieldVariant,
+} from "@/components/site/light-field";
 import { TypedText } from "@/components/site/typed-text";
 import { prefersReducedMotion } from "@/shared/utils/motion";
 import { Box, chakra, Text } from "@chakra-ui/react";
@@ -111,7 +114,16 @@ export const ArticleHeader: React.FC<{
   properties?: React.ReactNode[];
   /** Type the title in, as the careers hero does: for index pages. */
   typed?: boolean;
-}> = ({ back, title, dek, properties = [], typed = false }) => (
+  /** The band's light (a LightField variant); washBand by default. */
+  light?: LightFieldVariant;
+}> = ({
+  back,
+  title,
+  dek,
+  properties = [],
+  typed = false,
+  light = "washBand",
+}) => (
   <Section
     as="header"
     rhythm="none"
@@ -121,7 +133,7 @@ export const ArticleHeader: React.FC<{
     overflow="hidden"
   >
     {/* The page bands' light, in the Business Overview's colours. */}
-    <LightField variant="washBand" position="absolute" inset={0} />
+    <LightField variant={light} position="absolute" inset={0} />
     <Box position="relative" maxW={`${ARTICLE_MEASURE}px`} mx="auto">
       {back && (
         <Box mb={{ base: "28px", md: "36px" }}>

@@ -101,7 +101,12 @@ const Heading: React.FC = () => (
     lineHeight="1.1"
     color="site.fg.heading"
   >
-    Our customers in their own words
+    Our customers{" "}
+    {/* The emphasis in the highlight blue, as the other light sections'
+      headings. */}
+    <Box as="span" color="site.highlight">
+      in their own words
+    </Box>
   </Text>
 );
 
