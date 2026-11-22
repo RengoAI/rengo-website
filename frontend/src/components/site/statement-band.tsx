@@ -3,8 +3,8 @@ import {
   dotScale,
   heroDotColor,
   siteDotAt,
+  DOT_FLECK,
 } from "@/components/site/canvas/hero-dots";
-import { INK } from "@/components/site/canvas/ink";
 import {
   LightField,
   type LightFieldVariant,
@@ -45,7 +45,7 @@ const DOT_GAP = 25.2;
  * spacing: the field ends ordered but loose, keeping a little of the
  * scatter's movement rather than locking into a rigid lattice. */
 const DOT_JITTER = 0.22;
-/** Share of dots in crimson, as in the outro's grid. */
+/** Share of dots in the fleck colour (DOT_FLECK). */
 const ACCENT_SHARE = 0.08;
 
 type Dot = {
@@ -124,8 +124,8 @@ const OrderingDots: React.FC<{
             sx: Math.random() * w,
             sy: Math.random() * h,
             delay: Math.random() * 0.35,
-            // The hero's palette, with the outro grid's crimson accent.
-            color: Math.random() < ACCENT_SHARE ? INK.crimson : heroDotColor(),
+            // The hero's palette, with its flecks.
+            color: Math.random() < ACCENT_SHARE ? DOT_FLECK : heroDotColor(),
           });
         }
       }
