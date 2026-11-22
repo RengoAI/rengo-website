@@ -116,13 +116,11 @@ export const CareersPage: React.FC = () => (
         bg="overview.navyDeep"
         position="relative"
         overflow="hidden"
-        // The landing's big moments' height, laid out like its security
-        // band: the heading top left, the logos below, the beam beneath.
-        minH={FEATURE_BAND_MIN_H}
+        // As tall as its content, with the site's section padding: the
+        // heading top left, the logos under it, the beam behind.
         gridProps={{
-          alignContent: "start",
           alignItems: "center",
-          rowGap: { base: "48px", lg: "120px" },
+          rowGap: { base: "40px", lg: "64px" },
         }}
       >
         <LightField
@@ -153,8 +151,10 @@ export const CareersPage: React.FC = () => (
 
       <Section
         id="open-roles"
-        // As tall as its roles, with the site's section padding.
+        // At least the landing's big moments' height, with the site's
+        // section padding.
         bg="site.bg.surface"
+        minH={FEATURE_BAND_MIN_H}
         scrollMarginTop={`${NAV_H}px`}
       >
         {/* The article column, as on the blog index: a left-aligned
