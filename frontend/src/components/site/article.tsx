@@ -245,8 +245,8 @@ const useActiveHeading = (ids: string[]) => {
 };
 
 /**
- * The sections as links: the one being read in ink and medium weight, the
- * rest in grey at regular weight.
+ * The sections as links, in the Business Overview's ink: the one being read
+ * in navy at medium weight, the rest in slate at regular weight.
  */
 const ContentsLinks: React.FC<{
   headings: string[];
@@ -264,11 +264,12 @@ const ContentsLinks: React.FC<{
             aria-current={current ? "location" : undefined}
             {...SMALL}
             display="block"
-            color={current ? ARTICLE_INK : ARTICLE_MUTED}
+            // The Business Overview's ink: slate, the one being read navy.
+            color={current ? "overview.navy" : "overview.slate"}
             fontWeight={current ? 500 : 400}
             textDecoration="none"
             transition="color 150ms ease"
-            _hover={{ color: ARTICLE_INK }}
+            _hover={{ color: "overview.navy" }}
           >
             {text}
           </chakra.a>
@@ -300,7 +301,7 @@ const MarginContents: React.FC<{ headings: string[] }> = ({ headings }) => {
         top={`${NAV_H + 32}px`}
       >
         {/* A label for the list, not an entry in it: smaller and grey. */}
-        <Text {...SMALL} fontSize="0.75rem" color={ARTICLE_MUTED} mb="10px">
+        <Text {...SMALL} fontSize="0.75rem" color="overview.slate" mb="10px">
           On this page
         </Text>
         <ContentsLinks headings={headings} active={active} />
@@ -314,8 +315,10 @@ const BoxContents: React.FC<{ headings: string[] }> = ({ headings }) => (
   <chakra.details
     display={{ base: "block", xl: "none" }}
     open
-    // A step under the inset grey, so the box reads against the page.
-    bg="canvas.350"
+    // A soft blue-grey panel (silver.100, the secondary button's family),
+    // so the box reads against the page in the site's palette rather than
+    // a neutral grey.
+    bg="silver.100"
     borderRadius="4px"
     px="16px"
     py="14px"
@@ -332,6 +335,7 @@ const BoxContents: React.FC<{ headings: string[] }> = ({ headings }) => (
       alignItems="center"
       justifyContent="space-between"
       {...SMALL}
+      color="overview.navy"
     >
       On this page
       <ChevronDown size={14} style={{ transition: "transform 150ms" }} />
