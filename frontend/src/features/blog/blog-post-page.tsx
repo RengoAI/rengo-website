@@ -54,6 +54,9 @@ const Figure: React.FC<{
       <FigureTitle>{block.title}</FigureTitle>
       <Box
         {...FIGURE_WELL}
+        // The same faint rule as the shapes inside it.
+        border="1px solid"
+        borderColor="border.subtle"
         borderRadius="4px"
         px={{ base: "16px", md: "40px" }}
         py="40px"
