@@ -61,7 +61,11 @@ type Dot = {
 const OrderingDots: React.FC<{
   progress: React.MutableRefObject<number>;
   tick: number;
-}> = ({ progress, tick }) => {
+  /** Furthest the dots settle, 0 to 1: under 1, they stop part-way. */
+  rest: number;
+  /** Share of the grid's dots drawn, 0 to 1. */
+  share: number;
+}> = ({ progress, tick, rest, share }) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const dots = React.useRef<Dot[]>([]);
   const size = React.useRef({ w: 0, h: 0 });
@@ -76,7 +80,7 @@ const OrderingDots: React.FC<{
     ctx.clearRect(0, 0, w, h);
     // The site's square marks, at the size every dot figure uses.
     const half = siteDotAt(dotScale(w)) / 2;
-    const p = progress.current;
+    const p = Math.min(progress.current, rest);
     for (const d of dots.current) {
       const t = smoothstep(
         Math.min(Math.max((p - d.delay) / (1 - d.delay), 0), 1),
@@ -89,7 +93,7 @@ const OrderingDots: React.FC<{
         half * 2,
       );
     }
-  }, [progress]);
+  }, [progress, rest]);
 
   // Lay the grid out to the canvas's size, each dot with a random start.
   React.useEffect(() => {
@@ -109,6 +113,7 @@ const OrderingDots: React.FC<{
       const next: Dot[] = [];
       for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
+          if (Math.random() > share) continue;
           next.push({
             x: ox + (c + (Math.random() - 0.5) * 2 * DOT_JITTER) * DOT_GAP,
             y: oy + (r + (Math.random() - 0.5) * 2 * DOT_JITTER) * DOT_GAP,
@@ -127,7 +132,7 @@ const OrderingDots: React.FC<{
     const observer = new ResizeObserver(layout);
     observer.observe(canvas);
     return () => observer.disconnect();
-  }, [draw]);
+  }, [draw, share]);
 
   // Redraw whenever the band's progress moves.
   React.useEffect(draw, [draw, tick]);
@@ -183,8 +188,14 @@ export const StatementBand: React.FC<{
    * in full. The close sits part-way, loosely gathered round the line.
    */
   still?: number;
+  /**
+   * How far the dots settle as the band scrolls in, 0 to 1, and the share
+   * of them drawn. Below 1, the field stops part-way, loose rather than a
+   * grid, and thinner.
+   */
+  dots?: { rest?: number; share?: number };
   children?: React.ReactNode;
-}> = ({ lead, point, id, tone = "wash", still, children }) => {
+}> = ({ lead, point, id, tone = "wash", still, dots, children }) => {
   // The line, whose place on screen drives the reveal.
   const ref = React.useRef<HTMLHeadingElement>(null);
   const reduced = usePrefersReducedMotion();
@@ -244,7 +255,12 @@ export const StatementBand: React.FC<{
       gap="28px"
       aria-labelledby={id}
     >
-      <OrderingDots progress={progress} tick={tick} />
+      <OrderingDots
+        progress={progress}
+        tick={tick}
+        rest={dots?.rest ?? 1}
+        share={dots?.share ?? 1}
+      />
       <Text
         ref={ref}
         as="h2"

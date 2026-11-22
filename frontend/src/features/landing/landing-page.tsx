@@ -74,6 +74,9 @@ export const LandingPage: React.FC = () => (
       <StatementBand
         lead="AI is only as reliable as"
         point="the information it works from."
+        // The dots stop part-way, loose, and a third are left out: the
+        // in-flight look, without a dense field at rest.
+        dots={{ rest: 0.6, share: 0.65 }}
       />
 
       {/* --- Solution ------------------------------------------------------- */}
