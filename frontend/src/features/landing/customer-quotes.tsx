@@ -1,6 +1,5 @@
 import { Section } from "@/components/layout/section";
 import { FEATURE_BAND_MIN_H } from "@/components/site/site-constants";
-import { usePrefersReducedMotion } from "@/shared/utils/motion";
 import { Box, chakra, Text } from "@chakra-ui/react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import React from "react";
@@ -45,32 +44,24 @@ const Arrow: React.FC<{
     aria-label={dir === "prev" ? "Previous quote" : "Next quote"}
     onClick={onClick}
     disabled={disabled}
-    // Round, in the Business Overview's navy: an outline at rest, filled on
+    // Quiet: a faint round outline with a slate arrow, darkening to navy on
     // hover.
-    w="48px"
-    h="48px"
+    w="40px"
+    h="40px"
     display="grid"
     placeItems="center"
     borderRadius="full"
     border="1px solid"
     borderColor="overview.rule"
-    color="overview.navy"
-    bg="site.bg.raised"
+    color="overview.slate"
+    bg="transparent"
     cursor="pointer"
-    transition="background-color 200ms ease, color 200ms ease, border-color 200ms ease, opacity 200ms ease"
-    _hover={{
-      bg: "overview.navy",
-      color: "white",
-      borderColor: "overview.navy",
-    }}
+    transition="color 200ms ease, border-color 200ms ease, opacity 200ms ease"
+    _hover={{ color: "overview.navy", borderColor: "overview.navy" }}
     _disabled={{
-      opacity: 0.35,
+      opacity: 0.3,
       cursor: "default",
-      _hover: {
-        bg: "site.bg.raised",
-        color: "overview.navy",
-        borderColor: "overview.rule",
-      },
+      _hover: { color: "overview.slate", borderColor: "overview.rule" },
     }}
     _focusVisible={{
       outline: "2px solid",
@@ -79,9 +70,9 @@ const Arrow: React.FC<{
     }}
   >
     {dir === "prev" ? (
-      <ArrowLeft size={18} strokeWidth={1.5} />
+      <ArrowLeft size={16} strokeWidth={1.5} />
     ) : (
-      <ArrowRight size={18} strokeWidth={1.5} />
+      <ArrowRight size={16} strokeWidth={1.5} />
     )}
   </chakra.button>
 );
@@ -113,141 +104,32 @@ const Heading: React.FC = () => (
 );
 
 /**
- * A, editorial cards (after Jack & Jill): the carousel, each card a
- * borderless panel in the Business Overview's tint with the quote large in
- * the serif and who said it quietly at the foot.
- */
-const QuoteCards: React.FC = () => {
-  const trackRef = React.useRef<HTMLUListElement>(null);
-  const reduced = usePrefersReducedMotion();
-  const [edges, setEdges] = React.useState({ start: true, end: false });
-
-  // Which ends the track is at, to disable the arrows there.
-  const measure = React.useCallback(() => {
-    const el = trackRef.current;
-    if (!el) return;
-    setEdges({
-      start: el.scrollLeft <= 4,
-      end: el.scrollLeft + el.clientWidth >= el.scrollWidth - 4,
-    });
-  }, []);
-  React.useEffect(() => {
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, [measure]);
-
-  // One card's width (plus the gap) per click.
-  const step = (dir: 1 | -1) => {
-    const el = trackRef.current;
-    const card = el?.querySelector("li");
-    if (!el || !card) return;
-    el.scrollBy({
-      left: dir * (card.getBoundingClientRect().width + 16),
-      behavior: reduced ? "auto" : "smooth",
-    });
-  };
-
-  return (
-    <Section bg="site.bg.surface" py="96px" overflow="hidden">
-      <Box
-        display="flex"
-        alignItems="flex-end"
-        justifyContent="space-between"
-        gap="24px"
-        pb="40px"
-      >
-        <Heading />
-        <Box display="flex" gap="8px" flexShrink={0}>
-          <Arrow dir="prev" disabled={edges.start} onClick={() => step(-1)} />
-          <Arrow dir="next" disabled={edges.end} onClick={() => step(1)} />
-        </Box>
-      </Box>
-      <Box
-        as="ul"
-        ref={trackRef}
-        onScroll={measure}
-        aria-label="Customer quotes"
-        tabIndex={0}
-        display="flex"
-        gap="16px"
-        overflowX="auto"
-        // Runs out past the gutter on the right, so the next card shows it
-        // continues.
-        mr="calc(-1 * var(--site-gutter, 40px))"
-        pr="var(--site-gutter, 40px)"
-        css={{
-          scrollSnapType: "x mandatory",
-          scrollbarWidth: "none",
-          "&::-webkit-scrollbar": { display: "none" },
-        }}
-        _focusVisible={{
-          outline: "2px solid",
-          outlineColor: "site.highlight",
-          outlineOffset: "4px",
-        }}
-      >
-        {QUOTES.map((q) => (
-          <Box
-            as="li"
-            key={q.role + q.size}
-            flex={{
-              base: "0 0 85%",
-              md: "0 0 60%",
-              lg: "0 0 calc((100% - 32px) / 2.4)",
-            }}
-            css={{ scrollSnapAlign: "start" }}
-            bg="overview.tint"
-            borderRadius="4px"
-            p={{ base: "28px", md: "40px" }}
-            minH={{ md: "400px" }}
-            display="flex"
-            flexDirection="column"
-            justifyContent="space-between"
-            gap="40px"
-          >
-            <Text
-              as="blockquote"
-              textStyle="d4"
-              fontSize={{ base: "1.25rem", md: "1.5rem" }}
-              lineHeight="1.3"
-              color="site.fg.strong"
-            >
-              {q.quote}
-            </Text>
-            <Attribution q={q} />
-          </Box>
-        ))}
-      </Box>
-    </Section>
-  );
-};
-
-/**
- * B, one quote at a time (after Amperos and the Business Overview's pull
+ * Customer stories, one quote at a time (after Amperos and the Business Overview's pull
  * quotes): a single quote large in the serif across most of the width, who
- * said it under it, and a quiet counter with arrows to step through.
+ * said it under it, and a quiet counter ("1 / 3") with arrows to step
+ * through.
  */
 const QuoteFeature: React.FC = () => {
   const [i, setI] = React.useState(0);
   const q = QUOTES[i];
   const n = QUOTES.length;
-  const pad = (k: number) => String(k).padStart(2, "0");
   return (
     <Section
-      // The Business Overview's panel tint, at the big moments' height,
-      // the quote centred in it.
+      // The Business Overview's panel tint, at the big moments' height:
+      // the heading at the top like the other sections', the quote in the
+      // room below it.
       bg="overview.tint"
       minH={FEATURE_BAND_MIN_H}
       display="flex"
       flexDirection="column"
-      justifyContent="center"
     >
       <Box pb={{ base: "40px", lg: "64px" }}>
         <Heading />
       </Box>
       <Box
         as="figure"
+        // Centred in the room under the heading.
+        my="auto"
         maxW="1000px"
         display="flex"
         flexDirection="column"
@@ -282,7 +164,7 @@ const QuoteFeature: React.FC = () => {
               fontVariantNumeric="tabular-nums"
               mr="4px"
             >
-              {pad(i + 1)} / {pad(n)}
+              {i + 1} / {n}
             </Text>
             <Arrow
               dir="prev"
@@ -301,10 +183,5 @@ const QuoteFeature: React.FC = () => {
   );
 };
 
-/**
- * Customer stories, built to take more quotes: add them to QUOTES. Two
- * takes to choose between; keep one.
- */
-export const CustomerQuotes: React.FC<{ variant: "cards" | "feature" }> = ({
-  variant,
-}) => (variant === "cards" ? <QuoteCards /> : <QuoteFeature />);
+/** Customer stories. Built to take more quotes: add them to QUOTES. */
+export const CustomerQuotes = QuoteFeature;
