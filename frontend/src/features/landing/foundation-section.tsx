@@ -240,7 +240,9 @@ export const FoundationSection: React.FC = () => {
             textStyle="body.md"
             fontSize={{ base: "1rem", md: "1.125rem" }}
             color="site.fg"
-            maxW="480px"
+            // The title's column: one line beside a one-line title, rather
+            // than two short halves under it.
+            maxW="560px"
             textWrap="balance"
             mt="24px"
           >
