@@ -21,18 +21,19 @@ const UNLIT = 0.16;
 
 /**
  * How far the reveal has run, 0 to 1, from where the line itself sits: it
- * starts once the line is well on screen (its middle 75% of the way down)
- * and finishes as the line reaches the viewport's middle, or, for a band
+ * starts as the line comes on screen (its middle 85% of the way down) and
+ * finishes as it passes a little above the middle (40%), over nearly half
+ * a screen of scrolling so the words fill at a reading pace; or, for a band
  * near the page's end that can't scroll that far, once the page is
  * scrolled to the bottom. So it all plays while the line is in view.
  */
 const revealProgress = (line: DOMRect) => {
   const vh = window.innerHeight;
   const mid = line.top + line.height / 2;
-  const start = vh * 0.75;
+  const start = vh * 0.85;
   const maxScroll = document.documentElement.scrollHeight - vh;
   const midAtBottom = mid - (maxScroll - window.scrollY);
-  const end = Math.min(Math.max(vh / 2, midAtBottom), start - 1);
+  const end = Math.min(Math.max(vh * 0.4, midAtBottom), start - 1);
   return Math.min(Math.max((start - mid) / (start - end), 0), 1);
 };
 
@@ -203,8 +204,20 @@ export const StatementBand: React.FC<{
    * in as the words fill.
    */
   light?: LightFieldVariant;
+  /** The band's minimum height; the shared feature height by default. */
+  minH?: string;
   children?: React.ReactNode;
-}> = ({ lead, point, id, tone = "wash", still, dots, light, children }) => {
+}> = ({
+  lead,
+  point,
+  id,
+  tone = "wash",
+  still,
+  dots,
+  light,
+  minH = FEATURE_BAND_MIN_H,
+  children,
+}) => {
   // The line, whose place on screen drives the reveal.
   const ref = React.useRef<HTMLHeadingElement>(null);
   const reduced = usePrefersReducedMotion();
@@ -256,7 +269,7 @@ export const StatementBand: React.FC<{
         ? { bg: "site.bg.footer", bgImage: "none" }
         : TESTIMONIAL_WASHES.mid)}
       // Most of a screen, not all of it.
-      minH={FEATURE_BAND_MIN_H}
+      minH={minH}
       display="flex"
       flexDirection="column"
       alignItems="center"

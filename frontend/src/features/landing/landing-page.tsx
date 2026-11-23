@@ -4,6 +4,7 @@ import { SiteNav } from "@/components/site/site-nav";
 import {
   CONTACT_HREF,
   FEATURE_BAND_MIN_H,
+  STATEMENT_BAND_MIN_H,
 } from "@/components/site/site-constants";
 import { SolidCta } from "@/components/site/solid-cta";
 import { StatementBand } from "@/components/site/statement-band";
@@ -136,6 +137,7 @@ export const LandingPage: React.FC = () => (
         lead="AI is only as reliable as"
         point="the information it works from"
         light="beamSteel"
+        minH={STATEMENT_BAND_MIN_H}
       />
 
       {/* --- Solution ------------------------------------------------------- */}
