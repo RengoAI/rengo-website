@@ -50,8 +50,12 @@ import React from "react";
 const HEADLINE = "Building your intelligent data layer";
 /** Where the title's second line starts: at "intelligent". */
 const HEADLINE_BREAK = HEADLINE.indexOf("intelligent");
-const DESCRIPTION =
-  "Your people are doing the work your systems should be doing";
+/** Word for word from the sales deck's cover: what the data layer gives
+ * you, as ode.com's hero says what its client gets. */
+const DESCRIPTION = "Turn proprietary knowledge into operating leverage";
+/** Where the description's second line starts: at "into", so it sets in
+ * two lines like the title, though it would fit on one. */
+const DESCRIPTION_BREAK = DESCRIPTION.indexOf("into");
 
 // ---- Formation ---------------------------------------------------------
 /**
@@ -730,7 +734,10 @@ export const LandingHero: React.FC = () => {
               maxW="full"
               css={{ textWrap: "balance" }}
             >
-              {DESCRIPTION}
+              {DESCRIPTION.slice(0, DESCRIPTION_BREAK).trimEnd()}{" "}
+              {/* Two lines, like the title. */}
+              <br />
+              {DESCRIPTION.slice(DESCRIPTION_BREAK)}
             </Text>
             <Box
               pointerEvents="auto"
