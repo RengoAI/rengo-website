@@ -14,20 +14,19 @@ const ART = "/img/rebrand/";
 const FOUNDATION_LAYERS: { title: string; description: string }[] = [
   {
     title: "Applications",
-    description: "See the full picture and act on it in one place",
+    description: "We build software around the work your people do every day",
   },
   {
     title: "Agents",
-    description: "Take care of tasks that would otherwise fall to your people",
+    description: "We build agents that carry out work across your systems",
   },
   {
     title: "Ontology",
-    description:
-      "Define how your data fits together and what it means to your business",
+    description: "We connect your data and give AI the context to use it",
   },
   {
     title: "Infrastructure",
-    description: "Keep your data secure and control who can access it",
+    description: "We keep your data secure and put you in control of access",
   },
 ];
 

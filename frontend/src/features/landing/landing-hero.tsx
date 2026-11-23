@@ -47,15 +47,13 @@ import React from "react";
  */
 
 /** The hero's copy. */
-const HEADLINE = "Building your intelligent data layer";
-/** Where the title's second line starts: at "intelligent". */
-const HEADLINE_BREAK = HEADLINE.indexOf("intelligent");
-/** Word for word from the sales deck's cover: what the data layer gives
- * you, as ode.com's hero says what its client gets. */
-const DESCRIPTION = "Turn proprietary knowledge into operating leverage";
-/** Where the description's second line starts: at "into", so it sets in
- * two lines like the title, though it would fit on one. */
-const DESCRIPTION_BREAK = DESCRIPTION.indexOf("into");
+const HEADLINE = "An intelligent data layer";
+/** Where the title's second line starts: at "data". */
+const HEADLINE_BREAK = HEADLINE.indexOf("data");
+/** Supporting line from the Business Overview. */
+const DESCRIPTION = "Building the foundation for an AI-native organization";
+/** Keep the purpose together on the description's second line. */
+const DESCRIPTION_BREAK = DESCRIPTION.indexOf("for an");
 
 // ---- Formation ---------------------------------------------------------
 /**
@@ -700,11 +698,14 @@ export const LandingHero: React.FC = () => {
           <Text
             as="h1"
             textStyle="h2"
-            fontSize={{ base: "32px", md: "36px" }}
+            // A short title, so it steps up from lg to keep the weight the
+            // longer one had beside the description. Tablets hold at 36px,
+            // where the description's 420px leaves no room for more.
+            fontSize={{ base: "32px", md: "36px", lg: "52px" }}
             fontWeight={350}
             letterSpacing="-0.025em"
             color="site.fg"
-            // Two set lines, broken before "intelligent"; held on them from
+            // Two set lines, broken before "data"; held on them from
             // md up, free to wrap on phones.
             whiteSpace={{ md: "nowrap" }}
           >
