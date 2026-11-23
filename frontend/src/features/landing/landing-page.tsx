@@ -27,7 +27,7 @@ const COMPLIANCE = [
   {
     icon: ScanSearch,
     title: "Pen-tested",
-    description: "Built to industry-leading security standards.",
+    description: "Tested every year by independent security firms.",
   },
   {
     icon: EyeOff,

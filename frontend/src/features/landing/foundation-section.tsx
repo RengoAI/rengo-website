@@ -18,15 +18,15 @@ const FOUNDATION_LAYERS: { title: string; description: string }[] = [
   },
   {
     title: "Agents",
-    description: "AI that handles work across your systems",
+    description: "AI that handles work across systems",
   },
   {
     title: "Ontology",
-    description: "Connecting your data to how your business operates",
+    description: "A map of your data and how it’s used",
   },
   {
     title: "Infrastructure",
-    description: "A secure foundation that connects your data and powers AI",
+    description: "A secure foundation that connects data and powers AI",
   },
 ];
 
@@ -228,7 +228,7 @@ export const FoundationSection: React.FC = () => {
               is the people side. */}
             We bring{" "}
             <Box as="span" color="site.highlight">
-              frontier AI and data capabilities
+              the frontier of AI and data
             </Box>{" "}
             to every organization
           </Text>
