@@ -225,16 +225,13 @@ export const FoundationSection: React.FC = () => {
             letterSpacing="-0.5px"
             color="site.fg.heading"
           >
-            {/* The Business Overview's "About Rengo" ("We founded Rengo to
-              make institutional-grade infrastructure accessible…", "a
-              managed data and AI platform"), shortened. "Platform" rather
-              than "infrastructure", which is a layer below; the layers are
-              its parts. */}
-            We make an{" "}
+            {/* What we do, before the layers show it; "We partner…" below
+              is the people side. */}
+            Bringing{" "}
             <Box as="span" color="site.highlight">
-              institutional-grade data and AI platform
+              frontier AI and data capabilities
             </Box>{" "}
-            accessible to organizations of all sizes
+            to every organization
           </Text>
         </GridCol>
       </Grid>
