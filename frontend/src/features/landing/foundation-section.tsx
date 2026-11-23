@@ -233,21 +233,6 @@ export const FoundationSection: React.FC = () => {
               an AI advantage
             </Box>
           </Text>
-          {/* Like the references' section sub-lines: a step under the
-            title and over the layers' 14px copy (16px on phones, 18px from
-            md), well clear of the title. */}
-          <Text
-            textStyle="body.md"
-            fontSize={{ base: "1rem", md: "1.125rem" }}
-            color="site.fg"
-            // The title's column: one line beside a one-line title, rather
-            // than two short halves under it.
-            maxW="560px"
-            textWrap="balance"
-            mt="24px"
-          >
-            Your people are doing the work your systems should be doing
-          </Text>
         </GridCol>
       </Grid>
       <Box as="ul">
