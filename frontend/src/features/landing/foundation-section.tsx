@@ -22,7 +22,7 @@ const FOUNDATION_LAYERS: { title: string; description: string }[] = [
   },
   {
     title: "Ontology",
-    description: "A map of your data and how the business uses it",
+    description: "A map of your data and how it’s used",
   },
   {
     title: "Infrastructure",
@@ -230,7 +230,7 @@ export const FoundationSection: React.FC = () => {
             <Box as="span" color="site.highlight">
               frontier AI and data
             </Box>{" "}
-            to your organization
+            to every organization
           </Text>
         </GridCol>
       </Grid>
