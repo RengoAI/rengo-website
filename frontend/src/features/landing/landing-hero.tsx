@@ -50,8 +50,10 @@ import React from "react";
 const HEADLINE = "Building your intelligent data layer";
 /** Where the title's second line starts: at "intelligent". */
 const HEADLINE_BREAK = HEADLINE.indexOf("intelligent");
-const DESCRIPTION =
-  "Your people are doing the work your systems should be doing";
+/** Supporting line adapted from the Business Overview. */
+const DESCRIPTION = "The foundation for an AI-native organization";
+/** Balance the description across two lines. */
+const DESCRIPTION_BREAK = DESCRIPTION.indexOf("AI-native");
 
 // ---- Formation ---------------------------------------------------------
 /**
@@ -730,7 +732,10 @@ export const LandingHero: React.FC = () => {
               maxW="full"
               css={{ textWrap: "balance" }}
             >
-              {DESCRIPTION}
+              {DESCRIPTION.slice(0, DESCRIPTION_BREAK).trimEnd()}{" "}
+              {/* Two lines, like the title. */}
+              <br />
+              {DESCRIPTION.slice(DESCRIPTION_BREAK)}
             </Text>
             <Box
               pointerEvents="auto"

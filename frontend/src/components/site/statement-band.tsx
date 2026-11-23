@@ -204,6 +204,17 @@ export const StatementBand: React.FC<{
    * in as the words fill.
    */
   light?: LightFieldVariant;
+  /**
+   * A sentence under the line, in body type: the line is the tagline, this
+   * describes it. With one, the line stays on one row from tablets up
+   * instead of breaking before the blue half.
+   */
+  description?: string;
+  /**
+   * Dissolve the light into the page at the band's top and bottom, so it
+   * runs on from the section above and into the one below with no edge.
+   */
+  fade?: boolean;
   /** The band's minimum height; the shared feature height by default. */
   minH?: string | Record<string, string>;
   children?: React.ReactNode;
@@ -215,6 +226,8 @@ export const StatementBand: React.FC<{
   still,
   dots,
   light,
+  description,
+  fade,
   minH = FEATURE_BAND_MIN_H,
   children,
 }) => {
@@ -265,9 +278,12 @@ export const StatementBand: React.FC<{
     <Section
       position="relative"
       overflow="hidden"
-      {...(tone === "plain"
-        ? { bg: "site.bg.footer", bgImage: "none" }
-        : TESTIMONIAL_WASHES.mid)}
+      {...(fade
+        ? // The page's own ground, which the light dissolves into.
+          { bg: "site.bg.page", bgImage: "none" }
+        : tone === "plain"
+          ? { bg: "site.bg.footer", bgImage: "none" }
+          : TESTIMONIAL_WASHES.mid)}
       // Most of a screen, not all of it.
       minH={minH}
       display="flex"
@@ -284,6 +300,14 @@ export const StatementBand: React.FC<{
           inset={0}
           // From a faint glow to full as the words fill.
           style={{ opacity: 0.3 + 0.7 * progress.current }}
+          css={
+            fade
+              ? {
+                  maskImage:
+                    "linear-gradient(to bottom, transparent 0%, black 22%, black 58%, transparent 100%)",
+                }
+              : undefined
+          }
         />
       ) : (
         <OrderingDots
@@ -312,8 +336,14 @@ export const StatementBand: React.FC<{
             {w}{" "}
           </Box>
         ))}
-        {/* Its own line from tablets up: the statement in two halves. */}
-        <Box as="span" display={{ md: "block" }} color="site.highlight">
+        {/* Its own line from tablets up: the statement in two halves.
+          Inline when a description follows, so the tagline reads as one
+          sentence. */}
+        <Box
+          as="span"
+          display={description ? undefined : { md: "block" }}
+          color="site.highlight"
+        >
           {words.slice(leadCount).map(({ w }, j) => (
             <Box
               as="span"
@@ -327,6 +357,20 @@ export const StatementBand: React.FC<{
           ))}
         </Box>
       </Text>
+      {description && (
+        <Text
+          position="relative"
+          textStyle="body.md"
+          color="site.fg"
+          textAlign="center"
+          maxW="480px"
+          textWrap="balance"
+          // Fills in last, after the line's final word.
+          style={{ opacity: lit(words.length) }}
+        >
+          {description}
+        </Text>
+      )}
       {children && (
         <Box position="relative" zIndex={1}>
           {children}

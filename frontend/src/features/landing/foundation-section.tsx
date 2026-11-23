@@ -14,20 +14,19 @@ const ART = "/img/rebrand/";
 const FOUNDATION_LAYERS: { title: string; description: string }[] = [
   {
     title: "Applications",
-    description: "See the full picture and act on it in one place",
+    description: "Software built around how your business works",
   },
   {
     title: "Agents",
-    description: "Take care of tasks that would otherwise fall to your people",
+    description: "AI that handles work across your systems",
   },
   {
     title: "Ontology",
-    description:
-      "Define how your data fits together and what it means to your business",
+    description: "Connecting your data to how your business operates",
   },
   {
     title: "Infrastructure",
-    description: "Keep your data secure and control who can access it",
+    description: "A secure foundation that connects your data and powers AI",
   },
 ];
 
@@ -225,10 +224,13 @@ export const FoundationSection: React.FC = () => {
             letterSpacing="-0.5px"
             color="site.fg.heading"
           >
-            We build a trusted data layer to give you{" "}
+            {/* What we do, before the layers show it; "We partner…" below
+              is the people side. */}
+            We bring{" "}
             <Box as="span" color="site.highlight">
-              visibility across your organization
-            </Box>
+              frontier AI and data capabilities
+            </Box>{" "}
+            to every organization
           </Text>
         </GridCol>
       </Grid>

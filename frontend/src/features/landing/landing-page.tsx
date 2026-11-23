@@ -126,17 +126,18 @@ export const LandingPage: React.FC = () => (
         each line rolls in its own gentle wave. */}
       <LandingHero />
 
-      {/* --- The problem ------------------------------------------------- */}
-      {/* Word for word from the Business Overview ("Shared File Drive vs.
-        Structured Database"). */}
-      {/* Word for word from the Business Overview ("Shared File Drive vs.
-        Structured Database"), over a low steel beam of light: the calmest
-        kind of gradient for a full-width band, in the Business Overview's
-        steel. */}
+      {/* --- The opportunity ---------------------------------------------- */}
+      {/* Word for word from the sales deck's second slide: the tagline, then
+        the gap it opens, which the infrastructure below answers. The close
+        ("Ready to make your data your alpha?") echoes it. */}
       <StatementBand
-        lead="AI is only as reliable as"
-        point="the information it works from"
-        light="beamSteel"
+        lead="Your data is"
+        point="your alpha"
+        description="But most of it isn’t being put to work"
+        light="glowLine"
+        // Dissolves into the page above and below, so the hero runs into it
+        // and it runs into the data layer, with no edges.
+        fade
       />
 
       {/* --- Solution ------------------------------------------------------- */}
