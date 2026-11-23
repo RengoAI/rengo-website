@@ -127,14 +127,14 @@ export const LandingPage: React.FC = () => (
       <LandingHero />
 
       {/* --- The opportunity ---------------------------------------------- */}
-      {/* Word for word from the sales deck's second slide: the tagline, then
-        the gap it opens, which the data layer below answers. The close
-        ("Ready to make your data your alpha?") echoes it. A soft steel glow
-        behind the line. */}
+      {/* The sales deck's second slide, then the Business Overview's
+        reason it matters for AI: data is the asset, and AI is only as good
+        as it. The layers below answer how. The close ("Ready to make your
+        data your alpha?") echoes the line. */}
       <StatementBand
         lead="Your data is"
         point="your alpha"
-        description="But most of it isn’t being put to work"
+        description="AI is only as reliable as the information it works from"
         light="glowLine"
         // Dissolves into the page above and below, so the hero runs into it
         // and it runs into the data layer, with no edges.

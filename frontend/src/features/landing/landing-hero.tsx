@@ -47,13 +47,13 @@ import React from "react";
  */
 
 /** The hero's copy. */
-const HEADLINE = "An intelligent data layer";
-/** Where the title's second line starts: at "data". */
-const HEADLINE_BREAK = HEADLINE.indexOf("data");
-/** Supporting line from the Business Overview. */
-const DESCRIPTION = "Building the foundation for an AI-native organization";
-/** Keep the purpose together on the description's second line. */
-const DESCRIPTION_BREAK = DESCRIPTION.indexOf("for an");
+const HEADLINE = "Building your intelligent data layer";
+/** Where the title's second line starts: at "intelligent". */
+const HEADLINE_BREAK = HEADLINE.indexOf("intelligent");
+/** Supporting line adapted from the Business Overview. */
+const DESCRIPTION = "The foundation for an AI-native organization";
+/** Balance the description across two lines. */
+const DESCRIPTION_BREAK = DESCRIPTION.indexOf("AI-native");
 
 // ---- Formation ---------------------------------------------------------
 /**
@@ -698,14 +698,11 @@ export const LandingHero: React.FC = () => {
           <Text
             as="h1"
             textStyle="h2"
-            // A short title, so it steps up from lg to keep the weight the
-            // longer one had beside the description. Tablets hold at 36px,
-            // where the description's 420px leaves no room for more.
-            fontSize={{ base: "32px", md: "36px", lg: "52px" }}
+            fontSize={{ base: "32px", md: "36px" }}
             fontWeight={350}
             letterSpacing="-0.025em"
             color="site.fg"
-            // Two set lines, broken before "data"; held on them from
+            // Two set lines, broken before "intelligent"; held on them from
             // md up, free to wrap on phones.
             whiteSpace={{ md: "nowrap" }}
           >
