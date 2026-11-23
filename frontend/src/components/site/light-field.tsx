@@ -455,6 +455,24 @@ export const LIGHT_VARIANTS = {
       },
     ],
   },
+  /** Slate-light glowing softly behind a centred line, for a band whose
+   * edges dissolve into the page (StatementBand's `fade`). */
+  glowLine: {
+    name: "Glow behind the line",
+    base: MIST,
+    shapes: [
+      {
+        x: 50,
+        y: 46,
+        w: 95,
+        h: 55,
+        rgb: OV_STEEL_LIGHT,
+        a: 0.55,
+        blur: 70,
+        radius: BLOB,
+      },
+    ],
+  },
   // The Business Overview's ramp: tint → tint-2 → slate → navy, its cycle
   // cards' progression, with steel and haze between.
   ovTint: {

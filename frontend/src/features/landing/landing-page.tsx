@@ -129,13 +129,16 @@ export const LandingPage: React.FC = () => (
       {/* --- The opportunity ---------------------------------------------- */}
       {/* Word for word from the sales deck's second slide: the tagline, then
         the gap it opens, which the data layer below answers. The close
-        ("Ready to make your data your alpha?") echoes it. Over a low steel
-        beam of light. */}
+        ("Ready to make your data your alpha?") echoes it. A soft steel glow
+        behind the line. */}
       <StatementBand
         lead="Your data is"
         point="your alpha"
         description="But most of it isn’t being put to work"
-        light="beamSteel"
+        light="glowLine"
+        // Dissolves into the page above and below, so the hero runs into it
+        // and it runs into the data layer, with no edges.
+        fade
       />
 
       {/* --- Solution ------------------------------------------------------- */}
