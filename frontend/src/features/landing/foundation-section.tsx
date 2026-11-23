@@ -14,19 +14,20 @@ const ART = "/img/rebrand/";
 const FOUNDATION_LAYERS: { title: string; description: string }[] = [
   {
     title: "Applications",
-    description: "We build software around the work your people do every day",
+    description: "Software built for the way you work",
   },
   {
     title: "Agents",
-    description: "We build agents that carry out work across your systems",
+    description: "AI that handles work across your systems",
   },
   {
     title: "Ontology",
-    description: "We connect your data and give AI the context to use it",
+    description:
+      "How your data fits together and what it means to your business",
   },
   {
     title: "Infrastructure",
-    description: "We keep your data secure and put you in control of access",
+    description: "A secure foundation for AI across your organization",
   },
 ];
 
@@ -225,10 +226,13 @@ export const FoundationSection: React.FC = () => {
             color="site.fg.heading"
           >
             {/* The Business Overview's "About Rengo" ("We founded Rengo to
-              make…"), shortened. The layers below show the infrastructure. */}
-            We make{" "}
+              make institutional-grade infrastructure accessible…", "a
+              managed data and AI platform"), shortened. "Platform" rather
+              than "infrastructure", which is a layer below; the layers are
+              its parts. */}
+            We make an{" "}
             <Box as="span" color="site.highlight">
-              institutional-grade infrastructure
+              institutional-grade data and AI platform
             </Box>{" "}
             accessible to organizations of all sizes
           </Text>
