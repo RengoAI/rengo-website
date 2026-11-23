@@ -115,7 +115,8 @@ const ApproachAccordion: React.FC = () => {
         display="flex"
         flexDirection={{ base: "column", md: "row" }}
         gap="8px"
-        minH={{ md: "380px" }}
+        // Short enough that the section fits one laptop screen.
+        minH={{ md: "300px" }}
       >
         {HOW_WE_WORK.map((step, i) => {
           const isOpen = open === i;

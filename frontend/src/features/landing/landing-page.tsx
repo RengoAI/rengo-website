@@ -4,7 +4,7 @@ import { SiteNav } from "@/components/site/site-nav";
 import {
   CONTACT_HREF,
   FEATURE_BAND_MIN_H,
-  STATEMENT_BAND_MIN_H,
+  CLOSE_BAND_MIN_H,
 } from "@/components/site/site-constants";
 import { SolidCta } from "@/components/site/solid-cta";
 import { StatementBand } from "@/components/site/statement-band";
@@ -137,7 +137,6 @@ export const LandingPage: React.FC = () => (
         lead="AI is only as reliable as"
         point="the information it works from"
         light="beamSteel"
-        minH={STATEMENT_BAND_MIN_H}
       />
 
       {/* --- Solution ------------------------------------------------------- */}
@@ -162,6 +161,8 @@ export const LandingPage: React.FC = () => (
         tone="plain"
         // Held part-way: the dots scattered loosely round the line.
         still={0.55}
+        // With the footer under it, one screen.
+        minH={CLOSE_BAND_MIN_H}
       >
         <SolidCta h="27px" href={CONTACT_HREF} labelProps={{ gap: "8px" }}>
           Book a call

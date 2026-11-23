@@ -205,7 +205,7 @@ export const StatementBand: React.FC<{
    */
   light?: LightFieldVariant;
   /** The band's minimum height; the shared feature height by default. */
-  minH?: string;
+  minH?: string | Record<string, string>;
   children?: React.ReactNode;
 }> = ({
   lead,
