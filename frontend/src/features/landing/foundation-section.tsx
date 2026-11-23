@@ -225,9 +225,12 @@ export const FoundationSection: React.FC = () => {
             letterSpacing="-0.5px"
             color="site.fg.heading"
           >
-            We build a trusted data layer to give you{" "}
+            {/* Word for word from the sales deck: its title for this
+              graphic's layers. It answers the statement above ("But most
+              of it isn't being put to work"). */}
+            How we help you build{" "}
             <Box as="span" color="site.highlight">
-              visibility across your organization
+              an AI advantage
             </Box>
           </Text>
         </GridCol>
