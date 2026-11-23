@@ -12,7 +12,7 @@ import React from "react";
 
 const HOW_WE_WORK = [
   {
-    title: "Understand your business",
+    title: "Understand the business",
     body: "We work with your team to understand how decisions are made, where work slows down, and what’s missing from the data.",
   },
   {
@@ -21,7 +21,7 @@ const HOW_WE_WORK = [
   },
   {
     title: "Build and implement",
-    body: "We connect your systems, organize your data, and build the tools your team needs to put it to work.",
+    body: "We connect your systems, organize the data, and build the tools your team needs to put it to work.",
   },
   {
     title: "Support and grow",

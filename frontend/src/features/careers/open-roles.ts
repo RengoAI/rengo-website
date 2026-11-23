@@ -69,7 +69,7 @@ const benefits = (salaryRange: string): JobSection => ({
 });
 
 const HOW_RENGO_IS_DIFFERENT: JobSection = {
-  heading: "How Rengo AI is different",
+  heading: "How Rengo is different",
   blocks: [
     {
       type: "paragraph",
