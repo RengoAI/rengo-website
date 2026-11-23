@@ -224,13 +224,13 @@ export const FoundationSection: React.FC = () => {
             letterSpacing="-0.5px"
             color="site.fg.heading"
           >
-            {/* Word for word from the sales deck: its title for this
-              graphic's layers. It answers the statement above ("But most
-              of it isn't being put to work"). */}
-            How we help you build{" "}
+            {/* The Business Overview's "About Rengo" ("We founded Rengo to
+              make…"), shortened. The layers below show the infrastructure. */}
+            We make{" "}
             <Box as="span" color="site.highlight">
-              an AI advantage
-            </Box>
+              institutional-grade infrastructure
+            </Box>{" "}
+            accessible to organizations of all sizes
           </Text>
         </GridCol>
       </Grid>
