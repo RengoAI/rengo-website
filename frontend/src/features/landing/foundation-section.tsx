@@ -226,7 +226,7 @@ export const FoundationSection: React.FC = () => {
           >
             {/* What we do, before the layers show it; "We partner…" below
               is the people side. */}
-            Bringing{" "}
+            We bring{" "}
             <Box as="span" color="site.highlight">
               frontier AI and data capabilities
             </Box>{" "}
