@@ -2,7 +2,7 @@ import { rootRoute } from "@/app/app-routes";
 import { GridCol } from "@/components/layout/grid";
 import { ARTICLE_MEASURE } from "@/components/site/article";
 import { Section } from "@/components/layout/section";
-import { FEATURE_BAND_MIN_H, NAV_H } from "@/components/site/site-constants";
+import { CLOSE_BAND_MIN_H, NAV_H } from "@/components/site/site-constants";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
 import { SiteOutro } from "@/components/site/site-outro";
@@ -102,9 +102,8 @@ export const CareersPage: React.FC = () => (
         headingAs="h1"
         cta="See open roles"
         ctaHref="#open-roles"
-        // The landing's big moments' height, so the team and the roles come
-        // sooner.
-        fill="feature"
+        // A full screen, like the landing hero.
+        fill
         backdrop="wash"
       />
 
@@ -151,10 +150,10 @@ export const CareersPage: React.FC = () => (
 
       <Section
         id="open-roles"
-        // At least the landing's big moments' height, with the site's
-        // section padding.
+        // The last section, so like the landing's close: with the footer
+        // under it, one screen (up to the shared cap).
         bg="site.bg.surface"
-        minH={FEATURE_BAND_MIN_H}
+        minH={CLOSE_BAND_MIN_H}
         scrollMarginTop={`${NAV_H}px`}
       >
         {/* The article column, as on the blog index: a left-aligned
