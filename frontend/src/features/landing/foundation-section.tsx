@@ -228,7 +228,7 @@ export const FoundationSection: React.FC = () => {
               is the people side. */}
             We bring{" "}
             <Box as="span" color="site.highlight">
-              frontier AI and data
+              the frontier of AI and data
             </Box>{" "}
             to every organization
           </Text>
