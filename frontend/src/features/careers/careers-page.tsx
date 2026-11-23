@@ -102,9 +102,8 @@ export const CareersPage: React.FC = () => (
         headingAs="h1"
         cta="See open roles"
         ctaHref="#open-roles"
-        // The landing's big moments' height, so the team and the roles come
-        // sooner.
-        fill="feature"
+        // A full screen, like the landing hero.
+        fill
         backdrop="wash"
       />
 
