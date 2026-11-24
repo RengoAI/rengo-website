@@ -52,7 +52,7 @@ const HEADLINE = "We build and run your data and AI systems";
 const HEADLINE_BREAK = HEADLINE.indexOf("your");
 /** What Rengo is: the platform and the people. */
 const DESCRIPTION =
-  "A managed platform and engineers who work alongside your team.";
+  "A managed platform and engineers who work alongside your team";
 /** Balance the description across two lines: 32 and 29 characters. */
 const DESCRIPTION_BREAK = DESCRIPTION.indexOf("who");
 
