@@ -51,9 +51,10 @@ const HEADLINE = "We build and run your AI and data systems";
 /** Where the title's second line starts: at "your". */
 const HEADLINE_BREAK = HEADLINE.indexOf("your");
 /** What Rengo is: the platform and the people. */
-const DESCRIPTION = "A managed platform and a team that works with yours.";
-/** Balance the description across two lines. */
-const DESCRIPTION_BREAK = DESCRIPTION.indexOf("and a team");
+const DESCRIPTION =
+  "We provide a managed platform and engineers who work alongside your team";
+/** Balance the description across two lines: 34 and 37 characters. */
+const DESCRIPTION_BREAK = DESCRIPTION.indexOf("engineers");
 
 // ---- Formation ---------------------------------------------------------
 /**
