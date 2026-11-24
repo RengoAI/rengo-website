@@ -47,14 +47,14 @@ import React from "react";
  */
 
 /** The hero's copy. */
-const HEADLINE = "We build and run your AI and data systems";
+const HEADLINE = "We build and run your data and AI systems";
 /** Where the title's second line starts: at "your". */
 const HEADLINE_BREAK = HEADLINE.indexOf("your");
 /** What Rengo is: the platform and the people. */
 const DESCRIPTION =
-  "We provide a managed platform and engineers who work alongside your team";
-/** Balance the description across two lines: 34 and 37 characters. */
-const DESCRIPTION_BREAK = DESCRIPTION.indexOf("engineers");
+  "A managed platform and engineers who work alongside your team.";
+/** Balance the description across two lines: 32 and 29 characters. */
+const DESCRIPTION_BREAK = DESCRIPTION.indexOf("who");
 
 // ---- Formation ---------------------------------------------------------
 /**
