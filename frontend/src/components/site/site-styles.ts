@@ -116,6 +116,8 @@ export const SECTION_TITLE = {
   fontWeight: 300,
   lineHeight: "1.1",
   letterSpacing: "-0.02em",
-  // Even lines, never a lone word on the last.
+  // Even lines, never a lone word on the last, and no wider than about
+  // two dozen words' measure, so every title breaks onto two lines alike.
   textWrap: "balance",
+  maxW: "600px",
 } as const;

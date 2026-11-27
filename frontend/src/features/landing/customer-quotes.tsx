@@ -157,7 +157,8 @@ const QuoteFeature: React.FC = () => {
           as="blockquote"
           key={i}
           textStyle="d3"
-          fontSize={{ base: "1.625rem", md: "2.125rem", lg: "2.5rem" }}
+          // A step under the section title (40px), so the title leads.
+          fontSize={{ base: "1.5rem", md: "1.75rem", lg: "2rem" }}
           lineHeight="1.2"
           color="overview.navy"
           animation="fade-in 400ms ease"

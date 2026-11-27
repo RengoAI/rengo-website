@@ -693,12 +693,15 @@ export const LandingHero: React.FC = () => {
           // Side by side, the title and the description + CTA share a
           // horizontal centre line.
           alignItems={{ base: "flex-start", md: "center" }}
-          gap="32px"
+          // Room between the big title and the description beside it.
+          gap={{ base: "32px", md: "64px" }}
         >
           <Text
             as="h1"
             textStyle="h2"
-            fontSize={{ base: "32px", md: "36px", lg: "52px" }}
+            // 52px on wide screens; a step less on laptops, so it and the
+            // description fit side by side.
+            fontSize={{ base: "32px", md: "36px", lg: "44px", xl: "52px" }}
             fontWeight={300}
             letterSpacing="-0.035em"
             color="site.fg"
@@ -718,6 +721,8 @@ export const LandingHero: React.FC = () => {
             // caps at its edge; beside the title, it narrows to fit.
             w={{ base: "full", md: "auto" }}
             minW={0}
+            // Beside the title it keeps its width rather than squeezing.
+            flexShrink={{ md: 0 }}
             gap="20px"
           >
             <Text
@@ -727,8 +732,9 @@ export const LandingHero: React.FC = () => {
               lineHeight="1.2"
               color="site.fg"
               textAlign={{ base: "left", md: "right" }}
-              // Beside the title it stays 420px wide, and the lines balance.
-              w="420px"
+              // Beside the title it stays 300px wide, just its two lines,
+              // leaving the title room; the lines balance.
+              w="300px"
               maxW="full"
               css={{ textWrap: "balance" }}
             >

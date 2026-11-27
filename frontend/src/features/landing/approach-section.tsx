@@ -51,13 +51,7 @@ const STEP_LIGHT: LightFieldVariant[] = [
 /** The section's head: the partnership line. */
 const ApproachHead: React.FC = () => (
   <Box display="flex" flexDirection="column" alignItems="flex-start" gap="14px">
-    <Text
-      as="h2"
-      {...SECTION_TITLE}
-      color="site.fg.heading"
-      maxW="640px"
-      textWrap="balance"
-    >
+    <Text as="h2" {...SECTION_TITLE} color="site.fg.heading">
       A partner from{" "}
       <Box as="span" color="site.highlight">
         strategy to deployment
