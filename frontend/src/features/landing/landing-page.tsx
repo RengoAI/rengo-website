@@ -15,6 +15,7 @@ import { LandingHero } from "@/features/landing/landing-hero";
 import { LightField } from "@/components/site/light-field";
 import { Box, Text } from "@chakra-ui/react";
 import { EyeOff, Lock, ScanSearch, ShieldCheck } from "lucide-react";
+import { SECTION_TITLE } from "@/components/site/site-styles";
 import React from "react";
 
 const COMPLIANCE = [
@@ -73,9 +74,7 @@ const SecuritySection: React.FC = () => (
       <Text
         as="h2"
         // The section headings' size, as the sections above.
-        textStyle="h4"
-        fontWeight={400}
-        lineHeight="1.1"
+        {...SECTION_TITLE}
         color="site.fg.onDark"
       >
         Security built for your{" "}
@@ -127,13 +126,12 @@ export const LandingPage: React.FC = () => (
       <LandingHero />
 
       {/* --- The opportunity ---------------------------------------------- */}
-      {/* Word for word from the sales deck's second slide: the tagline, then
-        the gap it opens, which the infrastructure below answers. The close
-        ("Ready to make your data your alpha?") echoes it. */}
+      {/* What we do, in one sentence. */}
       <StatementBand
-        lead="Your data is"
-        point="your alpha"
-        description="But most of it isn’t being put to work"
+        lead="We combine our platform, engineering, and strategic expertise to change"
+        point="the economics of how organizations operate"
+        // Three even lines rather than a short middle one.
+        measure="880px"
         light="glowLine"
         // Dissolves into the page above and below, so the hero runs into it
         // and it runs into the data layer, with no edges.
@@ -157,8 +155,8 @@ export const LandingPage: React.FC = () => (
         the footer's lighter grey so the line pops. */}
       <StatementBand
         id="outro-heading"
-        lead="Ready to make your data"
-        point="your alpha?"
+        lead="Ready to change the"
+        point="economics of how you operate?"
         tone="plain"
         // Held part-way: the dots scattered loosely round the line.
         still={0.55}

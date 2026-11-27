@@ -1,7 +1,7 @@
 import { colSpanWidth, Grid, GridCol } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import { NAV_H } from "@/components/site/site-constants";
-import { colorVar } from "@/components/site/site-styles";
+import { colorVar, SECTION_TITLE } from "@/components/site/site-styles";
 import { useScrollFrame } from "@/shared/hooks/use-scroll-frame";
 import { prefersReducedMotion } from "@/shared/utils/motion";
 import { GRID_COLUMNS } from "@/theme/tokens/layout";
@@ -218,19 +218,16 @@ export const FoundationSection: React.FC = () => {
           <Text
             ref={headingRef}
             as="h2"
-            textStyle="h4"
-            fontWeight={400}
-            lineHeight="1.1"
-            letterSpacing="-0.5px"
+            {...SECTION_TITLE}
             color="site.fg.heading"
           >
             {/* What we do, before the layers show it; "We partner…" below
               is the people side. */}
-            We bring{" "}
+            The{" "}
             <Box as="span" color="site.highlight">
-              the frontier of AI and data
+              operating layer
             </Box>{" "}
-            to every organization
+            for enterprise AI
           </Text>
         </GridCol>
       </Grid>

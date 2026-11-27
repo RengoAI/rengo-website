@@ -47,14 +47,13 @@ import React from "react";
  */
 
 /** The hero's copy. */
-const HEADLINE = "We build and run your data and AI systems";
-/** Where the title's second line starts: at "your". */
-const HEADLINE_BREAK = HEADLINE.indexOf("your");
-/** What Rengo is: the platform and the people. */
+const HEADLINE = "Accelerating enterprise transformation through AI";
+/** Where the title's second line starts: at "transformation". */
+const HEADLINE_BREAK = HEADLINE.indexOf("transformation");
 const DESCRIPTION =
-  "A managed platform and engineers who work alongside your team";
-/** Balance the description across two lines: 32 and 29 characters. */
-const DESCRIPTION_BREAK = DESCRIPTION.indexOf("who");
+  "Rengo helps organizations realize the full potential of AI";
+/** Balance the description across two lines. */
+const DESCRIPTION_BREAK = DESCRIPTION.indexOf("realize");
 
 // ---- Formation ---------------------------------------------------------
 /**
@@ -694,16 +693,20 @@ export const LandingHero: React.FC = () => {
           // Side by side, the title and the description + CTA share a
           // horizontal centre line.
           alignItems={{ base: "flex-start", md: "center" }}
-          gap="32px"
+          // Room between the big title and the description beside it.
+          gap={{ base: "32px", md: "64px", lg: "96px" }}
         >
           <Text
             as="h1"
             textStyle="h2"
-            fontSize={{ base: "32px", md: "36px" }}
-            fontWeight={350}
-            letterSpacing="-0.025em"
+            // 48px on wide screens, a step over the section titles (40px);
+            // 44px on laptops, so it and the description fit side by side
+            // with room between.
+            fontSize={{ base: "32px", md: "36px", lg: "44px", xl: "48px" }}
+            fontWeight={300}
+            letterSpacing="-0.035em"
             color="site.fg"
-            // Two set lines, broken before "your"; held on them from
+            // Two set lines, broken before "transformation"; held on them from
             // md up, free to wrap on phones.
             whiteSpace={{ md: "nowrap" }}
           >
@@ -719,17 +722,20 @@ export const LandingHero: React.FC = () => {
             // caps at its edge; beside the title, it narrows to fit.
             w={{ base: "full", md: "auto" }}
             minW={0}
+            // Beside the title it keeps its width rather than squeezing.
+            flexShrink={{ md: 0 }}
             gap="20px"
           >
             <Text
               textStyle="body.md"
-              // A step down on phones: 14px, 16px from md.
-              fontSize={{ base: "0.875rem", md: "1rem" }}
+              // A step down on phones: 16px, 18px from md.
+              fontSize={{ base: "1rem", md: "1.125rem" }}
               lineHeight="1.2"
               color="site.fg"
               textAlign={{ base: "left", md: "right" }}
-              // Beside the title it stays 420px wide, and the lines balance.
-              w="420px"
+              // Beside the title it stays 300px wide, just its two lines,
+              // leaving the title room; the lines balance.
+              w="300px"
               maxW="full"
               css={{ textWrap: "balance" }}
             >

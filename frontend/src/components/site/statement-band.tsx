@@ -179,6 +179,12 @@ export const StatementBand: React.FC<{
   lead: string;
   /** The second half, in blue. */
   point: string;
+  /**
+   * Run the blue half on inline and balance the whole line, at most this
+   * wide from tablets up, for a long statement whose halves would otherwise
+   * set as uneven rows.
+   */
+  measure?: string;
   /** The heading's id, for a band labelled by it. */
   id?: string;
   /**
@@ -221,6 +227,7 @@ export const StatementBand: React.FC<{
 }> = ({
   lead,
   point,
+  measure,
   id,
   tone = "wash",
   still,
@@ -329,6 +336,7 @@ export const StatementBand: React.FC<{
         color={tone === "plain" ? "site.fg.strong" : "site.fg.heading"}
         textAlign="center"
         textWrap="balance"
+        maxW={measure ? { md: measure } : undefined}
         aria-label={`${lead} ${point}`}
       >
         {words.slice(0, leadCount).map(({ w }, i) => (
@@ -341,7 +349,7 @@ export const StatementBand: React.FC<{
           sentence. */}
         <Box
           as="span"
-          display={description ? undefined : { md: "block" }}
+          display={description || measure ? undefined : { md: "block" }}
           color="site.highlight"
         >
           {words.slice(leadCount).map(({ w }, j) => (

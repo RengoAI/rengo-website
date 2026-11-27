@@ -16,6 +16,7 @@ import { LightField } from "@/components/site/light-field";
 import { LogoMarquee } from "@/features/landing/logo-marquee";
 import { Box, chakra, Text } from "@chakra-ui/react";
 import { ArrowRight } from "lucide-react";
+import { SECTION_TITLE } from "@/components/site/site-styles";
 import React from "react";
 import { Link } from "react-router";
 
@@ -132,9 +133,7 @@ export const CareersPage: React.FC = () => (
           <Text
             as="h2"
             // The section headings' size, as on the landing.
-            textStyle="h4"
-            fontWeight={400}
-            lineHeight="1.1"
+            {...SECTION_TITLE}
             color="site.fg.onDark"
           >
             We&rsquo;re a team of builders
@@ -162,9 +161,7 @@ export const CareersPage: React.FC = () => (
           <Text
             as="h2"
             // The section headings' size, as on the landing.
-            textStyle="h4"
-            fontWeight={400}
-            lineHeight="1.1"
+            {...SECTION_TITLE}
             color="site.fg.heading"
             mb={{ base: "28px", md: "40px" }}
           >
