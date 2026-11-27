@@ -50,10 +50,9 @@ import React from "react";
 const HEADLINE = "Accelerating enterprise transformation through AI";
 /** Where the title's second line starts: at "transformation". */
 const HEADLINE_BREAK = HEADLINE.indexOf("transformation");
-const DESCRIPTION =
-  "We partner with organizations to transform how they operate, combining our AI platform with dedicated deployment teams.";
+const DESCRIPTION = "We help organizations capture the full potential of AI";
 /** Balance the description across two lines. */
-const DESCRIPTION_BREAK = DESCRIPTION.indexOf("combining");
+const DESCRIPTION_BREAK = DESCRIPTION.indexOf("the full");
 
 // ---- Formation ---------------------------------------------------------
 /**
@@ -727,16 +726,14 @@ export const LandingHero: React.FC = () => {
               lineHeight="1.2"
               color="site.fg"
               textAlign={{ base: "left", md: "right" }}
-              // Beside the title it stays 500px wide, room for the two set
-              // lines, and the lines balance.
-              w="500px"
+              // Beside the title it stays 420px wide, and the lines balance.
+              w="420px"
               maxW="full"
               css={{ textWrap: "balance" }}
             >
               {DESCRIPTION.slice(0, DESCRIPTION_BREAK).trimEnd()}{" "}
-              {/* Two lines, like the title, where there's room for them;
-                narrower, it wraps on its own, balanced. */}
-              <Box as="br" display={{ base: "none", lg: "inline" }} />
+              {/* Two lines, like the title. */}
+              <br />
               {DESCRIPTION.slice(DESCRIPTION_BREAK)}
             </Text>
             <Box
