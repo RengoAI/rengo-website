@@ -131,6 +131,8 @@ export const LandingPage: React.FC = () => (
       <StatementBand
         lead="We combine our AI platform, engineering, and strategic expertise to change"
         point="the economics of how organizations operate"
+        // Three even lines rather than a short middle one.
+        measure="880px"
         light="glowLine"
         // Dissolves into the page above and below, so the hero runs into it
         // and it runs into the data layer, with no edges.
