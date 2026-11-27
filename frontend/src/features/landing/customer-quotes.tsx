@@ -119,7 +119,9 @@ const Heading: React.FC = () => (
 /** ms each quote shows before the next, while it advances on its own. */
 const QUOTE_ADVANCE = 8000;
 
-const QuoteFeature: React.FC = () => {
+const QuoteFeature: React.FC<{ children?: React.ReactNode }> = ({
+  children,
+}) => {
   const [i, setI] = React.useState(0);
   const q = QUOTES[i];
   const n = QUOTES.length;
@@ -183,6 +185,9 @@ const QuoteFeature: React.FC = () => {
         <Attribution q={q} />
         <QuoteControls i={i} n={n} go={go} />
       </Box>
+      {/* Anything that follows the stories in the same section, such as
+        the latest articles. */}
+      {children && <Box pt={{ base: "56px", lg: "80px" }}>{children}</Box>}
     </Section>
   );
 };

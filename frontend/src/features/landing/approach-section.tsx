@@ -50,9 +50,10 @@ const STEP_LIGHT: LightFieldVariant[] = [
 ];
 
 /** The section's head: the partnership line, unless a page passes its own. */
-const ApproachHead: React.FC<{ children?: React.ReactNode }> = ({
-  children,
-}) => (
+const ApproachHead: React.FC<{
+  children?: React.ReactNode;
+  description?: React.ReactNode;
+}> = ({ children, description }) => (
   <Box display="flex" flexDirection="column" alignItems="flex-start" gap="14px">
     <Text
       as="h2"
@@ -72,6 +73,11 @@ const ApproachHead: React.FC<{ children?: React.ReactNode }> = ({
         </>
       )}
     </Text>
+    {description && (
+      <Text textStyle="body.md" color="site.fg" maxW="560px" textWrap="balance">
+        {description}
+      </Text>
+    )}
   </Box>
 );
 
@@ -87,8 +93,9 @@ const ACCORDION_ADVANCE = 5000;
  */
 const ApproachAccordion: React.FC<{
   heading?: React.ReactNode;
+  description?: React.ReactNode;
   steps?: ApproachStep[];
-}> = ({ heading, steps = HOW_WE_WORK }) => {
+}> = ({ heading, description, steps = HOW_WE_WORK }) => {
   const [open, setOpen] = React.useState(0);
   const [picked, setPicked] = React.useState(false);
   const reduced = usePrefersReducedMotion();
@@ -118,7 +125,7 @@ const ApproachAccordion: React.FC<{
       gridProps={{ w: "full", gridTemplateRows: { md: "auto 1fr" } }}
     >
       <GridCol span={{ base: 16, lg: 9 }} pb={{ base: "40px", lg: "56px" }}>
-        <ApproachHead>{heading}</ApproachHead>
+        <ApproachHead description={description}>{heading}</ApproachHead>
       </GridCol>
       <GridCol
         as="ol"

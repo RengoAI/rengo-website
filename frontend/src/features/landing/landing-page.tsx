@@ -13,9 +13,8 @@ import {
   type ApproachStep,
 } from "@/features/landing/approach-section";
 import { CustomerQuotes } from "@/features/landing/customer-quotes";
-import { FoundationSection } from "@/features/landing/foundation-section";
 import { LandingHero } from "@/features/landing/landing-hero";
-import { TeamSection } from "@/features/landing/team-section";
+import { LatestArticles, TeamBand } from "@/features/landing/team-section";
 import { LightField } from "@/components/site/light-field";
 import { Box, Text } from "@chakra-ui/react";
 import { EyeOff, Lock, ScanSearch, ShieldCheck } from "lucide-react";
@@ -123,18 +122,19 @@ export const SecuritySection: React.FC = () => (
 );
 
 /**
- * How we work, after Wonderful's three pillars (platform, deployment teams,
- * strategy). Word for word from the Business Overview's "About Rengo" and
- * "Building Over Time", except the titles and pillar 1's list of layers.
+ * How We Work's three pillars, after Wonderful's (platform, deployment
+ * teams, strategy). Titles and text are the Business Overview's words
+ * ("About Rengo" and "Building Over Time"); pillar 1 names the layers, as
+ * Wonderful's names its modules.
  */
 const PILLARS: ApproachStep[] = [
   {
-    title: "The platform",
-    body: "Our platform provides the underlying technology: applications, agents, an ontology, and the infrastructure that connects your data and powers AI.",
+    title: "Our platform",
+    body: "Our platform provides the underlying technology. Applications, Agents, Ontology, Infrastructure.",
   },
   {
-    title: "Engineers who work with yours",
-    body: "Our engineers work directly with each client to adapt it to their data, reporting requirements and workflows. This gives organizations access to dedicated engineering expertise without the cost and complexity of building an internal team.",
+    title: "Our engineers",
+    body: "Our engineers work directly with each client to adapt it to their data, reporting requirements and workflows.",
   },
   {
     title: "Building over time",
@@ -143,9 +143,9 @@ const PILLARS: ApproachStep[] = [
 ];
 
 /**
- * The landing in Wonderful's order, less its news strip and industry list:
- * promise, proof, how we work (one line, three pillars, then the platform's
- * layers), the team and articles, and the close.
+ * The landing in Wonderful's order, less its news strip and industry list,
+ * which we have nothing to fill: promise, proof (stories, then articles),
+ * How We Work (one line, three pillars), the team, and the close.
  */
 export const LandingPage: React.FC = () => (
   <Box bg="site.bg.page">
@@ -155,37 +155,21 @@ export const LandingPage: React.FC = () => (
       {/* 1. Promise */}
       <LandingHero />
 
-      {/* 2. Proof */}
-      <CustomerQuotes />
+      {/* 2. Proof: the customer stories, then the latest articles. */}
+      <CustomerQuotes>
+        <LatestArticles />
+      </CustomerQuotes>
 
-      {/* 3. How we work: the Business Overview's one-line offer, the three
-        pillars, then pillar 1 in detail. */}
+      {/* 3. How We Work: the heading, the Business Overview's one-line
+        offer, the three pillars. */}
       <ApproachSection
+        heading="How we work"
+        description="Rengo AI provides a managed data and AI platform, combining software with the engineering expertise to build and maintain the infrastructure behind it."
         steps={PILLARS}
-        heading={
-          <>
-            Rengo provides a managed data and AI platform, combining software
-            with{" "}
-            <Box as="span" color="site.highlight">
-              the engineering expertise
-            </Box>{" "}
-            to build and maintain the infrastructure behind it
-          </>
-        }
-      />
-      <FoundationSection
-        title={
-          <>
-            Our platform provides{" "}
-            <Box as="span" color="site.highlight">
-              the underlying technology
-            </Box>
-          </>
-        }
       />
 
-      {/* 4. Team and ideas */}
-      <TeamSection />
+      {/* 4. Team */}
+      <TeamBand />
 
       {/* 5. Close, echoing the sales deck's tagline. */}
       <StatementBand
