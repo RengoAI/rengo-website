@@ -46,14 +46,14 @@ import React from "react";
  * motion gets the formed bed, still.
  */
 
-/** The hero's copy: Wonderful's hero, word for word, with our name. */
-const HEADLINE = "Accelerate AI transformation across the enterprise";
-/** Where the title's second line starts: at "across". */
-const HEADLINE_BREAK = HEADLINE.indexOf("across");
+/** The hero's copy. */
+const HEADLINE = "Accelerating enterprise transformation through AI";
+/** Where the title's second line starts: at "transformation". */
+const HEADLINE_BREAK = HEADLINE.indexOf("transformation");
 const DESCRIPTION =
-  "Rengo helps enterprises drive AI adoption to unlock their full potential";
+  "We partner with organizations to transform how they operate, combining our AI platform with dedicated deployment teams.";
 /** Balance the description across two lines. */
-const DESCRIPTION_BREAK = DESCRIPTION.indexOf("to unlock");
+const DESCRIPTION_BREAK = DESCRIPTION.indexOf("combining");
 
 // ---- Formation ---------------------------------------------------------
 /**
@@ -702,7 +702,7 @@ export const LandingHero: React.FC = () => {
             fontWeight={350}
             letterSpacing="-0.025em"
             color="site.fg"
-            // Two set lines, broken before "across"; held on them from
+            // Two set lines, broken before "transformation"; held on them from
             // md up, free to wrap on phones.
             whiteSpace={{ md: "nowrap" }}
           >
@@ -727,14 +727,16 @@ export const LandingHero: React.FC = () => {
               lineHeight="1.2"
               color="site.fg"
               textAlign={{ base: "left", md: "right" }}
-              // Beside the title it stays 420px wide, and the lines balance.
-              w="420px"
+              // Beside the title it stays 500px wide, room for the two set
+              // lines, and the lines balance.
+              w="500px"
               maxW="full"
               css={{ textWrap: "balance" }}
             >
               {DESCRIPTION.slice(0, DESCRIPTION_BREAK).trimEnd()}{" "}
-              {/* Two lines, like the title. */}
-              <br />
+              {/* Two lines, like the title, where there's room for them;
+                narrower, it wraps on its own, balanced. */}
+              <Box as="br" display={{ base: "none", lg: "inline" }} />
               {DESCRIPTION.slice(DESCRIPTION_BREAK)}
             </Text>
             <Box
