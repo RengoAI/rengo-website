@@ -96,10 +96,11 @@ const Attribution: React.FC<{ q: (typeof QUOTES)[number] }> = ({ q }) => (
 /** The section's heading, as the other sections' headings. */
 const Heading: React.FC = () => (
   <Text as="h2" {...SECTION_TITLE} color="site.fg.heading">
-    Our customers{" "}
+    Our customers
     {/* The emphasis in the highlight blue, as the other light sections'
       headings. */}
-    <Box as="span" color="site.highlight">
+    {/* Its own line, as the blue half of every section title. */}
+    <Box as="span" display="block" color="site.highlight">
       in their own words
     </Box>
   </Text>
