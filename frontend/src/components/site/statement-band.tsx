@@ -179,6 +179,11 @@ export const StatementBand: React.FC<{
   lead: string;
   /** The second half, in blue. */
   point: string;
+  /**
+   * Plain words after the blue half, after a comma, so the line can run on
+   * as one sentence. With one, the blue half stays inline.
+   */
+  tail?: string;
   /** The heading's id, for a band labelled by it. */
   id?: string;
   /**
@@ -221,6 +226,7 @@ export const StatementBand: React.FC<{
 }> = ({
   lead,
   point,
+  tail,
   id,
   tone = "wash",
   still,
@@ -263,6 +269,7 @@ export const StatementBand: React.FC<{
   const words = [
     ...lead.split(" ").map((w) => ({ w, blue: false })),
     ...point.split(" ").map((w) => ({ w, blue: true })),
+    ...(tail ? tail.split(" ").map((w) => ({ w, blue: false })) : []),
   ];
   // Each word fills over its own slice of the scroll, overlapping the next.
   const lit = (i: number) => {
@@ -273,6 +280,7 @@ export const StatementBand: React.FC<{
     return UNLIT + (1 - UNLIT) * Math.min(Math.max(t / 3, 0), 1);
   };
   const leadCount = lead.split(" ").length;
+  const pointEnd = leadCount + point.split(" ").length;
 
   return (
     <Section
@@ -329,7 +337,9 @@ export const StatementBand: React.FC<{
         color={tone === "plain" ? "site.fg.strong" : "site.fg.heading"}
         textAlign="center"
         textWrap="balance"
-        aria-label={`${lead} ${point}`}
+        // A full sentence runs long, so it keeps to a readable measure.
+        maxW={tail ? "1000px" : undefined}
+        aria-label={tail ? `${lead} ${point}, ${tail}` : `${lead} ${point}`}
       >
         {words.slice(0, leadCount).map(({ w }, i) => (
           <Box as="span" key={i} aria-hidden style={{ opacity: lit(i) }}>
@@ -341,10 +351,10 @@ export const StatementBand: React.FC<{
           sentence. */}
         <Box
           as="span"
-          display={description ? undefined : { md: "block" }}
+          display={description || tail ? undefined : { md: "block" }}
           color="site.highlight"
         >
-          {words.slice(leadCount).map(({ w }, j) => (
+          {words.slice(leadCount, pointEnd).map(({ w }, j) => (
             <Box
               as="span"
               key={j}
@@ -352,10 +362,21 @@ export const StatementBand: React.FC<{
               style={{ opacity: lit(leadCount + j) }}
             >
               {w}
-              {j < words.length - leadCount - 1 ? " " : ""}
+              {j < pointEnd - leadCount - 1 ? " " : ""}
             </Box>
           ))}
         </Box>
+        {words.slice(pointEnd).map(({ w }, j) => (
+          <Box
+            as="span"
+            key={`t${j}`}
+            aria-hidden
+            style={{ opacity: lit(pointEnd + j) }}
+          >
+            {j === 0 ? ", " : " "}
+            {w}
+          </Box>
+        ))}
       </Text>
       {description && (
         <Text

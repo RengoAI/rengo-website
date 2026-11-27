@@ -127,11 +127,11 @@ export const LandingPage: React.FC = () => (
       <LandingHero />
 
       {/* --- The opportunity ---------------------------------------------- */}
-      {/* Word for word from Wonderful's sub-heading over its customer
-        cases. */}
+      {/* What we do, in one sentence. */}
       <StatementBand
-        lead="Solving the problems that"
-        point="move the business"
+        lead="We partner with organizations to fundamentally change"
+        point="the economics of how they operate"
+        tail="combining our AI platform with dedicated engineering teams"
         light="glowLine"
         // Dissolves into the page above and below, so the hero runs into it
         // and it runs into the data layer, with no edges.
