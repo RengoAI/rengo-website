@@ -59,9 +59,9 @@ const ApproachHead: React.FC = () => (
       maxW="640px"
       textWrap="balance"
     >
-      We partner with your team to turn your data into{" "}
+      A partner from{" "}
       <Box as="span" color="site.highlight">
-        measurable business outcomes
+        strategy to deployment
       </Box>
     </Text>
   </Box>
