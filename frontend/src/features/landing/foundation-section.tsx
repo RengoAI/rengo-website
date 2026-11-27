@@ -157,7 +157,9 @@ const useRowFade = (ref: React.RefObject<HTMLElement>, end: number) => {
  * as its render, so the copy, centred in the row, sits level with the
  * plane's centre.
  */
-export const FoundationSection: React.FC = () => {
+export const FoundationSection: React.FC<{ title?: React.ReactNode }> = ({
+  title,
+}) => {
   const headingRef = React.useRef<HTMLHeadingElement>(null);
   useRowFade(headingRef, FOUNDATION_ROW_FADE_END);
   const headingGone = useFadeOutPast(
@@ -226,11 +228,15 @@ export const FoundationSection: React.FC = () => {
           >
             {/* What we do, before the layers show it; "We partner…" below
               is the people side. */}
-            We bring{" "}
-            <Box as="span" color="site.highlight">
-              the frontier of AI and data
-            </Box>{" "}
-            to every organization
+            {title ?? (
+              <>
+                We bring{" "}
+                <Box as="span" color="site.highlight">
+                  the frontier of AI and data
+                </Box>{" "}
+                to every organization
+              </>
+            )}
           </Text>
         </GridCol>
       </Grid>

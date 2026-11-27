@@ -41,7 +41,7 @@ const META = {
  * title and summary at the top and, along the bottom, the date on the left
  * and the read time on the right.
  */
-const PostItem: React.FC<{ post: Post }> = ({ post }) => (
+export const PostItem: React.FC<{ post: Post }> = ({ post }) => (
   <RouterLink
     to={postPath(post.slug)}
     display="grid"

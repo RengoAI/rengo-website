@@ -10,7 +10,9 @@ import { usePrefersReducedMotion } from "@/shared/utils/motion";
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 
-const HOW_WE_WORK = [
+export type ApproachStep = { title: string; body: string };
+
+const HOW_WE_WORK: ApproachStep[] = [
   {
     title: "Understand your business",
     body: "We work with your team to understand how decisions are made, where work slows down, and what’s missing from the data.",
@@ -47,8 +49,10 @@ const STEP_LIGHT: LightFieldVariant[] = [
   "ovSteelDeep",
 ];
 
-/** The section's head: the partnership line. */
-const ApproachHead: React.FC = () => (
+/** The section's head: the partnership line, unless a page passes its own. */
+const ApproachHead: React.FC<{ children?: React.ReactNode }> = ({
+  children,
+}) => (
   <Box display="flex" flexDirection="column" alignItems="flex-start" gap="14px">
     <Text
       as="h2"
@@ -59,10 +63,14 @@ const ApproachHead: React.FC = () => (
       maxW="640px"
       textWrap="balance"
     >
-      We partner with your team to turn your data into{" "}
-      <Box as="span" color="site.highlight">
-        measurable business outcomes
-      </Box>
+      {children ?? (
+        <>
+          We partner with your team to turn your data into{" "}
+          <Box as="span" color="site.highlight">
+            measurable business outcomes
+          </Box>
+        </>
+      )}
     </Text>
   </Box>
 );
@@ -77,7 +85,10 @@ const ACCORDION_ADVANCE = 5000;
  * their titles turned on end. Hovering, focusing or clicking a strip opens
  * it; until then they open in turn. Phones list the steps open, stacked.
  */
-const ApproachAccordion: React.FC = () => {
+const ApproachAccordion: React.FC<{
+  heading?: React.ReactNode;
+  steps?: ApproachStep[];
+}> = ({ heading, steps = HOW_WE_WORK }) => {
   const [open, setOpen] = React.useState(0);
   const [picked, setPicked] = React.useState(false);
   const reduced = usePrefersReducedMotion();
@@ -85,11 +96,11 @@ const ApproachAccordion: React.FC = () => {
   React.useEffect(() => {
     if (picked || reduced) return;
     const id = window.setInterval(
-      () => setOpen((i) => (i + 1) % HOW_WE_WORK.length),
+      () => setOpen((i) => (i + 1) % steps.length),
       ACCORDION_ADVANCE,
     );
     return () => window.clearInterval(id);
-  }, [picked, reduced]);
+  }, [picked, reduced, steps.length]);
 
   const pick = (i: number) => {
     setPicked(true);
@@ -107,7 +118,7 @@ const ApproachAccordion: React.FC = () => {
       gridProps={{ w: "full", gridTemplateRows: { md: "auto 1fr" } }}
     >
       <GridCol span={{ base: 16, lg: 9 }} pb={{ base: "40px", lg: "56px" }}>
-        <ApproachHead />
+        <ApproachHead>{heading}</ApproachHead>
       </GridCol>
       <GridCol
         as="ol"
@@ -118,7 +129,7 @@ const ApproachAccordion: React.FC = () => {
         // Short enough that the section fits one laptop screen.
         minH={{ md: "300px" }}
       >
-        {HOW_WE_WORK.map((step, i) => {
+        {steps.map((step, i) => {
           const isOpen = open === i;
           // Light type on a dark strip (the Overview's slate and navy).
           const dark = isDarkLight(STEP_LIGHT[i]);
