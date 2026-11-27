@@ -7,11 +7,7 @@ import React from "react";
  * second lands exactly where the first began. The ends fade out, so logos
  * ease in on the right and out on the left rather than being cut off.
  */
-export const LogoMarquee: React.FC<{
-  /** "light" for a light band: the white-on-black strip inverted and
-   * multiplied, so the logos go dark and their ground drops out. */
-  tone?: "dark" | "light";
-}> = ({ tone = "dark" }) => (
+export const LogoMarquee: React.FC = () => (
   <Box
     w="full"
     overflow="hidden"
@@ -23,9 +19,8 @@ export const LogoMarquee: React.FC<{
     // would isolate them, and they'd blend against nothing and show their
     // black. The logos are white; at this opacity plus-lighter lands them on
     // roughly soot.500, the same grey as the label.
-    mixBlendMode={tone === "light" ? "multiply" : "plus-lighter"}
-    filter={tone === "light" ? "invert(1)" : undefined}
-    opacity={tone === "light" ? 0.45 : 0.32}
+    mixBlendMode="plus-lighter"
+    opacity={0.32}
   >
     <Box
       display="flex"

@@ -13,10 +13,8 @@ import {
   type ApproachStep,
 } from "@/features/landing/approach-section";
 import { CustomerQuotes } from "@/features/landing/customer-quotes";
-import { EveryTeamSection } from "@/features/landing/every-team-section";
 import { FoundationSection } from "@/features/landing/foundation-section";
 import { LandingHero } from "@/features/landing/landing-hero";
-import { LogoMarquee } from "@/features/landing/logo-marquee";
 import { TeamSection } from "@/features/landing/team-section";
 import { LightField } from "@/components/site/light-field";
 import { Box, Text } from "@chakra-ui/react";
@@ -145,30 +143,9 @@ const PILLARS: ApproachStep[] = [
 ];
 
 /**
- * Credibility straight after the hero, in Wonderful's news strip's place:
- * the careers page's logo strip, on the light page.
- */
-const LogoBand: React.FC = () => (
-  <Section bg="site.bg.page" py={{ base: "48px", lg: "64px" }}>
-    <Box display="flex" flexDirection="column" gap="24px">
-      <Text
-        fontSize="12px"
-        fontWeight={500}
-        letterSpacing="0.06em"
-        textTransform="uppercase"
-        color="site.fg.muted"
-      >
-        From world-class engineering teams
-      </Text>
-      <LogoMarquee tone="light" />
-    </Box>
-  </Section>
-);
-
-/**
- * The landing in Wonderful's order: promise, credibility, proof, how we work
- * (one line, three pillars, then the platform's layers), who it's for, the
- * team, and the close.
+ * The landing in Wonderful's order, less its news strip and industry list:
+ * promise, proof, how we work (one line, three pillars, then the platform's
+ * layers), the team and articles, and the close.
  */
 export const LandingPage: React.FC = () => (
   <Box bg="site.bg.page">
@@ -178,13 +155,10 @@ export const LandingPage: React.FC = () => (
       {/* 1. Promise */}
       <LandingHero />
 
-      {/* 2. Credibility */}
-      <LogoBand />
-
-      {/* 3. Proof */}
+      {/* 2. Proof */}
       <CustomerQuotes />
 
-      {/* 4. How we work: the Business Overview's one-line offer, the three
+      {/* 3. How we work: the Business Overview's one-line offer, the three
         pillars, then pillar 1 in detail. */}
       <ApproachSection
         steps={PILLARS}
@@ -210,13 +184,10 @@ export const LandingPage: React.FC = () => (
         }
       />
 
-      {/* 5. Who it's for */}
-      <EveryTeamSection />
-
-      {/* 6. Team and ideas */}
+      {/* 4. Team and ideas */}
       <TeamSection />
 
-      {/* 7. Close, echoing the sales deck's tagline. */}
+      {/* 5. Close, echoing the sales deck's tagline. */}
       <StatementBand
         id="outro-heading"
         lead="Ready to make your data"
