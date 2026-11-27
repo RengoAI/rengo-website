@@ -15,6 +15,7 @@ import { LandingHero } from "@/features/landing/landing-hero";
 import { LightField } from "@/components/site/light-field";
 import { Box, Text } from "@chakra-ui/react";
 import { EyeOff, Lock, ScanSearch, ShieldCheck } from "lucide-react";
+import { SECTION_TITLE } from "@/components/site/site-styles";
 import React from "react";
 
 const COMPLIANCE = [
@@ -73,9 +74,7 @@ const SecuritySection: React.FC = () => (
       <Text
         as="h2"
         // The section headings' size, as the sections above.
-        textStyle="h4"
-        fontWeight={400}
-        lineHeight="1.1"
+        {...SECTION_TITLE}
         color="site.fg.onDark"
       >
         Security built for your{" "}

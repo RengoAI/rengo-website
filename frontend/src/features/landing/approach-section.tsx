@@ -8,6 +8,7 @@ import {
 } from "@/components/site/light-field";
 import { usePrefersReducedMotion } from "@/shared/utils/motion";
 import { Box, Text } from "@chakra-ui/react";
+import { SECTION_TITLE } from "@/components/site/site-styles";
 import React from "react";
 
 const HOW_WE_WORK = [
@@ -52,9 +53,7 @@ const ApproachHead: React.FC = () => (
   <Box display="flex" flexDirection="column" alignItems="flex-start" gap="14px">
     <Text
       as="h2"
-      textStyle="h4"
-      fontWeight={400}
-      lineHeight="1.1"
+      {...SECTION_TITLE}
       color="site.fg.heading"
       maxW="640px"
       textWrap="balance"

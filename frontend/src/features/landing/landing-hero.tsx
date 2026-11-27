@@ -698,9 +698,9 @@ export const LandingHero: React.FC = () => {
           <Text
             as="h1"
             textStyle="h2"
-            fontSize={{ base: "32px", md: "36px" }}
-            fontWeight={350}
-            letterSpacing="-0.025em"
+            fontSize={{ base: "32px", md: "36px", lg: "52px" }}
+            fontWeight={300}
+            letterSpacing="-0.035em"
             color="site.fg"
             // Two set lines, broken before "transformation"; held on them from
             // md up, free to wrap on phones.
@@ -722,8 +722,8 @@ export const LandingHero: React.FC = () => {
           >
             <Text
               textStyle="body.md"
-              // A step down on phones: 14px, 16px from md.
-              fontSize={{ base: "0.875rem", md: "1rem" }}
+              // A step down on phones: 16px, 18px from md.
+              fontSize={{ base: "1rem", md: "1.125rem" }}
               lineHeight="1.2"
               color="site.fg"
               textAlign={{ base: "left", md: "right" }}

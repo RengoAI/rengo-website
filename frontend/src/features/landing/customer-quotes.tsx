@@ -2,6 +2,7 @@ import { Section } from "@/components/layout/section";
 import { FEATURE_BAND_MIN_H } from "@/components/site/site-constants";
 import { usePrefersReducedMotion } from "@/shared/utils/motion";
 import { Box, chakra, Text } from "@chakra-ui/react";
+import { SECTION_TITLE } from "@/components/site/site-styles";
 import React from "react";
 
 /**
@@ -94,13 +95,7 @@ const Attribution: React.FC<{ q: (typeof QUOTES)[number] }> = ({ q }) => (
 
 /** The section's heading, as the other sections' headings. */
 const Heading: React.FC = () => (
-  <Text
-    as="h2"
-    textStyle="h4"
-    fontWeight={400}
-    lineHeight="1.1"
-    color="site.fg.heading"
-  >
+  <Text as="h2" {...SECTION_TITLE} color="site.fg.heading">
     Our customers{" "}
     {/* The emphasis in the highlight blue, as the other light sections'
       headings. */}

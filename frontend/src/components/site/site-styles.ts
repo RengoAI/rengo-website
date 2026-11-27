@@ -105,3 +105,17 @@ export const tiledRuleX = (edge: "top" | "bottom") =>
       pointerEvents: "none",
     },
   }) as const;
+
+/**
+ * Every section's title: light and set tight, after Wonderful's, at 40px
+ * from lg (28px on phones, 32px on tablets).
+ */
+export const SECTION_TITLE = {
+  textStyle: "h4",
+  fontSize: { base: "28px", md: "32px", lg: "40px" },
+  fontWeight: 300,
+  lineHeight: "1.1",
+  letterSpacing: "-0.02em",
+  // Even lines, never a lone word on the last.
+  textWrap: "balance",
+} as const;
