@@ -129,7 +129,7 @@ export const LandingPage: React.FC = () => (
       {/* --- The opportunity ---------------------------------------------- */}
       {/* What we do, in one sentence. */}
       <StatementBand
-        lead="We combine our AI platform, engineering, and strategic expertise to change"
+        lead="We combine our platform, engineering, and strategic expertise to change"
         point="the economics of how organizations operate"
         // Three even lines rather than a short middle one.
         measure="880px"
