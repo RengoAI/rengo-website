@@ -129,9 +129,8 @@ export const LandingPage: React.FC = () => (
       {/* --- The opportunity ---------------------------------------------- */}
       {/* What we do, in one sentence. */}
       <StatementBand
-        lead="We partner with organizations to fundamentally change"
-        point="the economics of how they operate"
-        tail="combining our AI platform with dedicated engineering teams"
+        lead="We combine our AI platform with hands-on engineering and strategic expertise to fundamentally change"
+        point="the economics of how organizations operate"
         light="glowLine"
         // Dissolves into the page above and below, so the hero runs into it
         // and it runs into the data layer, with no edges.
