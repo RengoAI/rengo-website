@@ -46,15 +46,14 @@ import React from "react";
  * motion gets the formed bed, still.
  */
 
-/** The hero's copy. */
-const HEADLINE = "We build and run your data and AI systems";
-/** Where the title's second line starts: at "your". */
-const HEADLINE_BREAK = HEADLINE.indexOf("your");
-/** What Rengo is: the platform and the people. */
+/** The hero's copy: Wonderful's hero, word for word, with our name. */
+const HEADLINE = "Accelerate AI transformation across the enterprise";
+/** Where the title's second line starts: at "across". */
+const HEADLINE_BREAK = HEADLINE.indexOf("across");
 const DESCRIPTION =
-  "A managed platform and engineers who work alongside your team";
-/** Balance the description across two lines: 32 and 29 characters. */
-const DESCRIPTION_BREAK = DESCRIPTION.indexOf("who");
+  "Rengo helps enterprises drive AI adoption to unlock their full potential";
+/** Balance the description across two lines. */
+const DESCRIPTION_BREAK = DESCRIPTION.indexOf("to unlock");
 
 // ---- Formation ---------------------------------------------------------
 /**
@@ -703,7 +702,7 @@ export const LandingHero: React.FC = () => {
             fontWeight={350}
             letterSpacing="-0.025em"
             color="site.fg"
-            // Two set lines, broken before "your"; held on them from
+            // Two set lines, broken before "across"; held on them from
             // md up, free to wrap on phones.
             whiteSpace={{ md: "nowrap" }}
           >

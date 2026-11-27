@@ -226,11 +226,11 @@ export const FoundationSection: React.FC = () => {
           >
             {/* What we do, before the layers show it; "We partner…" below
               is the people side. */}
-            We bring{" "}
+            The{" "}
             <Box as="span" color="site.highlight">
-              the frontier of AI and data
+              unified operating layer
             </Box>{" "}
-            to every organization
+            for the AI-native enterprise
           </Text>
         </GridCol>
       </Grid>

@@ -127,13 +127,11 @@ export const LandingPage: React.FC = () => (
       <LandingHero />
 
       {/* --- The opportunity ---------------------------------------------- */}
-      {/* Word for word from the sales deck's second slide: the tagline, then
-        the gap it opens, which the infrastructure below answers. The close
-        ("Ready to make your data your alpha?") echoes it. */}
+      {/* Word for word from Wonderful's sub-heading over its customer
+        cases. */}
       <StatementBand
-        lead="Your data is"
-        point="your alpha"
-        description="But most of it isn’t being put to work"
+        lead="Solving the problems that"
+        point="move the business"
         light="glowLine"
         // Dissolves into the page above and below, so the hero runs into it
         // and it runs into the data layer, with no edges.
