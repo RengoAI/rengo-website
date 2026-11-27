@@ -694,16 +694,17 @@ export const LandingHero: React.FC = () => {
           // horizontal centre line.
           alignItems={{ base: "flex-start", md: "center" }}
           // Room between the big title and the description beside it.
-          gap={{ base: "32px", md: "64px" }}
+          gap={{ base: "32px", md: "64px", lg: "96px" }}
         >
           <Text
             as="h1"
             textStyle="h2"
-            // 52px on wide screens; a step less on laptops, so it and the
-            // description fit side by side.
-            fontSize={{ base: "32px", md: "36px", lg: "44px", xl: "52px" }}
+            // 52px on wide screens (1440px up); steps less on laptops, so it
+            // and the description fit side by side with room between.
+            fontSize={{ base: "32px", md: "36px", lg: "44px", xl: "48px" }}
             fontWeight={300}
             letterSpacing="-0.035em"
+            css={{ "@media (min-width: 1440px)": { fontSize: "52px" } }}
             color="site.fg"
             // Two set lines, broken before "transformation"; held on them from
             // md up, free to wrap on phones.
