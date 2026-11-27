@@ -228,9 +228,9 @@ export const FoundationSection: React.FC = () => {
               is the people side. */}
             The{" "}
             <Box as="span" color="site.highlight">
-              unified operating layer
+              operating layer
             </Box>{" "}
-            for the AI-native enterprise
+            for enterprise AI
           </Text>
         </GridCol>
       </Grid>
