@@ -155,8 +155,8 @@ export const LandingPage: React.FC = () => (
         the footer's lighter grey so the line pops. */}
       <StatementBand
         id="outro-heading"
-        lead="Ready to change"
-        point="the economics of how you operate?"
+        lead="Ready to change the"
+        point="economics of how you operate?"
         tone="plain"
         // Held part-way: the dots scattered loosely round the line.
         still={0.55}
