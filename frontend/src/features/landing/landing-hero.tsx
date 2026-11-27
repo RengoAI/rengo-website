@@ -53,7 +53,7 @@ const HEADLINE_BREAK = HEADLINE.indexOf("transformation");
 const DESCRIPTION =
   "Rengo helps organizations realize the full potential of AI";
 /** Balance the description across two lines. */
-const DESCRIPTION_BREAK = DESCRIPTION.indexOf("the full");
+const DESCRIPTION_BREAK = DESCRIPTION.indexOf("realize");
 
 // ---- Formation ---------------------------------------------------------
 /**
