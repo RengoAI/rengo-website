@@ -699,12 +699,12 @@ export const LandingHero: React.FC = () => {
           <Text
             as="h1"
             textStyle="h2"
-            // 52px on wide screens (1440px up); steps less on laptops, so it
-            // and the description fit side by side with room between.
+            // 48px on wide screens, a step over the section titles (40px);
+            // 44px on laptops, so it and the description fit side by side
+            // with room between.
             fontSize={{ base: "32px", md: "36px", lg: "44px", xl: "48px" }}
             fontWeight={300}
             letterSpacing="-0.035em"
-            css={{ "@media (min-width: 1440px)": { fontSize: "52px" } }}
             color="site.fg"
             // Two set lines, broken before "transformation"; held on them from
             // md up, free to wrap on phones.
