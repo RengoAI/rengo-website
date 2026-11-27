@@ -47,7 +47,7 @@ import React from "react";
  */
 
 /** The hero's copy. */
-const HEADLINE = "Accelerating organizational transformation through AI";
+const HEADLINE = "Accelerating enterprise transformation through AI";
 /** Where the title's second line starts: at "transformation". */
 const HEADLINE_BREAK = HEADLINE.indexOf("transformation");
 const DESCRIPTION =
