@@ -50,7 +50,8 @@ import React from "react";
 const HEADLINE = "Accelerating enterprise transformation through AI";
 /** Where the title's second line starts: at "transformation". */
 const HEADLINE_BREAK = HEADLINE.indexOf("transformation");
-const DESCRIPTION = "We help organizations capture the full potential of AI";
+const DESCRIPTION =
+  "Rengo helps organizations realize the full potential of AI";
 /** Balance the description across two lines. */
 const DESCRIPTION_BREAK = DESCRIPTION.indexOf("the full");
 
